@@ -1,0 +1,121 @@
+ion-menu {
+
+  --width: 290px;
+
+}
+
+.menu-content {
+
+  --background:
+    linear-gradient(
+      180deg,
+      #0b2d6b 0%,
+      #1d4ea5 100%
+    );
+
+  color: white;
+
+}
+
+.menu-header {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    50px 20px 30px 20px;
+
+}
+
+.menu-logo {
+
+  width: 120px;
+
+  margin-bottom: 20px;
+
+  filter:
+    drop-shadow(
+      0 6px 12px rgba(0,0,0,0.35)
+    );
+
+}
+
+.menu-header h2 {
+
+  margin: 0;
+
+  font-size: 1.5rem;
+
+  font-weight: 700;
+
+  text-align: center;
+
+}
+
+.menu-header p {
+
+  margin-top: 8px;
+
+  font-size: 0.9rem;
+
+  opacity: 0.8;
+
+  text-align: center;
+
+}
+
+ion-list {
+
+  background: transparent;
+
+  padding: 12px;
+
+}
+
+ion-item {
+
+  --background:
+    rgba(255,255,255,0.08);
+
+  --color: white;
+
+  --border-radius: 18px;
+
+  margin-bottom: 12px;
+
+  font-size: 1.05rem;
+
+  font-weight: 500;
+
+  backdrop-filter: blur(8px);
+
+}
+
+ion-item ion-icon {
+
+  font-size: 1.3rem;
+
+  color: white;
+
+}
+
+.menu-footer {
+
+  position: absolute;
+
+  bottom: 20px;
+
+  width: 100%;
+
+  text-align: center;
+
+  opacity: 0.65;
+
+  font-size: 0.85rem;
+
+}

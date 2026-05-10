@@ -35,3 +35,101 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+ion-content.home-bg {
+  --background: linear-gradient(
+    #0a2a5e,
+    #1e4fa3
+  ) !important;
+}
+
+ion-header ion-toolbar {
+
+  --background: #0b2d6b;
+
+  --color: white;
+
+  --border-width: 0;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.35);
+
+}
+
+ion-header ion-title {
+
+  font-size: 1.9rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  color: white;
+
+}
+
+ion-header ion-menu-button,
+ion-header ion-back-button,
+ion-header ion-button,
+ion-header ion-icon {
+
+  color: white;
+
+}
+
+ion-header {
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.35);
+
+  z-index: 999;
+
+}
+
+/* ANIMACION GLOBAL PAGINAS */
+
+ion-content {
+
+  animation:
+    fadeInPage 0.25s ease;
+
+}
+
+@keyframes fadeInPage {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(8px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+ion-button,
+ion-fab-button {
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+
+}
+
+ion-button:active,
+ion-fab-button:active {
+
+  transform:
+    scale(0.96);
+
+}

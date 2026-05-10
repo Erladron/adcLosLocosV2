@@ -1,0 +1,302 @@
+<ion-header translucent="true">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button
+        defaultHref="/gest-user">
+      </ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title>
+
+      <!-- ALTA -->
+      <ng-container *ngIf="nuevoUsuario">
+
+        Alta de usuario
+
+      </ng-container>
+
+      <!-- DETALLE -->
+      <ng-container
+        *ngIf="
+          !nuevoUsuario &&
+          !editando
+        "
+      >
+
+        Detalle de usuario
+
+      </ng-container>
+
+      <!-- EDITANDO -->
+      <ng-container
+        *ngIf="
+          !nuevoUsuario &&
+          editando
+        "
+      >
+
+        Editando datos de Usuario...
+
+      </ng-container>
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content
+  fullscreen="true"
+  class="detail-content"
+>
+
+  <!-- ESCUDO -->
+  <div class="background-logo">
+
+    <img
+      src="assets/img/escudo.png"
+      alt="Escudo"
+    >
+
+  </div>
+
+  <div class="detail-container">
+
+    <!-- FOTO -->
+    <div class="photo-section">
+
+      <div class="avatar-container">
+
+        <img
+          *ngIf="user.foto"
+          [src]="user.foto"
+          class="user-avatar"
+        >
+
+        <ion-icon
+          *ngIf="!user.foto"
+          name="person-outline"
+          class="default-avatar">
+        </ion-icon>
+
+      </div>
+
+      <!-- BOTONES FOTO -->
+      <div
+        class="photo-buttons"
+        *ngIf="editando"
+      >
+
+        <ion-button
+          fill="solid"
+          class="icon-button"
+          (click)="seleccionarFoto()"
+        >
+
+          <ion-icon
+            name="images-outline">
+          </ion-icon>
+
+        </ion-button>
+
+        <ion-button
+          fill="solid"
+          class="icon-button"
+          (click)="hacerFoto()"
+        >
+
+          <ion-icon
+            name="camera-outline">
+          </ion-icon>
+
+        </ion-button>
+
+      </div>
+
+      <!-- CROPPER -->
+      <div
+        *ngIf="mostrarCropper"
+        class="cropper-container"
+      >
+
+        <image-cropper
+
+          [imageBase64]="imageChangedEvent"
+
+          [maintainAspectRatio]="true"
+
+          [aspectRatio]="1 / 1"
+
+          [resizeToWidth]="400"
+
+          format="png"
+
+          [roundCropper]="true"
+
+          (imageCropped)="imageCropped($event)"
+
+        >
+        </image-cropper>
+
+        <div class="cropper-buttons">
+
+          <ion-button
+            color="danger"
+            (click)="cancelarCrop()"
+          >
+            Cancelar
+          </ion-button>
+
+          <ion-button
+            color="primary"
+            (click)="aplicarCrop()"
+          >
+            Usar Foto
+          </ion-button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="form-section">
+
+      <!-- NOMBRE -->
+      <ion-item>
+
+        <ion-input
+          label="Nombre y Apellidos"
+          labelPlacement="floating"
+          [(ngModel)]="user.nombre"
+          (ionBlur)="formatearNombre()"
+          [disabled]="!editando"
+          required
+        >
+        </ion-input>
+
+      </ion-item>
+
+      <!-- TELEFONO -->
+      <ion-item>
+
+        <ion-input
+          label="Teléfono"
+          labelPlacement="floating"
+          [(ngModel)]="user.telefono"
+          type="tel"
+          inputmode="numeric"
+          maxlength="9"
+          [disabled]="!editando"
+        >
+        </ion-input>
+
+      </ion-item>
+
+      <!-- EMAIL -->
+      <ion-item>
+
+        <ion-input
+          label="Email"
+          labelPlacement="floating"
+          [(ngModel)]="user.email"
+          type="email"
+          [disabled]="!editando"
+        >
+        </ion-input>
+
+      </ion-item>
+
+      <!-- DNI -->
+      <ion-item>
+
+        <ion-input
+          label="DNI"
+          labelPlacement="floating"
+          [(ngModel)]="user.dni"
+          maxlength="9"
+          inputmode="numeric"
+          (ionBlur)="calcularDNI()"
+          [disabled]="!editando"
+        >
+        </ion-input>
+
+      </ion-item>
+
+      <!-- DIRECCION -->
+      <ion-item>
+
+        <ion-input
+          label="Dirección"
+          labelPlacement="floating"
+          [(ngModel)]="user.direccion"
+          [disabled]="!editando"
+        >
+        </ion-input>
+
+      </ion-item>
+
+      <!-- TIPO -->
+      <ion-item>
+
+        <ion-select
+          label="Tipo"
+          labelPlacement="floating"
+          [(ngModel)]="user.tipo"
+          [disabled]="!editando"
+        >
+
+          <ion-select-option value="Socio">
+            Socio
+          </ion-select-option>
+
+          <ion-select-option value="Directiva">
+            Directiva
+          </ion-select-option>
+
+          <ion-select-option value="Invitado">
+            Invitado
+          </ion-select-option>
+
+        </ion-select>
+
+      </ion-item>
+
+      <!-- BOTON -->
+      <div class="save-container">
+
+        <ion-button
+          expand="block"
+          class="save-button"
+          (click)="accionPrincipal()"
+        >
+
+          <ion-icon
+            [name]="
+              editando
+              ? 'save-outline'
+              : 'create-outline'
+            "
+            slot="start">
+          </ion-icon>
+
+          {{
+            editando
+            ? 'Guardar'
+            : 'Editar'
+          }}
+
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

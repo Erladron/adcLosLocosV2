@@ -1,0 +1,84 @@
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-menu-button>
+      </ion-menu-button>
+
+    </ion-buttons>
+
+    <ion-title>
+      Inicio
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content fullscreen="true" class="home-content">
+
+  <!-- CONTENIDO -->
+  <div class="home-container">
+
+    <!-- TITULO -->
+    <div class="home-title">
+
+      <h1>
+        A.C.D. Los Locos
+      </h1>
+
+    </div>
+
+    <!-- ESCUDO -->
+    <div class="logo-container">
+
+      <img src="assets/img/escudo.png" class="main-logo">
+
+    </div>
+
+    <!-- TARJETAS -->
+    <div class="cards-container">
+
+      <!-- USUARIOS -->
+      <div class="menu-card" routerLink="/gest-user">
+
+        <ion-icon name="people-outline">
+        </ion-icon>
+
+        <h2>
+          Usuarios
+        </h2>
+
+      </div>
+
+      <!-- ESTADISTICAS -->
+      <div class="menu-card" routerLink="/stats">
+
+        <ion-icon name="stats-chart-outline">
+        </ion-icon>
+
+        <h2>
+          Estadísticas
+        </h2>
+
+      </div>
+
+      <!-- EVENTOS -->
+      <div class="menu-card" routerLink="/events">
+
+        <ion-icon name="calendar-outline">
+        </ion-icon>
+
+        <h2>
+          Eventos
+        </h2>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

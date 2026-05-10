@@ -1,0 +1,134 @@
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-menu-button>
+      </ion-menu-button>
+
+    </ion-buttons>
+
+    <ion-title>
+      Gestión Usuarios
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content
+  fullscreen="true"
+  class="users-content"
+>
+
+  <!-- ESCUDO -->
+  <div class="background-logo">
+
+    <img
+      src="assets/img/escudo.png"
+      alt="Escudo"
+    >
+
+  </div>
+
+  <!-- BUSCADOR -->
+  <div class="search-container">
+
+    <ion-searchbar
+
+      [(ngModel)]="searchText"
+
+      (ionInput)="filterUsers()"
+
+      placeholder="Buscar socio"
+
+      animated="true"
+
+    >
+    </ion-searchbar>
+
+  </div>
+
+  <!-- LISTADO -->
+  <div class="users-container">
+
+    <div
+
+      class="user-card"
+
+      *ngFor="
+        let user of filteredUsers
+      "
+
+      [routerLink]="[
+        '/user-detail',
+        user.id
+      ]"
+
+    >
+
+      <!-- FOTO -->
+      <div class="user-photo">
+
+        <img
+          *ngIf="user.foto"
+          [src]="user.foto"
+          class="avatar-img"
+        >
+
+        <ion-icon
+          *ngIf="!user.foto"
+          name="person-outline"
+          class="avatar-icon"
+        >
+        </ion-icon>
+
+      </div>
+
+      <!-- DATOS -->
+      <div class="user-info">
+
+        <h2>
+          {{ user.nombre }}
+        </h2>
+
+        <p class="tipo">
+          {{ user.tipo }}
+        </p>
+
+        <p class="telefono">
+          {{ user.telefono }}
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FAB NUEVO USUARIO -->
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+
+    <ion-fab-button
+
+      [routerLink]="[
+        '/user-detail',
+        'new'
+      ]"
+
+    >
+
+      <ion-icon
+        name="add-outline">
+      </ion-icon>
+
+    </ion-fab-button>
+
+  </ion-fab>
+
+</ion-content>

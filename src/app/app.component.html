@@ -1,3 +1,97 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+
+  <!-- MENU LATERAL -->
+  <ion-menu contentId="main-content" type="overlay">
+
+    <ion-content class="menu-content">
+
+      <!-- CABECERA -->
+      <div class="menu-header">
+
+        <img src="assets/img/escudo.png" class="menu-logo">
+
+        <h2>
+          A.C.D. Los Locos
+        </h2>
+
+        <p>
+          Asociación Cultural y Deportiva
+        </p>
+
+      </div>
+
+      <!-- OPCIONES -->
+      <ion-list lines="none">
+
+        <!-- INICIO -->
+        <ion-item button (click)="navegar('/home')">
+
+          <ion-icon name="home-outline" slot="start">
+          </ion-icon>
+
+          <ion-label>
+            Inicio
+          </ion-label>
+
+        </ion-item>
+
+        <!-- USUARIOS -->
+        <ion-item button (click)="navegar('/gest-user')">
+
+          <ion-icon name="people-outline" slot="start">
+          </ion-icon>
+
+          <ion-label>
+            Usuarios
+          </ion-label>
+
+        </ion-item>
+
+        <!-- ESTADISTICAS -->
+        <ion-item button (click)="navegar('/stats')">
+
+          <ion-icon name="stats-chart-outline" slot="start">
+          </ion-icon>
+
+          <ion-label>
+            Estadísticas
+          </ion-label>
+
+        </ion-item>
+
+        <!-- EVENTOS -->
+        <ion-item button (click)="navegar('/events')">
+
+          <ion-icon name="calendar-outline" slot="start">
+          </ion-icon>
+
+          <ion-label>
+            Eventos
+          </ion-label>
+
+        </ion-item>
+
+      </ion-list>
+
+      <!-- FOOTER -->
+      <div class="menu-footer">
+
+        <p>
+          Versión 1.0.0
+        </p>
+
+      </div>
+
+    </ion-content>
+
+  </ion-menu>
+
+  <!-- CONTENIDO -->
+  <div class="ion-page" id="main-content">
+
+    <ion-router-outlet>
+    </ion-router-outlet>
+
+  </div>
+
 </ion-app>
