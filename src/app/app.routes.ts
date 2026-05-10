@@ -1,16 +1,43 @@
 import { Routes } from '@angular/router';
 
+import { authGuard }
+from './guards/auth.guard';
+
+import { roleGuard }
+from './guards/role.guard';
+
 export const routes: Routes = [
+
+  // LOGIN
+  {
+    path: 'login',
+
+    loadComponent: () =>
+
+      import('./pages/login/login.page')
+
+        .then(m => m.LoginPage)
+
+  },
+
+  // ROOT
+  {
+    path: '',
+
+    redirectTo: 'login',
+
+    pathMatch: 'full'
+
+  },
 
   // HOME
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-
-  {
     path: 'home',
+
+    canActivate: [
+      authGuard
+    ],
+
     loadComponent: () =>
 
       import('./pages/home/home.page')
@@ -19,9 +46,28 @@ export const routes: Routes = [
 
   },
 
-  // USUARIOS
+  // GESTION USUARIOS
   {
     path: 'gest-user',
+
+    canActivate: [
+      authGuard,
+      roleGuard
+    ],
+
+    data: {
+
+      roles: [
+
+        'invitado',
+        'socio',
+        'directiva',
+        'administrador'
+
+      ]
+
+    },
+
     loadComponent: () =>
 
       import('./pages/gest-user/gest-user.page')
@@ -30,9 +76,27 @@ export const routes: Routes = [
 
   },
 
-  // DETALLE USUARIO
+  // NUEVO USUARIO
   {
     path: 'user-detail',
+
+    canActivate: [
+      authGuard,
+      roleGuard
+    ],
+
+    data: {
+
+      roles: [
+
+        'socio',
+        'directiva',
+        'administrador'
+
+      ]
+
+    },
+
     loadComponent: () =>
 
       import('./pages/user-detail/user-detail.page')
@@ -41,8 +105,14 @@ export const routes: Routes = [
 
   },
 
+  // EDITAR USUARIO
   {
     path: 'user-detail/:id',
+
+    canActivate: [
+      authGuard
+    ],
+
     loadComponent: () =>
 
       import('./pages/user-detail/user-detail.page')
@@ -54,6 +124,11 @@ export const routes: Routes = [
   // ESTADISTICAS
   {
     path: 'stats',
+
+    canActivate: [
+      authGuard
+    ],
+
     loadComponent: () =>
 
       import('./pages/stats/stats.page')
@@ -65,6 +140,11 @@ export const routes: Routes = [
   // EVENTOS
   {
     path: 'events',
+
+    canActivate: [
+      authGuard
+    ],
+
     loadComponent: () =>
 
       import('./pages/events/events.page')

@@ -16,8 +16,6 @@ import {
 
 import { Router } from '@angular/router';
 
-import { RouterLink } from '@angular/router';
-
 import { addIcons } from 'ionicons';
 
 import {
@@ -25,9 +23,12 @@ import {
   homeOutline,
   peopleOutline,
   statsChartOutline,
-  calendarOutline
+  calendarOutline,
+  logOutOutline
 
 } from 'ionicons/icons';
+
+import { AuthService } from './services/auth.service';
 
 @Component({
 
@@ -49,9 +50,7 @@ import {
     IonList,
     IonItem,
     IonIcon,
-    IonLabel,
-
-    RouterLink
+    IonLabel
 
   ]
 
@@ -62,7 +61,9 @@ export class AppComponent {
 
     private router: Router,
 
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+
+    private authService: AuthService
 
   ) {
 
@@ -71,19 +72,57 @@ export class AppComponent {
       homeOutline,
       peopleOutline,
       statsChartOutline,
-      calendarOutline
+      calendarOutline,
+      logOutOutline
 
     });
 
+    this.checkLogin();
+
   }
 
+  // COMPROBAR SESION
+  async checkLogin() {
+
+    const interval = setInterval(() => {
+
+      if (this.authService.authReady) {
+
+        clearInterval(interval);
+
+        if (this.authService.isLogged()) {
+
+          this.router.navigateByUrl('/home');
+
+        } else {
+
+          this.router.navigateByUrl('/login');
+
+        }
+
+      }
+
+    }, 100);
+
+  }
+
+  // NAVEGACION MENU
   async navegar(ruta: string) {
 
-    // CERRAR MENU
     await this.menuCtrl.close();
 
-    // NAVEGAR
     this.router.navigate([ruta]);
+
+  }
+
+  // LOGOUT
+  async logout() {
+
+    await this.menuCtrl.close();
+
+    await this.authService.logout();
+
+    this.router.navigateByUrl('/login');
 
   }
 

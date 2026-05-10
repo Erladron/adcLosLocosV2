@@ -4,8 +4,7 @@
 
     <ion-buttons slot="start">
 
-      <ion-back-button
-        defaultHref="/gest-user">
+      <ion-back-button defaultHref="/gest-user">
       </ion-back-button>
 
     </ion-buttons>
@@ -20,24 +19,20 @@
       </ng-container>
 
       <!-- DETALLE -->
-      <ng-container
-        *ngIf="
+      <ng-container *ngIf="
           !nuevoUsuario &&
           !editando
-        "
-      >
+        ">
 
         Detalle de usuario
 
       </ng-container>
 
       <!-- EDITANDO -->
-      <ng-container
-        *ngIf="
+      <ng-container *ngIf="
           !nuevoUsuario &&
           editando
-        "
-      >
+        ">
 
         Editando datos de Usuario...
 
@@ -49,18 +44,12 @@
 
 </ion-header>
 
-<ion-content
-  fullscreen="true"
-  class="detail-content"
->
+<ion-content fullscreen="true" class="detail-content">
 
   <!-- ESCUDO -->
   <div class="background-logo">
 
-    <img
-      src="assets/img/escudo.png"
-      alt="Escudo"
-    >
+    <img src="assets/img/escudo.png" alt="Escudo">
 
   </div>
 
@@ -80,7 +69,8 @@
         <ion-icon
           *ngIf="!user.foto"
           name="person-outline"
-          class="default-avatar">
+          class="default-avatar"
+        >
         </ion-icon>
 
       </div>
@@ -97,8 +87,7 @@
           (click)="seleccionarFoto()"
         >
 
-          <ion-icon
-            name="images-outline">
+          <ion-icon name="images-outline">
           </ion-icon>
 
         </ion-button>
@@ -109,8 +98,7 @@
           (click)="hacerFoto()"
         >
 
-          <ion-icon
-            name="camera-outline">
+          <ion-icon name="camera-outline">
           </ion-icon>
 
         </ion-button>
@@ -148,14 +136,18 @@
             color="danger"
             (click)="cancelarCrop()"
           >
+
             Cancelar
+
           </ion-button>
 
           <ion-button
             color="primary"
             (click)="aplicarCrop()"
           >
+
             Usar Foto
+
           </ion-button>
 
         </div>
@@ -171,12 +163,19 @@
       <ion-item>
 
         <ion-input
+
           label="Nombre y Apellidos"
+
           labelPlacement="floating"
+
           [(ngModel)]="user.nombre"
+
           (ionBlur)="formatearNombre()"
+
           [disabled]="!editando"
+
           required
+
         >
         </ion-input>
 
@@ -186,13 +185,21 @@
       <ion-item>
 
         <ion-input
+
           label="Teléfono"
+
           labelPlacement="floating"
+
           [(ngModel)]="user.telefono"
+
           type="tel"
+
           inputmode="numeric"
+
           maxlength="9"
+
           [disabled]="!editando"
+
         >
         </ion-input>
 
@@ -202,12 +209,39 @@
       <ion-item>
 
         <ion-input
+
           label="Email"
+
           labelPlacement="floating"
+
           [(ngModel)]="user.email"
+
           type="email"
+
           [disabled]="!editando"
+
         >
+        </ion-input>
+
+      </ion-item>
+
+      <!-- PASSWORD -->
+      <ion-item *ngIf="nuevoUsuario">
+
+        <ion-input
+
+          type="password"
+
+          label="Contraseña"
+
+          labelPlacement="stacked"
+
+          [(ngModel)]="user.password"
+
+          [disabled]="!editando"
+
+        >
+
         </ion-input>
 
       </ion-item>
@@ -216,13 +250,21 @@
       <ion-item>
 
         <ion-input
+
           label="DNI"
+
           labelPlacement="floating"
+
           [(ngModel)]="user.dni"
+
           maxlength="9"
+
           inputmode="numeric"
+
           (ionBlur)="calcularDNI()"
+
           [disabled]="!editando"
+
         >
         </ion-input>
 
@@ -232,10 +274,15 @@
       <ion-item>
 
         <ion-input
+
           label="Dirección"
+
           labelPlacement="floating"
+
           [(ngModel)]="user.direccion"
+
           [disabled]="!editando"
+
         >
         </ion-input>
 
@@ -245,22 +292,29 @@
       <ion-item>
 
         <ion-select
+
           label="Tipo"
-          labelPlacement="floating"
+
+          labelPlacement="stacked"
+
           [(ngModel)]="user.tipo"
+
           [disabled]="!editando"
+
         >
 
-          <ion-select-option value="Socio">
-            Socio
-          </ion-select-option>
+          <ion-select-option
 
-          <ion-select-option value="Directiva">
-            Directiva
-          </ion-select-option>
+            *ngFor="
+              let tipo of tiposDisponibles
+            "
 
-          <ion-select-option value="Invitado">
-            Invitado
+            [value]="tipo.value"
+
+          >
+
+            {{ tipo.label }}
+
           </ion-select-option>
 
         </ion-select>
@@ -268,27 +322,44 @@
       </ion-item>
 
       <!-- BOTON -->
-      <div class="save-container">
+      <div
+        class="save-container"
+
+        *ngIf="
+          puedeEditar ||
+          nuevoUsuario
+        "
+      >
 
         <ion-button
+
           expand="block"
+
           class="save-button"
+
           (click)="accionPrincipal()"
+
         >
 
           <ion-icon
+
             [name]="
               editando
-              ? 'save-outline'
-              : 'create-outline'
+                ? 'save-outline'
+                : 'create-outline'
             "
-            slot="start">
+
+            slot="start"
+
+          >
           </ion-icon>
 
           {{
+
             editando
-            ? 'Guardar'
-            : 'Editar'
+              ? 'Guardar'
+              : 'Editar'
+
           }}
 
         </ion-button>

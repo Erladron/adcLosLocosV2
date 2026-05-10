@@ -1,0 +1,61 @@
+<ion-content class="login-content">
+
+  <div class="login-container">
+
+    <img
+      src="assets/img/escudo.png"
+      class="logo"
+    >
+
+    <ion-card>
+
+      <ion-card-content>
+
+        <h1>
+          ADC Los Locos
+        </h1>
+
+        <ion-item>
+
+          <ion-input
+            type="email"
+            label="Correo"
+            labelPlacement="floating"
+            [(ngModel)]="email"
+          >
+          </ion-input>
+
+        </ion-item>
+
+        <ion-item>
+
+          <ion-input
+            type="password"
+            label="Contraseña"
+            labelPlacement="floating"
+            [(ngModel)]="password"
+          >
+          </ion-input>
+
+        </ion-item>
+
+        <p class="error">
+          {{ error }}
+        </p>
+
+        <ion-button
+          expand="block"
+          (click)="login()"
+        >
+
+          Entrar
+
+        </ion-button>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </div>
+
+</ion-content>

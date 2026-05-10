@@ -6,7 +6,6 @@ import {
 
   getFirestore,
   collection,
-  addDoc,
   getDocs,
   doc,
   deleteDoc,
@@ -14,6 +13,13 @@ import {
   getDoc
 
 } from 'firebase/firestore';
+
+import {
+
+  getFunctions,
+  httpsCallable
+
+} from 'firebase/functions';
 
 import { environment } from '../../environments/environment';
 
@@ -28,16 +34,65 @@ export class UserService {
   private db =
     getFirestore(this.app);
 
+  private functions =
+    getFunctions(this.app);
+
   private usersRef =
     collection(this.db, 'users');
 
-  // CREATE
+  // CREAR USUARIO
   async create(user: any) {
 
-    return await addDoc(
-      this.usersRef,
-      user
+    const response = await fetch(
+
+      'https://us-central1-adcloslocos.cloudfunctions.net/createUser',
+
+      {
+
+        method: 'POST',
+
+        headers: {
+
+          'Content-Type':
+            'application/json'
+
+        },
+
+        body: JSON.stringify({
+
+          data: {
+
+            nombre: user.nombre,
+
+            email: user.email,
+
+            password: user.password,
+
+            telefono: user.telefono,
+
+            dni: user.dni,
+
+            tipo: user.tipo,
+
+            foto: user.foto || ''
+
+          }
+
+        })
+
+      }
+
     );
+
+    if (!response.ok) {
+
+      throw new Error(
+        'Error creando usuario'
+      );
+
+    }
+
+    return await response.json();
 
   }
 
@@ -88,10 +143,7 @@ export class UserService {
     const ref =
       doc(this.db, 'users', id);
 
-    return await updateDoc(
-      ref,
-      data
-    );
+    return await updateDoc(ref, data);
 
   }
 

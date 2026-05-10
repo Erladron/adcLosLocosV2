@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
 
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 import { addIcons } from 'ionicons';
 
@@ -30,6 +30,8 @@ import {
 } from 'ionicons/icons';
 
 import { UserService } from 'src/app/services/user';
+
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
 
@@ -69,8 +71,16 @@ export class GestUserPage implements OnInit {
 
   searchText = '';
 
+  canAddUsers = false;
+
   constructor(
-    private userService: UserService
+
+    private userService: UserService,
+
+    private authService: AuthService,
+
+    private router: Router
+
   ) {
 
     addIcons({
@@ -85,14 +95,19 @@ export class GestUserPage implements OnInit {
 
     await this.loadUsers();
 
+    this.loadPermissions();
+
   }
 
   async ionViewWillEnter() {
 
     await this.loadUsers();
 
+    this.loadPermissions();
+
   }
 
+  // CARGAR USUARIOS
   async loadUsers() {
 
     this.users =
@@ -103,6 +118,23 @@ export class GestUserPage implements OnInit {
 
   }
 
+  // PERMISOS
+  loadPermissions() {
+
+    const role =
+      this.authService.getRole();
+
+    this.canAddUsers =
+
+      role === 'administrador'
+      ||
+      role === 'directiva'
+      ||
+      role === 'socio';
+
+  }
+
+  // FILTRO
   filterUsers() {
 
     const texto =
@@ -132,6 +164,15 @@ export class GestUserPage implements OnInit {
         );
 
       });
+
+  }
+
+  // NUEVO USUARIO
+  nuevoUsuario() {
+
+    this.router.navigateByUrl(
+      '/user-detail'
+    );
 
   }
 

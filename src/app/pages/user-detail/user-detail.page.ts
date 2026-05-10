@@ -37,6 +37,8 @@ import {
 
 import { UserService } from 'src/app/services/user';
 
+import { AuthService } from 'src/app/services/auth.service';
+
 import { addIcons } from 'ionicons';
 
 import {
@@ -98,14 +100,21 @@ implements OnInit {
 
   editando = false;
 
+  puedeEditar = false;
+
+  currentUser: any = null;
+
+  tiposDisponibles: any[] = [];
+
   user: any = {
 
     nombre: '',
     telefono: '',
     email: '',
+    password: '',
     dni: '',
     direccion: '',
-    tipo: 'Invitado',
+    tipo: 'invitado',
     foto: ''
 
   };
@@ -122,7 +131,9 @@ implements OnInit {
 
     private router: Router,
 
-    private userService: UserService
+    private userService: UserService,
+
+    private authService: AuthService
 
   ) {
 
@@ -140,6 +151,8 @@ implements OnInit {
 
   async ngOnInit() {
 
+    this.cargarTiposDisponibles();
+
     this.userId =
       this.route.snapshot.paramMap.get('id');
 
@@ -155,6 +168,8 @@ implements OnInit {
       this.nuevoUsuario = true;
 
       this.editando = true;
+
+      this.puedeEditar = true;
 
       return;
 
@@ -175,6 +190,175 @@ implements OnInit {
 
       this.user = data;
 
+      // =================================
+      // USUARIO LOGADO
+      // =================================
+
+      this.currentUser =
+        this.authService
+          .currentUserData;
+
+      const myUid =
+        this.currentUser?.uid;
+
+      const myRole =
+        this.currentUser?.tipo;
+
+      const targetUid =
+        this.userId;
+
+      const targetRole =
+        this.user?.tipo;
+
+      // =================================
+      // ADMIN
+      // =================================
+
+      if (
+        myRole ===
+        'administrador'
+      ) {
+
+        this.puedeEditar = true;
+
+        return;
+
+      }
+
+      // =================================
+      // DIRECTIVA
+      // =================================
+
+      if (
+        myRole ===
+        'directiva'
+      ) {
+
+        // ADMIN SOLO LECTURA
+        if (
+          targetRole ===
+          'administrador'
+        ) {
+
+          this.editando = false;
+
+          this.puedeEditar = false;
+
+          return;
+
+        }
+
+        this.puedeEditar = true;
+
+        return;
+
+      }
+
+      // =================================
+      // SOCIO / INVITADO
+      // =================================
+
+      // SOLO SU PERFIL EDITABLE
+
+      if (myUid !== targetUid) {
+
+        this.editando = false;
+
+        this.puedeEditar = false;
+
+        return;
+
+      }
+
+      // SU PROPIO PERFIL
+
+      this.puedeEditar = true;
+
+    }
+
+  }
+
+  // =================================
+  // CARGAR TIPOS SEGUN ROL
+  // =================================
+
+  cargarTiposDisponibles() {
+
+    const role =
+      this.authService.getRole();
+
+    // ADMIN
+    if (role === 'administrador') {
+
+      this.tiposDisponibles = [
+
+        {
+          value: 'administrador',
+          label: 'Administrador'
+        },
+
+        {
+          value: 'directiva',
+          label: 'Directiva'
+        },
+
+        {
+          value: 'socio',
+          label: 'Socio'
+        },
+
+        {
+          value: 'invitado',
+          label: 'Invitado'
+        }
+
+      ];
+
+    }
+
+    // DIRECTIVA
+    else if (role === 'directiva') {
+
+      this.tiposDisponibles = [
+
+        {
+          value: 'directiva',
+          label: 'Directiva'
+        },
+
+        {
+          value: 'socio',
+          label: 'Socio'
+        },
+
+        {
+          value: 'invitado',
+          label: 'Invitado'
+        }
+
+      ];
+
+    }
+
+    // SOCIO
+    else if (role === 'socio') {
+
+      this.tiposDisponibles = [
+
+        {
+          value: 'invitado',
+          label: 'Invitado'
+        }
+
+      ];
+
+    }
+
+    // INVITADO
+    else {
+
+      this.tiposDisponibles = [];
+
     }
 
   }
@@ -185,14 +369,19 @@ implements OnInit {
 
   async accionPrincipal() {
 
-    // ============================
     // PASAR A EDICION
-    // ============================
-
     if (
       !this.editando &&
       !this.nuevoUsuario
     ) {
+
+      // VALIDAR PERMISOS
+
+      if (!this.puedeEditar) {
+
+        return;
+
+      }
 
       this.editando = true;
 
@@ -200,10 +389,7 @@ implements OnInit {
 
     }
 
-    // ============================
-    // VALIDACIONES
-    // ============================
-
+    // VALIDAR NOMBRE
     if (
       !this.user.nombre ||
       this.user.nombre.trim() === ''
@@ -217,6 +403,7 @@ implements OnInit {
 
     }
 
+    // VALIDAR TELEFONO
     const telefonoRegex =
       /^[0-9]{9}$/;
 
@@ -234,6 +421,7 @@ implements OnInit {
 
     }
 
+    // VALIDAR EMAIL
     const emailRegex =
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -254,6 +442,23 @@ implements OnInit {
 
     }
 
+    // VALIDAR PASSWORD
+    if (
+
+      this.nuevoUsuario &&
+      !this.user.password
+
+    ) {
+
+      alert(
+        'Debe introducir contraseña'
+      );
+
+      return;
+
+    }
+
+    // VALIDAR DNI
     if (
       !this.validarDNI(
         this.user.dni
@@ -270,10 +475,7 @@ implements OnInit {
 
     try {
 
-      // ============================
-      // NUEVO
-      // ============================
-
+      // NUEVO USUARIO
       if (this.nuevoUsuario) {
 
         await this.userService.create(
@@ -282,10 +484,7 @@ implements OnInit {
 
       }
 
-      // ============================
       // UPDATE
-      // ============================
-
       else {
 
         await this.userService.update(
@@ -306,12 +505,22 @@ implements OnInit {
         '/gest-user'
       ]);
 
-    } catch (error) {
+    } catch (error: any) {
 
       console.error(error);
 
       alert(
-        'Error guardando usuario'
+
+        'Error guardando usuario: '
+
+        +
+
+        (
+          error?.message
+          ||
+          JSON.stringify(error)
+        )
+
       );
 
     }
@@ -323,6 +532,8 @@ implements OnInit {
   // =================================
 
   async seleccionarFoto() {
+
+    if (!this.editando) return;
 
     const image = await Camera.getPhoto({
 
@@ -352,6 +563,8 @@ implements OnInit {
   // =================================
 
   async hacerFoto() {
+
+    if (!this.editando) return;
 
     const image = await Camera.getPhoto({
 
