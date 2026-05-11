@@ -71,6 +71,18 @@
 
         </ion-item>
 
+        <!-- INVITAR -->
+        <ion-item button *ngIf="puedeInvitar()" (click)="navegar('/invite')">
+
+          <ion-icon name="person-add-outline" slot="start">
+          </ion-icon>
+
+          <ion-label>
+            Invitar
+          </ion-label>
+
+        </ion-item>
+
         <!-- LOGOUT -->
         <ion-item button (click)="logout()">
 

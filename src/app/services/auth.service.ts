@@ -1,155 +1,369 @@
 import { Injectable } from '@angular/core';
 
 import {
-  initializeApp
-} from 'firebase/app';
 
-import {
-
-  getAuth,
+  Auth,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  User
+  createUserWithEmailAndPassword
 
-} from 'firebase/auth';
+} from '@angular/fire/auth';
 
 import {
 
-  getFirestore,
-  doc,
-  getDoc
+  Firestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc
 
-} from 'firebase/firestore';
-
-import { environment } from '../../environments/environment';
+} from '@angular/fire/firestore';
 
 @Injectable({
+
   providedIn: 'root'
+
 })
 export class AuthService {
 
-  private app = initializeApp(environment.firebase);
-
-  private auth = getAuth(this.app);
-
-  private db = getFirestore(this.app);
-
-  currentUser: User | null = null;
+  currentUser: any = null;
 
   currentUserData: any = null;
 
   authReady = false;
 
-  constructor() {
+  constructor(
 
-    onAuthStateChanged(this.auth, async (user) => {
+    private auth: Auth,
 
-      this.currentUser = user;
+    private firestore: Firestore
 
-      // CARGAR DATOS FIRESTORE
-      if (user) {
+  ) {
 
-        await this.loadUserData(user.uid);
+    onAuthStateChanged(
 
-      } else {
+      this.auth,
+
+      async (user) => {
+
+        // =========================
+        // NO LOGIN
+        // =========================
+
+        if (!user) {
+
+          this.currentUser = null;
+
+          this.currentUserData = null;
+
+          this.authReady = true;
+
+          return;
+
+        }
+
+        this.currentUser = user;
+
+        // =========================
+        // USERS
+        // =========================
+
+        const usersRef =
+          collection(
+            this.firestore,
+            'users'
+          );
+
+        const qUsers = query(
+
+          usersRef,
+
+          where(
+            'uid',
+            '==',
+            user.uid
+          )
+
+        );
+
+        const usersResult =
+          await getDocs(qUsers);
+
+        if (!usersResult.empty) {
+
+          this.currentUserData = {
+
+            id:
+              usersResult.docs[0].id,
+
+            source:
+              'users',
+
+            ...usersResult.docs[0].data()
+
+          };
+
+          this.authReady = true;
+
+          return;
+
+        }
+
+        // =========================
+        // REGISTERED USERS
+        // =========================
+
+        const registeredRef =
+          collection(
+            this.firestore,
+            'registeredUsers'
+          );
+
+        const qRegistered = query(
+
+          registeredRef,
+
+          where(
+            'uid',
+            '==',
+            user.uid
+          )
+
+        );
+
+        const registeredResult =
+          await getDocs(qRegistered);
+
+        if (!registeredResult.empty) {
+
+          this.currentUserData = {
+
+            id:
+              registeredResult.docs[0].id,
+
+            source:
+              'registeredUsers',
+
+            ...registeredResult.docs[0].data()
+
+          };
+
+          this.authReady = true;
+
+          return;
+
+        }
+
+        // =========================
+        // DEFAULT
+        // =========================
 
         this.currentUserData = null;
 
+        this.authReady = true;
+
       }
 
-      this.authReady = true;
-
-    });
-
-  }
-
-  // LOGIN
-  async login(
-    email: string,
-    password: string
-  ) {
-
-    return await signInWithEmailAndPassword(
-      this.auth,
-      email,
-      password
     );
 
   }
 
+  // =================================
+  // LOGIN
+  // =================================
+
+  async login(
+
+    email: string,
+
+    password: string
+
+  ) {
+
+    return await signInWithEmailAndPassword(
+
+      this.auth,
+
+      email,
+
+      password
+
+    );
+
+  }
+
+  // =================================
   // LOGOUT
+  // =================================
+
   async logout() {
 
-    return await signOut(this.auth);
+    await signOut(this.auth);
 
   }
 
-  // USUARIO FIREBASE
-  getUser() {
+  // =================================
+  // REGISTER
+  // =================================
 
-    return this.currentUser;
+  async register(user: any) {
 
-  }
+    // NORMALIZAR EMAIL
+    const email =
+      user.email
+        .trim()
+        .toLowerCase();
 
-  // DATOS FIRESTORE
-  getUserData() {
+    // =========================
+    // PREREGISTRO
+    // =========================
 
-    return this.currentUserData;
+    const preRegisterRef =
+      collection(
+        this.firestore,
+        'preRegister'
+      );
 
-  }
+    const q = query(
 
-  // ROL
-  getRole(): string {
+      preRegisterRef,
 
-    return this.currentUserData?.tipo || '';
+      where(
+        'email',
+        '==',
+        email
+      )
 
-  }
+    );
 
-  // COMPROBAR ROL
-  isAdmin(): boolean {
+    const result =
+      await getDocs(q);
 
-    return this.getRole() === 'administrador';
+    // NO AUTORIZADO
+    if (result.empty) {
 
-  }
+      throw new Error(
 
-  isDirectiva(): boolean {
+        'Tu correo no está autorizado para registrarse.'
 
-    return this.getRole() === 'directiva';
-
-  }
-
-  isSocio(): boolean {
-
-    return this.getRole() === 'socio';
-
-  }
-
-  isInvitado(): boolean {
-
-    return this.getRole() === 'invitado';
-
-  }
-
-  // HAY SESION
-  isLogged(): boolean {
-
-    return this.currentUser != null;
-
-  }
-
-  // CARGAR DATOS FIRESTORE
-  async loadUserData(uid: string) {
-
-    const ref = doc(this.db, 'users', uid);
-
-    const snap = await getDoc(ref);
-
-    if (snap.exists()) {
-
-      this.currentUserData = snap.data();
+      );
 
     }
+
+    // =========================
+    // CREAR AUTH
+    // =========================
+
+    const credential =
+
+      await createUserWithEmailAndPassword(
+
+        this.auth,
+
+        email,
+
+        user.password
+
+      );
+
+    const uid =
+      credential.user.uid;
+
+    // =========================
+    // REGISTERED USERS
+    // =========================
+
+    const registeredUsersRef =
+      collection(
+        this.firestore,
+        'registeredUsers'
+      );
+
+    await addDoc(
+
+      registeredUsersRef,
+
+      {
+
+        uid,
+
+        nombre:
+          user.nombre,
+
+        email,
+
+        tipo:
+          'registrado',
+
+        perfilCompleto:
+          false,
+
+        createdAt:
+          new Date()
+
+      }
+
+    );
+
+    return true;
+
+  }
+
+  // =================================
+  // LOGGED
+  // =================================
+
+  isLogged(): boolean {
+
+    return !!this.currentUser;
+
+  }
+
+  // =================================
+  // ROLE
+  // =================================
+
+  getRole(): string {
+
+    return (
+      this.currentUserData?.tipo
+      ||
+      ''
+    );
+
+  }
+
+  // =================================
+  // IS REGISTERED
+  // =================================
+
+  isRegisteredUser(): boolean {
+
+    return (
+
+      this.currentUserData?.tipo
+      ===
+      'registrado'
+
+    );
+
+  }
+
+  // =================================
+  // IS ASSOCIATION USER
+  // =================================
+
+  isAssociationUser(): boolean {
+
+    return (
+
+      this.currentUserData?.source
+      ===
+      'users'
+
+    );
 
   }
 

@@ -38,8 +38,47 @@
 
     </div>
 
-    <!-- TARJETAS -->
-    <div class="cards-container">
+    <!-- ================================= -->
+    <!-- REGISTERED USER -->
+    <!-- ================================= -->
+
+    <div *ngIf="isRegisteredUser()">
+
+      <div class="registered-box">
+
+        <h2>
+          Cuenta pendiente de validación
+        </h2>
+
+        <p>
+
+          Tu cuenta aún no pertenece
+          oficialmente a la asociación.
+
+        </p>
+
+        <p>
+
+          Complete sus datos y espere
+          validación por parte de la directiva.
+
+        </p>
+
+        <ion-button expand="block" routerLink="/user-detail">
+
+          Completar perfil
+
+        </ion-button>
+
+      </div>
+
+    </div>
+
+    <!-- ================================= -->
+    <!-- USERS -->
+    <!-- ================================= -->
+
+    <div class="cards-container" *ngIf="!isRegisteredUser()">
 
       <!-- USUARIOS -->
       <div class="menu-card" routerLink="/gest-user">

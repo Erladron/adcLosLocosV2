@@ -1,0 +1,61 @@
+<ion-header translucent="true">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button defaultHref="/login">
+      </ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title>
+
+      Registro
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content fullscreen="true" class="ion-padding">
+
+  <div class="register-container">
+
+    <ion-item>
+
+      <ion-input label="Nombre" labelPlacement="floating" [(ngModel)]="user.nombre">
+      </ion-input>
+
+    </ion-item>
+
+    <ion-item>
+
+      <ion-input label="Correo electrónico" labelPlacement="floating" type="email" [(ngModel)]="user.email">
+      </ion-input>
+
+    </ion-item>
+
+    <ion-item>
+
+      <ion-input label="Contraseña" labelPlacement="floating" type="password" [(ngModel)]="user.password">
+      </ion-input>
+
+    </ion-item>
+
+    <ion-button expand="block" class="register-button" [disabled]="cargando" (click)="registrarse()">
+
+      {{
+
+      cargando
+      ? 'Creando cuenta...'
+      : 'Crear cuenta'
+
+      }}
+
+    </ion-button>
+
+  </div>
+
+</ion-content>

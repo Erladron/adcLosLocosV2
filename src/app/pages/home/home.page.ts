@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { CommonModule }
+from '@angular/common';
+
 import {
 
   IonContent,
@@ -9,21 +12,27 @@ import {
   IonButtons,
   IonMenuButton,
   IonIcon,
-  IonAlert
+  IonButton
 
 } from '@ionic/angular/standalone';
 
-import { RouterModule } from '@angular/router';
+import { RouterLink }
+from '@angular/router';
 
-import { addIcons } from 'ionicons';
+import { addIcons }
+from 'ionicons';
 
 import {
 
   peopleOutline,
   statsChartOutline,
-  calendarOutline
+  calendarOutline,
+  personOutline
 
 } from 'ionicons/icons';
+
+import { AuthService }
+from 'src/app/services/auth.service';
 
 @Component({
 
@@ -37,6 +46,8 @@ import {
 
   imports: [
 
+    CommonModule,
+
     IonContent,
     IonHeader,
     IonToolbar,
@@ -44,32 +55,41 @@ import {
     IonButtons,
     IonMenuButton,
     IonIcon,
-    IonAlert,
+    IonButton,
 
-    RouterModule
+    RouterLink
 
   ]
 
 })
 export class HomePage {
 
-  alertaVisible = false;
+  constructor(
 
-  constructor() {
+    public authService:
+      AuthService
+
+  ) {
 
     addIcons({
 
       peopleOutline,
       statsChartOutline,
-      calendarOutline
+      calendarOutline,
+      personOutline
 
     });
 
   }
 
-  mostrarConstruccion() {
+  // =================================
+  // REGISTERED
+  // =================================
 
-    this.alertaVisible = true;
+  isRegisteredUser(): boolean {
+
+    return this.authService
+      .isRegisteredUser();
 
   }
 

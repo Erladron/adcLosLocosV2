@@ -10,23 +10,23 @@ import {
   doc,
   deleteDoc,
   updateDoc,
-  getDoc
+  getDoc,
+  setDoc
 
 } from 'firebase/firestore';
 
-import {
-
-  getFunctions,
-  httpsCallable
-
-} from 'firebase/functions';
-
 import { environment } from '../../environments/environment';
+
+import { User } from '../models/users.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  // =================================
+  // FIREBASE
+  // =================================
 
   private app =
     initializeApp(environment.firebase);
@@ -34,70 +34,32 @@ export class UserService {
   private db =
     getFirestore(this.app);
 
-  private functions =
-    getFunctions(this.app);
+  // =================================
+  // COLECCIONES
+  // =================================
 
   private usersRef =
     collection(this.db, 'users');
 
-  // CREAR USUARIO
-  async create(user: any) {
+  private registeredUsersRef =
+    collection(this.db, 'registeredUsers');
 
-    const response = await fetch(
+  // =================================
+  // USERS
+  // =================================
 
-      'https://us-central1-adcloslocos.cloudfunctions.net/createUser',
+  // CREATE
+  async create(user: User) {
 
-      {
+    const ref =
+      doc(this.db, 'users', user.uid);
 
-        method: 'POST',
-
-        headers: {
-
-          'Content-Type':
-            'application/json'
-
-        },
-
-        body: JSON.stringify({
-
-          data: {
-
-            nombre: user.nombre,
-
-            email: user.email,
-
-            password: user.password,
-
-            telefono: user.telefono,
-
-            dni: user.dni,
-
-            tipo: user.tipo,
-
-            foto: user.foto || ''
-
-          }
-
-        })
-
-      }
-
-    );
-
-    if (!response.ok) {
-
-      throw new Error(
-        'Error creando usuario'
-      );
-
-    }
-
-    return await response.json();
+    return await setDoc(ref, user);
 
   }
 
   // READ ALL
-  async getAll(): Promise<any[]> {
+  async getAll(): Promise<User[]> {
 
     const snapshot =
       await getDocs(this.usersRef);
@@ -108,15 +70,15 @@ export class UserService {
 
       ...doc.data()
 
-    }));
+    } as User));
 
   }
 
   // READ ONE
-  async getById(id: string) {
+  async getById(uid: string) {
 
     const docRef =
-      doc(this.db, 'users', id);
+      doc(this.db, 'users', uid);
 
     const docSnap =
       await getDoc(docRef);
@@ -125,11 +87,11 @@ export class UserService {
 
       return {
 
-        id,
+        id: docSnap.id,
 
         ...docSnap.data()
 
-      };
+      } as User;
 
     }
 
@@ -138,22 +100,128 @@ export class UserService {
   }
 
   // UPDATE
-  async update(id: string, data: any) {
+  async update(
+    uid: string,
+    data: Partial<User>
+  ) {
 
     const ref =
-      doc(this.db, 'users', id);
+      doc(this.db, 'users', uid);
 
     return await updateDoc(ref, data);
 
   }
 
   // DELETE
-  async delete(id: string) {
+  async delete(uid: string) {
 
     const ref =
-      doc(this.db, 'users', id);
+      doc(this.db, 'users', uid);
 
     return await deleteDoc(ref);
+
+  }
+
+  // =================================
+  // REGISTERED USERS
+  // =================================
+
+  // CREATE REGISTERED USER
+  async createRegisteredUser(
+    user: User
+  ) {
+
+    const ref =
+      doc(
+        this.db,
+        'registeredUsers',
+        user.uid
+      );
+
+    return await setDoc(ref, user);
+
+  }
+
+  // GET REGISTERED USER
+  async getRegisteredUser(
+    uid: string
+  ) {
+
+    const ref =
+      doc(
+        this.db,
+        'registeredUsers',
+        uid
+      );
+
+    const snap =
+      await getDoc(ref);
+
+    if (snap.exists()) {
+
+      return {
+
+        id: snap.id,
+
+        ...snap.data()
+
+      } as User;
+
+    }
+
+    return null;
+
+  }
+
+  // UPDATE REGISTERED USER
+  async updateRegisteredUser(
+    uid: string,
+    data: Partial<User>
+  ) {
+
+    const ref =
+      doc(
+        this.db,
+        'registeredUsers',
+        uid
+      );
+
+    return await updateDoc(ref, data);
+
+  }
+
+  // DELETE REGISTERED USER
+  async deleteRegisteredUser(
+    uid: string
+  ) {
+
+    const ref =
+      doc(
+        this.db,
+        'registeredUsers',
+        uid
+      );
+
+    return await deleteDoc(ref);
+
+  }
+
+  // GET ALL REGISTERED USERS
+  async getAllRegisteredUsers():
+  Promise<User[]> {
+
+    const snapshot =
+      await getDocs(
+        this.registeredUsersRef
+      );
+
+    return snapshot.docs.map(doc => ({
+
+      id: doc.id,
+
+      ...doc.data()
+
+    } as User));
 
   }
 

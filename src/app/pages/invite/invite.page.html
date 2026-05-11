@@ -1,0 +1,47 @@
+<ion-header translucent="true">
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-back-button defaultHref="/home">
+      </ion-back-button>
+
+    </ion-buttons>
+
+    <ion-title>
+
+      Invitar usuario
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content fullscreen="true" class="ion-padding">
+
+  <div class="invite-container">
+
+    <ion-item>
+
+      <ion-input label="Correo electrónico" labelPlacement="floating" type="email" [(ngModel)]="email">
+      </ion-input>
+
+    </ion-item>
+
+    <ion-button expand="block" [disabled]="cargando" (click)="invitar()">
+
+      {{
+
+      cargando
+      ? 'Creando invitación...'
+      : 'Invitar usuario'
+
+      }}
+
+    </ion-button>
+
+  </div>
+
+</ion-content>

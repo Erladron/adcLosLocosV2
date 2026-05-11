@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
 import { authGuard }
-from './guards/auth.guard';
+  from './guards/auth.guard';
 
 import { roleGuard }
-from './guards/role.guard';
+  from './guards/role.guard';
 
 export const routes: Routes = [
 
@@ -17,6 +17,47 @@ export const routes: Routes = [
       import('./pages/login/login.page')
 
         .then(m => m.LoginPage)
+
+  },
+
+  // REGISTER
+  {
+    path: 'register',
+
+    loadComponent: () =>
+
+      import('./pages/register/register.page')
+
+        .then(m => m.RegisterPage)
+
+  },
+
+  // INVITE
+  {
+    path: 'invite',
+
+    canActivate: [
+      authGuard,
+      roleGuard
+    ],
+
+    data: {
+
+      roles: [
+
+        'socio',
+        'directiva',
+        'administrador'
+
+      ]
+
+    },
+
+    loadComponent: () =>
+
+      import('./pages/invite/invite.page')
+
+        .then(m => m.InvitePage)
 
   },
 
@@ -151,6 +192,10 @@ export const routes: Routes = [
 
         .then(m => m.EventsPage)
 
+  },
+  {
+    path: 'invite',
+    loadComponent: () => import('./pages/invite/invite.page').then( m => m.InvitePage)
   }
 
 ];

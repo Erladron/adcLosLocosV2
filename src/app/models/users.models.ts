@@ -1,14 +1,41 @@
 export interface User {
+
+  // =================================
+  // IDENTIFICACION
+  // =================================
+
+  id?: string;
+
+  uid: string;
+
+  // =================================
+  // DATOS PERSONALES
+  // =================================
+
   nombre: string;
-  dni: string;
-  email: string;
+
   telefono: string;
+
+  email: string;
+
+  dni: string;
+
   direccion: string;
-  cp: string;
-  fechaNacimiento: string;
-  profesion: string;
-  rol: 'invitado' | 'socio';
-  esAdmin: boolean;
-  fechaAlta?: Date;
-  foto?: string;
+
+  foto: string;
+
+  // =================================
+  // CONTROL
+  // =================================
+
+  tipo: string;
+
+  password?: string;
+
+  aprobado?: boolean;
+
+  perfilCompleto?: boolean;
+
+  fechaAlta?: any;
+
 }

@@ -24,11 +24,14 @@ import {
   peopleOutline,
   statsChartOutline,
   calendarOutline,
-  logOutOutline
+  logOutOutline,
+  personAddOutline
 
 } from 'ionicons/icons';
 
 import { AuthService } from './services/auth.service';
+
+import { CommonModule } from '@angular/common';
 
 @Component({
 
@@ -44,6 +47,8 @@ import { AuthService } from './services/auth.service';
 
     IonApp,
     IonRouterOutlet,
+
+    CommonModule,
 
     IonMenu,
     IonContent,
@@ -63,7 +68,7 @@ export class AppComponent {
 
     private menuCtrl: MenuController,
 
-    private authService: AuthService
+    public authService: AuthService
 
   ) {
 
@@ -73,7 +78,8 @@ export class AppComponent {
       peopleOutline,
       statsChartOutline,
       calendarOutline,
-      logOutOutline
+      logOutOutline,
+      personAddOutline
 
     });
 
@@ -81,7 +87,10 @@ export class AppComponent {
 
   }
 
+  // =================================
   // COMPROBAR SESION
+  // =================================
+
   async checkLogin() {
 
     const interval = setInterval(() => {
@@ -106,7 +115,10 @@ export class AppComponent {
 
   }
 
-  // NAVEGACION MENU
+  // =================================
+  // NAVEGAR
+  // =================================
+
   async navegar(ruta: string) {
 
     await this.menuCtrl.close();
@@ -115,7 +127,10 @@ export class AppComponent {
 
   }
 
+  // =================================
   // LOGOUT
+  // =================================
+
   async logout() {
 
     await this.menuCtrl.close();
@@ -123,6 +138,44 @@ export class AppComponent {
     await this.authService.logout();
 
     this.router.navigateByUrl('/login');
+
+  }
+
+  // =================================
+  // ROLES
+  // =================================
+
+  get role(): string {
+
+    return this.authService
+      .currentUserData?.tipo
+      || '';
+
+  }
+
+  // =================================
+  // INVITAR
+  // =================================
+
+  puedeInvitar(): boolean {
+
+    return [
+
+      'socio',
+      'directiva',
+      'administrador'
+
+    ].includes(this.role);
+
+  }
+
+  // =================================
+  // REGISTERED
+  // =================================
+
+  isRegistered(): boolean {
+
+    return this.role === 'registrado';
 
   }
 

@@ -2,10 +2,7 @@
 
   <div class="login-container">
 
-    <img
-      src="assets/img/escudo.png"
-      class="logo"
-    >
+    <img src="assets/img/escudo.png" class="logo">
 
     <ion-card>
 
@@ -17,24 +14,14 @@
 
         <ion-item>
 
-          <ion-input
-            type="email"
-            label="Correo"
-            labelPlacement="floating"
-            [(ngModel)]="email"
-          >
+          <ion-input type="email" label="Correo" labelPlacement="floating" [(ngModel)]="email">
           </ion-input>
 
         </ion-item>
 
         <ion-item>
 
-          <ion-input
-            type="password"
-            label="Contraseña"
-            labelPlacement="floating"
-            [(ngModel)]="password"
-          >
+          <ion-input type="password" label="Contraseña" labelPlacement="floating" [(ngModel)]="password">
           </ion-input>
 
         </ion-item>
@@ -43,14 +30,21 @@
           {{ error }}
         </p>
 
-        <ion-button
-          expand="block"
-          (click)="login()"
-        >
+        <ion-button expand="block" (click)="login()">
 
           Entrar
 
         </ion-button>
+
+        <div class="register-container">
+
+          <ion-button fill="clear" routerLink="/register">
+
+            Registrarse
+
+          </ion-button>
+
+        </div>
 
       </ion-card-content>
 
