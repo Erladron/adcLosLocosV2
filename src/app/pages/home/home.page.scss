@@ -1,180 +1,126 @@
 .home-content {
-
-  --background:
-    linear-gradient(
-      180deg,
-      #0b2d6b 0%,
-      #1d4ea5 100%
-    );
-
-  overflow: hidden;
-
+  --background: linear-gradient(
+    180deg,
+    #0b2f73 0%,
+    #1f4ea3 100%
+  );
 }
 
-/* CONTENEDOR PRINCIPAL */
+.background-logo {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.08;
+  pointer-events: none;
+  img {
+    width: 85%;
+    max-width: 500px;
+  }
+}
+
 .home-container {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
   min-height: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  padding:
-    6px 16px 30px 16px;
-
 }
 
-/* TITULO */
-.home-title {
-
-  margin-top: 0;
-
-  margin-bottom: 14px;
-
+.home-header {
   text-align: center;
-
-}
-
-.home-title h1 {
-
-  color: white;
-
-  font-size: 2.1rem;
-
-  font-weight: 700;
-
-  margin: 0;
-
-  white-space: nowrap;
-
-  text-shadow:
-    0 3px 10px rgba(0,0,0,0.35);
-
-}
-
-/* ESCUDO */
-.logo-container {
-
-  flex: 1;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  width: 100%;
-
-}
-
-.main-logo {
-
-  width: 210px;
-
-  max-width: 58vw;
-
-  filter:
-    drop-shadow(
-      0 6px 16px rgba(0,0,0,0.35)
-    );
-
-}
-
-/* TARJETAS */
-.cards-container {
-
-  width: 100%;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  gap: 10px;
-
   margin-bottom: 40px;
+  margin-top: 20px;
 
-  padding-bottom: env(safe-area-inset-bottom);
+  h1 {
+    color: white;
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
 
+  .logo-main-container {
+    .main-logo {
+      width: 140px;
+      filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.4));
+    }
+  }
 }
 
-/* TARJETA */
-.menu-card {
-
-  width: 95px;
-
-  height: 95px;
-
-  border-radius: 22px;
-
-  background:
-    rgba(255,255,255,0.14);
-
-  backdrop-filter: blur(10px);
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-
-  align-items: center;
-
-  color: white;
-
-  box-shadow:
-    0 6px 18px rgba(0,0,0,0.25);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-
+// Estilo Base Cristal
+.glass-card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
 }
 
-.menu-card:hover {
-
-  transform:
-    translateY(-4px);
-
-  box-shadow:
-    0 12px 24px rgba(0,0,0,0.30);
-
-}
-
-.menu-card:active {
-
-  transform:
-    scale(0.95);
-
-}
-
-/* ICONOS */
-.menu-card ion-icon {
-
-  font-size: 2.2rem;
-
-  margin-bottom: 6px;
-
-  color: white;
-
-}
-
-/* TEXTO TARJETAS */
-.menu-card h2 {
-
-  margin: 0;
-
-  font-size: 0.95rem;
-
-  font-weight: 600;
-
-  color: white;
-
+// Caja de estado (Registrados)
+.status-box {
+  padding: 30px 20px;
   text-align: center;
+  width: 100%;
+  max-width: 350px;
+  color: white;
 
+  .status-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+    &.warning { color: #ffd54f; }
+    &.clock { color: #81d4fa; }
+  }
+
+  h2 { font-weight: 700; margin-bottom: 10px; }
+  p { opacity: 0.8; font-size: 0.95rem; margin-bottom: 5px; }
+
+  .main-button {
+    --background: white;
+    --color: #0b2f73;
+    --border-radius: 12px;
+    margin-top: 20px;
+    font-weight: 700;
+  }
+}
+
+// Cuadrícula de Menú (Socios)
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+
+  .menu-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    color: white;
+    transition: transform 0.2s;
+
+    &:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .icon-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      ion-icon { font-size: 1.8rem; }
+    }
+
+    span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
 }

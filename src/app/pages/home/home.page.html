@@ -1,123 +1,70 @@
-<ion-header>
-
-  <ion-toolbar>
-
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-
-      <ion-menu-button>
-      </ion-menu-button>
-
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-
-    <ion-title>
-      Inicio
-    </ion-title>
-
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
-
 </ion-header>
 
 <ion-content fullscreen="true" class="home-content">
-
-  <!-- CONTENIDO -->
-  <div class="home-container">
-
-    <!-- TITULO -->
-    <div class="home-title">
-
-      <h1>
-        A.C.D. Los Locos
-      </h1>
-
-    </div>
-
-    <!-- ESCUDO -->
-    <div class="logo-container">
-
-      <img src="assets/img/escudo.png" class="main-logo">
-
-    </div>
-
-    <!-- ================================= -->
-    <!-- REGISTERED USER -->
-    <!-- ================================= -->
-
-    <div *ngIf="isRegisteredUser()">
-
-      <div class="registered-box">
-
-        <h2>
-          Cuenta pendiente de validación
-        </h2>
-
-        <p>
-
-          Tu cuenta aún no pertenece
-          oficialmente a la asociación.
-
-        </p>
-
-        <p>
-
-          Complete sus datos y espere
-          validación por parte de la directiva.
-
-        </p>
-
-        <ion-button expand="block" routerLink="/user-detail">
-
-          Completar perfil
-
-        </ion-button>
-
-      </div>
-
-    </div>
-
-    <!-- ================================= -->
-    <!-- USERS -->
-    <!-- ================================= -->
-
-    <div class="cards-container" *ngIf="!isRegisteredUser()">
-
-      <!-- USUARIOS -->
-      <div class="menu-card" routerLink="/gest-user">
-
-        <ion-icon name="people-outline">
-        </ion-icon>
-
-        <h2>
-          Usuarios
-        </h2>
-
-      </div>
-
-      <!-- ESTADISTICAS -->
-      <div class="menu-card" routerLink="/stats">
-
-        <ion-icon name="stats-chart-outline">
-        </ion-icon>
-
-        <h2>
-          Estadísticas
-        </h2>
-
-      </div>
-
-      <!-- EVENTOS -->
-      <div class="menu-card" routerLink="/events">
-
-        <ion-icon name="calendar-outline">
-        </ion-icon>
-
-        <h2>
-          Eventos
-        </h2>
-
-      </div>
-
-    </div>
-
+  <div class="background-logo">
+    <img src="assets/img/escudo.png" alt="Escudo">
   </div>
 
+  <div class="home-container">
+    
+    <div class="home-header">
+      <h1>A.C.D. LOS LOCOS</h1>
+      <div class="logo-main-container">
+        <img src="assets/img/escudo.png" class="main-logo">
+      </div>
+    </div>
+
+    <div *ngIf="isRegisteredUser()" class="status-wrapper">
+      <div class="glass-card status-box">
+        <ng-container *ngIf="!hasCompletedProfile()">
+          <ion-icon name="alert-circle-outline" class="status-icon warning"></ion-icon>
+          <h2>Cuenta pendiente</h2>
+          <p>Tu cuenta aún no pertenece oficialmente a la asociación.</p>
+          <p>Completa tus datos para la validación.</p>
+          <ion-button expand="block" (click)="completarPerfil()" class="main-button">
+            Completar perfil
+          </ion-button>
+        </ng-container>
+
+        <ng-container *ngIf="hasCompletedProfile()">
+          <ion-icon name="time-outline" class="status-icon clock"></ion-icon>
+          <h2>En revisión</h2>
+          <p>Tus datos han sido enviados correctamente.</p>
+          <p>La directiva revisará tu solicitud próximamente.</p>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="cards-grid" *ngIf="!isRegisteredUser()">
+      
+      <div class="menu-card glass-card" routerLink="/gest-user">
+        <div class="icon-box">
+          <ion-icon name="people-outline"></ion-icon>
+        </div>
+        <span>Usuarios</span>
+      </div>
+
+      <div class="menu-card glass-card" routerLink="/stats">
+        <div class="icon-box">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+        </div>
+        <span>Estadísticas</span>
+      </div>
+
+      <div class="menu-card glass-card" routerLink="/events">
+        <div class="icon-box">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+        <span>Eventos</span>
+      </div>
+
+    </div>
+  </div>
 </ion-content>

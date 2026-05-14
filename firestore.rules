@@ -4,69 +4,252 @@ service cloud.firestore {
 
   match /databases/{database}/documents {
 
-    // =====================================
+    // =================================
+    // FUNCION AUXILIAR
+    // =================================
+
+    function currentUserRole() {
+
+      return get(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data.tipo;
+
+    }
+
+    // =================================
     // USERS
-    // =====================================
+    // =================================
 
     match /users/{userId} {
 
+      // LEER
       allow read:
+
         if request.auth != null;
 
+      // CREAR
       allow create:
-        if request.auth != null;
 
+        if request.auth != null
+
+        && (
+
+          // ADMIN
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          // DIRECTIVA
+          (
+
+            currentUserRole()
+            == 'directiva'
+
+            &&
+
+            request.resource.data.tipo
+            != 'administrador'
+
+          )
+
+          ||
+
+          // SOCIO
+          (
+
+            currentUserRole()
+            == 'socio'
+
+            &&
+
+            request.resource.data.tipo
+            == 'invitado'
+
+          )
+
+        );
+
+      // UPDATE
       allow update:
-        if request.auth != null;
 
+        if request.auth != null
+
+        && (
+
+          // ADMIN
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          // DIRECTIVA
+          (
+
+            currentUserRole()
+            == 'directiva'
+
+            &&
+
+            resource.data.tipo
+            != 'administrador'
+
+          )
+
+          ||
+
+          // PERFIL PROPIO
+          request.auth.uid
+          == userId
+
+        );
+
+      // DELETE
       allow delete:
-        if request.auth != null;
+
+        if request.auth != null
+
+        &&
+
+        currentUserRole()
+        == 'administrador';
 
     }
 
-    // =====================================
+    // =================================
     // REGISTERED USERS
-    // =====================================
+    // =================================
 
     match /registeredUsers/{docId} {
 
+      // LEER
       allow read:
+
         if request.auth != null;
 
+      // CREAR
       allow create:
-        if request.auth != null;
 
+        if request.auth != null
+
+        &&
+
+        request.auth.uid
+        == docId;
+
+      // UPDATE
       allow update:
-        if request.auth != null;
 
+        if request.auth != null
+
+        && (
+
+          // SU PROPIO PERFIL
+          request.auth.uid
+          == docId
+
+          ||
+
+          // ADMIN
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          // DIRECTIVA
+          currentUserRole()
+          == 'directiva'
+
+        );
+
+      // DELETE
       allow delete:
-        if false;
+
+        if request.auth != null
+
+        && (
+
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          currentUserRole()
+          == 'directiva'
+
+        );
 
     }
 
-    // =====================================
-    // PREREGISTRO
-    // =====================================
+    // =================================
+    // PREREGISTER
+    // =================================
 
     match /preRegister/{docId} {
 
-      // LEER
+      // LECTURA PUBLICA
       allow read:
+
         if true;
 
       // CREAR
       allow create:
-        if request.auth != null;
+
+        if request.auth != null
+
+        && (
+
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          currentUserRole()
+          == 'directiva'
+
+          ||
+
+          currentUserRole()
+          == 'socio'
+
+        );
 
       // UPDATE
       allow update:
-        if request.auth != null;
+
+        if request.auth != null
+
+        && (
+
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          currentUserRole()
+          == 'directiva'
+
+        );
 
       // DELETE
       allow delete:
-        if request.auth != null;
+
+        if request.auth != null
+
+        && (
+
+          currentUserRole()
+          == 'administrador'
+
+          ||
+
+          currentUserRole()
+          == 'directiva'
+
+        );
 
     }
+
   }
 
 }

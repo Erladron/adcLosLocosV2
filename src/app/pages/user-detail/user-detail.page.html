@@ -4,37 +4,25 @@
 
     <ion-buttons slot="start">
 
-      <ion-back-button defaultHref="/gest-user">
+      <ion-back-button
+        defaultHref="/home">
+
       </ion-back-button>
 
     </ion-buttons>
 
     <ion-title>
 
-      <!-- ALTA -->
       <ng-container *ngIf="nuevoUsuario">
-
-        Alta de usuario
-
+        Alta Usuario
       </ng-container>
 
-      <!-- DETALLE -->
-      <ng-container *ngIf="
-          !nuevoUsuario &&
-          !editando
-        ">
+      <ng-container *ngIf="!nuevoUsuario">
 
-        Detalle de usuario
-
-      </ng-container>
-
-      <!-- EDITANDO -->
-      <ng-container *ngIf="
-          !nuevoUsuario &&
-          editando
-        ">
-
-        Editando datos de Usuario...
+        {{
+        user.nombre ||
+        'Detalle Usuario'
+        }}
 
       </ng-container>
 
@@ -44,71 +32,163 @@
 
 </ion-header>
 
-<ion-content fullscreen="true" class="detail-content">
+<ion-content
+  fullscreen="true"
+  class="detail-content">
 
-  <!-- ESCUDO -->
+  <!-- FONDO -->
   <div class="background-logo">
 
-    <img src="assets/img/escudo.png" alt="Escudo">
+    <img src="assets/img/escudo.png">
 
   </div>
 
   <div class="detail-container">
 
-    <!-- FOTO -->
-    <div class="photo-section">
+    <div class="form-card">
 
-      <div class="avatar-container">
+      <!-- ================================= -->
+      <!-- HEADER -->
+      <!-- ================================= -->
 
-        <img
-          *ngIf="user.foto"
-          [src]="user.foto"
-          class="user-avatar"
-        >
+      <div class="header-section">
 
-        <ion-icon
-          *ngIf="!user.foto"
-          name="person-outline"
-          class="default-avatar"
-        >
-        </ion-icon>
+        <!-- IZQUIERDA -->
+        <div class="header-left">
+
+          <!-- AVATAR -->
+          <div class="avatar-container">
+
+            <img
+
+              *ngIf="user?.foto"
+
+              [src]="user.foto + ''"
+
+              class="user-avatar"
+
+            >
+
+            <ion-icon
+
+              *ngIf="!user?.foto"
+
+              name="person-outline"
+
+              class="default-avatar"
+
+            >
+            </ion-icon>
+
+          </div>
+
+          <!-- BOTONES FOTO -->
+          <div class="photo-buttons">
+
+            <ion-button
+
+              fill="solid"
+
+              class="icon-button"
+
+              (click)="seleccionarFoto()"
+
+              *ngIf="puedeEditar"
+
+            >
+
+              <ion-icon
+                name="images-outline">
+              </ion-icon>
+
+            </ion-button>
+
+            <ion-button
+
+              fill="solid"
+
+              class="icon-button"
+
+              (click)="hacerFoto()"
+
+              *ngIf="puedeEditar"
+
+            >
+
+              <ion-icon
+                name="camera-outline">
+              </ion-icon>
+
+            </ion-button>
+
+          </div>
+
+        </div>
+
+        <!-- DERECHA -->
+        <div class="header-right">
+
+          <h2>
+
+            {{
+            user.nombre ||
+            'Perfil Usuario'
+            }}
+
+          </h2>
+
+          <p>
+
+            {{
+            user.tipo || 'usuario'
+            }}
+
+          </p>
+
+          <!-- NUMERO SOCIO -->
+          <div
+
+            class="numero-socio-container"
+
+            *ngIf="
+              user.tipo === 'socio'
+              ||
+              user.tipo === 'directiva'
+            "
+
+          >
+
+            <div class="numero-label">
+
+              Nº Socio
+
+            </div>
+
+            <div class="numero-value">
+
+              {{
+              user.numeroSocio
+              || '---'
+              }}
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
-      <!-- BOTONES FOTO -->
-      <div
-        class="photo-buttons"
-        *ngIf="editando"
-      >
-
-        <ion-button
-          fill="solid"
-          class="icon-button"
-          (click)="seleccionarFoto()"
-        >
-
-          <ion-icon name="images-outline">
-          </ion-icon>
-
-        </ion-button>
-
-        <ion-button
-          fill="solid"
-          class="icon-button"
-          (click)="hacerFoto()"
-        >
-
-          <ion-icon name="camera-outline">
-          </ion-icon>
-
-        </ion-button>
-
-      </div>
-
+      <!-- ================================= -->
       <!-- CROPPER -->
+      <!-- ================================= -->
+
       <div
+
         *ngIf="mostrarCropper"
+
         class="cropper-container"
+
       >
 
         <image-cropper
@@ -121,7 +201,7 @@
 
           [resizeToWidth]="400"
 
-          format="png"
+          format="jpeg"
 
           [roundCropper]="true"
 
@@ -134,8 +214,7 @@
 
           <ion-button
             color="danger"
-            (click)="cancelarCrop()"
-          >
+            (click)="cancelarCrop()">
 
             Cancelar
 
@@ -143,8 +222,7 @@
 
           <ion-button
             color="primary"
-            (click)="aplicarCrop()"
-          >
+            (click)="aplicarCrop()">
 
             Usar Foto
 
@@ -154,213 +232,589 @@
 
       </div>
 
-    </div>
+      <!-- ================================= -->
+      <!-- TABS -->
+      <!-- ================================= -->
 
-    <!-- FORMULARIO -->
-    <div class="form-section">
+      <ion-segment
 
-      <!-- NOMBRE -->
-      <ion-item>
+        [(ngModel)]="tabActual"
 
-        <ion-input
+        class="custom-segment"
 
-          label="Nombre y Apellidos"
+      >
 
-          labelPlacement="floating"
+        <ion-segment-button
+          value="personales">
 
-          [(ngModel)]="user.nombre"
+          <ion-icon
+            name="person-outline">
 
-          (ionBlur)="formatearNombre()"
+          </ion-icon>
 
-          [disabled]="!editando"
+          <ion-label>
 
-          required
+            Personales
 
-        >
-        </ion-input>
+          </ion-label>
 
-      </ion-item>
+        </ion-segment-button>
 
-      <!-- TELEFONO -->
-      <ion-item>
+        <ion-segment-button
+          value="credenciales">
 
-        <ion-input
+          <ion-icon
+            name="key-outline">
 
-          label="Teléfono"
+          </ion-icon>
 
-          labelPlacement="floating"
+          <ion-label>
 
-          [(ngModel)]="user.telefono"
+            Credenciales
 
-          type="tel"
+          </ion-label>
 
-          inputmode="numeric"
+        </ion-segment-button>
 
-          maxlength="9"
+        <ion-segment-button
+          value="membresia">
 
-          [disabled]="!editando"
+          <ion-icon
+            name="shield-outline">
 
-        >
-        </ion-input>
+          </ion-icon>
 
-      </ion-item>
+          <ion-label>
 
-      <!-- EMAIL -->
-      <ion-item>
+            Membresía
 
-        <ion-input
+          </ion-label>
 
-          label="Email"
+        </ion-segment-button>
 
-          labelPlacement="floating"
+      </ion-segment>
 
-          [(ngModel)]="user.email"
+      <!-- ================================= -->
+      <!-- PERSONALES -->
+      <!-- ================================= -->
 
-          type="email"
+      <div
 
-          [disabled]="!editando"
+        *ngIf="
+          tabActual === 'personales'
+        "
 
-        >
-        </ion-input>
+        class="section-card"
 
-      </ion-item>
+      >
 
-      <!-- PASSWORD -->
-      <ion-item *ngIf="nuevoUsuario">
+        <div class="section-header">
 
-        <ion-input
+          <div class="section-title">
 
-          type="password"
+            Datos Personales
 
-          label="Contraseña"
+          </div>
 
-          labelPlacement="stacked"
+          <ion-button
 
-          [(ngModel)]="user.password"
+            size="small"
 
-          [disabled]="!editando"
+            fill="outline"
 
-        >
+            *ngIf="puedeEditar"
 
-        </ion-input>
-
-      </ion-item>
-
-      <!-- DNI -->
-      <ion-item>
-
-        <ion-input
-
-          label="DNI"
-
-          labelPlacement="floating"
-
-          [(ngModel)]="user.dni"
-
-          maxlength="9"
-
-          inputmode="numeric"
-
-          (ionBlur)="calcularDNI()"
-
-          [disabled]="!editando"
-
-        >
-        </ion-input>
-
-      </ion-item>
-
-      <!-- DIRECCION -->
-      <ion-item>
-
-        <ion-input
-
-          label="Dirección"
-
-          labelPlacement="floating"
-
-          [(ngModel)]="user.direccion"
-
-          [disabled]="!editando"
-
-        >
-        </ion-input>
-
-      </ion-item>
-
-      <!-- TIPO -->
-      <ion-item>
-
-        <ion-select
-
-          label="Tipo"
-
-          labelPlacement="stacked"
-
-          [(ngModel)]="user.tipo"
-
-          [disabled]="!editando"
-
-        >
-
-          <ion-select-option
-
-            *ngFor="
-              let tipo of tiposDisponibles
+            (click)="
+              editandoPersonales =
+              !editandoPersonales
             "
-
-            [value]="tipo.value"
 
           >
 
-            {{ tipo.label }}
+            {{
 
-          </ion-select-option>
+            editandoPersonales
+            ? 'Cancelar'
+            : 'Editar'
 
-        </ion-select>
+            }}
 
-      </ion-item>
+          </ion-button>
 
-      <!-- BOTON -->
-      <div
-        class="save-container"
+        </div>
 
-        *ngIf="
-          puedeEditar ||
-          nuevoUsuario
-        "
-      >
+        <div class="form-section">
 
+          <!-- NOMBRE -->
+          <ion-item lines="none">
+
+            <ion-input
+
+              label="Nombre y Apellidos"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="user.nombre"
+
+              [disabled]="
+                !editandoPersonales
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- TELEFONO -->
+          <ion-item lines="none">
+
+            <ion-input
+
+              label="Teléfono"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="user.telefono"
+
+              [disabled]="
+                !editandoPersonales
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- DNI -->
+          <ion-item lines="none">
+
+            <ion-input
+
+              label="DNI"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="user.dni"
+
+              (ionInput)="formatearDNI()"
+
+              [disabled]="
+                !editandoPersonales
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- DIRECCION -->
+          <ion-item lines="none">
+
+            <ion-input
+
+              label="Dirección"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="user.direccion"
+
+              [disabled]="
+                !editandoPersonales
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+        </div>
+
+        <!-- GUARDAR -->
         <ion-button
 
           expand="block"
 
-          class="save-button"
+          class="main-button"
 
-          (click)="accionPrincipal()"
+          *ngIf="editandoPersonales"
+
+          (click)="guardarPersonales()"
 
         >
 
           <ion-icon
 
-            [name]="
-              editando
-                ? 'save-outline'
-                : 'create-outline'
-            "
+            name="save-outline"
 
             slot="start"
 
           >
           </ion-icon>
 
-          {{
+          Guardar Datos
 
-            editando
-              ? 'Guardar'
-              : 'Editar'
+        </ion-button>
 
-          }}
+      </div>
+
+      <!-- ================================= -->
+      <!-- CREDENCIALES -->
+      <!-- ================================= -->
+
+      <div
+
+        *ngIf="
+          tabActual === 'credenciales'
+        "
+
+        class="section-card"
+
+      >
+
+        <div class="section-header">
+
+          <div class="section-title">
+
+            Credenciales
+
+          </div>
+
+          <ion-button
+
+            size="small"
+
+            fill="outline"
+
+            *ngIf="puedeEditar"
+
+            (click)="
+              editandoCredenciales =
+              !editandoCredenciales
+            "
+
+          >
+
+            {{
+
+            editandoCredenciales
+            ? 'Cancelar'
+            : 'Editar'
+
+            }}
+
+          </ion-button>
+
+        </div>
+
+        <div class="form-section">
+
+          <!-- EMAIL -->
+          <ion-item lines="none">
+
+            <ion-input
+
+              label="Email Actual"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="user.email"
+
+              [disabled]="true"
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- NUEVO EMAIL -->
+          <ion-item
+
+            lines="none"
+
+            *ngIf="
+              editandoCredenciales
+            "
+
+          >
+
+            <ion-input
+
+              label="Nuevo Email"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="
+                credenciales.newEmail
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- PASSWORD ACTUAL -->
+          <ion-item
+
+            lines="none"
+
+            *ngIf="
+              editandoCredenciales
+            "
+
+          >
+
+            <ion-input
+
+              type="password"
+
+              label="Contraseña Actual"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="
+                credenciales.currentPassword
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- NUEVA PASSWORD -->
+          <ion-item
+
+            lines="none"
+
+            *ngIf="
+              editandoCredenciales
+            "
+
+          >
+
+            <ion-input
+
+              type="password"
+
+              label="Nueva Contraseña"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="
+                credenciales.newPassword
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- REPETIR -->
+          <ion-item
+
+            lines="none"
+
+            *ngIf="
+              editandoCredenciales
+            "
+
+          >
+
+            <ion-input
+
+              type="password"
+
+              label="Repetir Contraseña"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="
+                credenciales.repeatPassword
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+        </div>
+
+        <!-- GUARDAR -->
+        <ion-button
+
+          expand="block"
+
+          class="main-button"
+
+          *ngIf="
+            editandoCredenciales
+          "
+
+          (click)="
+            guardarCredenciales()
+          "
+
+        >
+
+          <ion-icon
+
+            name="save-outline"
+
+            slot="start"
+
+          >
+          </ion-icon>
+
+          Guardar Credenciales
+
+        </ion-button>
+
+      </div>
+
+      <!-- ================================= -->
+      <!-- MEMBRESIA -->
+      <!-- ================================= -->
+
+      <div
+
+        *ngIf="
+          tabActual === 'membresia'
+        "
+
+        class="section-card"
+
+      >
+
+        <div class="section-header">
+
+          <div class="section-title">
+
+            Membresía
+
+          </div>
+
+          <ion-button
+
+            size="small"
+
+            fill="outline"
+
+            *ngIf="
+              currentUser?.tipo ===
+              'administrador'
+              ||
+              currentUser?.tipo ===
+              'directiva'
+            "
+
+            (click)="
+              editandoMembresia =
+              !editandoMembresia
+            "
+
+          >
+
+            {{
+
+            editandoMembresia
+            ? 'Cancelar'
+            : 'Editar'
+
+            }}
+
+          </ion-button>
+
+        </div>
+
+        <div class="form-section">
+
+          <!-- NUMERO -->
+          <ion-item lines="none">
+
+            <ion-input
+
+              label="Número Socio"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="
+                user.numeroSocio
+              "
+
+              [disabled]="
+                !editandoMembresia
+              "
+
+            >
+            </ion-input>
+
+          </ion-item>
+
+          <!-- TIPO -->
+          <ion-item lines="none">
+
+            <ion-select
+
+              label="Tipo Usuario"
+
+              labelPlacement="floating"
+
+              [(ngModel)]="
+                user.tipo
+              "
+
+              [disabled]="
+                !editandoMembresia
+              "
+
+            >
+
+              <ion-select-option
+
+                *ngFor="
+                  let tipo of tiposDisponibles
+                "
+
+                [value]="tipo.value"
+
+              >
+
+                {{ tipo.label }}
+
+              </ion-select-option>
+
+            </ion-select>
+
+          </ion-item>
+
+        </div>
+
+        <!-- GUARDAR -->
+        <ion-button
+
+          expand="block"
+
+          class="main-button"
+
+          *ngIf="
+            editandoMembresia
+          "
+
+          (click)="
+            guardarMembresia()
+          "
+
+        >
+
+          <ion-icon
+
+            name="save-outline"
+
+            slot="start"
+
+          >
+          </ion-icon>
+
+          Guardar Membresía
 
         </ion-button>
 

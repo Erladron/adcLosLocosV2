@@ -1,55 +1,54 @@
-<ion-content class="login-content">
-
-  <div class="login-container">
-
-    <img src="assets/img/escudo.png" class="logo">
-
-    <ion-card>
-
-      <ion-card-content>
-
-        <h1>
-          ADC Los Locos
-        </h1>
-
-        <ion-item>
-
-          <ion-input type="email" label="Correo" labelPlacement="floating" [(ngModel)]="email">
-          </ion-input>
-
-        </ion-item>
-
-        <ion-item>
-
-          <ion-input type="password" label="Contraseña" labelPlacement="floating" [(ngModel)]="password">
-          </ion-input>
-
-        </ion-item>
-
-        <p class="error">
-          {{ error }}
-        </p>
-
-        <ion-button expand="block" (click)="login()">
-
-          Entrar
-
-        </ion-button>
-
-        <div class="register-container">
-
-          <ion-button fill="clear" routerLink="/register">
-
-            Registrarse
-
-          </ion-button>
-
-        </div>
-
-      </ion-card-content>
-
-    </ion-card>
-
+<ion-content fullscreen="true" class="login-content">
+  <div class="background-logo">
+    <img src="assets/img/escudo.png" alt="Escudo">
   </div>
 
+  <div class="login-container">
+    <div class="form-card">
+      
+      <div class="header-section">
+        <div class="logo-circle">
+          <img src="assets/img/escudo.png" alt="Logo">
+        </div>
+        <h2>Bienvenido</h2>
+        <p>Accede a tu cuenta de socio</p>
+      </div>
+
+      <div class="form-section">
+        <ion-item lines="none">
+          <ion-input 
+            label="Email" 
+            labelPlacement="floating" 
+            type="email" 
+            [(ngModel)]="email" 
+            placeholder="ejemplo@correo.com">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-input 
+            [type]="showPassword ? 'text' : 'password'" 
+            label="Contraseña" 
+            labelPlacement="floating" 
+            [(ngModel)]="password">
+          </ion-input>
+          <ion-button slot="end" fill="clear" (click)="showPassword = !showPassword" class="eye-button">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <div class="button-section">
+          <ion-button expand="block" (click)="ingresar()" [disabled]="cargando" class="main-button">
+            <span *ngIf="!cargando">Entrar</span>
+            <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
+          </ion-button>
+        </div>
+
+        <div class="footer-links">
+          <p>¿No tienes cuenta? <a (click)="irARegistro()">Solicitar registro</a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </ion-content>

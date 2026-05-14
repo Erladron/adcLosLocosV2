@@ -132,7 +132,8 @@ export const routes: Routes = [
 
         'socio',
         'directiva',
-        'administrador'
+        'administrador',
+        'registrado'
 
       ]
 

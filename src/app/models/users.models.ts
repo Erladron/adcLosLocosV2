@@ -8,6 +8,8 @@ export interface User {
 
   uid: string;
 
+  numeroSocio?: string;
+  
   // =================================
   // DATOS PERSONALES
   // =================================

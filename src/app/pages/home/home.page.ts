@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { CommonModule }
-from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import {
 
@@ -16,23 +15,28 @@ import {
 
 } from '@ionic/angular/standalone';
 
-import { RouterLink }
-from '@angular/router';
+import {
+
+  Router,
+  RouterLink
+
+} from '@angular/router';
 
 import { addIcons }
-from 'ionicons';
+  from 'ionicons';
 
 import {
 
   peopleOutline,
   statsChartOutline,
   calendarOutline,
-  personOutline
+  timeOutline,
+  alertCircleOutline
 
 } from 'ionicons/icons';
 
 import { AuthService }
-from 'src/app/services/auth.service';
+  from 'src/app/services/auth.service';
 
 @Component({
 
@@ -66,8 +70,9 @@ export class HomePage {
 
   constructor(
 
-    public authService:
-      AuthService
+    public authService: AuthService,
+
+    private router: Router
 
   ) {
 
@@ -76,20 +81,59 @@ export class HomePage {
       peopleOutline,
       statsChartOutline,
       calendarOutline,
-      personOutline
+      timeOutline,
+      alertCircleOutline
 
     });
 
   }
 
   // =================================
-  // REGISTERED
+  // REGISTERED USER
   // =================================
 
   isRegisteredUser(): boolean {
 
     return this.authService
       .isRegisteredUser();
+
+  }
+
+  // =================================
+  // PERFIL COMPLETO
+  // =================================
+
+  hasCompletedProfile(): boolean {
+
+    return this.authService
+      .currentUserData
+      ?.perfilCompleto === true;
+
+  }
+
+  // =================================
+  // COMPLETAR PERFIL
+  // =================================
+
+  completarPerfil() {
+
+    const uid =
+      this.authService
+        .currentUser?.uid;
+
+    if (!uid) {
+
+      return;
+
+    }
+
+    this.router.navigate([
+
+      '/user-detail',
+
+      uid
+
+    ]);
 
   }
 

@@ -24,15 +24,28 @@ CanActivateFn = async (
   const router =
     inject(Router);
 
+  // =================================
   // ESPERAR AUTH
+  // =================================
+
   while (!authService.authReady) {
 
     await new Promise(
+
       resolve =>
-        setTimeout(resolve, 100)
+
+        setTimeout(
+          resolve,
+          100
+        )
+
     );
 
   }
+
+  // =================================
+  // DATOS
+  // =================================
 
   const role =
     authService.getRole();
@@ -40,14 +53,38 @@ CanActivateFn = async (
   const allowedRoles =
     route.data?.['roles'];
 
+  const currentUserData =
+    authService.currentUserData;
+
+  // =================================
   // SIN ROLES
+  // =================================
+
   if (!allowedRoles) {
 
     return true;
 
   }
 
+  // =================================
+  // USUARIO REGISTERED
+  // =================================
+
+  if (
+
+    currentUserData?.source ===
+    'registeredUsers'
+
+  ) {
+
+    return true;
+
+  }
+
+  // =================================
   // ROL AUTORIZADO
+  // =================================
+
   if (
 
     allowedRoles.includes(role)
@@ -58,7 +95,10 @@ CanActivateFn = async (
 
   }
 
+  // =================================
   // DENEGADO
+  // =================================
+
   router.navigateByUrl('/home');
 
   return false;

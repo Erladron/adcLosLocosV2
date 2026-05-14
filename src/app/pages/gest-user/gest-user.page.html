@@ -1,38 +1,18 @@
-<ion-header>
-
-  <ion-toolbar>
-
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-
-      <ion-menu-button>
-      </ion-menu-button>
-
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-
-    <ion-title>
-      Gestión Usuarios
-    </ion-title>
-
+    <ion-title>Gestión de Usuarios</ion-title>
   </ion-toolbar>
-
 </ion-header>
 
-<ion-content
-  fullscreen="true"
-  class="users-content"
->
+<ion-content fullscreen="true" class="users-content">
 
-  <!-- ESCUDO -->
   <div class="background-logo">
-
-    <img
-      src="assets/img/escudo.png"
-      alt="Escudo"
-    >
-
+    <img src="assets/img/escudo.png" alt="Escudo">
   </div>
 
-  <!-- BUSCADOR -->
   <div class="search-container">
 
     <ion-searchbar
@@ -41,91 +21,134 @@
 
       (ionInput)="filterUsers()"
 
-      placeholder="Buscar socio"
+      placeholder="Buscar socio..."
 
       animated="true"
+
+      class="custom-searchbar"
 
     >
     </ion-searchbar>
 
   </div>
 
-  <!-- LISTADO -->
   <div class="users-container">
 
     <div
 
-      class="user-card"
+      class="user-card glass-card"
 
-      *ngFor="
-        let user of filteredUsers
-      "
+      *ngFor="let user of filteredUsers"
 
-      [routerLink]="[
-        '/user-detail',
-        user.id
-      ]"
+      [routerLink]="['/user-detail', user.id]"
 
     >
 
-      <!-- FOTO -->
-      <div class="user-photo">
+      <!-- ================================= -->
+      <!-- AVATAR -->
+      <!-- ================================= -->
+
+      <div class="user-avatar-container">
 
         <img
+
           *ngIf="user.foto"
+
           [src]="user.foto"
-          class="avatar-img"
+
+          class="user-avatar"
+
         >
 
-        <ion-icon
+        <div
+
           *ngIf="!user.foto"
-          name="person-outline"
-          class="avatar-icon"
+
+          class="default-avatar"
+
         >
-        </ion-icon>
+
+          <ion-icon
+
+            name="person-outline"
+
+          >
+          </ion-icon>
+
+        </div>
 
       </div>
 
-      <!-- DATOS -->
-      <div class="user-info">
+      <!-- ================================= -->
+      <!-- INFO -->
+      <!-- ================================= -->
 
-        <h2>
-          {{ user.nombre }}
-        </h2>
+      <div class="user-info-mini">
 
-        <p class="tipo">
-          {{ user.tipo }}
-        </p>
+        <h2>{{ user.nombre }}</h2>
 
-        <p class="telefono">
-          {{ user.telefono }}
-        </p>
+        <div class="user-subinfo">
+
+          <span class="tipo-badge">
+
+            {{ user.tipo }}
+
+          </span>
+
+          <span class="dot">•</span>
+
+          <span class="telefono-text">
+
+            {{ user.telefono }}
+
+          </span>
+
+        </div>
 
       </div>
+
+      <!-- ================================= -->
+      <!-- FLECHA -->
+      <!-- ================================= -->
+
+      <ion-icon
+
+        name="chevron-forward-outline"
+
+        class="arrow-icon"
+
+      >
+      </ion-icon>
 
     </div>
 
   </div>
 
-  <!-- FAB NUEVO USUARIO -->
   <ion-fab
+
     *ngIf="canAddUsers"
+
     vertical="bottom"
+
     horizontal="end"
+
     slot="fixed"
+
+    class="fab-safe-area"
+
   >
 
     <ion-fab-button
 
-      [routerLink]="[
-        '/user-detail',
-        'new'
-      ]"
+      (click)="nuevoUsuario()"
 
     >
 
       <ion-icon
-        name="add-outline">
+
+        name="add-outline"
+
+      >
       </ion-icon>
 
     </ion-fab-button>

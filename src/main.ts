@@ -36,6 +36,13 @@ import {
 
 } from '@angular/fire/firestore';
 
+import {
+
+  provideStorage,
+  getStorage
+
+} from '@angular/fire/storage';
+
 import { routes }
   from './app/app.routes';
 
@@ -89,6 +96,10 @@ bootstrapApplication(
 
       provideFirestore(
         () => getFirestore()
+      ),
+
+      provideStorage(
+        () => getStorage()
       )
 
     ]

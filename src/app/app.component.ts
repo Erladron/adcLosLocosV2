@@ -121,9 +121,13 @@ export class AppComponent {
 
   async navegar(ruta: string) {
 
+    console.log('NAVEGAR:', ruta);
+
     await this.menuCtrl.close();
 
-    this.router.navigate([ruta]);
+    await this.router.navigateByUrl(
+      ruta
+    );
 
   }
 
