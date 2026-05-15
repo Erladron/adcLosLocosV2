@@ -1,11 +1,20 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyCWWjAmyDVvKYmunecanToLEqSUocvOknI",
-    authDomain: "adcloslocos.firebaseapp.com",
-    projectId: "adcloslocos",
-    storageBucket: "adcloslocos.firebasestorage.app",
-    messagingSenderId: "37372255390",
-    appId: "1:37372255390:web:4652c8687037c69d752f8f"
+    apiKey: "AIzaSyBAUINgjqjvyPm0mxoF5qsxjauC5DT7STk",
+    authDomain: "adcloslocos-desa.firebaseapp.com",
+    projectId: "adcloslocos-desa",
+    storageBucket: "adcloslocos-desa.firebasestorage.app",
+    messagingSenderId: "206572860520",
+    appId: "1:206572860520:web:878a3670d07531992737dd"
+  },
+
+  api: {
+
+    createUserByAdmin:
+
+      'https://us-central1-adcloslocos-desa.cloudfunctions.net/createUserByAdmin'
+
   }
+
 };

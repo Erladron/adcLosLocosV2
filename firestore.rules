@@ -23,52 +23,34 @@ service cloud.firestore {
     match /users/{userId} {
 
       // LEER
-      allow read:
+      allow read, write:
 
         if request.auth != null;
 
       // CREAR
       allow create:
 
-        if request.auth != null
+  if request.auth != null
 
-        && (
+  && (
 
-          // ADMIN
-          currentUserRole()
-          == 'administrador'
+    // USUARIO PROPIO
+    request.auth.uid
+    == docId
 
-          ||
+    ||
 
-          // DIRECTIVA
-          (
+    // ADMIN
+    currentUserRole()
+    == 'administrador'
 
-            currentUserRole()
-            == 'directiva'
+    ||
 
-            &&
+    // DIRECTIVA
+    currentUserRole()
+    == 'directiva'
 
-            request.resource.data.tipo
-            != 'administrador'
-
-          )
-
-          ||
-
-          // SOCIO
-          (
-
-            currentUserRole()
-            == 'socio'
-
-            &&
-
-            request.resource.data.tipo
-            == 'invitado'
-
-          )
-
-        );
+  );
 
       // UPDATE
       allow update:

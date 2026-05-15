@@ -93,6 +93,7 @@ export class HomePage {
   // =================================
 
   isRegisteredUser(): boolean {
+    
 
     return this.authService
       .isRegisteredUser();

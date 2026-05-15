@@ -11,7 +11,8 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
-  updateEmail
+  updateEmail,
+  deleteUser
 
 } from '@angular/fire/auth';
 
@@ -35,6 +36,7 @@ import {
   deleteApp
 
 } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +54,7 @@ export class AuthService {
     private auth: Auth,
 
     private firestore: Firestore
+
 
   ) {
 
@@ -323,12 +326,13 @@ export class AuthService {
 
     await setDoc(userDocRef, {
 
-      uid,
+      uid: uid,
 
       nombre:
         user.nombre,
 
-      email,
+      email:
+        email,
 
       telefono:
         user.telefono || '',
@@ -341,9 +345,6 @@ export class AuthService {
 
       foto:
         user.foto || '',
-
-      numeroSocio:
-        user.numeroSocio || '',
 
       tipo:
 
@@ -358,6 +359,17 @@ export class AuthService {
             : 'socio'
 
         ),
+
+      estadoSolicitud:
+
+        checkPreRegister
+
+          ? 'pendiente'
+
+          : 'aprobado',
+
+      aprobado:
+        !checkPreRegister,
 
       perfilCompleto:
         !checkPreRegister,
@@ -397,7 +409,6 @@ export class AuthService {
 
     }
 
-    // REAUTH
     const credential =
 
       EmailAuthProvider
@@ -417,7 +428,6 @@ export class AuthService {
 
     );
 
-    // EMAIL
     if (
 
       newEmail &&
@@ -434,7 +444,6 @@ export class AuthService {
 
       );
 
-      // FIRESTORE
       const userRef =
 
         doc(
@@ -452,7 +461,6 @@ export class AuthService {
 
     }
 
-    // PASSWORD
     if (
 
       newPassword &&
@@ -498,6 +506,69 @@ export class AuthService {
   isAssociationUser(): boolean {
 
     return this.currentUserData?.source === 'users';
+
+  }
+
+  // =================================
+  // ADMIN CREATE USER
+  // =================================
+
+  async createUserAsAdmin(
+    user: any
+  ) {
+
+    const token =
+
+      await this.auth
+        .currentUser
+        ?.getIdToken();
+
+    const response =
+
+      await fetch(
+
+        environment.api.createUserByAdmin,
+
+        {
+
+          method: 'POST',
+
+          headers: {
+
+            'Content-Type':
+              'application/json',
+
+            Authorization:
+              `Bearer ${token}`
+
+          },
+
+          body: JSON.stringify({
+
+            data: user
+
+          })
+
+        }
+
+      );
+
+    const result =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+
+        result.error ||
+
+        'Error creando usuario'
+
+      );
+
+    }
+
+    return result;
 
   }
 

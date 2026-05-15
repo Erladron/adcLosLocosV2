@@ -55,7 +55,6 @@ import { environment }
 bootstrapApplication(
 
   AppComponent,
-
   {
 
     providers: [
@@ -65,6 +64,7 @@ bootstrapApplication(
         animated: true
 
       }),
+
 
       provideRouter(routes),
 
@@ -82,13 +82,21 @@ bootstrapApplication(
       // FIREBASE
       // =================================
 
-      provideFirebaseApp(
+      provideFirebaseApp(() => {
 
-        () => initializeApp(
-          environment.firebase
-        )
+        const app =
 
-      ),
+          initializeApp(
+            environment.firebase
+          );
+
+        console.log(
+          app.options
+        );
+
+        return app;
+
+      }),
 
       provideAuth(
         () => getAuth()

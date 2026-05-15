@@ -1,17 +1,48 @@
 <ion-header class="ion-no-border">
+
   <ion-toolbar color="primary">
+
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+
+      <ion-menu-button>
+      </ion-menu-button>
+
     </ion-buttons>
-    <ion-title>Gestión de Usuarios</ion-title>
+
+    <ion-title>
+
+      Gestión de Usuarios
+
+    </ion-title>
+
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content fullscreen="true" class="users-content">
+<ion-content
+
+  fullscreen="true"
+
+  class="users-content"
+
+>
+
+  <!-- ================================= -->
+  <!-- BACKGROUND -->
+  <!-- ================================= -->
 
   <div class="background-logo">
-    <img src="assets/img/escudo.png" alt="Escudo">
+
+    <img
+      src="assets/img/escudo.png"
+      alt="Escudo"
+    >
+
   </div>
+
+  <!-- ================================= -->
+  <!-- SEARCH -->
+  <!-- ================================= -->
 
   <div class="search-container">
 
@@ -21,7 +52,7 @@
 
       (ionInput)="filterUsers()"
 
-      placeholder="Buscar socio..."
+      placeholder="Buscar usuario..."
 
       animated="true"
 
@@ -32,7 +63,73 @@
 
   </div>
 
-  <div class="users-container">
+  <!-- ================================= -->
+  <!-- TABS -->
+  <!-- ================================= -->
+
+  <ion-segment
+
+    [(ngModel)]="tabActual"
+
+    class="users-segment"
+
+  >
+
+    <!-- ============================= -->
+    <!-- ACTIVOS -->
+    <!-- ============================= -->
+
+    <ion-segment-button
+
+      value="activos"
+
+    >
+
+      <ion-label>
+
+        Activos
+
+        ({{ filteredUsers.length }})
+
+      </ion-label>
+
+    </ion-segment-button>
+
+    <!-- ============================= -->
+    <!-- PENDIENTES -->
+    <!-- ============================= -->
+
+    <ion-segment-button
+
+      *ngIf="canApproveUsers"
+
+      value="pendientes"
+
+    >
+
+      <ion-label>
+
+        Pendientes
+
+        ({{ filteredPendingUsers.length }})
+
+      </ion-label>
+
+    </ion-segment-button>
+
+  </ion-segment>
+
+  <!-- ================================= -->
+  <!-- ACTIVOS -->
+  <!-- ================================= -->
+
+  <div
+
+    *ngIf="tabActual === 'activos'"
+
+    class="users-container"
+
+  >
 
     <div
 
@@ -44,9 +141,9 @@
 
     >
 
-      <!-- ================================= -->
+      <!-- ============================= -->
       <!-- AVATAR -->
-      <!-- ================================= -->
+      <!-- ============================= -->
 
       <div class="user-avatar-container">
 
@@ -69,9 +166,7 @@
         >
 
           <ion-icon
-
             name="person-outline"
-
           >
           </ion-icon>
 
@@ -79,13 +174,17 @@
 
       </div>
 
-      <!-- ================================= -->
+      <!-- ============================= -->
       <!-- INFO -->
-      <!-- ================================= -->
+      <!-- ============================= -->
 
       <div class="user-info-mini">
 
-        <h2>{{ user.nombre }}</h2>
+        <h2>
+
+          {{ user.nombre }}
+
+        </h2>
 
         <div class="user-subinfo">
 
@@ -95,7 +194,11 @@
 
           </span>
 
-          <span class="dot">•</span>
+          <span class="dot">
+
+            •
+
+          </span>
 
           <span class="telefono-text">
 
@@ -107,9 +210,23 @@
 
       </div>
 
-      <!-- ================================= -->
+      <!-- ============================= -->
+      <!-- STATUS -->
+      <!-- ============================= -->
+
+      <div class="status-container">
+
+        <span class="status-badge approved">
+
+          Aprobado
+
+        </span>
+
+      </div>
+
+      <!-- ============================= -->
       <!-- FLECHA -->
-      <!-- ================================= -->
+      <!-- ============================= -->
 
       <ion-icon
 
@@ -123,6 +240,161 @@
     </div>
 
   </div>
+
+  <!-- ================================= -->
+  <!-- PENDIENTES -->
+  <!-- ================================= -->
+
+  <div
+
+    *ngIf="tabActual === 'pendientes'"
+
+    class="users-container"
+
+  >
+
+    <div
+
+      class="user-card glass-card pending-card"
+
+      *ngFor="let user of filteredPendingUsers"
+
+    >
+
+      <!-- ============================= -->
+      <!-- AVATAR -->
+      <!-- ============================= -->
+
+      <div class="user-avatar-container">
+
+        <img
+
+          *ngIf="user.foto"
+
+          [src]="user.foto"
+
+          class="user-avatar"
+
+        >
+
+        <div
+
+          *ngIf="!user.foto"
+
+          class="default-avatar"
+
+        >
+
+          <ion-icon
+            name="person-outline"
+          >
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+      <!-- ============================= -->
+      <!-- INFO -->
+      <!-- ============================= -->
+
+      <div class="user-info-mini">
+
+        <h2>
+
+          {{ user.nombre }}
+
+        </h2>
+
+        <div class="user-subinfo">
+
+          <span class="tipo-badge pending">
+
+            Pendiente
+
+          </span>
+
+          <span class="dot">
+
+            •
+
+          </span>
+
+          <span class="telefono-text">
+
+            {{ user.email }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- ============================= -->
+      <!-- ACTIONS -->
+      <!-- ============================= -->
+
+      <div class="approval-actions">
+
+        <!-- APROBAR -->
+
+        <ion-button
+
+          fill="solid"
+
+          color="success"
+
+          size="small"
+
+          (click)="aprobarUsuario(user)"
+
+        >
+
+          <ion-icon
+
+            slot="icon-only"
+
+            name="checkmark-outline"
+
+          >
+          </ion-icon>
+
+        </ion-button>
+
+        <!-- RECHAZAR -->
+
+        <ion-button
+
+          fill="outline"
+
+          color="danger"
+
+          size="small"
+
+          (click)="rechazarUsuario(user)"
+
+        >
+
+          <ion-icon
+
+            slot="icon-only"
+
+            name="close-outline"
+
+          >
+          </ion-icon>
+
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- FAB -->
+  <!-- ================================= -->
 
   <ion-fab
 
@@ -145,9 +417,7 @@
     >
 
       <ion-icon
-
         name="add-outline"
-
       >
       </ion-icon>
 

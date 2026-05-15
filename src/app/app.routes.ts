@@ -196,7 +196,22 @@ export const routes: Routes = [
   },
   {
     path: 'invite',
-    loadComponent: () => import('./pages/invite/invite.page').then( m => m.InvitePage)
+    loadComponent: () => import('./pages/invite/invite.page').then(m => m.InvitePage)
+  },
+  {
+    path: 'pending-approval',
+    loadComponent: () => import('./pages/pending-approval/pending-approval.page').then(m => m.PendingApprovalPage)
+  },
+  {
+    path: 'pending-approval',
+
+    loadComponent: () =>
+
+      import('./pages/pending-approval/pending-approval.page')
+
+        .then(
+          m => m.PendingApprovalPage
+        )
   }
 
 ];

@@ -1,0 +1,102 @@
+<ion-content fullscreen="true" class="approval-content">
+
+  <!-- ================================= -->
+  <!-- BACKGROUND -->
+  <!-- ================================= -->
+
+  <div class="background-logo">
+
+    <img src="assets/img/escudo.png" alt="Escudo">
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- CARD -->
+  <!-- ================================= -->
+
+  <div class="approval-wrapper">
+
+    <div class="approval-card glass-card">
+
+      <!-- ============================= -->
+      <!-- ICON -->
+      <!-- ============================= -->
+
+      <div class="icon-container">
+
+        <!-- PENDIENTE -->
+
+        <ion-icon *ngIf="estado === 'pendiente'" name="hourglass-outline" class="pending-icon">
+        </ion-icon>
+
+        <!-- RECHAZADO -->
+
+        <ion-icon *ngIf="estado === 'rechazado'" name="close-circle-outline" class="rejected-icon">
+        </ion-icon>
+
+      </div>
+
+      <!-- ============================= -->
+      <!-- TITLE -->
+      <!-- ============================= -->
+
+      <h1>
+
+        Hola {{ nombre }}
+
+      </h1>
+
+      <!-- ============================= -->
+      <!-- MESSAGE -->
+      <!-- ============================= -->
+
+      <p *ngIf="estado === 'pendiente'">
+
+        Tu solicitud está pendiente
+        de aprobación por la directiva.
+
+      </p>
+
+      <p *ngIf="estado === 'rechazado'">
+
+        Tu solicitud ha sido rechazada.
+        Contacta con la asociación
+        para más información.
+
+      </p>
+
+      <!-- ============================= -->
+      <!-- ACTIONS -->
+      <!-- ============================= -->
+
+      <div class="actions">
+
+        <!-- REFRESH -->
+
+        <ion-button expand="block" class="refresh-button" (click)="refrescarEstado()">
+
+          <ion-icon slot="start" name="refresh-outline">
+          </ion-icon>
+
+          Actualizar estado
+
+        </ion-button>
+
+        <!-- LOGOUT -->
+
+        <ion-button expand="block" fill="outline" color="light" (click)="logout()">
+
+          <ion-icon slot="start" name="log-out-outline">
+          </ion-icon>
+
+          Cerrar sesión
+
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

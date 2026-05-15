@@ -9,98 +9,157 @@ import {
 } from '@angular/router';
 
 import { AuthService }
-from '../services/auth.service';
+  from '../services/auth.service';
+
+import { RequestStatus }
+  from '../models/request-status.enum';
 
 export const roleGuard:
-CanActivateFn = async (
+  CanActivateFn = async (
 
-  route: ActivatedRouteSnapshot
+    route: ActivatedRouteSnapshot
 
-) => {
+  ) => {
 
-  const authService =
-    inject(AuthService);
+    const authService =
+      inject(AuthService);
 
-  const router =
-    inject(Router);
+    const router =
+      inject(Router);
 
-  // =================================
-  // ESPERAR AUTH
-  // =================================
+    // =================================
+    // ESPERAR AUTH
+    // =================================
 
-  while (!authService.authReady) {
+    while (!authService.authReady) {
 
-    await new Promise(
+      await new Promise(
 
-      resolve =>
+        resolve =>
 
-        setTimeout(
-          resolve,
-          100
-        )
+          setTimeout(
+            resolve,
+            100
+          )
 
-    );
+      );
 
-  }
+    }
 
-  // =================================
-  // DATOS
-  // =================================
+    // =================================
+    // DATOS
+    // =================================
 
-  const role =
-    authService.getRole();
+    const role =
+      authService.getRole();
 
-  const allowedRoles =
-    route.data?.['roles'];
+    // =================================
+    // ADMINISTRADOR
+    // ACCESO TOTAL
+    // =================================
 
-  const currentUserData =
-    authService.currentUserData;
+    if (role === 'administrador') {
 
-  // =================================
-  // SIN ROLES
-  // =================================
+      return true;
 
-  if (!allowedRoles) {
+    }
 
-    return true;
+    const allowedRoles =
+      route.data?.['roles'];
 
-  }
+    const currentUserData =
+      authService.currentUserData;
 
-  // =================================
-  // USUARIO REGISTERED
-  // =================================
+    // =================================
+    // SIN DATOS USER
+    // =================================
 
-  if (
+    if (!currentUserData) {
 
-    currentUserData?.source ===
-    'registeredUsers'
+      router.navigateByUrl('/login');
 
-  ) {
+      return false;
 
-    return true;
+    }
 
-  }
+    // =================================
+    // PENDIENTE / RECHAZADO
+    // =================================
 
-  // =================================
-  // ROL AUTORIZADO
-  // =================================
+    const estadoSolicitud =
+      currentUserData.estadoSolicitud;
 
-  if (
+    const aprobado =
+      currentUserData.aprobado;
 
-    allowedRoles.includes(role)
+    // =================================
+    // BLOQUEAR ACCESO
+    // =================================
 
-  ) {
+    if (
 
-    return true;
+      aprobado !== true
 
-  }
+      ||
 
-  // =================================
-  // DENEGADO
-  // =================================
+      estadoSolicitud !==
+      RequestStatus.APROBADO
 
-  router.navigateByUrl('/home');
+    ) {
 
-  return false;
+      // =============================
+      // EXCEPCION
+      // =============================
 
-};
+      if (
+
+        route.routeConfig?.path ===
+        'pending-approval'
+
+      ) {
+
+        return true;
+
+      }
+
+      router.navigateByUrl(
+        '/pending-approval'
+      );
+
+      return false;
+
+    }
+
+    // =================================
+    // SIN ROLES
+    // =================================
+
+    if (!allowedRoles) {
+
+      return true;
+
+    }
+
+    // =================================
+    // ROL AUTORIZADO
+    // =================================
+
+    if (
+
+      allowedRoles.includes(role)
+
+    ) {
+
+      return true;
+
+    }
+
+    // =================================
+    // DENEGADO
+    // =================================
+
+    router.navigateByUrl('/home');
+
+    return false;
+
+  };

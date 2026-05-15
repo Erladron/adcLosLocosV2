@@ -34,13 +34,11 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+
 
 ion-content.home-bg {
-  --background: linear-gradient(
-    #0a2a5e,
-    #1e4fa3
-  ) !important;
+  --background: linear-gradient(#0a2a5e,
+      #1e4fa3) !important;
 }
 
 ion-header ion-toolbar {
@@ -52,7 +50,7 @@ ion-header ion-toolbar {
   --border-width: 0;
 
   box-shadow:
-    0 4px 14px rgba(0,0,0,0.35);
+    0 4px 14px rgba(0, 0, 0, 0.35);
 
 }
 
@@ -80,7 +78,7 @@ ion-header ion-icon {
 ion-header {
 
   box-shadow:
-    0 4px 14px rgba(0,0,0,0.35);
+    0 4px 14px rgba(0, 0, 0, 0.35);
 
   z-index: 999;
 
@@ -132,4 +130,14 @@ ion-fab-button:active {
   transform:
     scale(0.96);
 
+}
+
+html,
+body {
+
+  background: #0d2f73;
+
+  color: white;
+
+  color-scheme: dark;
 }

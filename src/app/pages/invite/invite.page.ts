@@ -76,7 +76,7 @@ export class InvitePage implements OnInit {
       await addDoc(preRegisterRef, {
         email: emailNormalizado,
         fecha: new Date(),
-        invitadoPor: this.authService.currentUser?.uid || 'admin' // Opcional: saber quién invitó
+        invitadoPor: this.authService.currentUser?.uid || 'administrador' // Opcional: saber quién invitó
       });
 
       alert('Invitación enviada correctamente. El usuario ya puede registrarse.');

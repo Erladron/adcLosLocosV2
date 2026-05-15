@@ -1,3 +1,6 @@
+import { UserRole } from './user-role.enum';
+import { RequestStatus } from './request-status.enum';
+
 export interface User {
 
   // =================================
@@ -9,7 +12,7 @@ export interface User {
   uid: string;
 
   numeroSocio?: string;
-  
+
   // =================================
   // DATOS PERSONALES
   // =================================
@@ -30,14 +33,18 @@ export interface User {
   // CONTROL
   // =================================
 
-  tipo: string;
+  tipo: UserRole;
 
   password?: string;
 
   aprobado?: boolean;
 
+  estadoSolicitud?: RequestStatus;
+
   perfilCompleto?: boolean;
 
   fechaAlta?: any;
+
+  fechaAprobacion?: any;
 
 }

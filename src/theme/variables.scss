@@ -1,2 +1,27 @@
 // For information on how to create your own theme, please refer to:
 // https://ionicframework.com/docs/theming/
+:root {
+
+  color-scheme: dark;
+
+  --ion-background-color: #0d2f73;
+
+  --ion-background-color-rgb: 13,47,115;
+
+  --ion-text-color: #ffffff;
+
+  --ion-text-color-rgb: 255,255,255;
+
+  --ion-item-background:
+    rgba(255,255,255,0.08);
+
+  --ion-card-background:
+    rgba(255,255,255,0.08);
+
+  --ion-toolbar-background: #0b2d6b;
+
+  --ion-toolbar-color: #ffffff;
+
+  --ion-border-color:
+    rgba(255,255,255,0.08);
+}

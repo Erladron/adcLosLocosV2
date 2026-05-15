@@ -1,199 +1,113 @@
-import { Component, OnInit } from '@angular/core';
-
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 
 import {
-
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButtons,
-  IonBackButton,
-  IonButton,
-  IonIcon,
-  IonInput,
-  IonItem,
-  IonSelect,
-  IonSelectOption,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel
-
-} from '@ionic/angular/standalone';
-
-import { PhotoService }
-  from 'src/app/services/photo.service';
+  CommonModule
+} from '@angular/common';
 
 import {
+  FormsModule
+} from '@angular/forms';
 
+import {
   ActivatedRoute,
   Router
-
 } from '@angular/router';
 
 import {
-
-  Camera,
-  CameraResultType,
-  CameraSource
-
-} from '@capacitor/camera';
-
-import {
-
-  ImageCropperComponent,
-  ImageCroppedEvent
-
-} from 'ngx-image-cropper';
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonButton,
+  IonIcon
+} from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
 
 import {
-
-  cameraOutline,
-  imagesOutline,
-  saveOutline,
-  personOutline,
-  createOutline,
-  shieldOutline,
-  keyOutline
-
+  saveOutline
 } from 'ionicons/icons';
 
-import { UserService }
-  from 'src/app/services/user.service';
+import {
+  PersonalDataFormComponent
+} from './components/personal-data-form/personal-data-form.component';
 
-import { AuthService }
-  from 'src/app/services/auth.service';
+import {
+  MembershipFormComponent
+} from './components/membership-form/membership-form.component';
+
+import {
+  CredentialsFormComponent
+} from './components/credentials-form/credentials-form.component';
+
+import {
+  UserService
+} from '../../services/user.service';
+
+import {
+  UserValidationService
+} from '../../services/user-validation.service';
+
+import {
+  User
+} from '../../models/users.models';
+
+import {
+  AuthService
+} from '../../services/auth.service';
+
+import {
+  PhotoService
+} from '../../services/photo.service';
 
 @Component({
-
   selector: 'app-user-detail',
-
-  templateUrl:
-    './user-detail.page.html',
-
-  styleUrls:
-    ['./user-detail.page.scss'],
-
+  templateUrl: './user-detail.page.html',
+  styleUrls: ['./user-detail.page.scss'],
   standalone: true,
-
   imports: [
-
     CommonModule,
     FormsModule,
-
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
     IonButtons,
     IonBackButton,
     IonButton,
     IonIcon,
-    IonInput,
-    IonItem,
-    IonSelect,
-    IonSelectOption,
-    IonSegment,
-    IonSegmentButton,
-    IonLabel,
-
-    ImageCropperComponent
-
+    PersonalDataFormComponent,
+    MembershipFormComponent,
+    CredentialsFormComponent
   ]
-
 })
+
 export class UserDetailPage
   implements OnInit {
 
-  // =================================
-  // ESTADO
-  // =================================
+  user: User = {} as User;
 
   userId: string | null = null;
 
-  nuevoUsuario = false;
+  isEditMode = false;
 
-  puedeEditar = false;
+  tiposDisponibles: string[] = [
+    'administrador',
+    'directiva',
+    'socio',
+    'invitado'
+  ];
 
-  esRegistrado = false;
+  repeatEmail = '';
 
-  // =================================
-  // TABS
-  // =================================
+  password = '';
 
-  tabActual =
-    'personales';
-
-  // =================================
-  // EDICION
-  // =================================
-
-  editandoPersonales =
-    false;
-
-  editandoCredenciales =
-    false;
-
-  editandoMembresia =
-    false;
-
-  // =================================
-  // USERS
-  // =================================
-
-  currentUser: any = null;
-
-  user: any = {
-
-    uid: '',
-
-    numeroSocio: '',
-
-    nombre: '',
-    telefono: '',
-    email: '',
-    password: '',
-    dni: '',
-    direccion: '',
-    foto: '',
-
-    tipo: 'invitado',
-
-    source: '',
-
-    perfilCompleto: false
-
-  };
-
-  // =================================
-  // CREDENCIALES
-  // =================================
-
-  credenciales = {
-
-    currentPassword: '',
-
-    newEmail: '',
-
-    newPassword: '',
-
-    repeatPassword: ''
-
-  };
-
-  // =================================
-  // TIPOS
-  // =================================
-
-  tiposDisponibles: any[] = [];
-
-  // =================================
-  // FOTO
-  // =================================
+  repeatPassword = '';
 
   imageChangedEvent: any = '';
 
@@ -209,22 +123,17 @@ export class UserDetailPage
 
     private userService: UserService,
 
+    private validationService:
+      UserValidationService,
+
     private authService: AuthService,
 
-    private photoService: PhotoService
-
+    private photoService:
+      PhotoService,
   ) {
 
     addIcons({
-
-      cameraOutline,
-      imagesOutline,
-      saveOutline,
-      personOutline,
-      createOutline,
-      shieldOutline,
-      keyOutline
-
+      saveOutline
     });
 
   }
@@ -233,296 +142,155 @@ export class UserDetailPage
   // INIT
   // =================================
 
-  async ngOnInit() {
-
-    this.currentUser =
-      this.authService.currentUserData;
-
-    this.cargarTiposDisponibles();
+  async ngOnInit(): Promise<void> {
 
     this.userId =
-      this.route.snapshot
-        .paramMap
-        .get('id');
 
-    if (
-
-      this.authService
-        .isRegisteredUser()
-
-    ) {
-
-      this.esRegistrado = true;
-
-    }
-
-    if (
-
-      !this.userId ||
-
-      this.userId === 'new'
-
-    ) {
-
-      this.nuevoUsuario = true;
-
-      this.editandoPersonales =
-        true;
-
-      return;
-
-    }
-
-    let data =
-
-      await this.userService
-        .getById(this.userId);
-
-    // =================================
-    // REGISTERED USERS
-    // =================================
-
-    if (!data) {
-
-      data =
-
-        await this.userService
-          .getRegisteredUser(
-            this.userId
-          );
-
-      // =================================
-      // MARCAR SOURCE
-      // =================================
-
-      if (!data) {
-
-        data =
-
-          await this.userService
-            .getRegisteredUser(
-              this.userId
-            );
-
-        if (data) {
-
-          (data as any).source =
-            'registeredUsers';
-
-        }
-
-      }
-
-    }
-
-    if (!data) {
-
-      this.router.navigate([
-        '/home'
-      ]);
-
-      return;
-
-    }
-
-    this.user = data;
-
-    this.validarPermisos();
-
-  }
-
-  // =================================
-  // PERMISOS
-  // =================================
-
-  validarPermisos() {
-
-    const myUid =
-      this.currentUser?.uid;
-
-    const myRole =
-      this.currentUser?.tipo;
-
-    const targetUid =
-      this.user?.uid;
-
-    const targetRole =
-      this.user?.tipo;
-
-    if (
-      myRole === 'administrador'
-    ) {
-
-      this.puedeEditar = true;
-
-      return;
-
-    }
-
-    if (
-      myRole === 'directiva'
-    ) {
-
-      if (
-        targetRole ===
-        'administrador'
-      ) {
-
-        this.puedeEditar = false;
-
-        return;
-
-      }
-
-      this.puedeEditar = true;
-
-      return;
-
-    }
-
-    if (
-
-      myRole === 'socio' ||
-
-      myRole === 'invitado' ||
-
-      myRole === 'registrado'
-
-    ) {
-
-      this.puedeEditar =
-        myUid === targetUid;
-
-    }
-
-  }
-
-  // =================================
-  // TIPOS
-  // =================================
-
-  cargarTiposDisponibles() {
-
-    const role =
-      this.authService
-        .getRole();
-
-    if (
-      role === 'administrador'
-    ) {
-
-      this.tiposDisponibles = [
-
-        {
-          value: 'administrador',
-          label: 'Administrador'
-        },
-
-        {
-          value: 'directiva',
-          label: 'Directiva'
-        },
-
-        {
-          value: 'socio',
-          label: 'Socio'
-        },
-
-        {
-          value: 'invitado',
-          label: 'Invitado'
-        }
-
-      ];
-
-      return;
-
-    }
-
-    if (
-      role === 'directiva'
-    ) {
-
-      this.tiposDisponibles = [
-
-        {
-          value: 'directiva',
-          label: 'Directiva'
-        },
-
-        {
-          value: 'socio',
-          label: 'Socio'
-        },
-
-        {
-          value: 'invitado',
-          label: 'Invitado'
-        }
-
-      ];
-
-    }
-
-  }
-
-  // =================================
-  // GUARDAR PERSONALES
-  // =================================
-
-  async guardarPersonales() {
-
-    if (!this.user.nombre) {
-
-      alert(
-        'Nombre obligatorio'
+      this.route.snapshot.paramMap.get(
+        'id'
       );
 
-      return;
+    this.isEditMode =
+      !!this.userId;
 
+    if (
+      this.isEditMode &&
+      this.userId
+    ) {
+
+      await this.loadUser();
     }
+
+  }
+
+  // =================================
+  // LOAD USER
+  // =================================
+
+  async loadUser(): Promise<void> {
 
     try {
 
-      // =============================
-      // REGISTERED USER
-      // =============================
+      const data =
 
-      if (
+        await this.userService.getById(
+          this.userId!
+        );
 
-        this.authService
-          .currentUserData
-          ?.source ===
-        'registeredUsers'
+      if (data) {
 
-      ) {
+        this.user = data;
 
-        await this.userService
-          .updateRegisteredUser(
+        this.repeatEmail =
 
-            this.user.uid,
+          this.user.email || '';
+      }
 
-            {
+    } catch (error) {
 
-              ...this.user,
+      console.error(error);
+    }
 
-              perfilCompleto: true
+  }
 
-            }
+  // =================================
+  // SAVE
+  // =================================
+
+  async save(): Promise<void> {
+
+    try {
+
+      // CAPITALIZAR NOMBRE
+
+      this.user.nombre =
+
+        this.validationService
+          .capitalizeName(
+
+            this.user.nombre || ''
 
           );
 
+      // EMAILS
+
+      if (
+
+        !this.validationService.validateEmail(
+
+          this.user.email || '',
+
+          this.repeatEmail
+
+        )
+
+      ) {
+
+        alert(
+          'Los emails no coinciden'
+        );
+
+        return;
       }
 
-      // =============================
-      // USER NORMAL
-      // =============================
+      // PASSWORDS
 
-      else {
+      if (
+
+        this.password !==
+        this.repeatPassword
+
+      ) {
+
+        alert(
+          'Las contraseñas no coinciden'
+        );
+
+        return;
+      }
+
+      // PASSWORD
+
+      if (!this.isEditMode) {
+
+        this.user.password =
+          this.password;
+      }
+
+      // =========================
+      // UPLOAD PHOTO
+      // =========================
+
+      if (this.croppedImage) {
+
+        const tempUid =
+          crypto.randomUUID();
+
+        this.user.foto =
+
+          await this.photoService
+            .uploadProfilePhoto(
+
+              tempUid,
+
+              this.croppedImage
+
+            );
+
+      }
+
+      // UPDATE
+
+      if (
+
+        this.isEditMode &&
+        this.userId
+
+      ) {
 
         await this.userService.update(
 
-          this.user.uid,
+          this.userId,
 
           this.user
 
@@ -530,268 +298,38 @@ export class UserDetailPage
 
       }
 
-      alert(
-        'Datos guardados'
-      );
+      // CREATE
 
-      this.editandoPersonales =
-        false;
+      else {
 
-    } catch (error) {
+        await this.authService
+          .createUserAsAdmin(
 
-      console.error(error);
-
-      alert(
-        'Error guardando datos'
-      );
-
-    }
-
-  }
-
-  // =================================
-  // GUARDAR MEMBRESIA
-  // =================================
-
-  async guardarMembresia() {
-
-    if (
-
-      this.user.tipo === 'socio'
-
-      ||
-
-      this.user.tipo === 'directiva'
-
-    ) {
-
-      if (
-
-        !this.user.numeroSocio
-
-      ) {
-
-        alert(
-          'Debe indicar número de socio'
-        );
-
-        return;
-
-      }
-
-      const existe =
-
-        await this.userService
-          .existeNumeroSocio(
-
-            this.user.numeroSocio,
-
-            this.user.uid
+            this.user
 
           );
 
-      if (existe) {
-
-        alert(
-          'Número de socio ya existe'
-        );
-
-        return;
-
       }
 
-    }
-
-    // =============================
-    // REGISTERED USER
-    // =============================
-
-    if (
-
-      this.user.source ===
-      'registeredUsers'
-
-    ) {
-
-      await this.userService
-        .updateRegisteredUser(
-
-          this.user.uid,
-
-          this.user
-
-        );
-
-    }
-
-    // =============================
-    // USER NORMAL
-    // =============================
-
-    else {
-
-      await this.userService.update(
-
-        this.user.uid,
-
+      console.log(
+        'USUARIO GUARDADO:',
         this.user
-
       );
+
+      // NAVIGATE
+
+      this.router.navigate([
+        '/gest-user'
+      ]);
 
     }
 
-    alert(
-      'Membresía actualizada'
-    );
-
-    this.editandoMembresia =
-      false;
-
-  }
-
-  // =================================
-  // GUARDAR CREDENCIALES
-  // =================================
-
-  async guardarCredenciales() {
-
-    const cambiarEmail =
-
-      this.credenciales.newEmail
-      &&
-      this.credenciales.newEmail
-      !== this.user.email;
-
-    const cambiarPassword =
-
-      this.credenciales.newPassword
-      &&
-      this.credenciales.newPassword
-        .trim() !== '';
-
-    if (
-
-      !cambiarEmail &&
-
-      !cambiarPassword
-
-    ) {
-
-      alert(
-        'No hay cambios'
-      );
-
-      return;
-
-    }
-
-    if (
-
-      !this.credenciales
-        .currentPassword
-
-    ) {
-
-      alert(
-        'Debe indicar contraseña actual'
-      );
-
-      return;
-
-    }
-
-    if (
-
-      cambiarPassword &&
-
-      this.credenciales.newPassword
-      !==
-      this.credenciales.repeatPassword
-
-    ) {
-
-      alert(
-        'Las contraseñas no coinciden'
-      );
-
-      return;
-
-    }
-
-    if (
-
-      cambiarPassword &&
-
-      this.credenciales.newPassword
-        .length < 6
-
-    ) {
-
-      alert(
-        'La contraseña debe tener al menos 6 caracteres'
-      );
-
-      return;
-
-    }
-
-    try {
-
-      await this.authService
-        .updateCredentials(
-
-          this.user.uid,
-
-          this.user.email,
-
-          this.credenciales
-            .currentPassword,
-
-          cambiarEmail
-            ? this.credenciales
-              .newEmail
-            : this.user.email,
-
-          cambiarPassword
-            ? this.credenciales
-              .newPassword
-            : ''
-
-        );
-
-      if (cambiarEmail) {
-
-        this.user.email =
-
-          this.credenciales
-            .newEmail;
-
-      }
-
-      alert(
-        'Credenciales actualizadas'
-      );
-
-      this.editandoCredenciales =
-        false;
-
-      this.credenciales = {
-
-        currentPassword: '',
-        newEmail: '',
-        newPassword: '',
-        repeatPassword: ''
-
-      };
-
-    } catch (error: any) {
+    catch (error) {
 
       console.error(error);
 
       alert(
-        error?.message
-        ||
-        'Error actualizando credenciales'
+        'Error guardando usuario'
       );
 
     }
@@ -799,211 +337,60 @@ export class UserDetailPage
   }
 
   // =================================
-  // FORMATEAR DNI
+  // PHOTO
   // =================================
 
-  formatearDNI() {
+  selectPhoto(): void {
 
-    if (!this.user.dni) {
+    const input = document.createElement(
+      'input'
+    );
 
-      return;
+    input.type = 'file';
 
-    }
+    input.accept = 'image/*';
 
-    let dni =
+    input.onchange = (event: any) => {
 
-      this.user.dni
-        .toUpperCase()
-        .replace(/[^0-9A-Z]/g, '');
+      this.imageChangedEvent = event;
 
-    const numeros =
-      dni.replace(/[A-Z]/g, '');
-
-    if (
-
-      numeros.length < 8
-
-    ) {
-
-      this.user.dni =
-        numeros;
-
-      return;
-
-    }
-
-    const letras =
-      'TRWAGMYFPDXBNJZSQVHLCKE';
-
-    const letra =
-      letras[
-      parseInt(numeros, 10) % 23
-      ];
-
-    this.user.dni =
-
-      numeros.substring(0, 8)
-      + letra;
-
-  }
-
-  // =================================
-  // FOTO GALERIA
-  // =================================
-
-  async seleccionarFoto() {
-
-    const image =
-      await Camera.getPhoto({
-
-        quality: 90,
-
-        allowEditing: false,
-
-        resultType:
-          CameraResultType.DataUrl,
-
-        source:
-          CameraSource.Photos
-
-      });
-
-    if (image.dataUrl) {
-
-      this.imageChangedEvent =
-        image.dataUrl;
-
-      this.mostrarCropper =
-        true;
-
-    }
-
-  }
-
-  // =================================
-  // FOTO CAMARA
-  // =================================
-
-  async hacerFoto() {
-
-    const image =
-      await Camera.getPhoto({
-
-        quality: 90,
-
-        allowEditing: false,
-
-        resultType:
-          CameraResultType.DataUrl,
-
-        source:
-          CameraSource.Camera
-
-      });
-
-    if (image.dataUrl) {
-
-      this.imageChangedEvent =
-        image.dataUrl;
-
-      this.mostrarCropper =
-        true;
-
-    }
-
-  }
-
-  // =================================
-  // CROPPER
-  // =================================
-
-  imageCropped(
-    event: ImageCroppedEvent
-  ) {
-
-    if (!event.blob) {
-
-      return;
-
-    }
-
-    const reader =
-      new FileReader();
-
-    reader.onload = () => {
-
-      this.croppedImage =
-        reader.result as string;
+      this.mostrarCropper = true;
 
     };
 
-    reader.readAsDataURL(
-      event.blob
-    );
+    input.click();
 
   }
 
-  cancelarCrop() {
+  takePhoto(): void {
 
-    this.mostrarCropper =
-      false;
+    this.selectPhoto();
 
-    this.imageChangedEvent =
-      '';
+  }
+
+  imageCropped(event: any): void {
+
+    if (!event?.base64) {
+      return;
+    }
 
     this.croppedImage =
-      '';
+      event.base64;
 
   }
 
-  async aplicarCrop() {
+  applyCropper(): void {
 
-    if (!this.croppedImage) {
+    this.user.foto =
+      this.croppedImage;
 
-      return;
+    this.mostrarCropper = false;
 
-    }
+  }
 
-    try {
+  cancelCropper(): void {
 
-      const photoUrl =
-
-        await this.photoService
-          .uploadProfilePhoto(
-
-            this.user.uid ||
-
-            this.currentUser.uid,
-
-            this.croppedImage
-
-          );
-
-      this.user.foto =
-        photoUrl;
-
-      this.user = {
-        ...this.user
-      };
-
-      this.mostrarCropper =
-        false;
-
-      this.imageChangedEvent =
-        '';
-
-      this.croppedImage =
-        '';
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        'Error subiendo imagen'
-      );
-
-    }
+    this.mostrarCropper = false;
 
   }
 
