@@ -1,8 +1,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
     "baseUrl": "./",
+    "paths": {
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@auth/*": [
+        "src/app/features/auth/*"
+      ],
+      "@users/*": [
+        "src/app/features/users/*"
+      ],
+      "@home/*": [
+        "src/app/features/home/*"
+      ],
+      "@events/*": [
+        "src/app/features/events/*"
+      ],
+      "@stats/*": [
+        "src/app/features/stats/*"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": false,
@@ -14,7 +36,7 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",

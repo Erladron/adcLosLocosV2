@@ -1,0 +1,70 @@
+.invite-content {
+    --background: #1a3a8a;
+}
+
+.background-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.15;
+    z-index: -1;
+    width: 80%;
+    img {
+        width: 100%;
+        filter: grayscale(100%);
+    }
+}
+
+.invite-container {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .invite-box {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 40px 20px;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+
+        .header-icon {
+            font-size: 64px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: white;
+            font-weight: bold;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+    }
+}
+
+ion-item {
+    --background: rgba(255, 255, 255, 0.05);
+    --color: white;
+    --border-radius: 12px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.button-section {
+    margin-top: 20px;
+    .main-button {
+        --border-radius: 12px;
+        --background: #2563eb;
+        font-weight: bold;
+        height: 50px;
+    }
+}

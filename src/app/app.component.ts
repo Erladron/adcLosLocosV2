@@ -19,17 +19,23 @@ import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 
 import {
+  environment
+} from '../environments/environment';
+
+import {
 
   homeOutline,
   peopleOutline,
   statsChartOutline,
   calendarOutline,
   logOutOutline,
-  personAddOutline
+  personAddOutline,
+  checkmarkCircleOutline
 
 } from 'ionicons/icons';
 
-import { AuthService } from './services/auth.service';
+import { AuthService }
+from '@auth/services/auth.service';
 
 import { CommonModule } from '@angular/common';
 
@@ -79,9 +85,20 @@ export class AppComponent {
       statsChartOutline,
       calendarOutline,
       logOutOutline,
-      personAddOutline
+      personAddOutline,
+      checkmarkCircleOutline
 
     });
+
+    console.log(
+      'ENVIRONMENT:',
+      environment.envName
+    );
+
+    console.log(
+      'PROJECT:',
+      environment.firebase.projectId
+    );
 
     this.checkLogin();
 

@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  envName: 'DESA',
   firebase: {
     apiKey: "AIzaSyBAUINgjqjvyPm0mxoF5qsxjauC5DT7STk",
     authDomain: "adcloslocos-desa.firebaseapp.com",

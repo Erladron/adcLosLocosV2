@@ -1,0 +1,302 @@
+<app-page-header
+  title="Inicio"
+  [showMenu]="true">
+
+</app-page-header>
+
+<ion-content
+  fullscreen="true"
+  class="home-content">
+
+  <!-- =========================================
+       BACKGROUND
+  ========================================== -->
+
+  <div class="background-logo">
+
+    <img
+      src="assets/img/escudo.png"
+      alt="Escudo">
+
+  </div>
+
+  <!-- =========================================
+       HOME CONTAINER
+  ========================================== -->
+
+  <div class="home-container">
+
+    <!-- =========================================
+         WELCOME
+    ========================================== -->
+
+    <div class="welcome-section">
+
+      <div>
+
+        <h1>
+
+          Hola,
+          {{ currentUser?.nombre || 'Usuario' }}
+          👋
+
+        </h1>
+
+        <p>
+          Bienvenido a A.C.D. Los Locos
+        </p>
+
+      </div>
+
+      <img
+        src="assets/img/escudo.png"
+        class="welcome-logo">
+
+    </div>
+
+    <!-- =========================================
+         USER INFO CARD
+    ========================================== -->
+
+    <div class="glass-card profile-card">
+
+      <div class="profile-header">
+
+        <ion-icon
+          name="person-outline">
+
+        </ion-icon>
+
+        <span>
+          Mi información
+        </span>
+
+      </div>
+
+      <div class="profile-content">
+
+        <!-- AVATAR -->
+
+        <div class="profile-avatar">
+
+          <img
+
+            *ngIf="currentUser?.foto"
+
+            [src]="currentUser?.foto"
+
+          >
+
+          <ion-icon
+
+            *ngIf="!currentUser?.foto"
+
+            name="person-outline"
+
+          >
+
+          </ion-icon>
+
+        </div>
+
+        <!-- INFO -->
+
+        <div class="profile-info">
+
+          <div class="info-item">
+
+            <span class="label">
+              Nombre
+            </span>
+
+            <strong>
+              {{ currentUser?.nombre }}
+            </strong>
+
+          </div>
+
+          <div class="info-item">
+
+            <span class="label">
+              Rol
+            </span>
+
+            <div class="role-badge">
+
+              {{ currentUser?.tipo }}
+
+            </div>
+
+          </div>
+
+          <div class="info-item">
+
+            <span class="label">
+              Nº Socio
+            </span>
+
+            <strong>
+              {{ currentUser?.numeroSocio || '--' }}
+            </strong>
+
+          </div>
+
+          <div class="info-item">
+
+            <span class="label">
+              Estado
+            </span>
+
+            <div class="status-badge active">
+
+              <ion-icon
+                name="checkmark-circle">
+
+              </ion-icon>
+
+              Activo
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =========================================
+         QUICK ACCESS
+    ========================================== -->
+
+    <div class="section-title">
+
+      Accesos rápidos
+
+    </div>
+
+    <div class="quick-grid">
+
+      <!-- USERS -->
+
+      <div
+
+        class="quick-card glass-card"
+
+        routerLink="/gest-user"
+
+      >
+
+        <div class="quick-icon">
+
+          <ion-icon
+            name="people-outline">
+
+          </ion-icon>
+
+        </div>
+
+        <div class="quick-info">
+
+          <h3>
+            Usuarios
+          </h3>
+
+          <p>
+            Gestiona usuarios
+          </p>
+
+        </div>
+
+        <ion-icon
+          name="chevron-forward-outline"
+          class="quick-arrow">
+
+        </ion-icon>
+
+      </div>
+
+      <!-- EVENTS -->
+
+      <div
+
+        class="quick-card glass-card"
+
+        routerLink="/events"
+
+      >
+
+        <div class="quick-icon">
+
+          <ion-icon
+            name="calendar-outline">
+
+          </ion-icon>
+
+        </div>
+
+        <div class="quick-info">
+
+          <h3>
+            Eventos
+          </h3>
+
+          <p>
+            Consulta eventos
+          </p>
+
+        </div>
+
+        <ion-icon
+          name="chevron-forward-outline"
+          class="quick-arrow">
+
+        </ion-icon>
+
+      </div>
+
+      <!-- STATS -->
+
+      <div
+
+        class="quick-card glass-card"
+
+        routerLink="/stats"
+
+      >
+
+        <div class="quick-icon">
+
+          <ion-icon
+            name="stats-chart-outline">
+
+          </ion-icon>
+
+        </div>
+
+        <div class="quick-info">
+
+          <h3>
+            Estadísticas
+          </h3>
+
+          <p>
+            Analiza actividad
+          </p>
+
+        </div>
+
+        <ion-icon
+          name="chevron-forward-outline"
+          class="quick-arrow">
+
+        </ion-icon>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

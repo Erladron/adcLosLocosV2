@@ -1,0 +1,189 @@
+// =================================
+// CONTENT
+// =================================
+
+.approval-content {
+
+    --background:
+        linear-gradient(180deg,
+            #10131a 0%,
+            #1a2230 100%);
+
+    position: relative;
+
+}
+
+// =================================
+// BACKGROUND
+// =================================
+
+.background-logo {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    opacity: 0.05;
+
+    pointer-events: none;
+
+    img {
+
+        width: 70%;
+
+        max-width: 420px;
+
+    }
+
+}
+
+// =================================
+// WRAPPER
+// =================================
+
+.approval-wrapper {
+
+    min-height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 24px;
+
+}
+
+// =================================
+// CARD
+// =================================
+
+.approval-card {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 36px 28px;
+
+    border-radius: 28px;
+
+    text-align: center;
+
+}
+
+// =================================
+// GLASS
+// =================================
+
+.glass-card {
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.28);
+
+}
+
+// =================================
+// ICONS
+// =================================
+
+.icon-container {
+
+    margin-bottom: 24px;
+
+}
+
+.pending-icon {
+
+    font-size: 84px;
+
+    color: #ffd667;
+
+}
+
+.rejected-icon {
+
+    font-size: 84px;
+
+    color: #ff6b6b;
+
+}
+
+// =================================
+// TEXT
+// =================================
+
+h1 {
+
+    color: white;
+
+    font-size: 1.8rem;
+
+    font-weight: 700;
+
+    margin-bottom: 18px;
+
+}
+
+p {
+
+    color:
+        rgba(255, 255, 255, 0.78);
+
+    line-height: 1.6;
+
+    font-size: 1rem;
+
+    margin-bottom: 32px;
+
+}
+
+// =================================
+// ACTIONS
+// =================================
+
+.actions {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+}
+
+.refresh-button {
+
+    --background:
+        linear-gradient(135deg,
+            #2f80ed,
+            #56ccf2);
+
+    --border-radius: 16px;
+
+    height: 50px;
+
+}
+
+ion-button {
+
+    --border-radius: 16px;
+
+    height: 50px;
+
+}

@@ -1,0 +1,20 @@
+.custom-toolbar {
+
+  --background:
+    rgba(15, 15, 15, 0.82);
+
+  backdrop-filter:
+    blur(16px);
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
+
+}
+
+ion-title {
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+}

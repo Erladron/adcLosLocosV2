@@ -1,0 +1,280 @@
+/* ================================= */
+/* CONTENT */
+/* ================================= */
+
+.detail-content {
+
+  --background:
+    linear-gradient(180deg,
+      #0b2d6b 0%,
+      #123b91 100%);
+
+}
+
+.detail-container {
+
+  width:
+    100%;
+
+  max-width:
+    720px;
+
+  margin:
+    0 auto;
+
+  padding:
+    28px 20px 60px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    22px;
+
+}
+
+.background-logo {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0.05;
+
+}
+
+.background-logo img {
+
+  width:
+    420px;
+
+}
+
+.main-button {
+
+  margin-top:
+    12px;
+
+  --background:
+    linear-gradient(135deg,
+      #2874f0,
+      #5b3fd6);
+
+  --border-radius:
+    20px;
+
+  height:
+    58px;
+
+  font-size:
+    1rem;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.4px;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.25);
+
+}
+
+/* ================================= */
+/* BACKGROUND LOGO */
+/* ================================= */
+
+.background-logo {
+
+  position: fixed;
+
+  inset: 0;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+.background-logo img {
+
+  width: 320px;
+
+  opacity: 0.05;
+
+  user-select: none;
+}
+
+/* ================================= */
+/* CONTAINER */
+/* ================================= */
+
+.detail-container {
+
+  width: 100%;
+
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  padding: 18px 16px 100px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+  position: relative;
+
+  z-index: 1;
+}
+
+/* ================================= */
+/* COMPONENTS */
+/* ================================= */
+
+app-personal-data-form,
+app-membership-form,
+app-credentials-form {
+
+  width: 100%;
+
+  display: block;
+}
+
+/* ================================= */
+/* BUTTON */
+/* ================================= */
+
+.main-button {
+
+  margin-top:
+    28px;
+
+  margin-bottom:
+    50px;
+
+  --background:
+    linear-gradient(135deg,
+      #2874f0,
+      #4b3cc4);
+
+  --border-radius:
+    18px;
+
+  height:
+    52px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.5px;
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.25);
+
+}
+
+/* ================================= */
+/* HEADER */
+/* ================================= */
+
+ion-header ion-toolbar {
+
+  --background: #0b2d6b;
+
+  --color: white;
+
+  --border-width: 0;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+ion-title {
+
+  font-size: 1.5rem;
+
+  font-weight: 700;
+
+  color: white;
+}
+
+ion-back-button {
+
+  --color: white;
+}
+
+/* ================================= */
+/* SCROLL FIX */
+/* ================================= */
+
+ion-content::part(scroll) {
+
+  overflow-y: auto;
+
+  padding-bottom: 40px;
+}
+
+/* ================================= */
+/* MOBILE */
+/* ================================= */
+
+@media (max-width: 768px) {
+
+  .detail-container {
+
+    padding: 14px 12px 80px;
+
+    gap: 14px;
+  }
+
+  .background-logo img {
+
+    width: 220px;
+  }
+
+  ion-title {
+
+    font-size: 1.25rem;
+  }
+
+  .main-button {
+
+    height: 46px;
+
+    font-size: 0.92rem;
+  }
+}
+
+::ng-deep .ngx-ic-source-image {
+
+  background:
+    transparent !important;
+
+}

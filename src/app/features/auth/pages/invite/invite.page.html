@@ -1,0 +1,125 @@
+<app-page-header
+
+  title="Invitar Usuario"
+
+  [showBack]="true"
+
+  backUrl="/home"
+
+>
+
+</app-page-header>
+
+<ion-content
+
+  fullscreen="true"
+
+  class="invite-content"
+
+>
+
+  <!-- ================================= -->
+  <!-- BACKGROUND -->
+  <!-- ================================= -->
+
+  <div class="background-logo">
+
+    <img
+
+      src="assets/img/escudo.png"
+
+      alt="Escudo"
+
+    >
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- CONTENT -->
+  <!-- ================================= -->
+
+  <div class="invite-container">
+
+    <div class="invite-box">
+
+      <!-- ============================= -->
+      <!-- ICON -->
+      <!-- ============================= -->
+
+      <ion-icon
+
+        name="mail-open-outline"
+
+        class="header-icon"
+
+      >
+
+      </ion-icon>
+
+      <!-- ============================= -->
+      <!-- TITLE -->
+      <!-- ============================= -->
+
+      <h2>
+
+        Enviar Invitación
+
+      </h2>
+
+      <p>
+
+        El correo introducido podrá registrarse en la aplicación.
+
+      </p>
+
+      <!-- ============================= -->
+      <!-- EMAIL -->
+      <!-- ============================= -->
+
+      <ion-item lines="none">
+
+        <ion-input
+
+          label="Correo electrónico"
+
+          labelPlacement="floating"
+
+          type="email"
+
+          [(ngModel)]="email"
+
+          placeholder="ejemplo@correo.com"
+
+        >
+
+        </ion-input>
+
+      </ion-item>
+
+      <!-- ============================= -->
+      <!-- ACTIONS -->
+      <!-- ============================= -->
+
+      <div class="button-section">
+
+        <ion-button
+
+          expand="block"
+
+          class="main-button"
+
+          (click)="invitar()"
+
+        >
+
+          ENVIAR INVITACIÓN
+
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

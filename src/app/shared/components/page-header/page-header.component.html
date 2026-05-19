@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar class="custom-toolbar">
+
+    <!-- ================================= -->
+    <!-- LEFT BUTTON -->
+    <!-- ================================= -->
+
+    <ion-buttons slot="start">
+
+      <!-- BACK -->
+
+      <ion-back-button
+
+        *ngIf="showBack"
+
+        [defaultHref]="backUrl"
+
+      >
+
+      </ion-back-button>
+
+      <!-- MENU -->
+
+      <ion-menu-button
+
+        *ngIf="showMenu"
+
+      >
+
+      </ion-menu-button>
+
+    </ion-buttons>
+
+    <!-- ================================= -->
+    <!-- TITLE -->
+    <!-- ================================= -->
+
+    <ion-title>
+
+      {{ title }}
+
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>

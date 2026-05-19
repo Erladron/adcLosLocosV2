@@ -1,0 +1,195 @@
+<app-page-header
+
+  [title]="
+
+    isEditMode
+
+      ? 'Editar Usuario'
+
+      : 'Alta Usuario'
+
+  "
+
+  [showBack]="true"
+
+  backUrl="/gest-user"
+
+>
+
+</app-page-header>
+
+<ion-content class="detail-content">
+
+  <!-- ================================= -->
+  <!-- BACKGROUND -->
+  <!-- ================================= -->
+
+  <div class="background-logo">
+
+    <img
+
+      src="assets/img/escudo.png"
+
+      alt="Escudo"
+
+    >
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- CONTENT -->
+  <!-- ================================= -->
+
+  <div class="detail-container">
+
+    <!-- ================================= -->
+    <!-- PERSONAL DATA -->
+    <!-- ================================= -->
+
+    <app-personal-data-form
+
+      [user]="user"
+
+      [imageChangedEvent]="imageChangedEvent"
+
+      [croppedImage]="croppedImage"
+
+      [mostrarCropper]="mostrarCropper"
+
+      [isEditMode]="isEditMode"
+
+      [editing]="editingPersonalData"
+
+      [canEdit]="canEditPersonalData"
+
+      (toggleEdit)="togglePersonalData()"
+
+      (selectPhoto)="selectPhoto()"
+
+      (takePhoto)="takePhoto()"
+
+      (cancelEdit)="editingPersonalData = false"
+
+      (imageCropped)="imageCropped($event)"
+
+      (applyCropper)="applyCropper()"
+
+      (cancelCropper)="cancelCropper()"
+
+    >
+
+    </app-personal-data-form>
+
+    <!-- ================================= -->
+    <!-- MEMBERSHIP -->
+    <!-- ================================= -->
+
+    <app-membership-form
+
+      *ngIf="!isProfileCompletion"
+
+      [user]="user"
+
+      [tiposDisponibles]="tiposDisponibles"
+
+      [isEditMode]="isEditMode"
+
+      [editing]="editingMembership"
+
+      [canEditMembership]="canEditMembership"
+
+      (toggleEdit)="toggleMembership()"
+
+      (cancelEdit)="editingMembership = false"
+
+    >
+
+    </app-membership-form>
+
+    <!-- ================================= -->
+    <!-- CREDENTIALS -->
+    <!-- ================================= -->
+
+    <app-credentials-form
+
+      *ngIf="!isProfileCompletion"
+
+      [user]="user"
+
+      [isEditMode]="isEditMode"
+
+      [isOwnProfile]="isOwnProfile"
+
+      [canEditCredentials]="canEditCredentials"
+
+      [canEditPassword]="canEditPassword"
+
+      [editing]="editingCredentials"
+
+      [currentPassword]="currentPassword"
+
+      [repeatEmail]="repeatEmail"
+
+      [password]="password"
+
+      [repeatPassword]="repeatPassword"
+
+      [pendingEmailVerification]="pendingEmailVerification"
+
+      (toggleEdit)="toggleCredentials()"
+
+      (cancelEdit)="editingCredentials = false"
+
+      (currentPasswordChange)="currentPassword = $event"
+
+      (repeatEmailChange)="repeatEmail = $event"
+
+      (passwordChange)="password = $event"
+
+      (repeatPasswordChange)="repeatPassword = $event"
+
+    >
+
+    </app-credentials-form>
+
+    <!-- ================================= -->
+    <!-- CREATE BUTTON -->
+    <!-- ================================= -->
+
+    <ion-button
+
+      *ngIf="!isEditMode"
+
+      expand="block"
+
+      class="main-button"
+
+      (click)="save()"
+
+    >
+
+      <ion-icon
+
+        slot="start"
+
+        name="save-outline"
+
+      >
+
+      </ion-icon>
+
+      {{
+
+        isEditMode
+
+          ? 'Guardar Cambios'
+
+          : 'Crear Usuario'
+
+      }}
+
+    </ion-button>
+
+  </div>
+
+</ion-content>

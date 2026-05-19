@@ -1,0 +1,55 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crea tu cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="register-content">
+  <div class="background-logo">
+    <img src="assets/img/escudo.png" alt="Escudo">
+  </div>
+
+  <div class="register-container">
+    <div class="form-card">
+      <div class="header-section">
+        <ion-icon name="person-add-outline" class="main-icon"></ion-icon>
+        <h2>Nuevo Registro</h2>
+        <p>Introduce tus datos para solicitar el alta</p>
+      </div>
+
+      <div class="form-section">
+        <ion-item lines="none">
+          <ion-input label="Nombre Completo" labelPlacement="floating" [(ngModel)]="user.nombre" autocomplete="off"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-input label="Email" labelPlacement="floating" type="email" [(ngModel)]="user.email" autocomplete="off"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-input [type]="showPassword ? 'text' : 'password'" label="Contraseña" labelPlacement="floating" [(ngModel)]="user.password"></ion-input>
+          <ion-button slot="end" fill="clear" (click)="showPassword = !showPassword" class="eye-button">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-input [type]="showPasswordConfirm ? 'text' : 'password'" label="Repetir Contraseña" labelPlacement="floating" [(ngModel)]="passwordConfirm"></ion-input>
+          <ion-button slot="end" fill="clear" (click)="showPasswordConfirm = !showPasswordConfirm" class="eye-button">
+            <ion-icon [name]="showPasswordConfirm ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <div class="button-section">
+          <ion-button expand="block" (click)="registrarse()" [disabled]="cargando" class="main-button">
+            <span *ngIf="!cargando">Registrarse</span>
+            <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

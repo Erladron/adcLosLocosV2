@@ -1,0 +1,273 @@
+<div class="section-card">
+
+  <!-- ================================= -->
+  <!-- HEADER -->
+  <!-- ================================= -->
+
+  <div class="section-header">
+
+    <!-- PERFIL -->
+
+    <div class="profile-header">
+
+      <div class="avatar-container">
+
+        <img *ngIf="user.foto" [src]="user.foto" class="profile-avatar" />
+
+        <div *ngIf="!user.foto" class="default-avatar">
+
+          <ion-icon name="person-outline">
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+      <div class="profile-text">
+
+        <h2>
+          {{ user?.nombre || 'Nuevo Usuario' }}
+        </h2>
+
+        <p>
+          Datos personales del usuario.
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+
+    <div *ngIf="
+    isEditMode
+    &&
+    canEdit
+  " class="section-actions">
+
+      <!-- EDIT -->
+
+      <ion-button *ngIf="!editing" class="section-action-btn" shape="round" (click)="toggleEdit.emit()">
+
+        <ion-icon slot="icon-only" name="create-outline">
+        </ion-icon>
+
+      </ion-button>
+
+      <!-- SAVE -->
+
+      <ion-button *ngIf="editing" class="section-action-btn save" shape="round" (click)="toggleEdit.emit()">
+
+        <ion-icon slot="icon-only" name="save-outline">
+        </ion-icon>
+
+      </ion-button>
+
+      <!-- CANCEL -->
+
+      <ion-button *ngIf="editing" class="section-action-btn cancel" shape="round" (click)="cancelEdit.emit()">
+
+        <ion-icon slot="icon-only" name="close-outline">
+        </ion-icon>
+
+      </ion-button>
+
+    </div>
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- PHOTO BUTTONS -->
+  <!-- ================================= -->
+
+  <div class="photo-buttons" *ngIf="
+      !isEditMode
+      ||
+      editing
+    ">
+
+    <ion-button fill="solid" shape="round" (click)="selectPhoto.emit()">
+
+      <ion-icon slot="icon-only" name="images-outline">
+      </ion-icon>
+
+    </ion-button>
+
+    <ion-button fill="solid" shape="round" (click)="takePhoto.emit()">
+
+      <ion-icon slot="icon-only" name="camera-outline">
+      </ion-icon>
+
+    </ion-button>
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- CROPPER -->
+  <!-- ================================= -->
+
+  <div class="cropper-wrapper" *ngIf="
+      mostrarCropper
+      &&
+      (
+        !isEditMode
+        ||
+        editing
+      )
+    ">
+
+    <div class="cropper-circle-container">
+
+      <image-cropper class="custom-cropper" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+        [aspectRatio]="1 / 1" [resizeToWidth]="512" [cropperMinWidth]="120" [onlyScaleDown]="true" [roundCropper]="true"
+        [containWithinAspectRatio]="true" [canvasRotation]="0" [transform]="{}" [imageQuality]="90" [output]="'base64'"
+        format="jpeg" (imageCropped)="
+          imageCropped.emit($event)
+        ">
+
+      </image-cropper>
+
+    </div>
+
+    <div class="cropper-buttons">
+
+      <ion-button class="apply-btn" (click)="applyCropper.emit()">
+
+        <ion-icon name="checkmark-outline">
+        </ion-icon>
+
+        Aplicar
+
+      </ion-button>
+
+      <ion-button class="cancel-btn" (click)="cancelCropper.emit()">
+
+        <ion-icon name="close-outline">
+        </ion-icon>
+
+        Cancelar
+
+      </ion-button>
+
+    </div>
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- NOMBRE -->
+  <!-- ================================= -->
+
+  <ion-item class="custom-item">
+
+    <ion-label position="stacked">
+
+      Nombre y Apellidos *
+
+    </ion-label>
+
+    <ion-input [(ngModel)]="user.nombre" (ionChange)="onCapitalizeName()" [readonly]="
+  !canEdit
+  ||
+  (
+    isEditMode
+    &&
+    !editing
+  )
+">
+
+    </ion-input>
+
+  </ion-item>
+
+  <!-- ================================= -->
+  <!-- TELEFONO -->
+  <!-- ================================= -->
+
+  <ion-item class="custom-item">
+
+    <ion-label position="stacked">
+
+      Teléfono (opcional)
+
+    </ion-label>
+
+    <ion-input type="tel" maxlength="9" [(ngModel)]="user.telefono" [readonly]="
+  !canEdit
+  ||
+  (
+    isEditMode
+    &&
+    !editing
+  )
+">
+
+    </ion-input>
+
+  </ion-item>
+
+  <!-- ================================= -->
+  <!-- DNI -->
+  <!-- ================================= -->
+
+  <ion-item class="custom-item">
+
+    <ion-label position="stacked">
+
+      DNI
+
+    </ion-label>
+
+    <ion-input maxlength="9" [(ngModel)]="user.dni" [readonly]="
+  !canEdit
+  ||
+  (
+    isEditMode
+    &&
+    !editing
+  )
+">
+
+    </ion-input>
+
+  </ion-item>
+
+  <div class=" dni-helper">
+
+    <ion-icon name="information-circle-outline">
+    </ion-icon>
+
+    <span>
+
+      La letra del DNI se calcula automáticamente
+
+    </span>
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- DIRECCION -->
+  <!-- ================================= -->
+
+  <ion-item class="custom-item">
+
+    <ion-label position="stacked">
+
+      Dirección (opcional)
+
+    </ion-label>
+
+    <ion-input [(ngModel)]="user.direccion" [readonly]="
+  !canEdit
+  ||
+  (
+    isEditMode
+    &&
+    !editing
+  )
+">
+
+    </ion-input>
+
+  </ion-item>
+
+</div>

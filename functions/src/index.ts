@@ -201,7 +201,10 @@ export const createUserByAdmin =
                 foto || '',
 
               tipo:
-                tipo || 'socio',
+                tipo || 'invitado',
+
+              estado:
+                'activo',
 
               aprobado:
                 autoAprobado,
@@ -242,17 +245,6 @@ export const createUserByAdmin =
                     .serverTimestamp()
 
               });
-
-            // =========================
-            // REGISTERED USERS
-            // =========================
-
-            await db
-              .collection(
-                'registeredUsers'
-              )
-              .doc(createdUid)
-              .set(userData);
 
             // =========================
             // USERS

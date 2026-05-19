@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
 import { authGuard }
-  from './guards/auth.guard';
+  from './features/auth/guards/auth.guard';
 
 import { roleGuard }
-  from './guards/role.guard';
+  from './features/auth/guards/role.guard';
 
 export const routes: Routes = [
 
@@ -14,7 +14,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/login/login.page')
+      import('./features/auth/pages/login/login.page')
 
         .then(m => m.LoginPage)
 
@@ -26,7 +26,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/register/register.page')
+      import('./features/auth/pages/register/register.page')
 
         .then(m => m.RegisterPage)
 
@@ -55,7 +55,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/invite/invite.page')
+      import('./features/auth/pages/invite/invite.page')
 
         .then(m => m.InvitePage)
 
@@ -81,7 +81,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/home/home.page')
+      import('./features/home/pages/home/home.page')
 
         .then(m => m.HomePage)
 
@@ -111,7 +111,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/gest-user/gest-user.page')
+      import('./features/users/pages/gest-user/gest-user.page')
 
         .then(m => m.GestUserPage)
 
@@ -141,7 +141,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/user-detail/user-detail.page')
+      import('./features/users/pages/user-detail/user-detail.page')
 
         .then(m => m.UserDetailPage)
 
@@ -157,7 +157,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/user-detail/user-detail.page')
+      import('./features/users/pages/user-detail/user-detail.page')
 
         .then(m => m.UserDetailPage)
 
@@ -173,7 +173,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/stats/stats.page')
+      import('./features/stats/pages/stats/stats.page')
 
         .then(m => m.StatsPage)
 
@@ -189,25 +189,25 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./pages/events/events.page')
+      import('./features/events/pages/events/events.page')
 
         .then(m => m.EventsPage)
 
   },
   {
     path: 'invite',
-    loadComponent: () => import('./pages/invite/invite.page').then(m => m.InvitePage)
+    loadComponent: () => import('./features/auth/pages/invite/invite.page').then(m => m.InvitePage)
   },
   {
     path: 'pending-approval',
-    loadComponent: () => import('./pages/pending-approval/pending-approval.page').then(m => m.PendingApprovalPage)
+    loadComponent: () => import('./features/auth/pages/pending-approval/pending-approval.page').then(m => m.PendingApprovalPage)
   },
   {
     path: 'pending-approval',
 
     loadComponent: () =>
 
-      import('./pages/pending-approval/pending-approval.page')
+      import('./features/auth/pages/pending-approval/pending-approval.page')
 
         .then(
           m => m.PendingApprovalPage
