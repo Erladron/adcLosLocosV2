@@ -135,8 +135,6 @@ export class UserDetailDataService {
             foto:
               user.foto || '',
 
-            perfilCompleto:
-              true
 
           }
 
@@ -170,7 +168,7 @@ export class UserDetailDataService {
       if (
 
         user.estado ===
-        UserStatus.PENDIENTE_APROBACION
+        UserStatus.PENDING_APPROVAL
 
       ) {
 

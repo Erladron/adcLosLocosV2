@@ -1,0 +1,66 @@
+<ion-content class="ion-padding">
+
+  <div class="complete-profile-container">
+
+    <h1>
+      Completa tu perfil
+    </h1>
+
+    <p>
+      Necesitamos algunos datos adicionales
+      antes de enviar tu solicitud
+      a aprobación.
+    </p>
+
+    <!-- ===================================== -->
+    <!-- PERSONAL DATA -->
+    <!-- ===================================== -->
+
+    <app-personal-data-form *ngIf="user" 
+      [user]="user" 
+      [imageChangedEvent]="imageChangedEvent"
+      [croppedImage]="croppedImage" 
+      [mostrarCropper]="mostrarCropper" 
+      [editing]="true" 
+      [canEdit]="true"
+      [simpleMode]="true" 
+      [isEditMode]="false" 
+      (imageCropped)="imageCropped($event)" 
+      (applyCropper)="applyCropper()"
+      (cancelCropper)="cancelCropper()" 
+      (selectPhoto)="selectPhoto()" 
+      (takePhoto)="takePhoto()">
+
+    </app-personal-data-form>
+
+    <p class="photo-helper">
+      La foto de perfil es opcional.
+    </p>
+
+    <!-- ===================================== -->
+    <!-- SAVE -->
+    <!-- ===================================== -->
+
+    <ion-button [disabled]="
+  !user?.nombre
+  ||
+  !user?.dni
+" expand="block" size="large" (click)="save()">
+
+      ENVIAR PARA APROBACIÓN
+
+    </ion-button>
+
+    <!-- ================================= -->
+    <!-- LOGOUT -->
+    <!-- ================================= -->
+
+    <ion-button expand="block" fill="outline" class="logout-button" (click)="logout()">
+
+      Cerrar sesión
+
+    </ion-button>
+
+  </div>
+
+</ion-content>

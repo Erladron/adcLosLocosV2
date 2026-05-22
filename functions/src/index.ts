@@ -149,12 +149,6 @@ export const createUserByAdmin =
             } = request.body.data;
 
             // =========================
-            // ALTA ADMIN
-            // =========================
-
-            const autoAprobado = true;
-
-            // =========================
             // AUTH
             // =========================
 
@@ -204,15 +198,7 @@ export const createUserByAdmin =
                 tipo || 'invitado',
 
               estado:
-                'activo',
-
-              aprobado:
-                autoAprobado,
-
-              estadoSolicitud:
-                'aprobado',
-
-              perfilCompleto: true,
+                'active',
 
               createdAt:
 
@@ -223,12 +209,12 @@ export const createUserByAdmin =
             };
 
             // =========================
-            // PREREGISTER
+            // INVITED USERS
             // =========================
 
             await db
               .collection(
-                'preRegister'
+                'invitedUsers'
               )
               .doc(createdUid)
               .set({
@@ -237,6 +223,8 @@ export const createUserByAdmin =
 
                 invitedBy:
                   decodedToken.uid,
+
+                used: true,
 
                 createdAt:
 
@@ -268,7 +256,9 @@ export const createUserByAdmin =
 
             });
 
-          } catch (error: any) {
+          }
+
+          catch (error: any) {
 
             console.error(error);
 
@@ -288,7 +278,9 @@ export const createUserByAdmin =
 
               }
 
-            } catch (rollbackError) {
+            }
+
+            catch (rollbackError) {
 
               console.error(
 

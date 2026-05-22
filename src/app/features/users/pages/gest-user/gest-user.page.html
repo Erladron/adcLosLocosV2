@@ -1,8 +1,12 @@
-<app-page-header title="Gestión de Usuarios" [showMenu]="true">
+<app-page-header
+  title="Gestión de Usuarios"
+  [showMenu]="true">
 
 </app-page-header>
 
-<ion-content fullscreen="true" class="users-content">
+<ion-content
+  fullscreen="true"
+  class="users-content">
 
   <!-- ================================= -->
   <!-- BACKGROUND -->
@@ -10,7 +14,9 @@
 
   <div class="background-logo">
 
-    <img src="assets/img/escudo.png" alt="Escudo">
+    <img
+      src="assets/img/escudo.png"
+      alt="Escudo">
 
   </div>
 
@@ -20,7 +26,16 @@
 
   <div class="search-container">
 
-    <ion-searchbar [(ngModel)]="searchText" (ionInput)="filterUsers()" placeholder="Buscar usuario..." animated="true"
+    <ion-searchbar
+
+      [(ngModel)]="searchText"
+
+      (ionInput)="filterUsers()"
+
+      placeholder="Buscar usuario..."
+
+      animated="true"
+
       class="custom-searchbar">
 
     </ion-searchbar>
@@ -33,7 +48,11 @@
 
   <div class="users-segment-wrapper">
 
-    <ion-segment [(ngModel)]="tabActual" class="users-segment">
+    <ion-segment
+
+      [(ngModel)]="tabActual"
+
+      class="users-segment">
 
       <!-- ============================= -->
       <!-- ACTIVOS -->
@@ -55,7 +74,11 @@
       <!-- PENDIENTES -->
       <!-- ============================= -->
 
-      <ion-segment-button *ngIf="canApproveUsers" value="pendientes">
+      <ion-segment-button
+
+        *ngIf="canApproveUsers"
+
+        value="pendientes">
 
         <ion-label>
 
@@ -75,13 +98,21 @@
   <!-- ACTIVOS -->
   <!-- ================================= -->
 
-  <div *ngIf="tabActual === 'activos'" class="users-container">
+  <div
+    *ngIf="tabActual === 'activos'"
+    class="users-container">
 
     <!-- ============================= -->
     <!-- ACTIVE USERS -->
     <!-- ============================= -->
 
-    <div class="user-card glass-card" *ngFor="let user of filteredUsers" [routerLink]="['/user-detail', user.uid]">
+    <div
+
+      class="user-card glass-card"
+
+      *ngFor="let user of filteredUsers"
+
+      [routerLink]="['/user-detail', user.uid]">
 
       <!-- ============================= -->
       <!-- AVATAR -->
@@ -89,11 +120,22 @@
 
       <div class="user-avatar-container">
 
-        <img *ngIf="user.foto" [src]="user.foto" class="user-avatar">
+        <img
 
-        <div *ngIf="!user.foto" class="default-avatar">
+          *ngIf="user.foto"
+
+          [src]="user.foto"
+
+          class="user-avatar">
+
+        <div
+
+          *ngIf="!user.foto"
+
+          class="default-avatar">
 
           <ion-icon name="person-outline">
+
           </ion-icon>
 
         </div>
@@ -144,7 +186,7 @@
 
         <span class="status-badge approved">
 
-          Aprobado
+          Activo
 
         </span>
 
@@ -154,7 +196,11 @@
       <!-- FLECHA -->
       <!-- ============================= -->
 
-      <ion-icon name="chevron-forward-outline" class="arrow-icon">
+      <ion-icon
+
+        name="chevron-forward-outline"
+
+        class="arrow-icon">
 
       </ion-icon>
 
@@ -164,7 +210,14 @@
     <!-- EMPTY ACTIVE USERS -->
     <!-- ============================= -->
 
-    <app-empty-state *ngIf="filteredUsers.length === 0" icon="people-outline" title="Sin usuarios"
+    <app-empty-state
+
+      *ngIf="filteredUsers.length === 0"
+
+      icon="people-outline"
+
+      title="Sin usuarios"
+
       message="No se encontraron usuarios">
 
     </app-empty-state>
@@ -175,13 +228,23 @@
   <!-- PENDIENTES -->
   <!-- ================================= -->
 
-  <div *ngIf="tabActual === 'pendientes'" class="users-container">
+  <div
+
+    *ngIf="tabActual === 'pendientes'"
+
+    class="users-container">
 
     <!-- ============================= -->
     <!-- PENDING USERS -->
     <!-- ============================= -->
 
-    <div class="user-card glass-card pending-card" *ngFor="let user of filteredPendingUsers">
+    <div
+
+      class="user-card glass-card pending-card"
+
+      *ngFor="let user of filteredPendingUsers"
+
+      [routerLink]="['/user-detail', user.uid]">
 
       <!-- ============================= -->
       <!-- AVATAR -->
@@ -189,11 +252,22 @@
 
       <div class="user-avatar-container">
 
-        <img *ngIf="user.foto" [src]="user.foto" class="user-avatar">
+        <img
 
-        <div *ngIf="!user.foto" class="default-avatar">
+          *ngIf="user.foto"
+
+          [src]="user.foto"
+
+          class="user-avatar">
+
+        <div
+
+          *ngIf="!user.foto"
+
+          class="default-avatar">
 
           <ion-icon name="person-outline">
+
           </ion-icon>
 
         </div>
@@ -261,18 +335,28 @@
 
         <!-- APROBAR -->
 
-        <button class="action-btn approve-btn" (click)="aprobarUsuario(user)">
+        <button
+
+          class="action-btn approve-btn"
+
+          (click)="aprobarUsuario(user); $event.stopPropagation()">
 
           <ion-icon name="checkmark-outline">
+
           </ion-icon>
 
         </button>
 
         <!-- RECHAZAR -->
 
-        <button class="action-btn reject-btn" (click)="rechazarUsuario(user)">
+        <button
+
+          class="action-btn reject-btn"
+
+          (click)="rechazarUsuario(user); $event.stopPropagation()">
 
           <ion-icon name="close-outline">
+
           </ion-icon>
 
         </button>
@@ -285,7 +369,14 @@
     <!-- EMPTY PENDING USERS -->
     <!-- ============================= -->
 
-    <app-empty-state *ngIf="filteredPendingUsers.length === 0" icon="person-outline" title="Sin solicitudes"
+    <app-empty-state
+
+      *ngIf="filteredPendingUsers.length === 0"
+
+      icon="person-outline"
+
+      title="Sin solicitudes"
+
       message="No hay usuarios pendientes de aprobación">
 
     </app-empty-state>
@@ -296,11 +387,22 @@
   <!-- FAB -->
   <!-- ================================= -->
 
-  <ion-fab *ngIf="canAddUsers" vertical="bottom" horizontal="end" slot="fixed" class="fab-safe-area">
+  <ion-fab
+
+    *ngIf="canAddUsers"
+
+    vertical="bottom"
+
+    horizontal="end"
+
+    slot="fixed"
+
+    class="fab-safe-area">
 
     <ion-fab-button (click)="nuevoUsuario()">
 
       <ion-icon name="add-outline">
+
       </ion-icon>
 
     </ion-fab-button>

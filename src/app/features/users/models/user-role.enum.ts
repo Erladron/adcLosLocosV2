@@ -6,7 +6,5 @@ export enum UserRole {
 
   SOCIO = 'socio',
 
-  INVITADO = 'invitado',
-
-  REGISTRADO = 'registrado'
+  INVITADO = 'invitado'
 }

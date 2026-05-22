@@ -1,44 +1,116 @@
 import { inject } from '@angular/core';
 
 import {
-
   CanActivateFn,
   Router
-
 } from '@angular/router';
 
 import { AuthService }
-from '@auth/services/auth.service';
+  from '@auth/services/auth.service';
+
+import { UserStatus }
+  from '@users/models/user-status.enum';
 
 export const authGuard:
-CanActivateFn = async () => {
+  CanActivateFn = async () => {
 
-  const authService =
-    inject(AuthService);
+    const authService =
+      inject(AuthService);
 
-  const router =
-    inject(Router);
+    const router =
+      inject(Router);
 
-  // ESPERAR AUTH
-  while (!authService.authReady) {
+    // ============================================
+    // ESPERAR AUTH
+    // ============================================
 
-    await new Promise(
-      resolve =>
-        setTimeout(resolve, 100)
+    await authService
+      .waitForAuthReady();
+
+    // ============================================
+    // NO LOGIN FIREBASE
+    // ============================================
+
+    if (!authService.isLogged()) {
+
+      return router.parseUrl(
+        '/login'
+      );
+
+    }
+
+    // ============================================
+    // USER FIRESTORE
+    // ============================================
+
+    const user =
+      authService.currentUserData;
+
+    // ============================================
+    // USER INVALIDO
+    // ============================================
+
+    if (!user) {
+
+      await authService.logout();
+
+      return router.parseUrl(
+        '/login'
+      );
+
+    }
+
+    // ============================================
+    // CONTROL ESTADOS
+    // ============================================
+
+    console.log(
+      'AUTH GUARD USER',
+      user
     );
 
-  }
+    switch (user.estado) {
 
-  // HAY LOGIN
-  if (authService.isLogged()) {
+      case UserStatus.ACTIVE:
 
-    return true;
+        return true;
 
-  }
+      case UserStatus.PENDING_DATA:
 
-  // NO LOGIN
-  router.navigateByUrl('/login');
+        return router.parseUrl(
+          '/complete-profile'
+        );
 
-  return false;
+      case UserStatus.PENDING_APPROVAL:
 
-};
+        return router.parseUrl(
+          '/pending-approval'
+        );
+
+      case UserStatus.DISABLED:
+
+        await authService.logout();
+
+        return router.parseUrl(
+          '/login'
+        );
+
+      case UserStatus.REJECTED:
+
+        await authService.logout();
+
+        return router.parseUrl(
+          '/login'
+        );
+
+      default:
+
+        await authService.logout();
+
+        return router.parseUrl(
+          '/login'
+        );
+
+    }
+
+  };

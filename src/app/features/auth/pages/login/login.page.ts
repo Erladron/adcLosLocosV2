@@ -1,11 +1,11 @@
 import { Component }
-from '@angular/core';
+  from '@angular/core';
 
 import { CommonModule }
-from '@angular/common';
+  from '@angular/common';
 
 import { FormsModule }
-from '@angular/forms';
+  from '@angular/forms';
 
 import {
 
@@ -25,7 +25,7 @@ import {
 } from '@angular/router';
 
 import { addIcons }
-from 'ionicons';
+  from 'ionicons';
 
 import {
 
@@ -37,19 +37,19 @@ import {
 } from 'ionicons/icons';
 
 import { AuthService }
-from '@auth/services/auth.service';
+  from '@auth/services/auth.service';
 
 import { NotificationService }
-from '@core/services/notification.service';
+  from '@core/services/notification.service';
 
 import { LoadingService }
-from '@core/services/loading.service';
+  from '@core/services/loading.service';
 
 import { ErrorHandlerService }
-from '@core/services/error-handler.service';
+  from '@core/services/error-handler.service';
 
 import { AppMessageCode }
-from '@core/constants/messages/app-message-code.enum';
+  from '@core/constants/messages/app-message-code.enum';
 
 @Component({
 
@@ -188,21 +188,15 @@ export class LoginPage {
 
           );
 
+          console.log(
+            'LOGIN OK'
+          );
+
         },
 
         'Iniciando sesión...'
 
       );
-
-      // ============================================
-      // NAVIGATE
-      // ============================================
-
-      await this.router.navigate([
-
-        '/home'
-
-      ]);
 
     }
 

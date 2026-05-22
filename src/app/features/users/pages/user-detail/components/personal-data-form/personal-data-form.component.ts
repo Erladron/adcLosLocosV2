@@ -97,6 +97,9 @@ export class PersonalDataFormComponent
   @Input()
   canEdit = false;
 
+  @Input()
+  simpleMode = false;
+
   // =====================================
   // OUTPUTS
   // =====================================

@@ -6,6 +6,9 @@ import { AuthService }
 import { User }
   from '@users/models/users.models';
 
+import { UserRole }
+from '@users/models/user-role.enum';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -90,31 +93,37 @@ export class UserDetailPermissionsService {
     let canEditMembership =
       false;
 
+    // ============================================
     // ADMIN
+    // ============================================
 
     if (isAdmin) {
 
-      canEditMembership =
-
-        this.authService.getUid()
-
-        !==
-
-        user.uid;
+      canEditMembership = true;
 
     }
 
+    // ============================================
     // DIRECTIVA
+    // ============================================
 
     else if (isDirectiva) {
 
       canEditMembership =
 
-        user.tipo === 'socio'
+        user.tipo === UserRole.INVITADO
 
         ||
 
-        user.tipo === 'directiva';
+        user.tipo === UserRole.SOCIO
+
+        ||
+
+        user.tipo === UserRole.DIRECTIVA
+
+        ||
+
+        isOwnProfile;
 
     }
 
@@ -189,7 +198,7 @@ export class UserDetailPermissionsService {
       !user.uid
 
       ||
-      
+
       this.authService.isAdmin()
 
       ||
@@ -218,15 +227,7 @@ export class UserDetailPermissionsService {
 
     if (this.authService.isAdmin()) {
 
-      return (
-
-        this.authService.getUid()
-
-        !==
-
-        user.uid
-
-      );
+      return true;
 
     }
 
@@ -238,11 +239,19 @@ export class UserDetailPermissionsService {
 
       return (
 
-        user.tipo === 'socio'
+        user.tipo === UserRole.INVITADO
 
         ||
 
-        user.tipo === 'directiva'
+        user.tipo === UserRole.SOCIO
+
+        ||
+        
+        user.tipo === UserRole.DIRECTIVA
+
+        ||
+
+        this.isOwnProfile(user)
 
       );
 

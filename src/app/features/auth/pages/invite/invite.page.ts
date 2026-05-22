@@ -1,11 +1,11 @@
 import { Component, OnInit }
-from '@angular/core';
+  from '@angular/core';
 
 import { CommonModule }
-from '@angular/common';
+  from '@angular/common';
 
 import { FormsModule }
-from '@angular/forms';
+  from '@angular/forms';
 
 import {
 
@@ -18,42 +18,40 @@ import {
 } from '@ionic/angular/standalone';
 
 import { addIcons }
-from 'ionicons';
+  from 'ionicons';
 
 import { mailOpenOutline }
-from 'ionicons/icons';
-
-import {
-
-  Firestore,
-  collection,
-  addDoc
-
-} from '@angular/fire/firestore';
+  from 'ionicons/icons';
 
 import { UserService }
-from '@users/services/user.service';
+  from '@users/services/user.service';
 
 import { AuthService }
-from '@auth/services/auth.service';
+  from '@auth/services/auth.service';
 
 import { NotificationService }
-from '@core/services/notification.service';
+  from '@core/services/notification.service';
 
 import { LoadingService }
-from '@core/services/loading.service';
+  from '@core/services/loading.service';
 
 import { ErrorHandlerService }
-from '@core/services/error-handler.service';
+  from '@core/services/error-handler.service';
 
 import { AppMessageCode }
-from '@core/constants/messages/app-message-code.enum';
+  from '@core/constants/messages/app-message-code.enum';
 
 import {
 
   PageHeaderComponent
 
 } from '@shared/components/page-header/page-header.component';
+
+import {
+
+  InvitedUserService
+
+} from '@users/services/invited-user.service';
 
 @Component({
 
@@ -85,7 +83,7 @@ import {
 })
 
 export class InvitePage
-implements OnInit {
+  implements OnInit {
 
   // ============================================
   // FORM
@@ -105,6 +103,9 @@ implements OnInit {
     private userService:
       UserService,
 
+    private invitedUserService:
+      InvitedUserService,
+
     private notification:
       NotificationService,
 
@@ -112,16 +113,9 @@ implements OnInit {
       LoadingService,
 
     private errorHandler:
-      ErrorHandlerService,
-
-    private firestore:
-      Firestore
+      ErrorHandlerService
 
   ) {
-
-    // ============================================
-    // ICONS
-    // ============================================
 
     addIcons({
 
@@ -202,12 +196,14 @@ implements OnInit {
         async () => {
 
           // ============================================
-          // CHECK EXISTING
+          // CHECK EXISTING USER
           // ============================================
 
           const canContinue =
 
-            await this.valExist();
+            await this.validateExisting(
+              email
+            );
 
           if (!canContinue) {
 
@@ -216,40 +212,77 @@ implements OnInit {
           }
 
           // ============================================
-          // COLLECTION
+          // CHECK EXISTING INVITATION
           // ============================================
 
-          const preRegisterRef =
+          const existingInvitation =
 
-            collection(
+            await this.invitedUserService
+              .getInvitationByEmail(
+                email
+              );
 
-              this.firestore,
+          if (
 
-              'preRegister'
+            existingInvitation
+
+            &&
+
+            !existingInvitation.usado
+
+          ) {
+
+            await this.notification.warning(
+
+              AppMessageCode
+                .ADC_INV_ERR_0005
 
             );
 
+            return;
+
+          }
+
           // ============================================
-          // SAVE INVITATION
+          // CURRENT USER
           // ============================================
 
-          await addDoc(preRegisterRef, {
+          const currentUser =
 
-            email,
+            this.authService
+              .currentUserData;
 
-            fecha:
-              new Date(),
+          // ============================================
+          // CREATE INVITATION
+          // ============================================
 
-            invitadoPor:
+          await this.invitedUserService
+            .createInvitation({
 
-              this.authService
-                .currentUser?.uid
+              nombre: '',
 
-              ||
+              email,
 
-              'administrador'
+              telefono: '',
 
-          });
+              invitadoPor:
+
+                currentUser?.nombre
+                ||
+                'Sistema',
+
+              invitadoPorUid:
+
+                currentUser?.uid
+                ||
+                '',
+
+              fechaInvitacion:
+                null,
+
+              usado: false
+
+            });
 
           // ============================================
           // SUCCESS
@@ -292,17 +325,18 @@ implements OnInit {
   }
 
   // ============================================
-  // VALIDATE EXISTING
+  // VALIDATE EXISTING USER
   // ============================================
 
-  async valExist():
-  Promise<boolean> {
+  async validateExisting(
+    email: string
+  ): Promise<boolean> {
 
     const existing =
 
       await this.userService
         .existsByEmail(
-          this.email
+          email
         );
 
     // ============================================
@@ -311,49 +345,10 @@ implements OnInit {
 
     if (existing.exists) {
 
-      // ============================================
-      // USER EXISTS
-      // ============================================
-
-      if (
-
-        existing.source ===
-        'users'
-
-      ) {
-
-        const createdAt =
-
-          new Date(
-
-            existing.data.createdAt.seconds
-            * 1000
-
-          ).toLocaleDateString();
-
-        await this.notification.warning(
-
-          `[${
-
-            AppMessageCode
-              .ADC_INV_ERR_0004
-
-          }] El usuario ya pertenece a la aplicación desde ${createdAt}.`
-
-        );
-
-        return false;
-
-      }
-
-      // ============================================
-      // INVITATION EXISTS
-      // ============================================
-
       await this.notification.warning(
 
         AppMessageCode
-          .ADC_INV_ERR_0005
+          .ADC_INV_ERR_0004
 
       );
 

@@ -4,12 +4,16 @@
 
 .approval-content {
 
-    --background:
-        linear-gradient(180deg,
-            #10131a 0%,
-            #1a2230 100%);
+  --background:
+    linear-gradient(
+      180deg,
+      #0d2f7a 0%,
+      #133d96 100%
+    );
 
-    position: relative;
+  position: relative;
+
+  overflow: hidden;
 
 }
 
@@ -19,27 +23,34 @@
 
 .background-logo {
 
-    position: fixed;
+  position: fixed;
 
-    inset: 0;
+  inset: 0;
 
-    display: flex;
+  display: flex;
 
-    justify-content: center;
+  justify-content: center;
 
-    align-items: center;
+  align-items: center;
 
-    opacity: 0.05;
+  opacity: 0.06;
 
-    pointer-events: none;
+  pointer-events: none;
 
-    img {
+  z-index: 0;
 
-        width: 70%;
+  img {
 
-        max-width: 420px;
+    width: 80%;
 
-    }
+    max-width: 520px;
+
+    filter:
+      drop-shadow(
+        0 0 30px rgba(255,255,255,0.08)
+      );
+
+  }
 
 }
 
@@ -49,15 +60,19 @@
 
 .approval-wrapper {
 
-    min-height: 100%;
+  min-height: 100%;
 
-    display: flex;
+  display: flex;
 
-    justify-content: center;
+  justify-content: center;
 
-    align-items: center;
+  align-items: center;
 
-    padding: 24px;
+  padding: 24px;
+
+  position: relative;
+
+  z-index: 1;
 
 }
 
@@ -67,15 +82,17 @@
 
 .approval-card {
 
-    width: 100%;
+  width: 100%;
 
-    max-width: 420px;
+  max-width: 460px;
 
-    padding: 36px 28px;
+  padding:
+    42px
+    34px;
 
-    border-radius: 28px;
+  border-radius: 32px;
 
-    text-align: center;
+  text-align: center;
 
 }
 
@@ -85,42 +102,39 @@
 
 .glass-card {
 
-    background:
-        rgba(255, 255, 255, 0.08);
+  background:
+    rgba(255,255,255,0.12);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.08);
+  border:
+    1px solid rgba(255,255,255,0.12);
 
-    backdrop-filter: blur(18px);
+  backdrop-filter: blur(22px);
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.28);
+  box-shadow:
+    0 18px 45px rgba(0,0,0,0.35);
 
 }
 
 // =================================
-// ICONS
+// ICON
 // =================================
 
 .icon-container {
 
-    margin-bottom: 24px;
+  margin-bottom: 26px;
 
 }
 
-.pending-icon {
+.success-icon {
 
-    font-size: 84px;
+  font-size: 82px;
 
-    color: #ffd667;
+  color: #7ed6ff;
 
-}
-
-.rejected-icon {
-
-    font-size: 84px;
-
-    color: #ff6b6b;
+  filter:
+    drop-shadow(
+      0 0 18px rgba(126,214,255,0.55)
+    );
 
 }
 
@@ -130,26 +144,28 @@
 
 h1 {
 
-    color: white;
+  color: white;
 
-    font-size: 1.8rem;
+  font-size: 2.2rem;
 
-    font-weight: 700;
+  font-weight: 800;
 
-    margin-bottom: 18px;
+  margin-bottom: 24px;
+
+  letter-spacing: -0.5px;
 
 }
 
 p {
 
-    color:
-        rgba(255, 255, 255, 0.78);
+  color:
+    rgba(255,255,255,0.9);
 
-    line-height: 1.6;
+  line-height: 1.7;
 
-    font-size: 1rem;
+  font-size: 1.02rem;
 
-    margin-bottom: 32px;
+  margin-bottom: 22px;
 
 }
 
@@ -159,31 +175,36 @@ p {
 
 .actions {
 
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 14px;
+  margin-top: 34px;
 
 }
 
-.refresh-button {
-
-    --background:
-        linear-gradient(135deg,
-            #2f80ed,
-            #56ccf2);
-
-    --border-radius: 16px;
-
-    height: 50px;
-
-}
+// =================================
+// BUTTON
+// =================================
 
 ion-button {
 
-    --border-radius: 16px;
+  --background:
+    linear-gradient(
+      135deg,
+      #2f80ed,
+      #56ccf2
+    );
 
-    height: 50px;
+  --color: white;
+
+  --border-radius: 18px;
+
+  height: 54px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+
+  text-transform: uppercase;
+
+  box-shadow:
+    0 10px 24px rgba(47,128,237,0.35);
 
 }

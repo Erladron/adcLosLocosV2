@@ -198,7 +198,7 @@ export class GestUserPage
   async loadUsers() {
 
     // =================================
-    // APPROVED
+    // ACTIVE USERS
     // =================================
 
     this.users =
@@ -211,7 +211,7 @@ export class GestUserPage
     ];
 
     // =================================
-    // PENDING
+    // PENDING USERS
     // =================================
 
     if (this.canApproveUsers) {
@@ -365,9 +365,21 @@ export class GestUserPage
 
   nuevoUsuario() {
 
-    this.router.navigate([
-      '/user-detail'
-    ]);
+    this.router.navigate(
+
+      ['/user-detail'],
+
+      {
+
+        queryParams: {
+
+          adminCreate: true
+
+        }
+
+      }
+
+    );
 
   }
 
@@ -430,10 +442,6 @@ export class GestUserPage
     user: User
   ) {
 
-    // =================================
-    // CONFIRM
-    // =================================
-
     const confirmar =
 
       await this.dialog.confirm({
@@ -442,7 +450,6 @@ export class GestUserPage
           'Rechazar usuario',
 
         message:
-
           `¿Rechazar solicitud de ${user.nombre}?`,
 
         confirmText:

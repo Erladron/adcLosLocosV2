@@ -1,8 +1,6 @@
 import { UserRole }
 from '@users/els/user-role.enum';
 
-import { RequestStatus }
-from '@users/models/request-status.enum';
 
 // =========================================
 // ROLES
@@ -57,18 +55,6 @@ export const USER_DETAIL_TABS = [
   }
 ];
 
-// =========================================
-// ESTADOS SOLICITUD
-// =========================================
-
-export const REQUEST_STATUS = {
-
-  PENDING: 'pending' as RequestStatus,
-
-  APPROVED: 'approved' as RequestStatus,
-
-  REJECTED: 'rejected' as RequestStatus
-};
 
 // =========================================
 // LABELS ESTADOS

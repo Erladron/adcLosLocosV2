@@ -23,16 +23,16 @@ import {
 } from '@angular/fire/firestore';
 
 import { Router }
-from '@angular/router';
+  from '@angular/router';
 
 import { UserStatus }
-from '../../users/models/user-status.enum';
+  from '@users/models/user-status.enum';
 
 import { NotificationService }
-from '@core/services/notification.service';
+  from '@core/services/notification.service';
 
 import { AppMessageCode }
-from 'src/app/core/constants/messages/app-message-code.enum';
+  from 'src/app/core/constants/messages/app-message-code.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -76,11 +76,6 @@ export class AuthSessionService {
 
   /**
    * Inicializa listener global auth.
-   *
-   * Detecta:
-   * - login
-   * - logout
-   * - refresh sesión
    */
   initAuthListener() {
 
@@ -89,6 +84,17 @@ export class AuthSessionService {
       this.auth,
 
       async (user) => {
+
+        console.log(
+          'AUTH LISTENER',
+          user
+        );
+
+        // ============================================
+        // RESET AUTH READY
+        // ============================================
+
+        this.authReady = false;
 
         // ============================================
         // NO USER
@@ -102,6 +108,14 @@ export class AuthSessionService {
 
           this.authReady = true;
 
+          // ============================================
+          // GO LOGIN
+          // ============================================
+
+          await this.router.navigate([
+            '/login'
+          ]);
+
           return;
 
         }
@@ -112,9 +126,89 @@ export class AuthSessionService {
 
         this.currentUser = user;
 
+        // ============================================
+        // LOAD FIRESTORE USER
+        // ============================================
+
         await this.reloadUserData(
           user.uid
         );
+
+        // ============================================
+        // READY
+        // ============================================
+
+        this.authReady = true;
+
+        // ============================================
+        // NO USER DATA
+        // ============================================
+
+        if (!this.currentUserData) {
+
+          await this.router.navigate([
+            '/login'
+          ]);
+
+          return;
+
+        }
+
+        // ============================================
+        // NAVIGATION BY STATUS
+        // ============================================
+
+        switch (this.currentUserData.estado) {
+
+          // ============================================
+          // COMPLETE PROFILE
+          // ============================================
+
+          case UserStatus.PENDING_DATA:
+
+            await this.router.navigate([
+              '/complete-profile'
+            ]);
+
+            break;
+
+          // ============================================
+          // PENDING APPROVAL
+          // ============================================
+
+          case UserStatus.PENDING_APPROVAL:
+
+            await this.router.navigate([
+              '/pending-approval'
+            ]);
+
+            break;
+
+          // ============================================
+          // ACTIVE
+          // ============================================
+
+          case UserStatus.ACTIVE:
+
+            await this.router.navigate([
+              '/home'
+            ]);
+
+            break;
+
+          // ============================================
+          // DEFAULT
+          // ============================================
+
+          default:
+
+            await this.router.navigate([
+              '/login'
+            ]);
+
+            break;
+
+        }
 
       }
 
@@ -136,6 +230,12 @@ export class AuthSessionService {
     password: string
 
   ) {
+
+    // ============================================
+    // RESET AUTH READY
+    // ============================================
+
+    this.authReady = false;
 
     // ============================================
     // VALIDATION
@@ -198,13 +298,7 @@ export class AuthSessionService {
 
     this.currentUserData = null;
 
-    // ============================================
-    // NAVIGATE LOGIN
-    // ============================================
-
-    this.router.navigate([
-      '/login'
-    ]);
+    this.authReady = true;
 
   }
 
@@ -259,8 +353,6 @@ export class AuthSessionService {
         id:
           userDoc.id,
 
-        source: 'users',
-
         ...userDoc.data()
 
       };
@@ -313,24 +405,15 @@ export class AuthSessionService {
         userData;
 
       // ============================================
-      // USER CANCELADO
+      // USER REJECTED
       // ============================================
 
       if (
 
-        this.currentUserData.estado
-          ?.trim()
-          ?.toLowerCase()
-
-        ===
-
-        UserStatus.CANCELADO
+        this.currentUserData.estado ===
+        UserStatus.REJECTED
 
       ) {
-
-        // ============================================
-        // SHOW ERROR
-        // ============================================
 
         await this.notification.error(
 
@@ -338,17 +421,11 @@ export class AuthSessionService {
 
         );
 
-        // ============================================
-        // FORCE LOGOUT
-        // ============================================
-
         await this.logout();
 
         return;
 
       }
-
-      this.authReady = true;
 
       return;
 
@@ -359,47 +436,6 @@ export class AuthSessionService {
     // ============================================
 
     this.currentUserData = null;
-
-    this.authReady = true;
-
-  }
-
-  // ============================================
-  // GET CURRENT USER
-  // ============================================
-
-  /**
-   * Devuelve usuario auth actual.
-   */
-  getCurrentUser(): User | null {
-
-    return this.currentUser;
-
-  }
-
-  // ============================================
-  // GET CURRENT USER DATA
-  // ============================================
-
-  /**
-   * Devuelve datos firestore usuario.
-   */
-  getCurrentUserData(): any {
-
-    return this.currentUserData;
-
-  }
-
-  // ============================================
-  // GET AUTH READY
-  // ============================================
-
-  /**
-   * Auth inicializada.
-   */
-  isAuthReady(): boolean {
-
-    return this.authReady;
 
   }
 

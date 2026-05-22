@@ -1,5 +1,4 @@
 import { UserRole } from './user-role.enum';
-import { RequestStatus } from './request-status.enum';
 import { UserStatus } from './user-status.enum';
 
 export interface User {
@@ -37,12 +36,6 @@ export interface User {
   tipo: UserRole;
 
   password?: string;
-
-  aprobado?: boolean;
-
-  estadoSolicitud?: RequestStatus;
-
-  perfilCompleto?: boolean;
 
   fechaAlta?: any;
 

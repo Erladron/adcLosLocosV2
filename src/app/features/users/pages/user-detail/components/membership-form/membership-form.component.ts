@@ -25,6 +25,15 @@ import {
   Platform
 } from '@ionic/angular';
 
+import { addIcons }
+  from 'ionicons';
+
+import {
+  createOutline,
+  saveOutline,
+  closeOutline
+} from 'ionicons/icons';
+
 @Component({
   selector: 'app-membership-form',
 
@@ -60,6 +69,14 @@ export class MembershipFormComponent {
 
   ) {
 
+    addIcons({
+
+      createOutline,
+      saveOutline,
+      closeOutline
+
+    });
+
     this.selectInterface =
 
       this.platform.is('mobile')
@@ -79,15 +96,46 @@ export class MembershipFormComponent {
   @Input()
   tiposDisponibles: string[] = [];
 
+  private _isEditMode = false;
+
   @Input()
-  isEditMode = false;
+  set isEditMode(value: boolean) {
+
+    this._isEditMode = value;
+
+    console.log('MEMBERSHIP isEditMode', value);
+
+  }
+
+  get isEditMode(): boolean {
+
+    return this._isEditMode;
+
+  }
 
   @Input()
   editing = false;
 
-  @Input()
-  canEditMembership = false;
 
+  private _canEditMembership = false;
+
+  @Input()
+  set canEditMembership(value: boolean) {
+
+    console.log(
+      'MEMBERSHIP canEditMembership',
+      value
+    );
+
+    this._canEditMembership = value;
+
+  }
+
+  get canEditMembership(): boolean {
+
+    return this._canEditMembership;
+
+  }
   // =====================================
   // OUTPUTS
   // =====================================

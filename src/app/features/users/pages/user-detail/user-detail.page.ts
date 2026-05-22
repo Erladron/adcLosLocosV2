@@ -116,7 +116,7 @@ export class UserDetailPage
 
     tipo: 'invitado',
 
-    estado: UserStatus.ACTIVO
+    estado: UserStatus.ACTIVE
 
   } as User;
 
@@ -125,6 +125,8 @@ export class UserDetailPage
   isEditMode = false;
 
   isProfileCompletion = false;
+
+  isAdminCreate = false;
 
   // ============================================
   // PERMISSIONS
@@ -242,6 +244,20 @@ export class UserDetailPage
         .get('id');
 
     // ============================================
+    // ADMIN CREATE MODE
+    // ============================================
+
+    this.isAdminCreate =
+
+      this.route.snapshot
+        .queryParamMap
+        .get('adminCreate')
+
+      ===
+
+      'true';
+
+    // ============================================
     // EDIT MODE
     // ============================================
 
@@ -263,10 +279,86 @@ export class UserDetailPage
 
     }
 
-    else {
+    // ============================================
+    // COMPLETE PROFILE MODE
+    // ============================================
+
+    else if (!this.isAdminCreate) {
+
+      const currentUser =
+
+        this.authService
+          .currentUserData;
 
       // ============================================
-      // CREATE MODE
+      // CURRENT USER EXISTS
+      // ============================================
+
+      if (currentUser) {
+
+        this.user = {
+
+          ...currentUser
+
+        };
+
+        this.isProfileCompletion =
+          true;
+
+        this.isOwnProfile =
+          true;
+
+      }
+
+      // ============================================
+      // ENABLE EDITION
+      // ============================================
+
+      this.canEditPersonalData =
+        true;
+
+      this.canEditMembership =
+        false;
+
+      this.canEditCredentials =
+        true;
+
+      this.canEditPassword =
+        true;
+
+      this.editingPersonalData =
+        true;
+
+      this.editingMembership =
+        false;
+
+      this.editingCredentials =
+        true;
+
+    }
+
+    // ============================================
+    // ADMIN CREATE MODE
+    // ============================================
+
+    else {
+
+      this.user = {
+
+        tipo: 'invitado',
+
+        estado: UserStatus.ACTIVE
+
+      } as User;
+
+      this.isProfileCompletion =
+        false;
+
+      this.isOwnProfile =
+        false;
+
+      // ============================================
+      // ENABLE EDITION
       // ============================================
 
       this.canEditPersonalData =
@@ -280,6 +372,10 @@ export class UserDetailPage
 
       this.canEditPassword =
         true;
+
+      // ============================================
+      // EDIT MODE ENABLED
+      // ============================================
 
       this.editingPersonalData =
         true;
@@ -331,17 +427,12 @@ export class UserDetailPage
             this.repeatEmail =
               this.user.email || '';
 
+            // ============================================
+            // THIS IS NOT PROFILE COMPLETION
+            // ============================================
+
             this.isProfileCompletion =
-
-              this.authService.getUid()
-
-              ===
-
-              this.user.uid
-
-              &&
-
-              !this.user.perfilCompleto;
+              false;
 
             // ============================================
             // LOAD PERMISSIONS

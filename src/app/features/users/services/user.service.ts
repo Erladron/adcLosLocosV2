@@ -16,12 +16,13 @@ import {
 
 } from '@angular/fire/firestore';
 
-import { User }
-  from '../models/users.models';
+import {
+  User
+} from '../models/users.models';
 
-import { RequestStatus }
-  from '../models/request-status.enum';
-import { UserStatus } from '../models/user-status.enum';
+import {
+  UserStatus
+} from '../models/user-status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class UserService {
 
   constructor(
     private firestore: Firestore
-  ) { }
+  ) {}
 
   // =================================
   // NUMERO SOCIO
@@ -106,7 +107,7 @@ export class UserService {
   }
 
   // =================================
-  // USERS
+  // CREATE USER
   // =================================
 
   async create(
@@ -135,6 +136,10 @@ export class UserService {
     );
 
   }
+
+  // =================================
+  // GET ALL USERS
+  // =================================
 
   async getAll():
     Promise<User[]> {
@@ -165,7 +170,7 @@ export class UserService {
   }
 
   // =================================
-  // USERS APROBADOS
+  // ACTIVE USERS
   // =================================
 
   async getApprovedUsers():
@@ -178,51 +183,44 @@ export class UserService {
         'users'
       );
 
-    const snapshot =
-      await getDocs(usersRef);
+    const q =
 
-    return snapshot.docs
+      query(
 
-      .map(
+        usersRef,
 
-        docItem => ({
-
-          id:
-            docItem.id,
-
-          ...docItem.data()
-
-        } as User)
-
-      )
-
-      .filter(user =>
-
-        user.estado === 'activo'
-
-        ||
-
-        (
-
-          user.aprobado === true
-
-          &&
-
-          user.estadoSolicitud ===
-          RequestStatus.APROBADO
-
+        where(
+          'estado',
+          '==',
+          UserStatus.ACTIVE
         )
 
       );
 
+    const snapshot =
+      await getDocs(q);
+
+    return snapshot.docs.map(
+
+      docItem => ({
+
+        id:
+          docItem.id,
+
+        ...docItem.data()
+
+      } as User)
+
+    );
+
   }
 
   // =================================
-  // USERS PENDIENTES
+  // PENDING USERS
   // =================================
 
   async getPendingUsers():
-    Promise<any[]> {
+    Promise<User[]> {
 
     const usersRef =
 
@@ -231,150 +229,33 @@ export class UserService {
         'users'
       );
 
-    const preRegisterRef =
+    const q =
 
-      collection(
-        this.firestore,
-        'preRegister'
-      );
+      query(
 
-    // =================================
-    // LOAD USERS
-    // =================================
+        usersRef,
 
-    const usersSnapshot =
-      await getDocs(usersRef);
-
-    const preSnapshot =
-      await getDocs(preRegisterRef);
-
-    // =================================
-    // MAP PREREGISTER
-    // =================================
-
-    const preRegisterMap =
-      new Map();
-
-    preSnapshot.docs.forEach(docItem => {
-
-      const data =
-        docItem.data();
-
-      preRegisterMap.set(
-
-        data['email'],
-
-        data
+        where(
+          'estado',
+          '==',
+          UserStatus.PENDING_APPROVAL
+        )
 
       );
 
-    });
+    const snapshot =
+      await getDocs(q);
 
-    // =================================
-    // BUILD USERS
-    // =================================
+    return snapshot.docs.map(
 
-    const users = await Promise.all(
+      docItem => ({
 
-      usersSnapshot.docs.map(async docItem => {
+        id:
+          docItem.id,
 
-        const user = {
+        ...docItem.data()
 
-          id:
-            docItem.id,
-
-          ...docItem.data()
-
-        } as any;
-
-        // =============================
-        // GET PREREGISTER INFO
-        // =============================
-
-        const preData =
-
-          preRegisterMap.get(
-            user.email
-          );
-
-        if (preData) {
-
-          user.fechaInvitacion =
-            preData['fecha'];
-
-          const invitadorUid =
-            preData['invitadoPor'];
-
-          // =============================
-          // GET INVITER USER
-          // =============================
-
-          if (invitadorUid) {
-
-            const inviterDoc =
-
-              await getDoc(
-
-                doc(
-
-                  this.firestore,
-
-                  'users',
-
-                  invitadorUid
-
-                )
-
-              );
-
-            if (inviterDoc.exists()) {
-
-              user.invitadoPor =
-
-                inviterDoc.data()['nombre']
-
-                || 'Administrador';
-
-            }
-
-            else {
-
-              user.invitadoPor =
-                'Administrador';
-
-            }
-
-          }
-
-        }
-
-        return user;
-
-      })
-
-    );
-
-    // =================================
-    // FILTER PENDING USERS
-    // =================================
-
-    return users.filter(user =>
-
-      user.estado ===
-      'pendiente_aprobacion'
-
-      ||
-
-      (
-
-        user.aprobado === false
-
-        &&
-
-        user.estadoSolicitud ===
-        RequestStatus.PENDIENTE
-
-      )
+      } as User)
 
     );
 
@@ -460,7 +341,7 @@ export class UserService {
   }
 
   // =================================
-  // APROBAR USER
+  // APPROVE USER
   // =================================
 
   async approveUser(uid: string) {
@@ -473,11 +354,6 @@ export class UserService {
         uid
       );
 
-
-    // =================================
-    // USERS
-    // =================================
-
     await updateDoc(
 
       userRef,
@@ -485,12 +361,7 @@ export class UserService {
       {
 
         estado:
-          'activo',
-
-        aprobado: true,
-
-        estadoSolicitud:
-          RequestStatus.APROBADO,
+          UserStatus.ACTIVE,
 
         fechaAprobacion:
           serverTimestamp()
@@ -502,7 +373,7 @@ export class UserService {
   }
 
   // =================================
-  // RECHAZAR USER
+  // REJECT USER
   // =================================
 
   async rejectUser(uid: string) {
@@ -522,18 +393,17 @@ export class UserService {
       {
 
         estado:
-          UserStatus.CANCELADO,
-
-        aprobado: false,
-
-        estadoSolicitud:
-          RequestStatus.RECHAZADO
+          UserStatus.REJECTED
 
       }
 
     );
 
   }
+
+  // =================================
+  // EXISTS EMAIL
+  // =================================
 
   async existsByEmail(
     email: string
@@ -544,10 +414,6 @@ export class UserService {
       email
         .trim()
         .toLowerCase();
-
-    // =========================
-    // USERS
-    // =========================
 
     const usersRef =
 
@@ -584,50 +450,6 @@ export class UserService {
 
         data:
           usersResult.docs[0].data()
-
-      };
-
-    }
-
-    // =========================
-    // PREREGISTER
-    // =========================
-
-    const preRef =
-
-      collection(
-        this.firestore,
-        'preRegister'
-      );
-
-    const qPre =
-
-      query(
-
-        preRef,
-
-        where(
-          'email',
-          '==',
-          normalizedEmail
-        )
-
-      );
-
-    const preResult =
-
-      await getDocs(qPre);
-
-    if (!preResult.empty) {
-
-      return {
-
-        exists: true,
-
-        source: 'preRegister',
-
-        data:
-          preResult.docs[0].data()
 
       };
 

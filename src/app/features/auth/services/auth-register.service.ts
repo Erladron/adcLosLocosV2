@@ -5,19 +5,19 @@ import {
 
   Auth,
   createUserWithEmailAndPassword,
-  getAuth
+  getAuth,
+  deleteUser,
+  signOut,
+  UserCredential
 
 } from '@angular/fire/auth';
 
 import {
 
   Firestore,
-  collection,
-  query,
-  where,
-  getDocs,
   doc,
-  setDoc
+  setDoc,
+  deleteDoc
 
 } from '@angular/fire/firestore';
 
@@ -38,6 +38,9 @@ from '@users/models/user-status.enum';
 import { AppMessageCode }
 from '@core/constants/messages/app-message-code.enum';
 
+import { InvitedUserService }
+from '@users/services/invited-user.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,28 +55,29 @@ export class AuthRegisterService {
 
     private auth: Auth,
 
-    private firestore: Firestore
+    private firestore: Firestore,
 
-  ) { }
+    private invitedUserService:
+      InvitedUserService
+
+  ) {}
 
   // ============================================
   // REGISTER USER
   // ============================================
 
   /**
-   * Registro principal usuarios.
+   * checkInvitation = true
+   * -> registro invitado
    *
-   * checkPreRegister = true
-   * -> usuario invitado
-   *
-   * checkPreRegister = false
+   * checkInvitation = false
    * -> alta admin/directiva
    */
   async register(
 
     user: any,
 
-    checkPreRegister:
+    checkInvitation:
       boolean = true
 
   ) {
@@ -89,112 +93,225 @@ export class AuthRegisterService {
         .toLowerCase();
 
     // ============================================
-    // CHECK INVITATION
+    // VALIDATE INVITATION
     // ============================================
 
-    if (checkPreRegister) {
+    let invitation: any = null;
 
-      await this.checkPreRegister(
-        email
-      );
+    if (checkInvitation) {
+
+      invitation =
+
+        await this.validateInvitation(
+          email
+        );
 
     }
+
+    // ============================================
+    // TRANSACTION CONTROL
+    // ============================================
 
     let uid = '';
 
-    // ============================================
-    // ADMIN CREATE USER
-    // ============================================
+    let createdCredential:
+      UserCredential | null = null;
 
-    if (!checkPreRegister) {
+    try {
 
-      uid = await this.createAdminUser(
+      // ============================================
+      // ADMIN CREATE USER
+      // ============================================
+
+      if (!checkInvitation) {
+
+        uid = await this.createAdminUser(
+
+          email,
+
+          user.password
+
+        );
+
+      }
+
+      // ============================================
+      // NORMAL REGISTER
+      // ============================================
+
+      else {
+
+        createdCredential =
+
+          await this.createNormalUser(
+
+            email,
+
+            user.password
+
+          );
+
+        uid =
+          createdCredential.user.uid;
+
+      }
+
+      // ============================================
+      // SAVE FIRESTORE USER
+      // ============================================
+
+      await this.saveFirestoreUser(
+
+        uid,
+
+        user,
 
         email,
 
-        user.password
+        checkInvitation
 
       );
 
+      // ============================================
+      // MARK INVITATION USED
+      // ============================================
+
+      if (
+
+        checkInvitation
+
+        &&
+
+        invitation
+
+      ) {
+
+        await this.invitedUserService
+          .markAsUsed(
+
+            invitation.id,
+
+            uid
+
+          );
+
+      }
+
+      return true;
+
     }
 
-    // ============================================
-    // NORMAL REGISTER
-    // ============================================
+    catch (error) {
 
-    else {
-
-      uid = await this.createNormalUser(
-
-        email,
-
-        user.password
-
+      console.error(
+        'REGISTER ROLLBACK',
+        error
       );
 
+      // ============================================
+      // DELETE FIRESTORE USER
+      // ============================================
+
+      if (uid) {
+
+        try {
+
+          await deleteDoc(
+
+            doc(
+              this.firestore,
+              'users',
+              uid
+            )
+
+          );
+
+        }
+
+        catch (rollbackError) {
+
+          console.error(
+
+            'ROLLBACK FIRESTORE ERROR',
+
+            rollbackError
+
+          );
+
+        }
+
+      }
+
+      // ============================================
+      // DELETE AUTH USER
+      // ============================================
+
+      if (
+
+        createdCredential?.user
+
+      ) {
+
+        try {
+
+          await deleteUser(
+
+            createdCredential.user
+
+          );
+
+        }
+
+        catch (rollbackError) {
+
+          console.error(
+
+            'ROLLBACK AUTH ERROR',
+
+            rollbackError
+
+          );
+
+        }
+
+      }
+
+      // ============================================
+      // LOGOUT
+      // ============================================
+
+      try {
+
+        await signOut(
+          this.auth
+        );
+
+      }
+
+      catch {}
+
+      throw error;
+
     }
-
-    // ============================================
-    // SAVE FIRESTORE USER
-    // ============================================
-
-    await this.saveFirestoreUser(
-
-      uid,
-
-      user,
-
-      email,
-
-      checkPreRegister
-
-    );
-
-    return true;
 
   }
 
   // ============================================
-  // CHECK PRE REGISTER
+  // VALIDATE INVITATION
   // ============================================
 
-  /**
-   * Comprueba si existe invitación.
-   */
-  async checkPreRegister(
+  async validateInvitation(
     email: string
   ) {
 
-    const preRegisterRef =
+    const invitation =
 
-      collection(
-        this.firestore,
-        'preRegister'
-      );
-
-    const q =
-
-      query(
-
-        preRegisterRef,
-
-        where(
-          'email',
-          '==',
+      await this.invitedUserService
+        .getInvitationByEmail(
           email
-        )
+        );
 
-      );
-
-    const result =
-
-      await getDocs(q);
-
-    // ============================================
-    // INVITATION NOT FOUND
-    // ============================================
-
-    if (result.empty) {
+    if (!invitation) {
 
       throw new Error(
 
@@ -205,18 +322,25 @@ export class AuthRegisterService {
 
     }
 
+    if (invitation.usado) {
+
+      throw new Error(
+
+        AppMessageCode
+          .ADC_INV_ERR_0006
+
+      );
+
+    }
+
+    return invitation;
+
   }
 
   // ============================================
   // CREATE ADMIN USER
   // ============================================
 
-  /**
-   * Alta creada por admin/directiva.
-   *
-   * Usa secondary Firebase App
-   * para no perder sesión actual.
-   */
   async createAdminUser(
 
     email: string,
@@ -261,10 +385,6 @@ export class AuthRegisterService {
       const uid =
         credential.user.uid;
 
-      // ============================================
-      // DELETE SECONDARY APP
-      // ============================================
-
       await deleteApp(
         secondaryApp
       );
@@ -275,17 +395,9 @@ export class AuthRegisterService {
 
     catch (error: any) {
 
-      // ============================================
-      // DELETE SECONDARY APP
-      // ============================================
-
       await deleteApp(
         secondaryApp
       );
-
-      // ============================================
-      // HANDLE ERROR
-      // ============================================
 
       this.handleRegisterError(
         error
@@ -299,16 +411,13 @@ export class AuthRegisterService {
   // CREATE NORMAL USER
   // ============================================
 
-  /**
-   * Registro usuario invitado.
-   */
   async createNormalUser(
 
     email: string,
 
     password: string
 
-  ): Promise<string> {
+  ): Promise<UserCredential> {
 
     try {
 
@@ -324,20 +433,11 @@ export class AuthRegisterService {
 
         );
 
-      return credential.user.uid;
+      return credential;
 
     }
 
     catch (error: any) {
-
-      console.error(
-        'REGISTER ERROR',
-        error
-      );
-
-      // ============================================
-      // HANDLE ERROR
-      // ============================================
 
       this.handleRegisterError(
         error
@@ -351,9 +451,6 @@ export class AuthRegisterService {
   // SAVE FIRESTORE USER
   // ============================================
 
-  /**
-   * Guarda usuario en Firestore.
-   */
   async saveFirestoreUser(
 
     uid: string,
@@ -362,7 +459,7 @@ export class AuthRegisterService {
 
     email: string,
 
-    checkPreRegister: boolean
+    checkInvitation: boolean
 
   ) {
 
@@ -402,7 +499,7 @@ export class AuthRegisterService {
 
         (
 
-          checkPreRegister
+          checkInvitation
 
             ? UserRole.INVITADO
 
@@ -412,25 +509,11 @@ export class AuthRegisterService {
 
       estado:
 
-        checkPreRegister
+        checkInvitation
 
-          ? UserStatus.PENDIENTE_APROBACION
+          ? UserStatus.PENDING_DATA
 
-          : UserStatus.ACTIVO,
-
-      estadoSolicitud:
-
-        checkPreRegister
-
-          ? 'pendiente'
-
-          : 'aprobado',
-
-      aprobado:
-        !checkPreRegister,
-
-      perfilCompleto:
-        !checkPreRegister,
+          : UserStatus.ACTIVE,
 
       createdAt:
         new Date()
@@ -443,16 +526,9 @@ export class AuthRegisterService {
   // HANDLE FIREBASE ERRORS
   // ============================================
 
-  /**
-   * Traducción errores Firebase.
-   */
   handleRegisterError(
     error: any
   ): never {
-
-    // ============================================
-    // EMAIL EXISTS
-    // ============================================
 
     if (
 
@@ -470,10 +546,6 @@ export class AuthRegisterService {
 
     }
 
-    // ============================================
-    // WEAK PASSWORD
-    // ============================================
-
     if (
 
       error?.code ===
@@ -489,10 +561,6 @@ export class AuthRegisterService {
       );
 
     }
-
-    // ============================================
-    // INVALID EMAIL
-    // ============================================
 
     if (
 
@@ -510,10 +578,6 @@ export class AuthRegisterService {
 
     }
 
-    // ============================================
-    // NETWORK ERROR
-    // ============================================
-
     if (
 
       error?.code ===
@@ -529,10 +593,6 @@ export class AuthRegisterService {
       );
 
     }
-
-    // ============================================
-    // DEFAULT ERROR
-    // ============================================
 
     throw new Error(
 

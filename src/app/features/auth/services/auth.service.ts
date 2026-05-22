@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { Auth }
-from '@angular/fire/auth';
-
-import { Router }
-from '@angular/router';
-
 import { AuthSessionService }
 from './auth-session.service';
 
@@ -32,10 +26,6 @@ export class AuthService {
   // ============================================
 
   constructor(
-
-    private auth: Auth,
-
-    private router: Router,
 
     // ============================================
     // SPECIALIZED SERVICES
@@ -93,6 +83,27 @@ export class AuthService {
 
     return this.sessionService
       .authReady;
+
+  }
+
+  // ============================================
+  // AUTH READY
+  // ============================================
+
+  /**
+   * Espera inicialización auth.
+   */
+  async waitForAuthReady():
+    Promise<void> {
+
+    while (!this.authReady) {
+
+      await new Promise(
+        resolve =>
+          setTimeout(resolve, 100)
+      );
+
+    }
 
   }
 
@@ -323,7 +334,7 @@ export class AuthService {
   }
 
   // ============================================
-  // ESTADOS
+  // STATUS
   // ============================================
 
   isActivo(): boolean {
@@ -336,38 +347,16 @@ export class AuthService {
   isPendienteAprobacion(): boolean {
 
     return this.permissionsService
-      .isPendienteAprobacion(this.currentUserData);
+      .isPendienteAprobacion(
+        this.currentUserData
+      );
 
   }
 
-  isCancelado(): boolean {
+    isDisabled(): boolean {
 
-    return this.permissionsService
-      .isCancelado(this.currentUserData);
-
-  }
-
-  // ============================================
-  // HELPERS LEGACY
-  // ============================================
-
-  /**
-   * Compatibilidad antigua.
-   */
-  isRegisteredUser(): boolean {
-
-    return this.permissionsService
-      .isRegisteredUser(this.currentUserData);
-
-  }
-
-  /**
-   * Usuario colección users.
-   */
-  isAssociationUser(): boolean {
-
-    return this.permissionsService
-      .isAssociationUser(this.currentUserData);
+    return this.currentUserData?.estado
+      === 'disabled';
 
   }
 

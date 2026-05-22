@@ -12,9 +12,9 @@
 
       <div class="avatar-container">
 
-        <img *ngIf="user.foto" [src]="user.foto" class="profile-avatar" />
+        <img *ngIf="user?.foto" [src]="user.foto" class="profile-avatar" />
 
-        <div *ngIf="!user.foto" class="default-avatar">
+        <div *ngIf="!user?.foto" class="default-avatar">
 
           <ion-icon name="person-outline">
           </ion-icon>
@@ -40,6 +40,8 @@
     <!-- ACTIONS -->
 
     <div *ngIf="
+    !simpleMode
+    &&
     isEditMode
     &&
     canEdit

@@ -1,13 +1,19 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable
+} from '@angular/core';
 
-import { AuthService }
-from '@auth/services/auth.service';
+import {
+  AuthService
+} from '@auth/services/auth.service';
 
-import { RequestStatus }
-from '@users/models/request-status.enum';
+import {
+  UserStatus
+} from '@users/models/user-status.enum';
 
 @Injectable({
+
   providedIn: 'root'
+
 })
 
 export class AuthPoliciesService {
@@ -20,7 +26,7 @@ export class AuthPoliciesService {
   ) { }
 
   // ============================================
-  // LOGGED
+  // SESSION
   // ============================================
 
   isLogged(): boolean {
@@ -31,67 +37,105 @@ export class AuthPoliciesService {
   }
 
   // ============================================
+  // CURRENT USER
+  // ============================================
+
+  get currentUser() {
+
+    return this.authService
+      .currentUserData;
+
+  }
+
+  // ============================================
+  // ROLE
+  // ============================================
+
+  get role(): string {
+
+    return this.authService
+      .getRole();
+
+  }
+
+  // ============================================
   // ROLES
   // ============================================
 
   isAdmin(): boolean {
 
-    return (
-
-      this.authService.getRole()
-
-      ===
-
-      'administrador'
-
-    );
+    return this.role
+      === 'administrador';
 
   }
 
   isDirectiva(): boolean {
 
-    return (
-
-      this.authService.getRole()
-
-      ===
-
-      'directiva'
-
-    );
+    return this.role
+      === 'directiva';
 
   }
 
   isSocio(): boolean {
 
-    return (
-
-      this.authService.getRole()
-
-      ===
-
-      'socio'
-
-    );
+    return this.role
+      === 'socio';
 
   }
 
   isInvitado(): boolean {
 
+    return this.role
+      === 'invitado';
+
+  }
+
+  // ============================================
+  // STATUS
+  // ============================================
+
+  hasStatus(
+    status: UserStatus
+  ): boolean {
+
     return (
 
-      this.authService.getRole()
+      this.currentUser?.estado
 
       ===
 
-      'invitado'
+      status
 
     );
 
   }
 
+  isActive(): boolean {
+
+    return this.hasStatus(
+      UserStatus.ACTIVE
+    );
+
+  }
+
+  isPendingData(): boolean {
+
+    return this.hasStatus(
+      UserStatus.PENDING_DATA
+    );
+
+  }
+
+  isPendingApproval(): boolean {
+
+    return this.hasStatus(
+      UserStatus.PENDING_APPROVAL
+    );
+
+  }
+
   // ============================================
-  // ADMIN AREA
+  // ADMIN
   // ============================================
 
   canAccessAdminArea(): boolean {
@@ -108,10 +152,6 @@ export class AuthPoliciesService {
 
   }
 
-  // ============================================
-  // USERS MANAGEMENT
-  // ============================================
-
   canManageUsers(): boolean {
 
     return (
@@ -123,57 +163,6 @@ export class AuthPoliciesService {
       this.isDirectiva()
 
     );
-
-  }
-
-  // ============================================
-  // APPROVED USER
-  // ============================================
-
-  isApprovedUser(): boolean {
-
-    const currentUserData =
-
-      this.authService
-        .currentUserData;
-
-    // ============================================
-    // NO DATA
-    // ============================================
-
-    if (!currentUserData) {
-
-      return false;
-
-    }
-
-    // ============================================
-    // APPROVED
-    // ============================================
-
-    return (
-
-      currentUserData.aprobado === true
-
-      &&
-
-      currentUserData.estadoSolicitud
-
-      ===
-
-      RequestStatus.APROBADO
-
-    );
-
-  }
-
-  // ============================================
-  // PENDING APPROVAL
-  // ============================================
-
-  isPendingApproval(): boolean {
-
-    return !this.isApprovedUser();
 
   }
 

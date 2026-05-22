@@ -1,11 +1,7 @@
 export enum UserStatus {
-
-    PENDIENTE_REGISTRO = 'pendiente_registro',
-
-    PENDIENTE_APROBACION = 'pendiente_aprobacion',
-
-    ACTIVO = 'activo',
-
-    CANCELADO = 'cancelado'
-
+    PENDING_DATA = 'pending_data',
+    PENDING_APPROVAL = 'pending_approval',
+    ACTIVE = 'active',
+    REJECTED = 'rejected',
+    DISABLED = 'disabled'
 }

@@ -2,12 +2,8 @@ import { Timestamp } from '@angular/fire/firestore';
 import { UserRole }
 from './user-role.enum';
 
-import { RequestStatus }
-from './request-status.enum';
-
 export {
   UserRole,
-  RequestStatus
 };
 
 export interface UserDetail {
@@ -37,12 +33,6 @@ export interface UserDetail {
   tipo: UserRole;
 
   numeroSocio?: string;
-
-  aprobado: boolean;
-
-  perfilCompleto: boolean;
-
-  estadoSolicitud: RequestStatus;
 
   // =========================================
   // CONTROL

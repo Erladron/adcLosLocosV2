@@ -8,7 +8,25 @@ import { roleGuard }
 
 export const routes: Routes = [
 
+  // ============================================
+  // ROOT
+  // ============================================
+
+  {
+    path: '',
+
+    loadComponent: () =>
+
+      import('./features/auth/pages/login/login.page')
+
+        .then(m => m.LoginPage)
+
+  },
+
+  // ============================================
   // LOGIN
+  // ============================================
+
   {
     path: 'login',
 
@@ -20,7 +38,10 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
   // REGISTER
+  // ============================================
+
   {
     path: 'register',
 
@@ -32,7 +53,44 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
+  // PENDING APPROVAL
+  // ============================================
+
+  {
+    path: 'pending-approval',
+
+    loadComponent: () =>
+
+      import('./features/auth/pages/pending-approval/pending-approval.page')
+
+        .then(
+          m => m.PendingApprovalPage
+        )
+
+  },
+
+    // ============================================
+  // COMPLETE PROFILE
+  // ============================================
+
+  {
+    path: 'complete-profile',
+
+    loadComponent: () =>
+
+      import('./features/auth/pages/complete-profile/complete-profile.page')
+
+        .then(
+          m => m.CompleteProfilePage
+        )
+
+  },
+
+  // ============================================
   // INVITE
+  // ============================================
+
   {
     path: 'invite',
 
@@ -61,17 +119,10 @@ export const routes: Routes = [
 
   },
 
-  // ROOT
-  {
-    path: '',
-
-    redirectTo: 'login',
-
-    pathMatch: 'full'
-
-  },
-
+  // ============================================
   // HOME
+  // ============================================
+
   {
     path: 'home',
 
@@ -87,7 +138,10 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
   // GESTION USUARIOS
+  // ============================================
+
   {
     path: 'gest-user',
 
@@ -117,7 +171,10 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
   // NUEVO USUARIO
+  // ============================================
+
   {
     path: 'user-detail',
 
@@ -132,8 +189,7 @@ export const routes: Routes = [
 
         'socio',
         'directiva',
-        'administrador',
-        'registrado'
+        'administrador'
 
       ]
 
@@ -147,7 +203,10 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
   // EDITAR USUARIO
+  // ============================================
+
   {
     path: 'user-detail/:id',
 
@@ -163,7 +222,10 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
   // ESTADISTICAS
+  // ============================================
+
   {
     path: 'stats',
 
@@ -179,7 +241,10 @@ export const routes: Routes = [
 
   },
 
+  // ============================================
   // EVENTOS
+  // ============================================
+
   {
     path: 'events',
 
@@ -194,24 +259,31 @@ export const routes: Routes = [
         .then(m => m.EventsPage)
 
   },
+
+  // ============================================
+  // FALLBACK
+  // ============================================
+
   {
-    path: 'invite',
-    loadComponent: () => import('./features/auth/pages/invite/invite.page').then(m => m.InvitePage)
+    path: '**',
+
+    redirectTo: 'home'
+
   },
+
+  // ============================================
+  // COMPLETE PROFILE
+  // ============================================
+
   {
-    path: 'pending-approval',
-    loadComponent: () => import('./features/auth/pages/pending-approval/pending-approval.page').then(m => m.PendingApprovalPage)
-  },
-  {
-    path: 'pending-approval',
+    path: 'complete-profile',
 
     loadComponent: () =>
 
-      import('./features/auth/pages/pending-approval/pending-approval.page')
+      import('./features/users/pages/user-detail/user-detail.page')
 
-        .then(
-          m => m.PendingApprovalPage
-        )
-  }
+        .then(m => m.UserDetailPage)
+
+  },
 
 ];

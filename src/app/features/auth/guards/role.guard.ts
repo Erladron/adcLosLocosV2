@@ -11,9 +11,6 @@ import {
 import { AuthService }
 from '@auth/services/auth.service';
 
-import { AuthPoliciesService }
-from '@auth/services/auth-policies.service';
-
 export const roleGuard:
 CanActivateFn = async (
 
@@ -28,9 +25,6 @@ CanActivateFn = async (
   const authService =
     inject(AuthService);
 
-  const policies =
-    inject(AuthPoliciesService);
-
   const router =
     inject(Router);
 
@@ -38,20 +32,8 @@ CanActivateFn = async (
   // WAIT AUTH
   // ============================================
 
-  while (!authService.authReady) {
-
-    await new Promise(
-
-      resolve =>
-
-        setTimeout(
-          resolve,
-          100
-        )
-
-    );
-
-  }
+  await authService
+    .waitForAuthReady();
 
   // ============================================
   // USER DATA
@@ -62,61 +44,14 @@ CanActivateFn = async (
     authService.currentUserData;
 
   // ============================================
-  // NO USER DATA
+  // NO USER
   // ============================================
 
   if (!currentUserData) {
 
-    router.navigateByUrl('/login');
-
-    return false;
-
-  }
-
-  // ============================================
-  // ADMIN ACCESS
-  // ============================================
-
-  if (
-
-    policies.isAdmin()
-
-  ) {
-
-    return true;
-
-  }
-
-  // ============================================
-  // USER APPROVED
-  // ============================================
-
-  if (
-
-    !policies.isApprovedUser()
-
-  ) {
-
-    // ========================================
-    // EXCEPTION
-    // ========================================
-
-    if (
-
-      route.routeConfig?.path ===
-      'pending-approval'
-
-    ) {
-
-      return true;
-
-    }
-
-    router.navigateByUrl(
-      '/pending-approval'
+    return router.parseUrl(
+      '/login'
     );
-
-    return false;
 
   }
 
@@ -162,8 +97,8 @@ CanActivateFn = async (
   // ACCESS DENIED
   // ============================================
 
-  router.navigateByUrl('/home');
-
-  return false;
+  return router.parseUrl(
+    '/home'
+  );
 
 };

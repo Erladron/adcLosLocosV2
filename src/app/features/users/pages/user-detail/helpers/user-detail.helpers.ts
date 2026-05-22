@@ -1,8 +1,8 @@
 import {
-  RequestStatus,
   UserDetail,
   UserRole
 } from '@users/els/user-detail.model';
+import { UserStatus } from '@users/models/user-status.enum';
 
 // =========================================
 // COMPARAR USERS
@@ -212,7 +212,7 @@ export function isApproved(
   user: UserDetail
 ): boolean {
 
-  return user?.estadoSolicitud === RequestStatus.APROBADO;
+  return user?.estado === UserStatus.ACTIVE;
 }
 
 // =========================================
@@ -223,7 +223,7 @@ export function isPending(
   user: UserDetail
 ): boolean {
 
-  return user?.estadoSolicitud === RequestStatus.PENDIENTE;
+  return user?.estado === UserStatus.PENDING_APPROVAL;
 }
 
 // =========================================
@@ -234,7 +234,7 @@ export function isRejected(
   user: UserDetail
 ): boolean {
 
-  return user?.estadoSolicitud === RequestStatus.RECHAZADO;
+  return user?.estado === UserStatus.REJECTED;
 }
 
 // =========================================

@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
+import {
+  CommonModule
+} from '@angular/common';
+
+import {
+  Router
+} from '@angular/router';
 
 import {
 
@@ -8,29 +19,18 @@ import {
 
 } from '@ionic/angular/standalone';
 
-import { CommonModule }
-from '@angular/common';
-
-import { Router }
-from '@angular/router';
-
-import { addIcons }
-from 'ionicons';
+import {
+  addIcons
+} from 'ionicons';
 
 import {
-
-  hourglassOutline,
-  closeCircleOutline,
-  refreshOutline,
+  checkmarkCircleOutline,
   logOutOutline
-
 } from 'ionicons/icons';
 
-import { AuthService }
-from '@auth/services/auth.service';
-
-import { RequestStatus }
-from '@users/models/request-status.enum';
+import {
+  AuthService
+} from '@auth/services/auth.service';
 
 @Component({
 
@@ -39,8 +39,9 @@ from '@users/models/request-status.enum';
   templateUrl:
     './pending-approval.page.html',
 
-  styleUrls:
-    ['./pending-approval.page.scss'],
+  styleUrls: [
+    './pending-approval.page.scss'
+  ],
 
   standalone: true,
 
@@ -57,29 +58,27 @@ from '@users/models/request-status.enum';
 })
 
 export class PendingApprovalPage
-implements OnInit {
+  implements OnInit {
 
   // =================================
-  // UI
+  // USER
   // =================================
-
-  estado = '';
 
   nombre = '';
 
   constructor(
 
-    private authService: AuthService,
+    private authService:
+      AuthService,
 
-    private router: Router
+    private router:
+      Router
 
   ) {
 
     addIcons({
 
-      hourglassOutline,
-      closeCircleOutline,
-      refreshOutline,
+      checkmarkCircleOutline,
       logOutOutline
 
     });
@@ -90,44 +89,18 @@ implements OnInit {
   // INIT
   // =================================
 
-  ngOnInit() {
-
-    this.loadUserData();
-
-  }
-
-  // =================================
-  // USER DATA
-  // =================================
-
-  loadUserData() {
+  ngOnInit(): void {
 
     const userData =
-      this.authService.currentUserData;
 
-    if (!userData) {
-
-      return;
-
-    }
+      this.authService
+        .currentUserData;
 
     this.nombre =
-      userData.nombre || '';
 
-    this.estado =
-      userData.estadoSolicitud
+      userData?.nombre
       ||
-      RequestStatus.PENDIENTE;
-
-  }
-
-  // =================================
-  // REFRESH
-  // =================================
-
-  async refrescarEstado() {
-
-    window.location.reload();
+      '';
 
   }
 
@@ -135,11 +108,11 @@ implements OnInit {
   // LOGOUT
   // =================================
 
-  async logout() {
+  async logout(): Promise<void> {
 
     await this.authService.logout();
 
-    this.router.navigateByUrl(
+    await this.router.navigateByUrl(
       '/login'
     );
 
