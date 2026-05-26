@@ -1,5 +1,10 @@
-import { Injectable }
-from '@angular/core';
+import {
+  Injectable,
+  inject,
+  EnvironmentInjector,
+  runInInjectionContext
+}
+  from '@angular/core';
 
 import {
 
@@ -13,13 +18,21 @@ import {
 @Injectable({
   providedIn: 'root'
 })
+
 export class PhotoService {
+
+  // =================================
+  // INJECTOR
+  // =================================
+
+  private injector =
+    inject(EnvironmentInjector);
 
   constructor(
 
     private storage: Storage
 
-  ) {}
+  ) { }
 
   // =================================
   // SUBIR FOTO PERFIL
@@ -33,49 +46,73 @@ export class PhotoService {
 
   ): Promise<string> {
 
-    try {
+    return await runInInjectionContext(
 
-      // BASE64 → BLOB
-      const response =
-        await fetch(base64);
+      this.injector,
 
-      const blob =
-        await response.blob();
+      async () => {
 
-      // REFERENCIA
-      const storageRef =
-        ref(
+        try {
 
-          this.storage,
+          // =============================
+          // BASE64 → BLOB
+          // =============================
 
-          `profilePhotos/${uid}.jpg`
+          const response =
+            await fetch(base64);
 
-        );
+          const blob =
+            await response.blob();
 
-      // SUBIR
-      await uploadBytes(
+          // =============================
+          // STORAGE REF
+          // =============================
 
-        storageRef,
+          const storageRef =
+            ref(
 
-        blob
+              this.storage,
 
-      );
+              `profilePhotos/${uid}.jpg`
 
-      // URL FINAL
-      return await getDownloadURL(
-        storageRef
-      );
+            );
 
-    } catch (error) {
+          // =============================
+          // UPLOAD
+          // =============================
 
-      console.error(
-        'ERROR STORAGE:',
-        error
-      );
+          await uploadBytes(
 
-      throw error;
+            storageRef,
 
-    }
+            blob
+
+          );
+
+          // =============================
+          // URL
+          // =============================
+
+          return await getDownloadURL(
+            storageRef
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            'ERROR STORAGE:',
+            error
+          );
+
+          throw error;
+
+        }
+
+      }
+
+    );
 
   }
 

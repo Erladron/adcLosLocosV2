@@ -35,7 +35,7 @@ import {
 } from 'ionicons/icons';
 
 import { AuthService }
-from '@auth/services/auth.service';
+  from '@auth/services/auth.service';
 
 import { CommonModule } from '@angular/common';
 
@@ -163,7 +163,7 @@ export class AppComponent {
   }
 
   // =================================
-  // ROLES
+  // ROLE
   // =================================
 
   get role(): string {
@@ -171,6 +171,87 @@ export class AppComponent {
     return this.authService
       .currentUserData?.tipo
       || '';
+
+  }
+
+  // =================================
+  // STATUS
+  // =================================
+
+  get status(): string {
+
+    return this.authService
+      .currentUserData?.estado
+      || '';
+
+  }
+
+  // =================================
+  // MENU VISIBILITY
+  // =================================
+
+  canShowMenu(): boolean {
+
+    // =================================
+    // SIN SESION
+    // =================================
+
+    if (!this.authService.isLogged()) {
+
+      return false;
+
+    }
+
+    // =================================
+    // SIN DATOS
+    // =================================
+
+    if (!this.authService.currentUserData) {
+
+      return false;
+
+    }
+
+    // =================================
+    // ESTADO USUARIO
+    // =================================
+
+    const status =
+
+      this.authService
+        .currentUserData
+        ?.estado;
+
+    // =================================
+    // SIN MENU:
+    // - DATOS PENDIENTES
+    // - PENDIENTE APROBACION
+    // - INACTIVO
+    // =================================
+
+    if (
+
+      status === 'pending_data'
+
+      ||
+
+      status === 'pending_approval'
+
+      ||
+
+      status === 'inactive'
+
+    ) {
+
+      return false;
+
+    }
+
+    // =================================
+    // RESTO => MENU OK
+    // =================================
+
+    return true;
 
   }
 

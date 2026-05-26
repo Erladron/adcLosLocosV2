@@ -2,7 +2,8 @@ import { inject } from '@angular/core';
 
 import {
   CanActivateFn,
-  Router
+  Router,
+  UrlTree
 } from '@angular/router';
 
 import { AuthService }
@@ -12,7 +13,12 @@ import { UserStatus }
   from '@users/models/user-status.enum';
 
 export const authGuard:
-  CanActivateFn = async () => {
+  CanActivateFn = async (
+
+    route,
+    state
+
+  ) => {
 
     const authService =
       inject(AuthService);
@@ -21,17 +27,33 @@ export const authGuard:
       inject(Router);
 
     // ============================================
-    // ESPERAR AUTH
+    // CURRENT URL
+    // ============================================
+
+    const currentUrl =
+      state.url;
+
+    console.log(
+      'AUTH GUARD START',
+      currentUrl
+    );
+
+    // ============================================
+    // WAIT AUTH READY
     // ============================================
 
     await authService
       .waitForAuthReady();
 
     // ============================================
-    // NO LOGIN FIREBASE
+    // NO FIREBASE SESSION
     // ============================================
 
     if (!authService.isLogged()) {
+
+      console.log(
+        'AUTH GUARD -> LOGIN'
+      );
 
       return router.parseUrl(
         '/login'
@@ -40,17 +62,33 @@ export const authGuard:
     }
 
     // ============================================
-    // USER FIRESTORE
+    // WAIT USER DATA
+    // ============================================
+
+    await authService
+      .waitForUserData();
+
+    // ============================================
+    // USER DATA
     // ============================================
 
     const user =
       authService.currentUserData;
 
+    console.log(
+      'AUTH GUARD USER',
+      user
+    );
+
     // ============================================
-    // USER INVALIDO
+    // USER DATA NOT AVAILABLE
     // ============================================
 
     if (!user) {
+
+      console.warn(
+        'AUTH GUARD USER DATA NULL'
+      );
 
       await authService.logout();
 
@@ -61,56 +99,108 @@ export const authGuard:
     }
 
     // ============================================
-    // CONTROL ESTADOS
+    // STATUS REDIRECTION
     // ============================================
 
-    console.log(
-      'AUTH GUARD USER',
-      user
-    );
+    const redirectUrl =
+      getRedirectUrlByStatus(
+        user.estado
+      );
 
-    switch (user.estado) {
+    // ============================================
+    // ACTIVE USER
+    // ============================================
 
-      case UserStatus.ACTIVE:
+    if (!redirectUrl) {
 
-        return true;
-
-      case UserStatus.PENDING_DATA:
-
-        return router.parseUrl(
-          '/complete-profile'
-        );
-
-      case UserStatus.PENDING_APPROVAL:
-
-        return router.parseUrl(
-          '/pending-approval'
-        );
-
-      case UserStatus.DISABLED:
-
-        await authService.logout();
-
-        return router.parseUrl(
-          '/login'
-        );
-
-      case UserStatus.REJECTED:
-
-        await authService.logout();
-
-        return router.parseUrl(
-          '/login'
-        );
-
-      default:
-
-        await authService.logout();
-
-        return router.parseUrl(
-          '/login'
-        );
+      return true;
 
     }
 
+    // ============================================
+    // AVOID NAVIGATION LOOP
+    // ============================================
+
+    if (
+
+      currentUrl ===
+      redirectUrl
+
+    ) {
+
+      return true;
+
+    }
+
+    console.log(
+      'AUTH GUARD REDIRECT',
+      redirectUrl
+    );
+
+    return router.parseUrl(
+      redirectUrl
+    );
+
   };
+
+// ============================================
+// REDIRECT STATUS HELPER
+// ============================================
+
+function getRedirectUrlByStatus(
+  status: UserStatus
+): string | null {
+
+  switch (status) {
+
+    // ============================================
+    // ACTIVE
+    // ============================================
+
+    case UserStatus.ACTIVE:
+
+      return null;
+
+    // ============================================
+    // PENDING DATA
+    // ============================================
+
+    case UserStatus.PENDING_DATA:
+
+      return '/complete-profile';
+
+    // ============================================
+    // PENDING APPROVAL
+    // ============================================
+
+    case UserStatus.PENDING_APPROVAL:
+
+      return '/pending-approval';
+
+    // ============================================
+    // INACTIVE
+    // ============================================
+
+    case UserStatus.INACTIVE:
+
+      return '/login';
+
+    // ============================================
+    // REJECTED
+    // ============================================
+
+    case UserStatus.REJECTED:
+
+      return '/login';
+
+    // ============================================
+    // DEFAULT
+    // ============================================
+
+    default:
+
+      return '/login';
+
+  }
+
+}

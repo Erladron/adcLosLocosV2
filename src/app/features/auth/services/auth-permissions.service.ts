@@ -170,7 +170,7 @@ export class AuthPermissionsService {
 
       userData,
 
-      UserStatus.DISABLED
+      UserStatus.INACTIVE
 
     );
 

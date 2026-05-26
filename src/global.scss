@@ -509,3 +509,189 @@ ion-toast::part(button) {
   justify-content: center;
 
 }
+
+/* =========================================
+   CUSTOM ALERT / PROMPT
+========================================= */
+
+.custom-alert {
+
+  --background:
+    rgba(17, 38, 92, 0.96);
+
+  --backdrop-opacity:
+    0.55;
+
+  --width:
+    340px;
+
+  --max-width:
+    calc(100% - 32px);
+
+  --border-radius:
+    24px;
+
+  --box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.38);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+}
+
+/* =========================================
+   WRAPPER
+========================================= */
+
+.custom-alert .alert-wrapper {
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius:
+    24px;
+
+  overflow:
+    hidden;
+
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.custom-alert .alert-head {
+
+  padding:
+    24px 24px 12px;
+
+}
+
+.custom-alert .alert-title {
+
+  font-size:
+    1.6rem;
+
+  font-weight:
+    700;
+
+  color:
+    #ffffff;
+
+  letter-spacing:
+    0.2px;
+
+}
+
+.custom-alert .alert-message {
+
+  margin-top:
+    8px;
+
+  color:
+    rgba(255, 255, 255, 0.72);
+
+  font-size:
+    0.95rem;
+
+  line-height:
+    1.45;
+
+}
+
+/* =========================================
+   INPUT
+========================================= */
+
+.custom-alert .alert-input-group {
+
+  padding:
+    8px 24px 4px;
+
+}
+
+.custom-alert .alert-input {
+
+  background:
+    rgba(255, 255, 255, 0.08) !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08) !important;
+
+  border-radius:
+    14px !important;
+
+  color:
+    #ffffff !important;
+
+  padding:
+    14px 16px !important;
+
+  margin-top:
+    12px !important;
+
+  font-size:
+    0.98rem !important;
+
+}
+
+.custom-alert .alert-input::placeholder {
+
+  color:
+    rgba(255, 255, 255, 0.45);
+
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.custom-alert .alert-button-group {
+
+  padding:
+    18px 20px 20px;
+
+  gap:
+    12px;
+
+}
+
+.custom-alert .alert-button {
+
+  border-radius:
+    14px !important;
+
+  font-weight:
+    600;
+
+  min-height:
+    44px;
+
+  text-transform:
+    none;
+
+  letter-spacing:
+    0.2px;
+
+}
+
+/* CANCEL */
+
+.custom-alert .alert-button-role-cancel {
+
+  color:
+    rgba(255, 255, 255, 0.75) !important;
+
+}
+
+/* CONFIRM */
+
+.custom-alert .alert-button-role-confirm {
+
+  color:
+    #ff6b6b !important;
+
+}

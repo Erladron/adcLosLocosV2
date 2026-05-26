@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 
 import { AuthSessionService }
-from './auth-session.service';
+  from './auth-session.service';
 
 import { AuthRegisterService }
-from './auth-register.service';
+  from './auth-register.service';
 
 import { AuthCredentialsService }
-from './auth-credentials.service';
+  from './auth-credentials.service';
 
 import { AuthPermissionsService }
-from './auth-permissions.service';
+  from './auth-permissions.service';
 
 import { AuthAdminService }
-from './auth-admin.service';
+  from './auth-admin.service';
+
+import { UserStatus }
+  from '@users/models/user-status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +65,7 @@ export class AuthService {
   get currentUser() {
 
     return this.sessionService
-      .currentUser;
+      .currentUser();
 
   }
 
@@ -72,7 +75,7 @@ export class AuthService {
   get currentUserData() {
 
     return this.sessionService
-      .currentUserData;
+      .currentUserData();
 
   }
 
@@ -82,7 +85,7 @@ export class AuthService {
   get authReady() {
 
     return this.sessionService
-      .authReady;
+      .authReady();
 
   }
 
@@ -96,11 +99,64 @@ export class AuthService {
   async waitForAuthReady():
     Promise<void> {
 
-    while (!this.authReady) {
+    await this.sessionService
+      .waitForAuthReady();
+
+  }
+
+  /**
+   * Espera carga datos Firestore usuario.
+   * Evita loops infinitos.
+   */
+  async waitForUserData():
+    Promise<void> {
+
+    let retries = 0;
+
+    const maxRetries = 50;
+
+    while (
+
+      this.currentUser
+      &&
+
+      !this.currentUserData
+      &&
+
+      retries < maxRetries
+
+    ) {
 
       await new Promise(
+
         resolve =>
-          setTimeout(resolve, 100)
+
+          setTimeout(
+            resolve,
+            100
+          )
+
+      );
+
+      retries++;
+
+    }
+
+    // ============================================
+    // TIMEOUT
+    // ============================================
+
+    if (
+
+      this.currentUser
+      &&
+
+      !this.currentUserData
+
+    ) {
+
+      console.warn(
+        'WAIT USER DATA TIMEOUT'
       );
 
     }
@@ -122,11 +178,46 @@ export class AuthService {
 
   ) {
 
-    return await this.sessionService
-      .login(
-        email,
-        password
+    const result =
+
+      await this.sessionService
+        .login(
+          email,
+          password
+        );
+
+    // ============================================
+    // RECARGA DATOS USUARIO
+    // ============================================
+
+    if (result?.user.uid) {
+
+      await this.reloadUserData(
+        result.user.uid
       );
+
+    }
+
+    // ============================================
+    // VALIDACION USUARIO INACTIVO
+    // ============================================
+
+    if (
+
+      this.currentUserData?.estado ===
+      UserStatus.INACTIVE
+
+    ) {
+
+      await this.logout();
+
+      throw new Error(
+        'Usuario desactivado'
+      );
+
+    }
+
+    return result;
 
   }
 
@@ -353,7 +444,14 @@ export class AuthService {
 
   }
 
-    isDisabled(): boolean {
+  isInactive(): boolean {
+
+    return this.currentUserData?.estado
+      === UserStatus.INACTIVE;
+
+  }
+
+  isDisabled(): boolean {
 
     return this.currentUserData?.estado
       === 'disabled';

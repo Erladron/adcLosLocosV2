@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
 import { authGuard }
-  from './features/auth/guards/auth.guard';
+  from '@auth/guards/auth.guard';
 
 import { roleGuard }
-  from './features/auth/guards/role.guard';
+  from '@auth/guards/role.guard';
 
 export const routes: Routes = [
 
@@ -15,11 +15,9 @@ export const routes: Routes = [
   {
     path: '',
 
-    loadComponent: () =>
+    pathMatch: 'full',
 
-      import('./features/auth/pages/login/login.page')
-
-        .then(m => m.LoginPage)
+    redirectTo: 'home'
 
   },
 
@@ -32,7 +30,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/auth/pages/login/login.page')
+      import('@auth/pages/login/login.page')
 
         .then(m => m.LoginPage)
 
@@ -47,7 +45,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/auth/pages/register/register.page')
+      import('@auth/pages/register/register.page')
 
         .then(m => m.RegisterPage)
 
@@ -62,7 +60,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/auth/pages/pending-approval/pending-approval.page')
+      import('@auth/pages/pending-approval/pending-approval.page')
 
         .then(
           m => m.PendingApprovalPage
@@ -70,7 +68,7 @@ export const routes: Routes = [
 
   },
 
-    // ============================================
+  // ============================================
   // COMPLETE PROFILE
   // ============================================
 
@@ -79,7 +77,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/auth/pages/complete-profile/complete-profile.page')
+      import('@auth/pages/complete-profile/complete-profile.page')
 
         .then(
           m => m.CompleteProfilePage
@@ -113,7 +111,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/auth/pages/invite/invite.page')
+      import('@auth/pages/invite/invite.page')
 
         .then(m => m.InvitePage)
 
@@ -132,7 +130,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/home/pages/home/home.page')
+      import('@home/pages/home/home.page')
 
         .then(m => m.HomePage)
 
@@ -165,7 +163,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/users/pages/gest-user/gest-user.page')
+      import('@users/pages/gest-user/gest-user.page')
 
         .then(m => m.GestUserPage)
 
@@ -197,7 +195,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/users/pages/user-detail/user-detail.page')
+      import('@users/pages/user-detail/user-detail.page')
 
         .then(m => m.UserDetailPage)
 
@@ -216,7 +214,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/users/pages/user-detail/user-detail.page')
+      import('@users/pages/user-detail/user-detail.page')
 
         .then(m => m.UserDetailPage)
 
@@ -235,7 +233,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/stats/pages/stats/stats.page')
+      import('@stats/pages/stats/stats.page')
 
         .then(m => m.StatsPage)
 
@@ -254,7 +252,7 @@ export const routes: Routes = [
 
     loadComponent: () =>
 
-      import('./features/events/pages/events/events.page')
+      import('@events/pages/events/events.page')
 
         .then(m => m.EventsPage)
 
@@ -268,21 +266,6 @@ export const routes: Routes = [
     path: '**',
 
     redirectTo: 'home'
-
-  },
-
-  // ============================================
-  // COMPLETE PROFILE
-  // ============================================
-
-  {
-    path: 'complete-profile',
-
-    loadComponent: () =>
-
-      import('./features/users/pages/user-detail/user-detail.page')
-
-        .then(m => m.UserDetailPage)
 
   },
 

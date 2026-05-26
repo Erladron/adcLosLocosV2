@@ -41,11 +41,7 @@
     <!-- SAVE -->
     <!-- ===================================== -->
 
-    <ion-button [disabled]="
-  !user?.nombre
-  ||
-  !user?.dni
-" expand="block" size="large" (click)="save()">
+    <ion-button [disabled]="!canSave" expand="block" size="large" (click)="save()">
 
       ENVIAR PARA APROBACIÓN
 

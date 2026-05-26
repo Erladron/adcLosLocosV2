@@ -1,4 +1,8 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable,
+  signal,
+  computed
+} from '@angular/core';
 
 import {
 
@@ -41,22 +45,36 @@ import { AppMessageCode }
 export class AuthSessionService {
 
   // ============================================
-  // USER AUTH FIREBASE
+  // INTERNAL SIGNAL STATE
   // ============================================
 
-  currentUser: User | null = null;
+  private _currentUser =
+    signal<User | null>(null);
+
+  private _currentUserData =
+    signal<any | null>(null);
+
+  private _authReady =
+    signal<boolean>(false);
 
   // ============================================
-  // USER DATA FIRESTORE
+  // PUBLIC READONLY STATE
   // ============================================
 
-  currentUserData: any = null;
+  readonly currentUser =
+    computed(() =>
+      this._currentUser()
+    );
 
-  // ============================================
-  // AUTH READY
-  // ============================================
+  readonly currentUserData =
+    computed(() =>
+      this._currentUserData()
+    );
 
-  authReady = false;
+  readonly authReady =
+    computed(() =>
+      this._authReady()
+    );
 
   constructor(
 
@@ -91,10 +109,10 @@ export class AuthSessionService {
         );
 
         // ============================================
-        // RESET AUTH READY
+        // RESET READY
         // ============================================
 
-        this.authReady = false;
+        this._authReady.set(false);
 
         // ============================================
         // NO USER
@@ -102,19 +120,11 @@ export class AuthSessionService {
 
         if (!user) {
 
-          this.currentUser = null;
+          this._currentUser.set(null);
 
-          this.currentUserData = null;
+          this._currentUserData.set(null);
 
-          this.authReady = true;
-
-          // ============================================
-          // GO LOGIN
-          // ============================================
-
-          await this.router.navigate([
-            '/login'
-          ]);
+          this._authReady.set(true);
 
           return;
 
@@ -124,7 +134,13 @@ export class AuthSessionService {
         // USER AUTH
         // ============================================
 
-        this.currentUser = user;
+        this._currentUser.set(user);
+
+        // ============================================
+        // RESET USER DATA
+        // ============================================
+
+        this._currentUserData.set(null);
 
         // ============================================
         // LOAD FIRESTORE USER
@@ -138,81 +154,51 @@ export class AuthSessionService {
         // READY
         // ============================================
 
-        this.authReady = true;
-
-        // ============================================
-        // NO USER DATA
-        // ============================================
-
-        if (!this.currentUserData) {
-
-          await this.router.navigate([
-            '/login'
-          ]);
-
-          return;
-
-        }
-
-        // ============================================
-        // NAVIGATION BY STATUS
-        // ============================================
-
-        switch (this.currentUserData.estado) {
-
-          // ============================================
-          // COMPLETE PROFILE
-          // ============================================
-
-          case UserStatus.PENDING_DATA:
-
-            await this.router.navigate([
-              '/complete-profile'
-            ]);
-
-            break;
-
-          // ============================================
-          // PENDING APPROVAL
-          // ============================================
-
-          case UserStatus.PENDING_APPROVAL:
-
-            await this.router.navigate([
-              '/pending-approval'
-            ]);
-
-            break;
-
-          // ============================================
-          // ACTIVE
-          // ============================================
-
-          case UserStatus.ACTIVE:
-
-            await this.router.navigate([
-              '/home'
-            ]);
-
-            break;
-
-          // ============================================
-          // DEFAULT
-          // ============================================
-
-          default:
-
-            await this.router.navigate([
-              '/login'
-            ]);
-
-            break;
-
-        }
+        this._authReady.set(true);
 
       }
 
     );
+
+  }
+
+  // ============================================
+  // WAIT AUTH READY
+  // ============================================
+
+  async waitForAuthReady(): Promise<void> {
+
+    if (this.authReady()) {
+
+      return;
+
+    }
+
+    await new Promise<void>((resolve) => {
+
+      const interval = setInterval(() => {
+
+        if (this.authReady()) {
+
+          clearInterval(interval);
+
+          resolve();
+
+        }
+
+      }, 50);
+
+    });
+
+  }
+
+  // ============================================
+  // IS LOGGED
+  // ============================================
+
+  isLogged(): boolean {
+
+    return !!this.currentUser();
 
   }
 
@@ -232,10 +218,10 @@ export class AuthSessionService {
   ) {
 
     // ============================================
-    // RESET AUTH READY
+    // RESET READY
     // ============================================
 
-    this.authReady = false;
+    this._authReady.set(false);
 
     // ============================================
     // VALIDATION
@@ -261,17 +247,15 @@ export class AuthSessionService {
     // FIREBASE LOGIN
     // ============================================
 
-    return await
+    return await signInWithEmailAndPassword(
 
-      signInWithEmailAndPassword(
+      this.auth,
 
-        this.auth,
+      email,
 
-        email,
+      password
 
-        password
-
-      );
+    );
 
   }
 
@@ -291,14 +275,14 @@ export class AuthSessionService {
     await signOut(this.auth);
 
     // ============================================
-    // RESET SESSION
+    // RESET STATE
     // ============================================
 
-    this.currentUser = null;
+    this._currentUser.set(null);
 
-    this.currentUserData = null;
+    this._currentUserData.set(null);
 
-    this.authReady = true;
+    this._authReady.set(true);
 
   }
 
@@ -401,8 +385,9 @@ export class AuthSessionService {
       // SAVE USER DATA
       // ============================================
 
-      this.currentUserData =
-        userData;
+      this._currentUserData.set(
+        userData
+      );
 
       // ============================================
       // USER REJECTED
@@ -410,7 +395,7 @@ export class AuthSessionService {
 
       if (
 
-        this.currentUserData.estado ===
+        userData.estado ===
         UserStatus.REJECTED
 
       ) {
@@ -435,7 +420,7 @@ export class AuthSessionService {
     // USER NOT FOUND
     // ============================================
 
-    this.currentUserData = null;
+    this._currentUserData.set(null);
 
   }
 

@@ -1,5 +1,5 @@
 import { Injectable }
-from '@angular/core';
+  from '@angular/core';
 
 import {
 
@@ -17,7 +17,11 @@ import {
   Firestore,
   doc,
   setDoc,
-  deleteDoc
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
 
 } from '@angular/fire/firestore';
 
@@ -30,16 +34,24 @@ import {
 } from '@angular/fire/app';
 
 import { UserRole }
-from '@users/models/user-role.enum';
+  from '@users/models/user-role.enum';
 
 import { UserStatus }
-from '@users/models/user-status.enum';
+  from '@users/models/user-status.enum';
 
 import { AppMessageCode }
-from '@core/constants/messages/app-message-code.enum';
+  from '@core/constants/messages/app-message-code.enum';
 
 import { InvitedUserService }
-from '@users/services/invited-user.service';
+  from '@users/services/invited-user.service';
+
+import { UserService }
+  from '@users/services/user.service';
+
+import {
+  normalizeName,
+  formatDNI,
+} from '@core/utils/string.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -58,9 +70,12 @@ export class AuthRegisterService {
     private firestore: Firestore,
 
     private invitedUserService:
-      InvitedUserService
+      InvitedUserService,
 
-  ) {}
+    private userService:
+      UserService
+
+  ) { }
 
   // ============================================
   // REGISTER USER
@@ -168,7 +183,9 @@ export class AuthRegisterService {
 
         email,
 
-        checkInvitation
+        checkInvitation,
+
+        invitation
 
       );
 
@@ -197,7 +214,21 @@ export class AuthRegisterService {
 
       }
 
-      return true;
+      // ============================================
+      // LOAD COMPLETE FIRESTORE USER
+      // ============================================
+
+      const firestoreUser =
+
+        await this.userService
+          .getById(uid);
+
+      console.error(
+        'FIRESTORE USER CARGADO:',
+        firestoreUser
+      );
+
+      return firestoreUser;
 
     }
 
@@ -288,7 +319,7 @@ export class AuthRegisterService {
 
       }
 
-      catch {}
+      catch { }
 
       throw error;
 
@@ -301,39 +332,53 @@ export class AuthRegisterService {
   // ============================================
 
   async validateInvitation(
+
     email: string
-  ) {
 
-    const invitation =
+  ): Promise<any> {
 
-      await this.invitedUserService
-        .getInvitationByEmail(
-          email
-        );
+    const q = query(
 
-    if (!invitation) {
+      collection(
+        this.firestore,
+        'invitedUsers'
+      ),
 
-      throw new Error(
+      where(
+        'email',
+        '==',
+        email
+      ),
 
-        AppMessageCode
-          .ADC_INV_ERR_0006
+      where(
+        'usado',
+        '==',
+        false
+      )
 
-      );
+    );
+
+    const snapshot =
+      await getDocs(q);
+
+    if (snapshot.empty) {
+
+      return null;
 
     }
 
-    if (invitation.usado) {
+    const docData =
 
-      throw new Error(
+      snapshot.docs[0].data();
 
-        AppMessageCode
-          .ADC_INV_ERR_0006
+    return {
 
-      );
+      id:
+        snapshot.docs[0].id,
 
-    }
+      ...docData
 
-    return invitation;
+    };
 
   }
 
@@ -459,7 +504,9 @@ export class AuthRegisterService {
 
     email: string,
 
-    checkInvitation: boolean
+    checkInvitation: boolean,
+
+    invitation: any = null
 
   ) {
 
@@ -471,12 +518,30 @@ export class AuthRegisterService {
         uid
       );
 
+    console.error(
+      'REGISTRANDO USUARIO CON INVITACION:',
+      invitation
+    );
+
     await setDoc(userDocRef, {
 
-      uid: uid,
+      // =========================================
+      // BASIC DATA
+      // =========================================
+
+      uid:
+        uid,
 
       nombre:
-        user.nombre || '',
+        normalizeName(
+
+          user.nombre ||
+
+          user.nombreCompleto ||
+
+          ''
+
+        ),
 
       email:
         email,
@@ -485,7 +550,9 @@ export class AuthRegisterService {
         user.telefono || '',
 
       dni:
-        user.dni || '',
+        formatDNI(
+          user.dni || ''
+        ),
 
       direccion:
         user.direccion || '',
@@ -493,32 +560,75 @@ export class AuthRegisterService {
       foto:
         user.foto || '',
 
+      // =========================================
+      // ROLE
+      // =========================================
+
       tipo:
 
         user.tipo ||
 
         (
-
           checkInvitation
-
             ? UserRole.INVITADO
-
             : UserRole.SOCIO
-
         ),
+
+      // =========================================
+      // STATUS
+      // =========================================
 
       estado:
 
         checkInvitation
-
           ? UserStatus.PENDING_DATA
-
           : UserStatus.ACTIVE,
 
+      // =========================================
+      // AUDIT
+      // =========================================
+
       createdAt:
-        new Date()
+        new Date(),
+
+      creadoPor:
+        user.creadoPor || '',
+
+      creadoPorNombre:
+        user.creadoPorNombre || '',
+
+      // =========================================
+      // INVITATION AUDIT
+      // =========================================
+
+      invitadoPor:
+
+        invitation?.invitadoPorUid ||
+
+        invitation?.invitadoPor ||
+
+        '',
+
+      invitadoPorNombre:
+
+        invitation?.invitadoPorNombre ||
+
+        invitation?.invitadoPor ||
+
+        '',
+
+      fechaInvitacion:
+
+        invitation?.fechaInvitacion ||
+
+        null
 
     });
+
+    console.error(
+      'USUARIO REGISTRADO:',
+      user
+    );
 
   }
 

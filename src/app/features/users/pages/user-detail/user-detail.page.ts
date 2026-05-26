@@ -27,7 +27,10 @@ import { addIcons }
 import {
   saveOutline,
   createOutline,
-  checkmarkOutline
+  checkmarkOutline,
+  trashOutline,
+  refreshOutline
+
 } from 'ionicons/icons';
 
 import {
@@ -41,6 +44,10 @@ import {
 import {
   CredentialsFormComponent
 } from './components/credentials-form/credentials-form.component';
+
+import {
+  UserAuditFormComponent
+} from './components/user-audit-form/user-audit-form.component';
 
 import {
   PageHeaderComponent
@@ -74,6 +81,14 @@ import {
   ErrorHandlerService
 } from '@core/services/error-handler.service';
 
+import {
+  DialogService
+} from '@core/services/dialog.service';
+
+import {
+  NotificationService
+} from '@core/services/notification.service';
+
 @Component({
 
   selector: 'app-user-detail',
@@ -99,7 +114,8 @@ import {
 
     PersonalDataFormComponent,
     MembershipFormComponent,
-    CredentialsFormComponent
+    CredentialsFormComponent,
+    UserAuditFormComponent
 
   ]
 
@@ -141,6 +157,12 @@ export class UserDetailPage
   canEditCredentials = false;
 
   canEditPassword = false;
+
+  canDeactivateUser = false;
+
+  canReactivateUser = false;
+
+  canViewAudit = false;
 
   // ============================================
   // EDIT STATES
@@ -213,7 +235,13 @@ export class UserDetailPage
       LoadingService,
 
     private errorHandler:
-      ErrorHandlerService
+      ErrorHandlerService,
+
+    private dialog:
+      DialogService,
+
+    private notification:
+      NotificationService
 
   ) {
 
@@ -221,7 +249,9 @@ export class UserDetailPage
 
       saveOutline,
       createOutline,
-      checkmarkOutline
+      checkmarkOutline,
+      trashOutline,
+      refreshOutline
 
     });
 
@@ -233,19 +263,11 @@ export class UserDetailPage
 
   async ngOnInit(): Promise<void> {
 
-    // ============================================
-    // USER ID
-    // ============================================
-
     this.userId =
 
       this.route.snapshot
         .paramMap
         .get('id');
-
-    // ============================================
-    // ADMIN CREATE MODE
-    // ============================================
 
     this.isAdminCreate =
 
@@ -257,16 +279,8 @@ export class UserDetailPage
 
       'true';
 
-    // ============================================
-    // EDIT MODE
-    // ============================================
-
     this.isEditMode =
       !!this.userId;
-
-    // ============================================
-    // LOAD USER
-    // ============================================
 
     if (
 
@@ -279,20 +293,12 @@ export class UserDetailPage
 
     }
 
-    // ============================================
-    // COMPLETE PROFILE MODE
-    // ============================================
-
     else if (!this.isAdminCreate) {
 
       const currentUser =
 
         this.authService
           .currentUserData;
-
-      // ============================================
-      // CURRENT USER EXISTS
-      // ============================================
 
       if (currentUser) {
 
@@ -309,10 +315,6 @@ export class UserDetailPage
           true;
 
       }
-
-      // ============================================
-      // ENABLE EDITION
-      // ============================================
 
       this.canEditPersonalData =
         true;
@@ -337,10 +339,6 @@ export class UserDetailPage
 
     }
 
-    // ============================================
-    // ADMIN CREATE MODE
-    // ============================================
-
     else {
 
       this.user = {
@@ -357,10 +355,6 @@ export class UserDetailPage
       this.isOwnProfile =
         false;
 
-      // ============================================
-      // ENABLE EDITION
-      // ============================================
-
       this.canEditPersonalData =
         true;
 
@@ -372,10 +366,6 @@ export class UserDetailPage
 
       this.canEditPassword =
         true;
-
-      // ============================================
-      // EDIT MODE ENABLED
-      // ============================================
 
       this.editingPersonalData =
         true;
@@ -409,10 +399,6 @@ export class UserDetailPage
                 this.userId!
               );
 
-          // ============================================
-          // USER FOUND
-          // ============================================
-
           if (data) {
 
             this.user = {
@@ -427,16 +413,8 @@ export class UserDetailPage
             this.repeatEmail =
               this.user.email || '';
 
-            // ============================================
-            // THIS IS NOT PROFILE COMPLETION
-            // ============================================
-
             this.isProfileCompletion =
               false;
-
-            // ============================================
-            // LOAD PERMISSIONS
-            // ============================================
 
             this.loadPermissions();
 
@@ -486,6 +464,48 @@ export class UserDetailPage
 
     this.canEditPassword =
       permissions.canEditPassword;
+
+    this.canDeactivateUser =
+
+      (
+
+        this.authService.isAdmin()
+
+        ||
+
+        this.authService.isDirectiva()
+
+      )
+
+      &&
+
+      this.user.estado ===
+      UserStatus.ACTIVE;
+
+    this.canReactivateUser =
+
+      (
+
+        this.authService.isAdmin()
+
+        ||
+
+        this.authService.isDirectiva()
+
+      )
+
+      &&
+
+      this.user.estado ===
+      UserStatus.INACTIVE;
+
+    this.canViewAudit =
+
+      this.authService.isAdmin()
+
+      ||
+
+      this.authService.isDirectiva();
 
   }
 
@@ -649,6 +669,159 @@ export class UserDetailPage
       this.password = '';
 
       this.repeatPassword = '';
+
+    }
+
+  }
+
+  // ============================================
+  // DEACTIVATE USER
+  // ============================================
+
+  async deactivateUser(): Promise<void> {
+
+    const motivo =
+
+      await this.dialog.prompt({
+
+        header:
+          'Dar de baja usuario',
+
+        message:
+          'Introduce el motivo de la baja',
+
+        placeholder:
+          'Motivo de la baja',
+
+        confirmText:
+          'Dar de baja',
+
+        cancelText:
+          'Cancelar'
+
+      });
+
+    if (!motivo) {
+
+      return;
+
+    }
+
+    try {
+
+      await this.loading.wrap(
+
+        async () => {
+
+          await this.userService
+            .deactivateUser(
+
+              this.user.uid,
+
+              this.authService.getUid(),
+
+              motivo
+
+            );
+
+          this.user.estado =
+            UserStatus.INACTIVE;
+
+          this.loadPermissions();
+
+          await this.loadUser();
+
+        },
+
+        'Desactivando usuario...'
+
+      );
+
+      await this.notification.success(
+        'Usuario desactivado correctamente'
+      );
+
+    }
+
+    catch (error) {
+
+      await this.errorHandler.handle(
+        error
+      );
+
+    }
+
+  }
+
+  // ============================================
+  // REACTIVATE USER
+  // ============================================
+
+  async reactivateUser(): Promise<void> {
+
+    const confirmar =
+
+      await this.dialog.confirm({
+
+        header:
+          'Reactivar usuario',
+
+        message:
+          `¿Desea reactivar a ${this.user.nombre}?`,
+
+        confirmText:
+          'Reactivar',
+
+        cancelText:
+          'Cancelar'
+
+      });
+
+    if (!confirmar) {
+
+      return;
+
+    }
+
+    try {
+
+      await this.loading.wrap(
+
+        async () => {
+
+          await this.userService
+            .reactivateUser(
+
+              this.user.uid,
+
+              this.authService.getUid()
+
+            );
+
+          this.user.estado =
+            UserStatus.ACTIVE;
+
+          this.loadPermissions();
+
+          await this.loadUser();
+
+        },
+
+        'Reactivando usuario...'
+
+      );
+
+      await this.notification.success(
+        'Usuario reactivado correctamente'
+      );
+
+    }
+
+    catch (error) {
+
+      await this.errorHandler.handle(
+        error
+      );
 
     }
 

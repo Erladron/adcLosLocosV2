@@ -1,0 +1,455 @@
+.audit-card {
+
+  border-radius: 24px;
+
+  margin-bottom: 24px;
+
+  background:
+    rgba(17, 38, 92, 0.88);
+
+  backdrop-filter:
+    blur(10px);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.22);
+
+  overflow: hidden;
+
+}
+
+// =========================================
+// HEADER
+// =========================================
+
+ion-card-header {
+
+  padding-bottom: 8px;
+
+}
+
+ion-card-title {
+
+  font-size: 1.15rem;
+
+  font-weight: 700;
+
+  color: #ffffff;
+
+  letter-spacing: 0.2px;
+
+}
+
+// =========================================
+// STATUS
+// =========================================
+
+.status-container {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-bottom: 20px;
+
+  flex-wrap: wrap;
+
+}
+
+.status-label {
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  color: rgba(255, 255, 255, 0.72);
+
+}
+
+ion-chip {
+
+  font-weight: 600;
+
+  padding-inline: 10px;
+
+  backdrop-filter: blur(6px);
+
+}
+
+// =========================================
+// AUDIT SECTION
+// =========================================
+
+.audit-section {
+
+  margin-top: 18px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+
+}
+
+.audit-section h3 {
+
+  font-size: 0.98rem;
+
+  font-weight: 700;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  margin-bottom: 16px;
+
+}
+
+// =========================================
+// AUDIT ITEMS
+// =========================================
+
+.audit-item {
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-bottom: 14px;
+
+}
+
+.audit-title {
+
+  font-size: 0.76rem;
+
+  font-weight: 600;
+
+  color: rgba(255, 255, 255, 0.52);
+
+  margin-bottom: 4px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+
+}
+
+.audit-value {
+
+  font-size: 0.95rem;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  word-break: break-word;
+
+  line-height: 1.45;
+
+}
+
+// =========================================
+// ACTIONS
+// =========================================
+
+.actions-container {
+
+  margin-top: 24px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+}
+
+// =========================================
+// BUTTONS
+// =========================================
+
+ion-button {
+
+  --border-radius: 14px;
+
+  height: 46px;
+
+  font-weight: 600;
+
+  text-transform: none;
+
+  letter-spacing: 0.3px;
+
+  overflow: hidden;
+
+}
+
+// =========================================
+// DANGER BUTTON
+// =========================================
+
+ion-button[color="danger"] {
+
+  --background:
+    rgba(180, 20, 35, 0.82);
+
+  --background-hover:
+    rgba(180, 20, 35, 0.95);
+
+  --box-shadow:
+    0 6px 16px rgba(180, 20, 35, 0.22);
+
+}
+
+// =========================================
+// SUCCESS BUTTON
+// =========================================
+
+ion-button[color="success"] {
+
+  --background:
+    rgba(22, 140, 90, 0.88);
+
+  --background-hover:
+    rgba(22, 140, 90, 1);
+
+  --box-shadow:
+    0 6px 16px rgba(22, 140, 90, 0.22);
+
+}
+
+// =========================================
+// RESPONSIVE
+// =========================================
+
+@media (max-width: 576px) {
+
+  .status-container {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+  }
+
+}
+
+.status-pill {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  border-radius: 999px;
+
+  font-weight: 700;
+
+  font-size: 14px;
+
+}
+
+.status-pill.active {
+
+  background:
+    rgba(0, 255, 120, 0.12);
+
+  color:
+    #39ff90;
+
+}
+
+.status-pill.inactive {
+
+  background:
+    rgba(255, 0, 80, 0.12);
+
+  color:
+    #ff4f7c;
+
+}
+
+.status-pill.pending_approval,
+.status-pill.pending_data {
+
+  background:
+    rgba(255, 180, 0, 0.12);
+
+  color:
+    #ffc14f;
+
+}
+
+.audit-modern-card {
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 18px;
+
+  padding: 18px;
+
+  margin-top: 18px;
+
+  backdrop-filter: blur(10px);
+
+}
+
+.audit-modern-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  color: white;
+
+  margin-bottom: 18px;
+
+}
+
+.audit-modern-title ion-icon {
+
+  font-size: 22px;
+
+  color: #6ea8ff;
+
+}
+
+.audit-modern-content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+}
+
+.audit-modern-line {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color:
+    rgba(255, 255, 255, 0.92);
+
+  font-size: 15px;
+
+}
+
+.audit-modern-line ion-icon {
+
+  font-size: 18px;
+
+  color:
+    #7fb1ff;
+
+}
+
+.approval-card {
+
+  border:
+    1px solid rgba(0, 255, 120, 0.18);
+
+}
+
+.danger-card {
+
+  border:
+    1px solid rgba(255, 0, 80, 0.22);
+
+  background:
+    rgba(255, 0, 80, 0.05);
+
+}
+
+.danger-button {
+
+  --background:
+    rgba(255, 70, 110, 0.14);
+
+  --color:
+    #ff7a9a;
+
+  --border-color:
+    rgba(255, 255, 255, 0.08);
+
+  --border-style:
+    solid;
+
+  --border-width:
+    1px;
+
+  --box-shadow:
+    none;
+
+  --border-radius:
+    16px;
+
+  backdrop-filter:
+    blur(10px);
+
+  font-weight:
+    600;
+
+  height:
+    52px;
+
+}
+
+.success-button {
+
+  --background:
+    rgba(50, 255, 140, 0.12);
+
+  --color:
+    #63ffab;
+
+  --border-color:
+    rgba(255, 255, 255, 0.08);
+
+  --border-style:
+    solid;
+
+  --border-width:
+    1px;
+
+  --box-shadow:
+    none;
+
+  --border-radius:
+    16px;
+
+  backdrop-filter:
+    blur(10px);
+
+  font-weight:
+    600;
+
+  height:
+    52px;
+
+}

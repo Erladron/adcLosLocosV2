@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 import { CommonModule }
-from '@angular/common';
+  from '@angular/common';
 
 import { FormsModule }
-from '@angular/forms';
+  from '@angular/forms';
 
 import {
 
@@ -22,19 +22,19 @@ import {
 } from '@ionic/angular/standalone';
 
 import { Router }
-from '@angular/router';
+  from '@angular/router';
 
 import { AuthService }
-from '@auth/services/auth.service';
+  from '@auth/services/auth.service';
 
 import { NotificationService }
-from '@core/services/notification.service';
+  from '@core/services/notification.service';
 
 import { AppMessageCode }
-from 'src/app/core/constants/messages/app-message-code.enum';
+  from 'src/app/core/constants/messages/app-message-code.enum';
 
 import { addIcons }
-from 'ionicons';
+  from 'ionicons';
 
 import {
 
@@ -114,10 +114,6 @@ export class RegisterPage {
     private router: Router
 
   ) {
-
-    // ============================================
-    // REGISTER ICONS
-    // ============================================
 
     addIcons({
 
@@ -211,8 +207,55 @@ export class RegisterPage {
       // REGISTER USER
       // ============================================
 
-      await this.authService.register(
-        this.user
+      const registeredUser =
+
+        await this.authService.register(
+          this.user
+        );
+
+      console.log(
+        'REGISTERED USER',
+        registeredUser
+      );
+
+      // ============================================
+      // WAIT FIRESTORE WRITE
+      // ============================================
+
+      await new Promise(
+
+        resolve =>
+
+          setTimeout(
+            resolve,
+            800
+          )
+
+      );
+
+      // ============================================
+      // RELOAD SESSION DATA
+      // ============================================
+
+      if (registeredUser?.uid) {
+
+        await this.authService.reloadUserData(
+
+          registeredUser.uid
+
+        );
+
+      }
+
+      // ============================================
+      // WAIT USER DATA
+      // ============================================
+
+      await this.authService.waitForUserData();
+
+      console.log(
+        'SESSION USER DATA',
+        this.authService.currentUserData
       );
 
       // ============================================
@@ -226,11 +269,11 @@ export class RegisterPage {
       );
 
       // ============================================
-      // NAVIGATE LOGIN
+      // NAVIGATE COMPLETE PROFILE
       // ============================================
 
-      this.router.navigate([
-        '/login'
+      await this.router.navigate([
+        '/complete-profile'
       ]);
 
     }

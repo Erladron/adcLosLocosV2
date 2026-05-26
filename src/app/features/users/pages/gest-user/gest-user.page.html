@@ -50,6 +50,8 @@
 
     <ion-segment
 
+      scrollable="true"
+
       [(ngModel)]="tabActual"
 
       class="users-segment">
@@ -90,6 +92,26 @@
 
       </ion-segment-button>
 
+      <!-- ============================= -->
+      <!-- INACTIVOS -->
+      <!-- ============================= -->
+
+      <ion-segment-button
+
+        *ngIf="canViewInactiveUsers"
+
+        value="inactivos">
+
+        <ion-label>
+
+          Inactivos
+
+          ({{ filteredInactiveUsers.length }})
+
+        </ion-label>
+
+      </ion-segment-button>
+
     </ion-segment>
 
   </div>
@@ -102,10 +124,6 @@
     *ngIf="tabActual === 'activos'"
     class="users-container">
 
-    <!-- ============================= -->
-    <!-- ACTIVE USERS -->
-    <!-- ============================= -->
-
     <div
 
       class="user-card glass-card"
@@ -113,10 +131,6 @@
       *ngFor="let user of filteredUsers"
 
       [routerLink]="['/user-detail', user.uid]">
-
-      <!-- ============================= -->
-      <!-- AVATAR -->
-      <!-- ============================= -->
 
       <div class="user-avatar-container">
 
@@ -141,10 +155,6 @@
         </div>
 
       </div>
-
-      <!-- ============================= -->
-      <!-- INFO -->
-      <!-- ============================= -->
 
       <div class="user-info-mini">
 
@@ -178,10 +188,6 @@
 
       </div>
 
-      <!-- ============================= -->
-      <!-- STATUS -->
-      <!-- ============================= -->
-
       <div class="status-container">
 
         <span class="status-badge approved">
@@ -192,10 +198,6 @@
 
       </div>
 
-      <!-- ============================= -->
-      <!-- FLECHA -->
-      <!-- ============================= -->
-
       <ion-icon
 
         name="chevron-forward-outline"
@@ -205,10 +207,6 @@
       </ion-icon>
 
     </div>
-
-    <!-- ============================= -->
-    <!-- EMPTY ACTIVE USERS -->
-    <!-- ============================= -->
 
     <app-empty-state
 
@@ -234,10 +232,6 @@
 
     class="users-container">
 
-    <!-- ============================= -->
-    <!-- PENDING USERS -->
-    <!-- ============================= -->
-
     <div
 
       class="user-card glass-card pending-card"
@@ -245,10 +239,6 @@
       *ngFor="let user of filteredPendingUsers"
 
       [routerLink]="['/user-detail', user.uid]">
-
-      <!-- ============================= -->
-      <!-- AVATAR -->
-      <!-- ============================= -->
 
       <div class="user-avatar-container">
 
@@ -273,10 +263,6 @@
         </div>
 
       </div>
-
-      <!-- ============================= -->
-      <!-- INFO -->
-      <!-- ============================= -->
 
       <div class="user-info-mini">
 
@@ -327,13 +313,7 @@
 
       </div>
 
-      <!-- ============================= -->
-      <!-- ACTIONS -->
-      <!-- ============================= -->
-
       <div class="approval-actions">
-
-        <!-- APROBAR -->
 
         <button
 
@@ -346,8 +326,6 @@
           </ion-icon>
 
         </button>
-
-        <!-- RECHAZAR -->
 
         <button
 
@@ -365,10 +343,6 @@
 
     </div>
 
-    <!-- ============================= -->
-    <!-- EMPTY PENDING USERS -->
-    <!-- ============================= -->
-
     <app-empty-state
 
       *ngIf="filteredPendingUsers.length === 0"
@@ -378,6 +352,114 @@
       title="Sin solicitudes"
 
       message="No hay usuarios pendientes de aprobación">
+
+    </app-empty-state>
+
+  </div>
+
+  <!-- ================================= -->
+  <!-- INACTIVOS -->
+  <!-- ================================= -->
+
+  <div
+
+    *ngIf="tabActual === 'inactivos'"
+
+    class="users-container">
+
+    <div
+
+      class="user-card glass-card inactive-card"
+
+      *ngFor="let user of filteredInactiveUsers"
+
+      [routerLink]="['/user-detail', user.uid]">
+
+      <div class="user-avatar-container">
+
+        <img
+
+          *ngIf="user.foto"
+
+          [src]="user.foto"
+
+          class="user-avatar">
+
+        <div
+
+          *ngIf="!user.foto"
+
+          class="default-avatar">
+
+          <ion-icon name="person-outline">
+
+          </ion-icon>
+
+        </div>
+
+      </div>
+
+      <div class="user-info-mini">
+
+        <h2>
+
+          {{ user.nombre }}
+
+        </h2>
+
+        <div class="user-subinfo">
+
+          <span class="tipo-badge inactive">
+
+            Inactivo
+
+          </span>
+
+          <span class="dot">
+
+            •
+
+          </span>
+
+          <span class="telefono-text">
+
+            {{ user.telefono }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="status-container">
+
+        <span class="status-badge inactive">
+
+          Baja
+
+        </span>
+
+      </div>
+
+      <ion-icon
+
+        name="chevron-forward-outline"
+
+        class="arrow-icon">
+
+      </ion-icon>
+
+    </div>
+
+    <app-empty-state
+
+      *ngIf="filteredInactiveUsers.length === 0"
+
+      icon="person-outline"
+
+      title="Sin usuarios inactivos"
+
+      message="No existen usuarios dados de baja">
 
     </app-empty-state>
 

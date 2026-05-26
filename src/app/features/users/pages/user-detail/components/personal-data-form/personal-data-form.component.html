@@ -219,15 +219,15 @@
 
     </ion-label>
 
-    <ion-input maxlength="9" [(ngModel)]="user.dni" [readonly]="
-  !canEdit
-  ||
-  (
-    isEditMode
-    &&
-    !editing
-  )
-">
+    <ion-input maxlength="9" [(ngModel)]="user.dni" (ngModelChange)="onDniInput()" [readonly]="
+      !canEdit
+      ||
+      (
+        isEditMode
+        &&
+        !editing
+      )
+    ">
 
     </ion-input>
 

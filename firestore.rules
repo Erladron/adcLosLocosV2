@@ -4,19 +4,13 @@ service cloud.firestore {
 
   match /databases/{database}/documents {
 
-    // =================================
-    // AUTH
-    // =================================
+    // =====================================================
+    // HELPERS
+    // =====================================================
 
     function isLogged() {
-
       return request.auth != null;
-
     }
-
-    // =================================
-    // CURRENT USER
-    // =================================
 
     function currentUser() {
 
@@ -36,10 +30,6 @@ service cloud.firestore {
 
     }
 
-    // =================================
-    // ROLE
-    // =================================
-
     function currentUserRole() {
 
       return currentUser() != null
@@ -54,254 +44,132 @@ service cloud.firestore {
 
     }
 
-    // =================================
-    // ADMIN
-    // =================================
-
     function isAdmin() {
-
-      return currentUserRole()
-        == 'administrador';
-
+      return currentUserRole() == 'administrador';
     }
-
-    // =================================
-    // DIRECTIVA
-    // =================================
 
     function isDirectiva() {
-
-      return currentUserRole()
-        == 'directiva';
-
+      return currentUserRole() == 'directiva';
     }
-
-    // =================================
-    // SOCIO
-    // =================================
 
     function isSocio() {
-
-      return currentUserRole()
-        == 'socio';
-
+      return currentUserRole() == 'socio';
     }
-
-    // =================================
-    // ADMIN AREA
-    // =================================
 
     function canManageUsers() {
 
       return (
-
         isAdmin()
-
         ||
-
         isDirectiva()
-
       );
 
     }
-
-    // =================================
-    // CAN INVITE
-    // =================================
 
     function canInvite() {
 
       return (
-
         isAdmin()
-
         ||
-
         isDirectiva()
-
         ||
-
         isSocio()
-
       );
 
     }
-
-    // =================================
-    // OWN USER
-    // =================================
 
     function isOwnUser(userId) {
 
-      return request.auth.uid
-        == userId;
+      return request.auth != null
+        &&
+        request.auth.uid == userId;
 
     }
 
-    // =================================
+    // =====================================================
     // USERS
-    // =================================
+    // =====================================================
 
     match /users/{userId} {
 
-      // =============================
-      // READ
-      // =============================
+      allow read: if isLogged();
 
-      allow read:
-
-      if isLogged();
-
-      // =============================
-      // CREATE
-      // =============================
-
-      allow create:
-
-      if (
-
+      allow create: if
         request.auth != null
-
         &&
+        request.auth.uid == userId;
 
-        request.auth.uid == userId
+      allow update: if
 
-      )
+        // ADMIN / DIRECTIVA
+        canManageUsers()
 
-  ||
+        ||
 
-          canManageUsers();
+        // ONBOARDING INVITADO
+        (
+          isOwnUser(userId)
 
-      // =============================
-      // UPDATE
-      // =============================
+          &&
 
-      allow update:
+          resource.data.tipo == 'invitado'
 
-      if
+          &&
 
-      // ============================================
-      // ADMIN / DIRECTIVA
-      // ============================================
+          resource.data.estado == 'pending_data'
 
-      canManageUsers()
+          &&
 
-      ||
+          request.resource.data.estado == 'pending_approval'
 
-      // ============================================
-      // USER COMPLETE PROFILE
-      // ============================================
+          &&
 
-      (
+          request.resource.data.tipo == resource.data.tipo
+        )
 
-        isOwnUser(userId)
+        ||
 
-        &&
+        // USUARIO ACTIVO EDITANDO PERFIL
+        (
+          isOwnUser(userId)
 
-        resource.data.estado
-          == 'pending_data'
+          &&
 
-        &&
+          resource.data.estado == 'active'
 
-        request.resource.data.estado
-          == 'pending_approval'
+          &&
 
-      )
+          request.resource.data.tipo == resource.data.tipo
 
-      ||
+          &&
 
-      // ============================================
-      // USER EDIT OWN PROFILE
-      // ============================================
+          request.resource.data.estado == resource.data.estado
+        );
 
-      (
-
-        isOwnUser(userId)
-
-        &&
-
-        resource.data.estado
-          == 'active'
-
-        &&
-
-        request.resource.data.tipo
-          == resource.data.tipo
-
-        &&
-
-        request.resource.data.estado
-          == resource.data.estado
-
-      );
-
-      // =============================
-      // DELETE
-      // =============================
-
-      allow delete:
-
-      if isLogged()
-
-        &&
-
-        isAdmin();
+      allow delete: if isAdmin();
 
     }
 
-    // =================================
+    // =====================================================
     // INVITED USERS
-    // =================================
+    // =====================================================
 
     match /invitedUsers/{inviteId} {
 
-      // =============================
-      // READ
-      // =============================
+      allow read: if true;
 
-      allow read:
+      // 🔥 CAMBIO IMPORTANTE
+      allow create: if isLogged();
 
-      if true;
+      allow update: if
 
-      // =============================
-      // CREATE
-      // =============================
+        canManageUsers()
 
-      allow create:
+        ||
 
-      if isLogged()
+        isLogged();
 
-        &&
-
-        canInvite();
-
-      // =============================
-      // UPDATE
-      // =============================
-
-      allow update:
-
-      if canManageUsers()
-
-      ||
-
-      (
-
-        request.auth != null
-
-        &&
-
-        request.resource.data.usado == true
-
-      );
-
-      // =============================
-      // DELETE
-      // =============================
-
-      allow delete:
-
-      if canManageUsers();
+      allow delete: if canManageUsers();
 
     }
 

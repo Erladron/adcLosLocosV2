@@ -38,6 +38,13 @@ import {
 
 import {
 
+  provideFunctions,
+  getFunctions
+
+} from '@angular/fire/functions';
+
+import {
+
   provideStorage,
   getStorage
 
@@ -108,7 +115,11 @@ bootstrapApplication(
 
       provideStorage(
         () => getStorage()
-      )
+      ),
+
+      provideFunctions(
+        () => getFunctions()
+      ),
 
     ]
 

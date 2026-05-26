@@ -3,12 +3,18 @@ import {
   Input,
   EventEmitter,
   Output,
-  DoCheck
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 
 import {
   CommonModule
 } from '@angular/common';
+
+import {
+  normalizeName,
+  formatDNI
+} from '@core/utils/string.utils';
 
 import {
   FormsModule
@@ -19,17 +25,12 @@ import {
 } from '@ionic/angular';
 
 import {
-  ImageCropperComponent,
-  ImageCroppedEvent
+  ImageCropperComponent
 } from 'ngx-image-cropper';
 
 import {
   UserDetail
 } from '@users/models/user-detail.model';
-
-import {
-  UserValidationService
-} from '@users/services/user-validation.service';
 
 import {
   addIcons
@@ -45,6 +46,7 @@ import {
 } from 'ionicons/icons';
 
 @Component({
+
   selector: 'app-personal-data-form',
 
   standalone: true,
@@ -65,12 +67,13 @@ import {
     IonicModule,
 
     ImageCropperComponent
+
   ]
+
 })
 
-
 export class PersonalDataFormComponent
-  implements DoCheck {
+  implements OnChanges {
 
   // =====================================
   // INPUTS
@@ -132,10 +135,34 @@ export class PersonalDataFormComponent
   cancelEdit =
     new EventEmitter<void>();
 
-  constructor(
-    private validationService:
-      UserValidationService
-  ) {
+  // =====================================
+  // ON CHANGES
+  // =====================================
+
+  ngOnChanges(
+    changes: SimpleChanges
+  ): void {
+
+    if (
+      changes['user']
+      &&
+      this.user
+    ) {
+
+      console.log(
+        'PERSONAL FORM USER:',
+        this.user
+      );
+
+    }
+
+  }
+
+  // =====================================
+  // CONSTRUCTOR
+  // =====================================
+
+  constructor() {
 
     addIcons({
 
@@ -156,86 +183,127 @@ export class PersonalDataFormComponent
 
   onCapitalizeName(): void {
 
-    const nuevoNombre =
+    if (!this.user) {
 
-      this.validationService
-        .capitalizeName(
+      return;
 
-          this.user?.nombre || ''
+    }
 
-        );
+    this.user.nombre =
 
-    this.user = {
+      normalizeName(
 
-      ...this.user,
+        this.user?.nombre || ''
 
-      nombre: nuevoNombre
-
-    };
+      );
 
   }
 
   // =====================================
-  // FORMAT DNI
+  // DNI INPUT
   // =====================================
 
-  onFormatDNI(): void {
+  onDniInput(): void {
+
+    if (!this.user) {
+
+      return;
+
+    }
 
     this.user.dni =
 
-      this.validationService
-        .formatDNI(
+      formatDNI(
 
-          this.user.dni || ''
+        this.user?.dni || ''
 
-        );
-
-  }
-
-  actualizarLetraDni(): void {
-
-    if (!this.user?.dni) {
-      return;
-    }
-
-    // limpiar
-
-    let numeros =
-      this.user.dni.replace(/\D/g, '');
-
-    // máximo 8 números
-
-    numeros = numeros.substring(0, 8);
-
-    // si no hay números salir
-
-    if (numeros.length === 0) {
-
-      this.user.dni = '';
-      return;
-
-    }
-
-    const letras =
-      'TRWAGMYFPDXBNJZSQVHLCKE';
-
-    const letra =
-      letras[parseInt(numeros, 10) % 23];
-
-    const dniCompleto =
-      numeros + letra;
-
-    if (this.user.dni !== dniCompleto) {
-
-      this.user.dni = dniCompleto;
-
-    }
-
-  }
-
-  ngDoCheck(): void {
+      );
 
     this.actualizarLetraDni();
 
   }
+
+  // =====================================
+  // AUTO DNI LETTER
+  // =====================================
+
+  actualizarLetraDni(): void {
+
+    if (
+
+      !this.user
+
+      ||
+
+      !this.user?.dni
+
+    ) {
+
+      return;
+
+    }
+
+    // =================================
+    // CLEAN
+    // =================================
+
+    let numeros =
+
+      this.user.dni
+        .replace(/\D/g, '');
+
+    // =================================
+    // MAX 8
+    // =================================
+
+    numeros = numeros.substring(0, 8);
+
+    // =================================
+    // EMPTY
+    // =================================
+
+    if (numeros.length === 0) {
+
+      this.user.dni = '';
+
+      return;
+
+    }
+
+    // =================================
+    // CALCULATE LETTER
+    // =================================
+
+    const letras =
+
+      'TRWAGMYFPDXBNJZSQVHLCKE';
+
+    const letra =
+
+      letras[
+      parseInt(numeros, 10) % 23
+      ];
+
+    const dniCompleto =
+
+      numeros + letra;
+
+    // =================================
+    // UPDATE
+    // =================================
+
+    if (
+
+      this.user.dni !==
+      dniCompleto
+
+    ) {
+
+      this.user.dni =
+        dniCompleto;
+
+    }
+
+  }
+
 }

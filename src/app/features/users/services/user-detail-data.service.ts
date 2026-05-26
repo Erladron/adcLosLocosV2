@@ -1,31 +1,39 @@
 import { Injectable } from '@angular/core';
 
 import { Router }
-from '@angular/router';
+  from '@angular/router';
 
 import { UserService }
-from '@users/services/user.service';
+  from '@users/services/user.service';
 
 import { AuthService }
-from '@auth/services/auth.service';
+  from '@auth/services/auth.service';
 
 import { NotificationService }
-from '@core/services/notification.service';
+  from '@core/services/notification.service';
 
 import { UserDetailFormService }
-from './user-detail-form.service';
+  from './user-detail-form.service';
+
+import {
+  normalizeName
+} from '@core/utils/string.utils';
 
 import { UserDetailPhotoService }
-from './user-detail-photo.service';
+  from './user-detail-photo.service';
 
 import { User }
-from '@users/models/users.models';
+  from '@users/models/users.models';
 
 import { UserStatus }
-from '@users/models/user-status.enum';
+  from '@users/models/user-status.enum';
+
+import {
+  UpdatePersonalDataRequest
+} from '@users/models/update-personal-data-request.model';
 
 import { AppMessageCode }
-from 'src/app/core/constants/messages/app-message-code.enum';
+  from 'src/app/core/constants/messages/app-message-code.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -77,23 +85,42 @@ export class UserDetailDataService {
 
       user.nombre =
 
-        this.formService
-          .normalizeName(
+        normalizeName(
 
-            user.nombre || ''
+          user.nombre || ''
 
-          );
+        );
 
       // ============================================
       // PHOTO
       // ============================================
 
-      if (croppedImage) {
+      console.log(
+        'CROPPED IMAGE DEBUG',
+        croppedImage
+      );
+
+      if (
+
+        croppedImage
+
+        &&
+
+        croppedImage.startsWith(
+          'data:image'
+        )
+
+      ) {
 
         const uid =
 
           user.uid ||
           crypto.randomUUID();
+
+        console.log(
+          'UPLOAD PHOTO UID',
+          uid
+        );
 
         user.foto =
 
@@ -106,7 +133,68 @@ export class UserDetailDataService {
 
             );
 
+        console.log(
+          'PHOTO URL RESULT',
+          user.foto
+        );
+
       }
+      else {
+
+        console.warn(
+          'INVALID CROPPED IMAGE'
+        );
+
+      }
+
+      // ============================================
+      // ONBOARDING STATUS
+      // ============================================
+
+      const nextStatus =
+
+        user.estado ===
+        UserStatus.PENDING_DATA
+
+          ?
+
+          UserStatus.PENDING_APPROVAL
+
+          :
+
+          user.estado;
+
+      // ============================================
+      // UPDATE PAYLOAD
+      // ============================================
+
+      const payload:
+        UpdatePersonalDataRequest = {
+
+        nombre:
+          user.nombre,
+
+        telefono:
+          user.telefono || '',
+
+        dni:
+          user.dni || '',
+
+        direccion:
+          user.direccion || '',
+
+        foto:
+          user.foto || '',
+
+        estado:
+          nextStatus
+
+      };
+
+      console.log(
+        'UPDATE PERSONAL DATA PAYLOAD',
+        payload
+      );
 
       // ============================================
       // UPDATE USER
@@ -114,31 +202,14 @@ export class UserDetailDataService {
 
       if (userId) {
 
-        await this.userService.update(
+        await this.userService
+          .updatePersonalData(
 
-          userId,
+            userId,
 
-          {
+            payload
 
-            nombre:
-              user.nombre,
-
-            telefono:
-              user.telefono || '',
-
-            dni:
-              user.dni || '',
-
-            direccion:
-              user.direccion || '',
-
-            foto:
-              user.foto || '',
-
-
-          }
-
-        );
+          );
 
       }
 
@@ -153,27 +224,58 @@ export class UserDetailDataService {
       );
 
       // ============================================
-      // RELOAD AUTH DATA
+      // CURRENT AUTH USER
       // ============================================
 
-      await this.authService
-        .reloadUserData(
-          user.uid
-        );
+      const authUid =
+        this.authService.getUid();
 
       // ============================================
-      // PENDING USER
+      // ONBOARDING FLOW
+      // ============================================
+
+      const isOnboardingFlow =
+
+        nextStatus ===
+        UserStatus.PENDING_APPROVAL;
+
+      // ============================================
+      // REFRESH SESSION ONLY ACTIVE USERS
       // ============================================
 
       if (
 
-        user.estado ===
-        UserStatus.PENDING_APPROVAL
+        authUid
+
+        &&
+
+        authUid === user.uid
+
+        &&
+
+        !isOnboardingFlow
 
       ) {
 
-        this.router.navigate([
-          '/home'
+        await this.authService
+          .reloadUserData(
+            authUid
+          );
+
+      }
+
+      // ============================================
+      // ONBOARDING NAVIGATION
+      // ============================================
+
+      if (
+
+        isOnboardingFlow
+
+      ) {
+
+        await this.router.navigate([
+          '/pending-approval'
         ]);
 
       }
@@ -298,10 +400,6 @@ export class UserDetailDataService {
 
   }) {
 
-    // ============================================
-    // VALIDATION
-    // ============================================
-
     const validation =
 
       this.formService
@@ -334,10 +432,6 @@ export class UserDetailDataService {
 
     try {
 
-      // ============================================
-      // OWN PROFILE
-      // ============================================
-
       if (isOwnProfile) {
 
         await this.authService
@@ -356,10 +450,6 @@ export class UserDetailDataService {
           );
 
       }
-
-      // ============================================
-      // ADMIN / DIRECTIVA
-      // ============================================
 
       else {
 
@@ -381,10 +471,6 @@ export class UserDetailDataService {
         }
 
       }
-
-      // ============================================
-      // SUCCESS
-      // ============================================
 
       await this.notification.success(
 
@@ -440,10 +526,6 @@ export class UserDetailDataService {
 
   }) {
 
-    // ============================================
-    // VALIDATE EMAILS
-    // ============================================
-
     const emailValidation =
 
       this.formService
@@ -466,10 +548,6 @@ export class UserDetailDataService {
       return false;
 
     }
-
-    // ============================================
-    // VALIDATE PASSWORDS
-    // ============================================
 
     const passwordValidation =
 
@@ -496,29 +574,16 @@ export class UserDetailDataService {
 
     try {
 
-      // ============================================
-      // NORMALIZE NAME
-      // ============================================
-
       user.nombre =
 
-        this.formService
-          .normalizeName(
+        normalizeName(
 
-            user.nombre || ''
+          user.nombre || ''
 
-          );
-
-      // ============================================
-      // PASSWORD
-      // ============================================
+        );
 
       user.password =
         password;
-
-      // ============================================
-      // PHOTO
-      // ============================================
 
       if (croppedImage) {
 
@@ -538,10 +603,6 @@ export class UserDetailDataService {
 
       }
 
-      // ============================================
-      // CREATE USER
-      // ============================================
-
       await this.authService
         .createUserAsAdmin(
 
@@ -549,21 +610,13 @@ export class UserDetailDataService {
 
         );
 
-      // ============================================
-      // SUCCESS
-      // ============================================
-
       await this.notification.success(
 
         AppMessageCode.ADC_AUTH_INF_0001
 
       );
 
-      // ============================================
-      // NAVIGATE
-      // ============================================
-
-      this.router.navigate([
+      await this.router.navigate([
         '/gest-user'
       ]);
 

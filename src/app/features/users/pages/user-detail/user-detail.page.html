@@ -153,6 +153,36 @@
     </app-credentials-form>
 
     <!-- ================================= -->
+    <!-- AUDIT -->
+    <!-- ================================= -->
+
+    <app-user-audit-form
+
+      *ngIf="
+
+        isEditMode
+
+        &&
+
+        canViewAudit
+
+      "
+
+      [user]="user"
+
+      [canDeactivate]="canDeactivateUser"
+
+      [canReactivate]="canReactivateUser"
+
+      (deactivate)="deactivateUser()"
+
+      (reactivate)="reactivateUser()"
+
+    >
+
+    </app-user-audit-form>
+
+    <!-- ================================= -->
     <!-- CREATE BUTTON -->
     <!-- ================================= -->
 

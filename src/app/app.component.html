@@ -1,7 +1,7 @@
 <ion-app>
 
   <!-- MENU LATERAL -->
-  <ion-menu contentId="main-content" type="overlay">
+  <ion-menu *ngIf="canShowMenu()" contentId="main-content" type="overlay">>
 
     <ion-content class="menu-content">
 
@@ -36,7 +36,7 @@
         </ion-item>
 
         <!-- USUARIOS -->
-         
+
         <ion-item button (click)="navegar('/gest-user')">
 
           <ion-icon name="people-outline" slot="start">

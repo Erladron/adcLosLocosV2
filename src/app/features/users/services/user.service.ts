@@ -11,10 +11,16 @@ import {
   getDoc,
   setDoc,
   query,
-  where,
-  serverTimestamp
+  where
 
 } from '@angular/fire/firestore';
+
+import {
+
+  Functions,
+  httpsCallable
+
+} from '@angular/fire/functions';
 
 import {
   User
@@ -23,6 +29,10 @@ import {
 import {
   UserStatus
 } from '../models/user-status.enum';
+
+import {
+  UpdatePersonalDataRequest
+} from '../models/update-personal-data-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +45,14 @@ export class UserService {
   // =================================
 
   constructor(
-    private firestore: Firestore
-  ) {}
+
+    private firestore:
+      Firestore,
+
+    private functions:
+      Functions
+
+  ) { }
 
   // =================================
   // NUMERO SOCIO
@@ -216,6 +232,52 @@ export class UserService {
   }
 
   // =================================
+  // INACTIVE USERS
+  // =================================
+
+  async getInactiveUsers():
+    Promise<User[]> {
+
+    const usersRef =
+
+      collection(
+        this.firestore,
+        'users'
+      );
+
+    const q =
+
+      query(
+
+        usersRef,
+
+        where(
+          'estado',
+          '==',
+          UserStatus.INACTIVE
+        )
+
+      );
+
+    const snapshot =
+      await getDocs(q);
+
+    return snapshot.docs.map(
+
+      docItem => ({
+
+        id:
+          docItem.id,
+
+        ...docItem.data()
+
+      } as User)
+
+    );
+
+  }
+
+  // =================================
   // PENDING USERS
   // =================================
 
@@ -296,14 +358,65 @@ export class UserService {
   }
 
   // =================================
-  // UPDATE USER
+  // UPDATE PERSONAL DATA
+  // =================================
+
+  async updatePersonalData(
+
+    uid: string,
+
+    data: UpdatePersonalDataRequest
+
+  ) {
+
+    const ref =
+
+      doc(
+        this.firestore,
+        'users',
+        uid
+      );
+
+    console.log(
+      'UPDATE PERSONAL DATA PAYLOAD',
+      data
+    );
+
+    return await updateDoc(
+      ref,
+      {
+        nombre:
+          data.nombre,
+
+        telefono:
+          data.telefono || '',
+
+        dni:
+          data.dni || '',
+
+        direccion:
+          data.direccion || '',
+
+        foto:
+          data.foto || '',
+
+        estado:
+          data.estado
+      }
+    );
+
+  }
+
+  // =================================
+  // GENERIC UPDATE
+  // TEMPORAL
   // =================================
 
   async update(
 
     uid: string,
 
-    data: Partial<User>
+    data: any
 
   ) {
 
@@ -323,7 +436,78 @@ export class UserService {
   }
 
   // =================================
-  // DELETE USER
+  // DEACTIVATE USER
+  // CLOUD FUNCTION
+  // =================================
+
+  async deactivateUser(
+
+    uid: string,
+
+    adminUid: string,
+
+    motivo: string
+
+  ) {
+
+    const callable =
+
+      httpsCallable(
+
+        this.functions,
+
+        'deactivateUser'
+
+      );
+
+    return await callable({
+
+      uid,
+
+      adminUid,
+
+      motivo
+
+    });
+
+  }
+
+  // =================================
+  // REACTIVATE USER
+  // CLOUD FUNCTION
+  // =================================
+
+  async reactivateUser(
+
+    uid: string,
+
+    adminUid: string
+
+  ) {
+
+    const callable =
+
+      httpsCallable(
+
+        this.functions,
+
+        'reactivateUser'
+
+      );
+
+    return await callable({
+
+      uid,
+
+      adminUid
+
+    });
+
+  }
+
+  // =================================
+  // HARD DELETE USER
+  // SOLO USO ADMINISTRATIVO / DEBUG
   // =================================
 
   async delete(uid: string) {
@@ -342,33 +526,26 @@ export class UserService {
 
   // =================================
   // APPROVE USER
+  // CLOUD FUNCTION
   // =================================
 
   async approveUser(uid: string) {
 
-    const userRef =
+    const callable =
 
-      doc(
-        this.firestore,
-        'users',
-        uid
+      httpsCallable(
+
+        this.functions,
+
+        'approveUser'
+
       );
 
-    await updateDoc(
+    return await callable({
 
-      userRef,
+      uid
 
-      {
-
-        estado:
-          UserStatus.ACTIVE,
-
-        fechaAprobacion:
-          serverTimestamp()
-
-      }
-
-    );
+    });
 
   }
 

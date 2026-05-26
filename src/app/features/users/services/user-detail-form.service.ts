@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { UserValidationService }
-from '@users/services/user-validation.service';
-
 import { AppMessageCode }
-from '@core/constants/messages/app-message-code.enum';
+  from '@core/constants/messages/app-message-code.enum';
+
+import {
+  validateEmail
+} from '@core/utils/string.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -14,26 +15,7 @@ export class UserDetailFormService {
 
   constructor(
 
-    private validationService:
-      UserValidationService
-
   ) { }
-
-  // ============================================
-  // NORMALIZE NAME
-  // ============================================
-
-  /**
-   * Capitaliza nombre usuario.
-   */
-  normalizeName(
-    name: string
-  ): string {
-
-    return this.validationService
-      .capitalizeName(name || '');
-
-  }
 
   // ============================================
   // VALIDATE EMAILS
@@ -52,14 +34,13 @@ export class UserDetailFormService {
 
     const valid =
 
-      this.validationService
-        .validateEmail(
+      validateEmail(
 
-          email || '',
+        email || '',
 
-          repeatEmail || ''
+        repeatEmail || ''
 
-        );
+      );
 
     return {
 

@@ -1,0 +1,460 @@
+<ion-card class="audit-card">
+
+  <!-- ========================================= -->
+  <!-- HEADER -->
+  <!-- ========================================= -->
+
+  <ion-card-header>
+
+    <ion-card-title>
+
+      Estado y Auditoría
+
+    </ion-card-title>
+
+  </ion-card-header>
+
+  <!-- ========================================= -->
+  <!-- CONTENT -->
+  <!-- ========================================= -->
+
+  <ion-card-content>
+
+    <!-- ========================================= -->
+    <!-- STATUS -->
+    <!-- ========================================= -->
+
+    <div class="status-container">
+
+      <span class="status-label">
+
+        Estado actual
+
+      </span>
+
+      <div
+        class="status-pill"
+        [ngClass]="user.estado">
+
+        <ion-icon
+
+          *ngIf="isActive"
+
+          name="checkmark-circle-outline">
+
+        </ion-icon>
+
+        <ion-icon
+
+          *ngIf="isInactive"
+
+          name="close-circle-outline">
+
+        </ion-icon>
+
+        <ion-icon
+
+          *ngIf="isPending"
+
+          name="time-outline">
+
+        </ion-icon>
+
+        <span>
+
+          {{ statusLabel }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- ALTA -->
+    <!-- ========================================= -->
+
+    <div class="audit-modern-card">
+
+      <div class="audit-modern-title">
+
+        <ion-icon
+          name="person-add-outline">
+        </ion-icon>
+
+        <span>
+
+          Alta usuario
+
+        </span>
+
+      </div>
+
+      <div class="audit-modern-content">
+
+        <div
+          *ngIf="user.createdAt"
+          class="audit-modern-line">
+
+          <ion-icon
+            name="time-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.createdAt?.toDate()
+              | date:'dd/MM/yyyy · HH:mm' }}
+
+          </span>
+
+        </div>
+
+        <div
+          *ngIf="user.creadoPorNombre"
+          class="audit-modern-line">
+
+          <ion-icon
+            name="person-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.creadoPorNombre }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- INVITACIÓN -->
+    <!-- ========================================= -->
+
+    <div
+
+      *ngIf="
+
+        user.invitadoPorNombre
+        ||
+        user.fechaInvitacion
+
+      "
+
+      class="audit-modern-card">
+
+      <div class="audit-modern-title">
+
+        <ion-icon
+          name="mail-open-outline">
+        </ion-icon>
+
+        <span>
+
+          Invitación
+
+        </span>
+
+      </div>
+
+      <div class="audit-modern-content">
+
+        <div
+          *ngIf="user.invitadoPorNombre"
+          class="audit-modern-line">
+
+          <ion-icon
+            name="person-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.invitadoPorNombre }}
+
+          </span>
+
+        </div>
+
+        <div
+          *ngIf="user.fechaInvitacion"
+          class="audit-modern-line">
+
+          <ion-icon
+            name="time-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.fechaInvitacion?.toDate()
+              | date:'dd/MM/yyyy · HH:mm' }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- APROBACIÓN -->
+    <!-- ========================================= -->
+
+    <div
+
+      *ngIf="
+
+        user.approvedAt
+        ||
+        user.aprobadoPorNombre
+
+      "
+
+      class="audit-modern-card approval-card">
+
+      <div class="audit-modern-title">
+
+        <ion-icon
+          name="checkmark-circle-outline">
+        </ion-icon>
+
+        <span>
+
+          Aprobación
+
+        </span>
+
+      </div>
+
+      <div class="audit-modern-content">
+
+        <div
+          *ngIf="user.aprobadoPorNombre"
+          class="audit-modern-line">
+
+          <ion-icon
+            name="person-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.aprobadoPorNombre }}
+
+          </span>
+
+        </div>
+
+        <div
+          *ngIf="user.approvedAt"
+          class="audit-modern-line">
+
+          <ion-icon
+            name="time-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.approvedAt?.toDate()
+              | date:'dd/MM/yyyy · HH:mm' }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- BAJA -->
+    <!-- ========================================= -->
+
+    <div
+
+      *ngIf="isInactive"
+
+      class="audit-modern-card danger-card">
+
+      <div class="audit-modern-title">
+
+        <ion-icon
+          name="close-circle-outline">
+        </ion-icon>
+
+        <span>
+
+          Baja usuario
+
+        </span>
+
+      </div>
+
+      <div class="audit-modern-content">
+
+        <div class="audit-modern-line">
+
+          <ion-icon
+            name="time-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ formatDeactivatedAt()
+              | date:'dd/MM/yyyy · HH:mm' }}
+
+          </span>
+
+        </div>
+
+        <div class="audit-modern-line">
+
+          <ion-icon
+            name="alert-circle-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.motivoBaja || '-' }}
+
+          </span>
+
+        </div>
+
+        <div class="audit-modern-line">
+
+          <ion-icon
+            name="person-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.bajaRealizadaPorNombre || '-' }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- REACTIVACIÓN -->
+    <!-- ========================================= -->
+
+    <div
+
+      *ngIf="user.reactivatedAt"
+
+      class="audit-modern-card">
+
+      <div class="audit-modern-title">
+
+        <ion-icon
+          name="refresh-outline">
+        </ion-icon>
+
+        <span>
+
+          Reactivación
+
+        </span>
+
+      </div>
+
+      <div class="audit-modern-content">
+
+        <div class="audit-modern-line">
+
+          <ion-icon
+            name="time-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ formatReactivatedAt()
+              | date:'dd/MM/yyyy · HH:mm' }}
+
+          </span>
+
+        </div>
+
+        <div class="audit-modern-line">
+
+          <ion-icon
+            name="person-outline">
+          </ion-icon>
+
+          <span>
+
+            {{ user.reactivadoPorNombre || '-' }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- ACTIONS -->
+    <!-- ========================================= -->
+
+    <div class="actions-container">
+
+      <!-- DEACTIVATE -->
+
+      <ion-button
+
+        *ngIf="canDeactivate"
+
+        expand="block"
+
+        class="danger-button"
+
+        (click)="onDeactivate()">
+
+        <ion-icon
+
+          slot="start"
+
+          name="trash-outline">
+
+        </ion-icon>
+
+        Dar de baja
+
+      </ion-button>
+
+      <!-- REACTIVATE -->
+
+      <ion-button
+
+        *ngIf="canReactivate"
+
+        expand="block"
+
+        class="success-button"
+
+        (click)="onReactivate()">
+
+        <ion-icon
+
+          slot="start"
+
+          name="refresh-outline">
+
+        </ion-icon>
+
+        Reactivar usuario
+
+      </ion-button>
+
+    </div>
+
+  </ion-card-content>
+
+</ion-card>

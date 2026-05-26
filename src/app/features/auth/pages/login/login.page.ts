@@ -192,6 +192,13 @@ export class LoginPage {
             'LOGIN OK'
           );
 
+          // ============================================
+          // NAVEGACION
+          // ============================================
+
+          await this.router.navigateByUrl(
+            '/'
+          );
         },
 
         'Iniciando sesión...'
@@ -200,7 +207,30 @@ export class LoginPage {
 
     }
 
-    catch (error) {
+    catch (error: any) {
+
+      console.error(error);
+
+      // ============================================
+      // USER DISABLED
+      // ============================================
+
+      if (
+
+        error?.code ===
+        'auth/user-disabled'
+
+      ) {
+
+        await this.notification.error(
+
+          'Tu cuenta ha sido desactivada. Contacta con la directiva para más información.'
+
+        );
+
+        return;
+
+      }
 
       // ============================================
       // GLOBAL ERROR HANDLER

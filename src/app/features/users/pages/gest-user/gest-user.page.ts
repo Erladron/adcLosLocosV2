@@ -118,6 +118,10 @@ export class GestUserPage
 
   filteredPendingUsers: User[] = [];
 
+  inactiveUsers: User[] = [];
+
+  filteredInactiveUsers: User[] = [];
+
   // =================================
   // UI
   // =================================
@@ -127,6 +131,8 @@ export class GestUserPage
   canAddUsers = false;
 
   canApproveUsers = false;
+
+  canViewInactiveUsers = false;
 
   tabActual = 'activos';
 
@@ -227,6 +233,23 @@ export class GestUserPage
 
     }
 
+    // =================================
+    // INACTIVE USERS
+    // =================================
+
+    if (this.canViewInactiveUsers) {
+
+      this.inactiveUsers =
+
+        await this.userService
+          .getInactiveUsers();
+
+      this.filteredInactiveUsers = [
+        ...this.inactiveUsers
+      ];
+
+    }
+
   }
 
   // =================================
@@ -250,6 +273,14 @@ export class GestUserPage
     this.canApproveUsers =
 
       this.policies.canManageUsers();
+
+    this.canViewInactiveUsers =
+
+      this.policies.isAdmin()
+
+      ||
+
+      this.policies.isDirectiva();
 
   }
 
@@ -348,6 +379,58 @@ export class GestUserPage
             ||
 
             user.dni
+              ?.toLowerCase()
+              .includes(texto)
+
+          );
+
+        }
+
+      );
+
+    // =================================
+    // INACTIVE USERS
+    // =================================
+
+    this.filteredInactiveUsers =
+
+      this.inactiveUsers.filter(
+
+        (user: User) => {
+
+          return (
+
+            user.nombre
+              ?.toLowerCase()
+              .includes(texto)
+
+            ||
+
+            user.telefono
+              ?.toLowerCase()
+              .includes(texto)
+
+            ||
+
+            user.email
+              ?.toLowerCase()
+              .includes(texto)
+
+            ||
+
+            user.dni
+              ?.toLowerCase()
+              .includes(texto)
+
+            ||
+
+            user.numeroSocio
+              ?.toLowerCase()
+              .includes(texto)
+
+            ||
+
+            user.tipo
               ?.toLowerCase()
               .includes(texto)
 

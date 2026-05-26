@@ -88,10 +88,6 @@
    SEGMENT
 ========================================= */
 
-/* =========================================
-   SEGMENT
-========================================= */
-
 .users-segment {
 
   width: 100%;
@@ -103,15 +99,27 @@
     22px;
 
   background:
-    rgba(255,255,255,0.08);
+    rgba(255, 255, 255, 0.08);
 
   backdrop-filter:
     blur(12px);
 
-  overflow: hidden;
-
   border:
-    1px solid rgba(255,255,255,0.06);
+    1px solid rgba(255, 255, 255, 0.06);
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+
+}
+
+.users-segment::-webkit-scrollbar {
+
+  display: none;
 
 }
 
@@ -129,6 +137,9 @@
   min-height:
     54px;
 
+  min-width:
+    150px;
+
   font-weight:
     600;
 
@@ -137,6 +148,10 @@
 
   letter-spacing:
     0.5px;
+
+  white-space: nowrap;
+
+  flex-shrink: 0;
 
 }
 
@@ -610,7 +625,7 @@ ion-fab-button {
   font-size: 12px;
 
   color:
-    rgba(255,255,255,0.55);
+    rgba(255, 255, 255, 0.55);
 
   line-height: 1.4;
 
@@ -619,7 +634,7 @@ ion-fab-button {
 .invite-meta strong {
 
   color:
-    rgba(255,255,255,0.82);
+    rgba(255, 255, 255, 0.82);
 
   font-weight:
     600;
@@ -635,4 +650,49 @@ ion-fab-button {
   padding:
     0 16px;
 
+}
+
+// ========================================
+// MOBILE SEGMENT SCROLL FIX
+// ========================================
+
+.user-segment {
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+
+  padding-bottom: 4px;
+
+}
+
+.user-segment::-webkit-scrollbar {
+
+  display: none;
+
+}
+
+.user-segment ion-segment {
+
+  display: flex;
+
+  width: max-content;
+
+  min-width: 100%;
+
+}
+
+.user-segment ion-segment-button {
+
+  min-width: max-content;
+
+  padding-left: 20px;
+
+  padding-right: 20px;
+
+  flex: 0 0 auto;
 }

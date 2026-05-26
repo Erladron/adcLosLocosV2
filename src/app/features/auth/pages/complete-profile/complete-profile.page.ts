@@ -39,10 +39,6 @@ import {
 } from '@auth/services/auth.service';
 
 import {
-    UserService
-} from '@users/services/user.service';
-
-import {
     LoadingService
 } from '@core/services/loading.service';
 
@@ -63,11 +59,13 @@ import {
     informationCircleOutline
 } from 'ionicons/icons';
 
+import {
+    normalizeName
+} from '@core/utils/string.utils';
 
 import {
     UserDetailFacadeService
 } from '@users/services/user-detail-facade.service';
-
 
 @Component({
 
@@ -99,15 +97,7 @@ import {
 export class CompleteProfilePage
     implements OnInit {
 
-    // ============================================
-    // USER
-    // ============================================
-
-    user!: User;
-
-    // ============================================
-    // IMAGE
-    // ============================================
+    user: User = {} as User;
 
     imageChangedEvent: any = null;
 
@@ -115,19 +105,12 @@ export class CompleteProfilePage
 
     mostrarCropper = false;
 
-    // ============================================
-    // EDIT
-    // ============================================
-
     editing = true;
 
     constructor(
 
         private authService:
             AuthService,
-
-        private userService:
-            UserService,
 
         private loading:
             LoadingService,
@@ -153,13 +136,51 @@ export class CompleteProfilePage
             informationCircleOutline
 
         });
+
     }
 
-    // ============================================
-    // INIT
-    // ============================================
-
     async ngOnInit(): Promise<void> {
+
+        // ====================================
+        // ESPERAR USUARIO AUTH
+        // ====================================
+
+        while (
+
+            !this.authService.currentUser?.uid
+
+        ) {
+
+            await new Promise(
+                resolve => setTimeout(resolve, 100)
+            );
+
+        }
+
+        // ====================================
+        // RECARGAR FIRESTORE USER
+        // ====================================
+
+        await this.authService
+            .reloadUserData(
+                this.authService.currentUser.uid
+            );
+
+        // ====================================
+        // ESPERAR SESSION DATA REAL
+        // ====================================
+
+        while (
+
+            !this.authService.currentUserData
+
+        ) {
+
+            await new Promise(
+                resolve => setTimeout(resolve, 100)
+            );
+
+        }
 
         const currentUser =
 
@@ -167,27 +188,51 @@ export class CompleteProfilePage
                 .currentUserData;
 
         console.log(
-            'COMPLETE PROFILE USER',
+            'COMPLETE PROFILE USER:',
             currentUser
         );
 
-        if (!currentUser) {
-
-            return;
-
-        }
+        // ====================================
+        // USER
+        // ====================================
 
         this.user = {
 
-            ...currentUser
+            ...(currentUser || {}),
 
-        };
+            nombre:
+
+                normalizeName(
+
+                    currentUser?.nombre ||
+
+                    ''
+
+                ),
+
+            email:
+
+                currentUser?.email ||
+
+                ''
+
+        } as User;
 
     }
 
-    // ============================================
-    // SAVE
-    // ============================================
+    get canSave(): boolean {
+
+        return !!(
+
+            this.user?.nombre?.trim()
+
+            &&
+
+            this.user?.dni?.trim()
+
+        );
+
+    }
 
     async save(): Promise<void> {
 
@@ -198,24 +243,46 @@ export class CompleteProfilePage
                 async () => {
 
                     // ====================================
-                    // UPDATE STATUS
+                    // SAVE PERSONAL DATA
                     // ====================================
 
-                    this.user.estado =
+                    const success =
 
-                        UserStatus
-                            .PENDING_APPROVAL;
+                        await this.facade
+                            .updatePersonalData({
+
+                                user: {
+
+                                    ...this.user,
+
+                                    estado:
+                                        UserStatus
+                                            .PENDING_APPROVAL
+
+                                },
+
+                                userId:
+                                    this.user.id || null,
+
+                                croppedImage:
+                                    this.croppedImage
+
+                            });
+
+                    if (!success) {
+
+                        return;
+
+                    }
 
                     // ====================================
-                    // SAVE USER
+                    // RELOAD SESSION
                     // ====================================
 
-                    await this.userService.update(
-
-                        this.user.id!,
-                        this.user
-
-                    );
+                    await this.authService
+                        .reloadUserData(
+                            this.user.uid
+                        );
 
                 },
 
@@ -223,19 +290,11 @@ export class CompleteProfilePage
 
             );
 
-            // ========================================
-            // SUCCESS
-            // ========================================
-
             await this.notification.success(
 
                 'Perfil completado correctamente'
 
             );
-
-            // ========================================
-            // GO PENDING APPROVAL
-            // ========================================
 
             await this.router.navigate([
                 '/pending-approval'
@@ -250,10 +309,6 @@ export class CompleteProfilePage
         }
 
     }
-
-    // ============================================
-    // IMAGE EVENTS
-    // ============================================
 
     imageCropped(event: any): void {
 
@@ -310,13 +365,13 @@ export class CompleteProfilePage
 
     }
 
-    // ============================================
-    // LOGOUT
-    // ============================================
-
     async logout() {
 
         await this.authService.logout();
+
+        await this.router.navigate([
+            '/login'
+        ]);
 
     }
 
