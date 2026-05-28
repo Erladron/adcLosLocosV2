@@ -30,7 +30,7 @@ import {
 
 import {
   AuthService
-} from '@auth/services/auth.service';
+} from 'projects/shared-core/src/lib/services/auth.service';
 
 @Component({
 

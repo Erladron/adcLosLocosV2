@@ -19,7 +19,7 @@ import {
 
 import {
   UserDetail
-} from '@users/models/user-detail.model';
+} from 'shared-core';
 
 import {
   Platform

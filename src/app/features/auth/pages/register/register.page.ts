@@ -25,13 +25,13 @@ import { Router }
   from '@angular/router';
 
 import { AuthService }
-  from '@auth/services/auth.service';
+  from 'projects/shared-core/src/lib/services/auth.service';
 
 import { NotificationService }
-  from '@core/services/notification.service';
+  from 'projects/shared-core/src/lib/services/notification.service';
 
 import { AppMessageCode }
-  from 'src/app/core/constants/messages/app-message-code.enum';
+  from 'shared-core';
 
 import { addIcons }
   from 'ionicons';
@@ -237,11 +237,11 @@ export class RegisterPage {
       // RELOAD SESSION DATA
       // ============================================
 
-      if (registeredUser?.uid) {
+      if (registeredUser?.id) {
 
         await this.authService.reloadUserData(
 
-          registeredUser.uid
+          registeredUser.id
 
         );
 

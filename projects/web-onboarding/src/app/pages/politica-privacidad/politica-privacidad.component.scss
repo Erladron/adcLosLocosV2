@@ -1,0 +1,180 @@
+// ==========================================
+// 1. ESQUELETO COMPARTIDO CORPORATIVO
+// ==========================================
+.welcome-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+
+  * { box-sizing: border-box; }
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: max-width 0.3s ease;
+
+  // Modificador para dar más anchura de lectura al ser un texto legal largo
+  &.wide-card {
+    max-width: 600px;
+  }
+}
+
+.card-header {
+  background: linear-gradient(135deg, #18366b 0%, #224d96 100%);
+  padding: 30px 20px;
+  text-align: center;
+  color: #ffffff;
+
+  .logo-container {
+    margin-bottom: 12px;
+    .club-logo {
+      width: 85px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    }
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  .slogan {
+    font-size: 12px;
+    color: #93c5fd;
+    margin: 5px 0 0 0;
+    font-style: italic;
+    font-weight: 500;
+  }
+}
+
+.card-content {
+  padding: 30px 25px;
+}
+
+.status-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    font-size: 22px;
+    color: #1c3f7c;
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+}
+
+.subtitle-text {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.card-footer {
+  padding: 15px 20px;
+  background-color: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+  p { margin: 0; font-size: 11px; color: #94a3b8; }
+}
+
+// ==========================================
+// 2. MAQUETACIÓN INTERNA DEL TEXTO LEGAL
+// ==========================================
+.legal-scroll-box {
+  width: 100%;
+  max-height: 320px; // Altura fija para que no se desborde la tarjeta
+  overflow-y: auto;  // Scroll vertical
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  padding: 20px;
+  margin-bottom: 25px;
+  text-align: left;
+
+  // Estilo barra de scroll fina
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: #f1f5f9; }
+  &::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+  .legal-date {
+    font-size: 12px;
+    color: #94a3b8;
+    font-style: italic;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 14px;
+    text-align: justify;
+  }
+
+  h4 {
+    font-size: 14px;
+    color: #1c3f7c;
+    font-weight: 700;
+    margin-top: 22px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  ul {
+    margin-top: 0;
+    margin-bottom: 14px;
+    padding-left: 20px;
+
+    li {
+      font-size: 13.5px;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+  }
+}
+
+// Botón secundario para cerrar la pestaña de forma elegante
+.btn-secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+  }
+}
+
+.full-width-btn {
+  width: 100%;
+}

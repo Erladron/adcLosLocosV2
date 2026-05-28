@@ -55,39 +55,36 @@ import {
 
 import {
   UserService
-} from '@users/services/user.service';
+} from 'projects/shared-core/src/lib/services/user.service';
 
 import {
-  User
-} from '@users/models/users.models';
+  User, 
+  UserStatus
+} from 'shared-core';
 
 import {
   AuthService
-} from '@auth/services/auth.service';
-
-import {
-  UserStatus
-} from '@users/models/user-status.enum';
+} from 'projects/shared-core/src/lib/services/auth.service';
 
 import {
   UserDetailFacadeService
-} from '@users/services/user-detail-facade.service';
+} from 'projects/shared-core/src/lib/services/user-detail-facade.service';
 
 import {
   LoadingService
-} from '@core/services/loading.service';
+} from 'projects/shared-core/src/lib/services/loading.service';
 
 import {
   ErrorHandlerService
-} from '@core/services/error-handler.service';
+} from 'projects/shared-core/src/lib/services/error-handler.service';
 
 import {
   DialogService
-} from '@core/services/dialog.service';
+} from 'projects/shared-core/src/lib/services/dialog.service';
 
 import {
   NotificationService
-} from '@core/services/notification.service';
+} from 'projects/shared-core/src/lib/services/notification.service';
 
 @Component({
 
@@ -716,7 +713,7 @@ export class UserDetailPage
           await this.userService
             .deactivateUser(
 
-              this.user.uid,
+              this.user.id,
 
               this.authService.getUid(),
 
@@ -792,7 +789,7 @@ export class UserDetailPage
           await this.userService
             .reactivateUser(
 
-              this.user.uid,
+              this.user.id,
 
               this.authService.getUid()
 

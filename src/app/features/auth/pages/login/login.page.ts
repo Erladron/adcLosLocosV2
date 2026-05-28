@@ -37,19 +37,19 @@ import {
 } from 'ionicons/icons';
 
 import { AuthService }
-  from '@auth/services/auth.service';
+  from 'projects/shared-core/src/lib/services/auth.service';
 
 import { NotificationService }
-  from '@core/services/notification.service';
+  from 'projects/shared-core/src/lib/services/notification.service';
 
 import { LoadingService }
-  from '@core/services/loading.service';
+  from 'projects/shared-core/src/lib/services/loading.service';
 
 import { ErrorHandlerService }
-  from '@core/services/error-handler.service';
+  from 'projects/shared-core/src/lib/services/error-handler.service';
 
 import { AppMessageCode }
-  from '@core/constants/messages/app-message-code.enum';
+  from 'shared-core';
 
 @Component({
 

@@ -13,8 +13,9 @@ import {
 
 import {
   normalizeName,
-  formatDNI
-} from '@core/utils/string.utils';
+  formatDNI,
+  UserDetail
+} from 'shared-core';
 
 import {
   FormsModule
@@ -27,10 +28,6 @@ import {
 import {
   ImageCropperComponent
 } from 'ngx-image-cropper';
-
-import {
-  UserDetail
-} from '@users/models/user-detail.model';
 
 import {
   addIcons

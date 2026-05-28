@@ -24,22 +24,22 @@ import { mailOpenOutline }
   from 'ionicons/icons';
 
 import { UserService }
-  from '@users/services/user.service';
+  from 'projects/shared-core/src/lib/services/user.service';
 
 import { AuthService }
-  from '@auth/services/auth.service';
+  from 'projects/shared-core/src/lib/services/auth.service';
 
 import { NotificationService }
-  from '@core/services/notification.service';
+  from 'projects/shared-core/src/lib/services/notification.service';
 
 import { LoadingService }
-  from '@core/services/loading.service';
+  from 'projects/shared-core/src/lib/services/loading.service';
 
 import { ErrorHandlerService }
-  from '@core/services/error-handler.service';
+  from 'projects/shared-core/src/lib/services/error-handler.service';
 
 import { AppMessageCode }
-  from '@core/constants/messages/app-message-code.enum';
+  from 'shared-core';
 
 import {
 
@@ -51,7 +51,10 @@ import {
 
   InvitedUserService
 
-} from '@users/services/invited-user.service';
+} from 'projects/shared-core/src/lib/services/invited-user.service';
+
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { EmailTemplates } from 'shared-core'; // Ajusta la ruta exacta según tu estructura
 
 @Component({
 
@@ -113,8 +116,10 @@ export class InvitePage
       LoadingService,
 
     private errorHandler:
-      ErrorHandlerService
+      ErrorHandlerService,
 
+    private firestore:
+      Firestore
   ) {
 
     addIcons({
@@ -284,6 +289,34 @@ export class InvitePage
 
             });
 
+          // ============================================
+          // GET TOKEN (DOCUMENT ID)
+          // ============================================
+
+          // Recuperamos la invitación recién creada para sacar su ID y usarlo como Token
+          const nuevaInvitacion =
+            await this.invitedUserService
+              .getInvitationByEmail(email);
+
+          // ============================================
+          // PREPARE EMAIL TEMPLATE
+          // ============================================
+
+          const htmlTemplate = EmailTemplates.getInvitationTemplate(nuevaInvitacion.id);
+
+          // ============================================
+          // SEND EMAIL VIA FIRESTORE (MODULAR API)
+          // ============================================
+
+          const mailCollection = collection(this.firestore, 'mail');
+
+          await addDoc(mailCollection, {
+            to: email,
+            message: {
+              subject: '¡Bienvenido! Completa tu inscripción - ADC Los Locos',
+              html: htmlTemplate
+            }
+          });
           // ============================================
           // SUCCESS
           // ============================================

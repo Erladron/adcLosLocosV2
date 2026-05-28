@@ -7,10 +7,10 @@ import {
 } from '@angular/router';
 
 import { AuthService }
-  from '@auth/services/auth.service';
+  from 'projects/shared-core/src/lib/services/auth.service';
 
 import { UserStatus }
-  from '@users/models/user-status.enum';
+  from 'shared-core';
 
 export const authGuard:
   CanActivateFn = async (

@@ -9,7 +9,7 @@ import {
 } from '@angular/router';
 
 import { AuthService }
-from '@auth/services/auth.service';
+from 'projects/shared-core/src/lib/services/auth.service';
 
 export const roleGuard:
 CanActivateFn = async (

@@ -159,7 +159,7 @@ service cloud.firestore {
       allow read: if true;
 
       // 🔥 CAMBIO IMPORTANTE
-      allow create: if isLogged();
+      allow create: if canInvite();
 
       allow update: if
 
@@ -173,6 +173,16 @@ service cloud.firestore {
 
     }
 
+    // =====================================================
+    // EMAIL DE INVITACION
+    // =====================================================
+
+    match /mail/{document= **} {
+
+      allow create: if canInvite();
+
+
+    }
   }
 
 }

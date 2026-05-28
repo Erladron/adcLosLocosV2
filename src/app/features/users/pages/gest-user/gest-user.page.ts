@@ -40,28 +40,28 @@ import {
 } from 'ionicons/icons';
 
 import { UserService }
-  from '@users/services/user.service';
+  from 'projects/shared-core/src/lib/services/user.service';
 
 import { User }
-  from '@users/models/users.models';
+  from 'shared-core';
 
 import { NotificationService }
-  from '@core/services/notification.service';
+  from 'projects/shared-core/src/lib/services/notification.service';
 
 import { DialogService }
-  from '@core/services/dialog.service';
+  from 'projects/shared-core/src/lib/services/dialog.service';
 
 import { LoadingService }
-  from '@core/services/loading.service';
+  from 'projects/shared-core/src/lib/services/loading.service';
 
 import { ErrorHandlerService }
-  from '@core/services/error-handler.service';
+  from 'projects/shared-core/src/lib/services/error-handler.service';
 
 import { AuthPoliciesService }
-  from '@auth/services/auth-policies.service';
+  from 'projects/shared-core/src/lib/services/auth-policies.service';
 
 import { AppMessageCode }
-  from '@core/constants/messages/app-message-code.enum';
+  from 'shared-core';
 
 import { EmptyStateComponent }
   from '@shared/components/empty-state/empty-state.component';
@@ -482,7 +482,7 @@ export class GestUserPage
 
           await this.userService
             .approveUser(
-              user.uid
+              user.id
             );
 
           await this.notification.success(
@@ -557,7 +557,7 @@ export class GestUserPage
 
           await this.userService
             .rejectUser(
-              user.uid
+              user.id
             );
 
           await this.notification.success(

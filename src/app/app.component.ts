@@ -35,7 +35,7 @@ import {
 } from 'ionicons/icons';
 
 import { AuthService }
-  from '@auth/services/auth.service';
+  from 'projects/shared-core/src/lib/services/auth.service';
 
 import { CommonModule } from '@angular/common';
 

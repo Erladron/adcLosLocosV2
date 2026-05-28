@@ -59,6 +59,10 @@ import { AppComponent }
 import { environment }
   from './environments/environment';
 
+import { ENVIRONMENT } from '../projects/shared-core/src/lib/env.token';
+
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+
 bootstrapApplication(
 
   AppComponent,
@@ -120,6 +124,27 @@ bootstrapApplication(
       provideFunctions(
         () => getFunctions()
       ),
+
+      // =================================
+      // ENVIRONMENT FOR SHARED-CORE
+      // =================================
+
+      {
+
+        provide:ENVIRONMENT,
+
+        useValue:
+          environment
+
+      },
+
+      // =================================
+      // COMPATIBILITY BRIDGE FOR FIREBASE
+      // =================================
+      { 
+        provide: FIREBASE_OPTIONS, 
+        useValue: environment.firebase 
+      }
 
     ]
 

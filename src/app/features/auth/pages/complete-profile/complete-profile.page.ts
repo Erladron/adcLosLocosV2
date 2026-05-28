@@ -27,24 +27,21 @@ import {
 } from '@users/pages/user-detail/components/personal-data-form/personal-data-form.component';
 
 import {
-    User
-} from '@users/models/users.models';
-
-import {
+    User, 
     UserStatus
-} from '@users/models/user-status.enum';
+} from 'shared-core';
 
 import {
     AuthService
-} from '@auth/services/auth.service';
+} from 'projects/shared-core/src/lib/services/auth.service';
 
 import {
     LoadingService
-} from '@core/services/loading.service';
+} from 'projects/shared-core/src/lib/services/loading.service';
 
 import {
     NotificationService
-} from '@core/services/notification.service';
+} from 'projects/shared-core/src/lib/services/notification.service';
 
 import {
     addIcons
@@ -61,11 +58,11 @@ import {
 
 import {
     normalizeName
-} from '@core/utils/string.utils';
+} from 'shared-core';
 
 import {
     UserDetailFacadeService
-} from '@users/services/user-detail-facade.service';
+} from 'projects/shared-core/src/lib/services/user-detail-facade.service';
 
 @Component({
 
@@ -281,7 +278,7 @@ export class CompleteProfilePage
 
                     await this.authService
                         .reloadUserData(
-                            this.user.uid
+                            this.user.id
                         );
 
                 },

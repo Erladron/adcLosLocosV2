@@ -1,0 +1,75 @@
+<main class="welcome-wrapper">
+  <div class="welcome-card">
+    
+    <header class="card-header">
+      <div class="logo-container">
+        <img [src]="logoUrl" alt="ADC Los Locos" class="club-logo">
+      </div>
+      <h1>A.D.C. LOS LOCOS</h1>
+      <p class="slogan">"Yo no estoy loco, vivo la locura"</p>
+    </header>
+
+    <div class="card-content">
+      <section class="status-box">
+        <h3>Crea tu cuenta</h3>
+        <p class="subtitle-text" *ngIf="invitationData">
+          Hola <strong>{{ invitationData.email }}</strong>, introduce tus datos para acceder
+        </p>
+        
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+          
+          <div class="input-group-box">
+            <label for="nombre">Nombre y Apellidos</label>
+            <div class="input-field-wrapper">
+              <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Juan Jesús" autocomplete="name">
+            </div>
+            <div class="error-msg-text" *ngIf="registerForm.get('nombre')?.touched && registerForm.get('nombre')?.invalid">
+              El nombre completo es requerido.
+            </div>
+          </div>
+
+          <div class="input-group-box">
+            <label for="password">Contraseña</label>
+            <div class="input-field-wrapper">
+              <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+              <button type="button" class="btn-toggle-eye" (click)="showPassword = !showPassword">
+                {{ showPassword ? '🙈' : '👁️' }}
+              </button>
+            </div>
+            <div class="error-msg-text" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+              Mínimo 6 caracteres obligatorios.
+            </div>
+          </div>
+
+          <div class="input-group-box">
+            <label for="confirmPassword">Repetir Contraseña</label>
+            <div class="input-field-wrapper">
+              <input [type]="showPasswordConfirm ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword" placeholder="Repite tu contraseña">
+              <button type="button" class="btn-toggle-eye" (click)="showPasswordConfirm = !showPasswordConfirm">
+                {{ showPasswordConfirm ? '🙈' : '👁️' }}
+              </button>
+            </div>
+            <div class="error-msg-text" *ngIf="registerForm.hasError('passwordsMismatch') && registerForm.get('confirmPassword')?.touched">
+              Las contraseñas introducidas no coinciden.
+            </div>
+          </div>
+
+          <div class="legal-info-text">
+            Al hacer clic en "Registrarse y Entrar", confirmas que estás de acuerdo con los 
+            <a href="/politica-privacidad" target="_blank" class="legal-link">Términos y la Política de Privacidad</a> de A.C.D. Los Locos.
+          </div>
+
+          <button type="submit" class="btn-primary full-width-btn" [disabled]="registerForm.invalid || cargando">
+            {{ cargando ? 'Registrando...' : 'Registrarse y Entrar' }}
+          </button>
+
+        </form>
+      </section>
+    </div>
+
+    <footer class="card-footer">
+      <p>© 2026 ADC Los Locos. Registro de Usuario Oficial.</p>
+    </footer>
+
+  </div>
+</main>

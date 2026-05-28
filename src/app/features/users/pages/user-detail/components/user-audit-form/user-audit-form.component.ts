@@ -38,12 +38,9 @@ import {
 } from 'ionicons/icons';
 
 import {
-    User
-} from '@users/models/users.models';
-
-import {
+    User,
     UserStatus
-} from '@users/models/user-status.enum';
+} from 'shared-core';
 
 @Component({
 

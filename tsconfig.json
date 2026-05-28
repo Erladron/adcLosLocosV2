@@ -23,6 +23,9 @@
       ],
       "@stats/*": [
         "src/app/features/stats/*"
+      ],
+      "shared-core": [
+        "./dist/shared-core"
       ]
     },
     "outDir": "./dist/out-tsc",
@@ -47,9 +50,25 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
+    "composite": true,
+    "rootDir": ".",
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": false,
     "strictInputAccessModifiers": false,
     "strictTemplates": false
-  }
+  },
+  "references": [
+    {
+      "path": "./projects/shared-core/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared-core/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/web-onboarding/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/web-onboarding/tsconfig.spec.json"
+    }
+  ]
 }
