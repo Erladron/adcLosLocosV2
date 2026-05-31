@@ -1,138 +1,48 @@
 <div class="section-card">
 
-  <!-- ================================= -->
-  <!-- HEADER -->
-  <!-- ================================= -->
-
   <div class="section-header">
-
-    <!-- INFO -->
-
-    <div class="membership-title">
-
-      <h2>
-        Membresía
-      </h2>
-
-      <p>
-        Tipo de usuario y número de socio.
-      </p>
-
+    <div>
+      <h2>Membresía</h2>
+      <p>Tipo de usuario y número de socio.</p>
     </div>
 
-    <!-- ACTIONS -->
-
-    <div *ngIf="
-        isEditMode
-        &&
-        canEditMembership
-      " class="section-actions">
-
-      <!-- EDIT -->
-
+    <div *ngIf="isEditMode && canEditMembership" class="section-actions">
       <ion-button *ngIf="!editing" class="section-action-btn" shape="round" (click)="toggleEdit.emit()">
-
-        <ion-icon slot="icon-only" name="create-outline">
-        </ion-icon>
-
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-
-      <!-- SAVE -->
-
       <ion-button *ngIf="editing" class="section-action-btn save" shape="round" (click)="toggleEdit.emit()">
-
-        <ion-icon slot="icon-only" name="save-outline">
-        </ion-icon>
-
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
       </ion-button>
-
-      <!-- CANCEL -->
-
       <ion-button *ngIf="editing" class="section-action-btn cancel" shape="round" (click)="cancelEdit.emit()">
-
-        <ion-icon slot="icon-only" name="close-outline">
-        </ion-icon>
-
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
-
     </div>
-
   </div>
 
-  <!-- ================================= -->
-  <!-- MEMBERSHIP -->
-  <!-- ================================= -->
+  <div class="form-fields">
 
-  <div class="membership-container">
-
-    <!-- TYPE -->
-
-    <div class="membership-field type-field">
-
-      <div class="membership-label">
-
-        Tipo Usuario *
-
-      </div>
-
-      <ion-select interface="action-sheet" fill="outline" justify="space-between" [(ngModel)]="user.tipo"
-        class="custom-select" [disabled]="
-          isEditMode
-          &&
-          !editing
-        ">
-
-        <ion-select-option value="administrador">
-
-          Administrador
-
-        </ion-select-option>
-
-        <ion-select-option value="directiva">
-
-          Directiva
-
-        </ion-select-option>
-
-        <ion-select-option value="socio">
-
-          Socio
-
-        </ion-select-option>
-
-        <ion-select-option value="invitado">
-
-          Invitado
-
-        </ion-select-option>
-
+    <ion-item class="custom-item">
+      <ion-label position="stacked">Tipo Usuario *</ion-label>
+      <ion-select 
+        interface="popover" 
+        [interfaceOptions]="{ cssClass: 'glass-dropdown' }"
+        [(ngModel)]="user.tipo"
+        [disabled]="isEditMode && !editing">
+        
+        <ion-select-option value="administrador">Administrador</ion-select-option>
+        <ion-select-option value="directiva">Directiva</ion-select-option>
+        <ion-select-option value="socio">Socio</ion-select-option>
+        <ion-select-option value="invitado">Invitado</ion-select-option>
       </ion-select>
+    </ion-item>
 
-    </div>
-
-    <!-- NUMERO SOCIO -->
-
-    <div class="membership-field number-field" *ngIf="
-        user.tipo === 'socio'
-        ||
-        user.tipo === 'directiva'
-      ">
-
-      <div class="membership-label">
-
-        Nº Socio
-
-      </div>
-
-      <ion-input [(ngModel)]="user.numeroSocio" [readonly]="
-          isEditMode
-          &&
-          !editing
-        ">
-
+    <ion-item class="custom-item" *ngIf="user.tipo === 'socio' || user.tipo === 'directiva'">
+      <ion-label position="stacked">Nº Socio</ion-label>
+      <ion-input 
+        [(ngModel)]="user.numeroSocio" 
+        [readonly]="isEditMode && !editing">
       </ion-input>
-
-    </div>
+    </ion-item>
 
   </div>
 

@@ -17,7 +17,7 @@
         <p class="sub-text">Comprobando credenciales en el sistema de la peña.</p>
       </section>
 
-      <section *ngIf="!isLoading && isValidToken" class="status-box success-box">
+      <section *ngIf="!isLoading && isValidToken && !isAlreadyRegistered" class="status-box success-box">
         <h3>¡Invitación Confirmada! 👏</h3>
         <p class="welcome-text">
           Estás a un solo paso de activar tu cuenta y formar parte de nuestro ecosistema digital.
@@ -27,7 +27,22 @@
         </button>
       </section>
 
-      <section *ngIf="!isLoading && !isValidToken" class="status-box error-box">
+      <section *ngIf="!isLoading && isAlreadyRegistered" class="status-box success-box">
+        <div class="success-icon-badge" style="font-size: 40px; margin-bottom: 15px;">✨</div>
+        <h3 style="color: #1c3f7c;">¡Tu cuenta ya está activa!</h3>
+        <p class="welcome-text" style="text-align: justify; margin-bottom: 20px;">
+          Hemos comprobado tu invitación y vemos que **ya has completado tu registro** correctamente. ¡Tu cuenta de socio ya está blindada en el sistema!
+        </p>
+        
+        <div class="alerta-app" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+          <p style="color: #166534; font-weight: bold; margin: 0 0 5px 0;">¿Qué debes hacer ahora?</p>
+          <p style="color: #1e40af; font-size: 13px; margin: 0; line-height: 1.5;">
+            Abre la <strong>App móvil oficial</strong> en tu teléfono, introduce el correo de la invitación junto con la contraseña que acabas de crear y accede a tu ficha digital.
+          </p>
+        </div>
+      </section>
+
+      <section *ngIf="!isLoading && !isValidToken && !isAlreadyRegistered" class="status-box error-box">
         <div class="error-icon">⚠️</div>
         <h3>Enlace no válido</h3>
         <p class="error-text">{{ errorMessage }}</p>

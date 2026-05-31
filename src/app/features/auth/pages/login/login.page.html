@@ -5,7 +5,7 @@
 
   <div class="login-container">
     <div class="form-card">
-      
+
       <div class="header-section">
         <div class="logo-circle">
           <img src="assets/img/escudo.png" alt="Logo">
@@ -16,20 +16,13 @@
 
       <div class="form-section">
         <ion-item lines="none">
-          <ion-input 
-            label="Email" 
-            labelPlacement="floating" 
-            type="email" 
-            [(ngModel)]="email" 
+          <ion-input label="Email" labelPlacement="floating" type="email" [(ngModel)]="email"
             placeholder="ejemplo@correo.com">
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
-          <ion-input 
-            [type]="showPassword ? 'text' : 'password'" 
-            label="Contraseña" 
-            labelPlacement="floating" 
+          <ion-input [type]="showPassword ? 'text' : 'password'" label="Contraseña" labelPlacement="floating"
             [(ngModel)]="password">
           </ion-input>
           <ion-button slot="end" fill="clear" (click)="showPassword = !showPassword" class="eye-button">
@@ -43,12 +36,12 @@
             <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
           </ion-button>
         </div>
-
-        <div class="footer-links">
-          <p>¿No tienes cuenta? <a (click)="irARegistro()">Solicitar registro</a></p>
-        </div>
       </div>
 
     </div>
+
+    <footer class="app-footer-fixed">
+      <p>© 2026 ADC Los Locos. Gestión Digital Oficial.</p>
+    </footer>
   </div>
 </ion-content>

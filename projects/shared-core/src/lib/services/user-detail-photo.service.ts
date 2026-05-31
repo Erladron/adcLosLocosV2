@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import {
-
   Camera,
   CameraResultType,
   CameraSource
-
 } from '@capacitor/camera';
 
 import { PhotoService }
@@ -18,9 +16,7 @@ from 'projects/shared-core/src/lib/services/photo.service';
 export class UserDetailPhotoService {
 
   constructor(
-
     private photoService: PhotoService
-
   ) { }
 
   // ============================================
@@ -55,7 +51,7 @@ export class UserDetailPhotoService {
   }
 
   // ============================================
-  // TAKE PHOTO
+  // TAKE PHOTO (¡Ahora optimizada!)
   // ============================================
 
   /**
@@ -64,16 +60,20 @@ export class UserDetailPhotoService {
   async takePhoto(): Promise<any> {
 
     const image =
-
       await Camera.getPhoto({
 
-        quality: 90,
+        quality: 65, // Reducimos para aligerar la carga de datos
 
         resultType:
           CameraResultType.DataUrl,
 
         source:
-          CameraSource.Camera
+          CameraSource.Camera,
+
+        // Forzamos al hardware a pre-escalar la foto para el avatar
+        width: 800,
+
+        height: 800
 
       });
 
@@ -92,13 +92,9 @@ export class UserDetailPhotoService {
     // ============================================
 
     const file =
-
       this.dataURLtoFile(
-
         image.dataUrl,
-
         'camera.jpg'
-
       );
 
     // ============================================
@@ -135,11 +131,8 @@ export class UserDetailPhotoService {
    * Convierte base64 a File.
    */
   dataURLtoFile(
-
     dataurl: string,
-
     filename: string
-
   ): File {
 
     const arr =
@@ -166,13 +159,9 @@ export class UserDetailPhotoService {
     }
 
     return new File(
-
       [u8arr],
-
       filename,
-
       { type: mime }
-
     );
 
   }
@@ -206,20 +195,14 @@ export class UserDetailPhotoService {
    * Subida foto perfil.
    */
   async uploadProfilePhoto(
-
-    uid: string,
-
+    id: string, // Sincronizado de uid a id
     imageBase64: string
-
   ): Promise<string> {
 
     return await this.photoService
       .uploadProfilePhoto(
-
-        uid,
-
+        id,
         imageBase64
-
       );
 
   }

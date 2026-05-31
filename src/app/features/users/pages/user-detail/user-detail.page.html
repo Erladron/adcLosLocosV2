@@ -111,46 +111,12 @@
     <!-- ================================= -->
 
     <app-credentials-form
-
-      *ngIf="!isProfileCompletion"
-
-      [user]="user"
-
-      [isEditMode]="isEditMode"
-
-      [isOwnProfile]="isOwnProfile"
-
-      [canEditCredentials]="canEditCredentials"
-
-      [canEditPassword]="canEditPassword"
-
-      [editing]="editingCredentials"
-
-      [currentPassword]="currentPassword"
-
-      [repeatEmail]="repeatEmail"
-
-      [password]="password"
-
-      [repeatPassword]="repeatPassword"
-
-      [pendingEmailVerification]="pendingEmailVerification"
-
-      (toggleEdit)="toggleCredentials()"
-
-      (cancelEdit)="editingCredentials = false"
-
-      (currentPasswordChange)="currentPassword = $event"
-
-      (repeatEmailChange)="repeatEmail = $event"
-
-      (passwordChange)="password = $event"
-
-      (repeatPasswordChange)="repeatPassword = $event"
-
-    >
-
-    </app-credentials-form>
+  [user]="user"
+  [isEditMode]="isEditMode"
+  [isOwnProfile]="isOwnProfile"
+  [canEditCredentials]="canEditCredentials"
+  (sendResetLink)="onSendPasswordReset($event)">
+</app-credentials-form>
 
     <!-- ================================= -->
     <!-- AUDIT -->

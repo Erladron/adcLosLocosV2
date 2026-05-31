@@ -514,7 +514,6 @@ export class AuthRegisterService {
       invitation
     );
 
-    // ENFOQUE PURISTA: Eliminamos el campo redundante 'uid: uid' de la estructura interna
     await setDoc(userDocRef, {
 
       // =========================================

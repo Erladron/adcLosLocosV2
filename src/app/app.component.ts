@@ -272,12 +272,18 @@ export class AppComponent {
   }
 
   // =================================
-  // REGISTERED
+  // INVITAR
   // =================================
 
-  isRegistered(): boolean {
+  puedeVerUsers(): boolean {
 
-    return this.role === 'registrado';
+    return [
+
+      'socio',
+      'directiva',
+      'administrador'
+
+    ].includes(this.role);
 
   }
 

@@ -37,25 +37,13 @@
 
         <!-- USUARIOS -->
 
-        <ion-item button (click)="navegar('/gest-user')">
+        <ion-item *ngIf="puedeVerUsers()" button (click)="navegar('/gest-user')">
 
           <ion-icon name="people-outline" slot="start">
           </ion-icon>
 
           <ion-label>
             Usuarios
-          </ion-label>
-
-        </ion-item>
-
-        <!-- ESTADISTICAS -->
-        <ion-item button (click)="navegar('/stats')">
-
-          <ion-icon name="stats-chart-outline" slot="start">
-          </ion-icon>
-
-          <ion-label>
-            Estadísticas
           </ion-label>
 
         </ion-item>

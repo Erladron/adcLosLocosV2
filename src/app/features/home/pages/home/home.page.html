@@ -8,10 +8,6 @@
   fullscreen="true"
   class="home-content">
 
-  <!-- =========================================
-       BACKGROUND
-  ========================================== -->
-
   <div class="background-logo">
 
     <img
@@ -20,15 +16,7 @@
 
   </div>
 
-  <!-- =========================================
-       HOME CONTAINER
-  ========================================== -->
-
   <div class="home-container">
-
-    <!-- =========================================
-         WELCOME
-    ========================================== -->
 
     <div class="welcome-section">
 
@@ -54,11 +42,10 @@
 
     </div>
 
-    <!-- =========================================
-         USER INFO CARD
-    ========================================== -->
-
-    <div class="glass-card profile-card">
+    <div 
+      class="glass-card profile-card"
+      [routerLink]="['/user-detail', currentUser?.id]"
+      style="cursor: pointer;">
 
       <div class="profile-header">
 
@@ -71,11 +58,14 @@
           Mi información
         </span>
 
+        <ion-icon 
+          name="create-outline" 
+          style="margin-left: auto; font-size: 18px; opacity: 0.6;">
+        </ion-icon>
+
       </div>
 
       <div class="profile-content">
-
-        <!-- AVATAR -->
 
         <div class="profile-avatar">
 
@@ -98,8 +88,6 @@
           </ion-icon>
 
         </div>
-
-        <!-- INFO -->
 
         <div class="profile-info">
 
@@ -166,10 +154,6 @@
 
     </div>
 
-    <!-- =========================================
-         QUICK ACCESS
-    ========================================== -->
-
     <div class="section-title">
 
       Accesos rápidos
@@ -178,9 +162,9 @@
 
     <div class="quick-grid">
 
-      <!-- USERS -->
-
       <div
+
+        *ngIf="currentUser?.tipo !== 'invitado'"
 
         class="quick-card glass-card"
 
@@ -217,8 +201,6 @@
 
       </div>
 
-      <!-- EVENTS -->
-
       <div
 
         class="quick-card glass-card"
@@ -244,45 +226,6 @@
 
           <p>
             Consulta eventos
-          </p>
-
-        </div>
-
-        <ion-icon
-          name="chevron-forward-outline"
-          class="quick-arrow">
-
-        </ion-icon>
-
-      </div>
-
-      <!-- STATS -->
-
-      <div
-
-        class="quick-card glass-card"
-
-        routerLink="/stats"
-
-      >
-
-        <div class="quick-icon">
-
-          <ion-icon
-            name="stats-chart-outline">
-
-          </ion-icon>
-
-        </div>
-
-        <div class="quick-info">
-
-          <h3>
-            Estadísticas
-          </h3>
-
-          <p>
-            Analiza actividad
           </p>
 
         </div>

@@ -15,8 +15,8 @@ import { TokenService } from '../../core/services/token.service';
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  templateUrl: './register.page.html',
+  styleUrl: './register.page.scss'
 })
 export class RegisterComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -89,11 +89,16 @@ export class RegisterComponent implements OnInit {
     try {
       this.cargando = true;
 
-      // Mapeamos el nombre que el usuario ha escrito en el input
+      // 1. AÑADIMOS LA AUDITORÍA AQUÍ
       const userDataToRegister = {
         nombre: this.registerForm.value.nombre.trim(),
         email: this.invitationData.email,
-        password: this.registerForm.value.password
+        password: this.registerForm.value.password,
+        
+        // Rastro de auditoría
+        invitadoPorNombre: this.invitationData.invitadoPorNombre || 'Administrador',
+        invitadoPorId: this.invitationData.invitadoPorId || '',
+        creadoPorNombre: 'Autoregistro desde Web'
       };
 
       // Llamada al servicio original de registro
@@ -117,7 +122,9 @@ export class RegisterComponent implements OnInit {
       this.notification.success(AppMessageCode.ADC_AUTH_INF_0001);
 
       // 3. Redirección directa y absoluta a la pantalla de éxito
-      await this.router.navigate(['/success']);
+      this.router.navigate(['/success'], {
+        queryParams: { token: this.token }
+      });
 
     } catch (error: any) {
       console.error('REGISTER ERROR', error);

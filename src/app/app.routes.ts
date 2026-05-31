@@ -37,21 +37,6 @@ export const routes: Routes = [
   },
 
   // ============================================
-  // REGISTER
-  // ============================================
-
-  {
-    path: 'register',
-
-    loadComponent: () =>
-
-      import('@auth/pages/register/register.page')
-
-        .then(m => m.RegisterPage)
-
-  },
-
-  // ============================================
   // PENDING APPROVAL
   // ============================================
 

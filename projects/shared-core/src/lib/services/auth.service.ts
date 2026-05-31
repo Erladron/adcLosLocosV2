@@ -358,6 +358,19 @@ export class AuthService {
 
   }
 
+  /**
+   * 🔥 NUEVA PASARELA DE ACCESO CORPORATIVO
+   * Delega el envío del correo premium al servicio especializado de administración
+   */
+  async sendCustomResetPasswordEmail(
+    email: string
+  ): Promise<any> {
+
+    return await this.adminService
+      .sendCustomResetPasswordEmail(email);
+
+  }
+
   // ============================================
   // HELPERS
   // ============================================

@@ -130,7 +130,7 @@
 
       *ngFor="let user of filteredUsers"
 
-      [routerLink]="['/user-detail', user.uid]">
+      [routerLink]="['/user-detail', user.id]">
 
       <div class="user-avatar-container">
 
@@ -238,7 +238,7 @@
 
       *ngFor="let user of filteredPendingUsers"
 
-      [routerLink]="['/user-detail', user.uid]">
+      [routerLink]="['/user-detail', user.id]">
 
       <div class="user-avatar-container">
 
@@ -373,7 +373,7 @@
 
       *ngFor="let user of filteredInactiveUsers"
 
-      [routerLink]="['/user-detail', user.uid]">
+      [routerLink]="['/user-detail', user.id]">
 
       <div class="user-avatar-container">
 

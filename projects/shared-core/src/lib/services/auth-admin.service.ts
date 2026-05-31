@@ -3,6 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { Auth }
 from '@angular/fire/auth';
 
+// 🔥 IMPORTACIÓN NATIVA DE ANGULARFIRE FUNCTIONS
+import { Functions, httpsCallable } from '@angular/fire/functions';
+
 import { ENVIRONMENT } from '../env.token'; // Ajusta los puntos según donde hayas guardado el env.token.ts
 
 import { AppMessageCode }
@@ -18,7 +21,10 @@ export class AuthAdminService {
 
   constructor(
 
-    private auth: Auth
+    private auth: Auth,
+
+    // 🔥 INYECTAMOS EL MÓDULO DE FUNCTIONS AQUÍ
+    private functions: Functions
 
   ) { }
 
@@ -203,6 +209,30 @@ export class AuthAdminService {
     return await this.auth
       .currentUser
       .getIdToken();
+
+  }
+
+  // ============================================
+  // CUSTOM PASSWORD RESET
+  // ============================================
+
+  /**
+   * 🔥 NUEVO MÉTODO ESPECIALIZADO
+   * Llama a la Cloud Function encargada de generar el enlace seguro de contraseña
+   */
+  async sendCustomResetPasswordEmail(
+    email: string
+  ): Promise<any> {
+
+    const sendCustomReset = 
+      httpsCallable(
+        this.functions, 
+        'sendCustomPasswordReset'
+      );
+
+    return await sendCustomReset({ 
+      email 
+    });
 
   }
 

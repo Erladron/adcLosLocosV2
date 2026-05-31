@@ -695,3 +695,44 @@ ion-toast::part(button) {
     #ff6b6b !important;
 
 }
+
+/* ==============================================================================
+   FORZADO GLOBAL: CROPPER PREMIUM ESTILO WHATSAPP (DEDOS GORDOS)
+   ============================================================================== */
+
+/* Aseguramos que la inyección rompa cualquier encapsulado de la librería */
+.custom-cropper .ngx-ic-cropper {
+  border-radius: 50% !important;
+  border: 1.5px dashed rgba(255, 255, 255, 0.5) !important;
+  box-shadow: none !important;
+}
+
+.custom-cropper .ngx-ic-overlay {
+  background-color: rgba(6, 13, 31, 0.75) !important;
+}
+
+/* Dedos Gordos: Convertimos las esquinas grises en esferas táctiles masivas */
+.custom-cropper .ngx-ic-move,
+.custom-cropper div[role="presentation"].ngx-ic-move {
+  width: 32px !important;
+  height: 32px !important;
+  background-color: rgba(56, 128, 255, 0.3) !important;
+  border: 2.5px solid #3880ff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 12px rgba(56, 128, 255, 0.6) !important;
+  margin-top: -16px !important;
+  margin-left: -16px !important;
+  touch-action: none !important;
+}
+
+/* Ocultamos líneas discontinuas e indicadores intermedios que ensucian */
+.custom-cropper .ngx-ic-dashed {
+  display: none !important;
+}
+.custom-cropper .ngx-ic-top,
+.custom-cropper .ngx-ic-bottom,
+.custom-cropper .ngx-ic-left,
+.custom-cropper .ngx-ic-right {
+  display: none !important;
+}
+

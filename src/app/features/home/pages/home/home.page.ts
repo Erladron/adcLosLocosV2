@@ -24,7 +24,9 @@ import {
   statsChartOutline,
   chevronForwardOutline,
   personOutline,
-  checkmarkCircle
+  checkmarkCircle,
+  createOutline
+
 
 } from 'ionicons/icons';
 
@@ -92,7 +94,8 @@ export class HomePage {
       statsChartOutline,
       chevronForwardOutline,
       personOutline,
-      checkmarkCircle
+      checkmarkCircle,
+      createOutline
 
     });
 

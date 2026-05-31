@@ -1,17 +1,14 @@
 import * as functions from 'firebase-functions';
-
 import * as admin from 'firebase-admin';
-
 import cors from 'cors';
+import { EmailTemplates } from './email-templates';
 
 admin.initializeApp();
 
 const db = admin.firestore();
 
 const corsHandler = cors({
-
   origin: true
-
 });
 
 // =================================
@@ -213,7 +210,7 @@ export const createUserByAdmin =
                 currentUid,
 
               creadoPorNombre:
-                adminData?.nombre || ''
+                adminData?.nombre || 'Administrador'
 
             };
 
@@ -477,7 +474,7 @@ export const deactivateUser =
               currentUid,
 
             bajaRealizadaPorNombre:
-              adminData?.nombre || '',
+              adminData?.nombre || 'Administrador',
 
             motivoBaja:
               motivo || ''
@@ -660,7 +657,7 @@ export const reactivateUser =
               currentUid,
 
             reactivadoPorNombre:
-              adminData?.nombre || ''
+              adminData?.nombre || 'Administrador'
           });
 
         return {
@@ -821,7 +818,7 @@ export const approveUser =
               currentUid,
 
             aprobadoPorNombre:
-              adminData?.nombre || ''
+              adminData?.nombre || 'Administrador'
 
           });
 
@@ -852,3 +849,46 @@ export const approveUser =
     }
 
   );
+
+export const sendCustomPasswordReset = functions.https.onCall(async (request) => {
+  const { email } = request.data;
+
+  if (!email) {
+      throw new functions.https.HttpsError('invalid-argument', 'El email es obligatorio');
+  }
+
+  try {
+      // 1. Le pedimos a Firebase que genere el enlace estándar (el que va a su web fea)
+      const defaultFirebaseLink = await admin.auth().generatePasswordResetLink(email);
+
+      // 2. Extraemos el código secreto 'oobCode' usando una expresión regular o URLSearchParams
+      const urlParams = new URL(defaultFirebaseLink).searchParams;
+      const oobCode = urlParams.get('oobCode');
+
+      if (!oobCode) {
+          throw new functions.https.HttpsError('internal', 'No se pudo extraer el código de seguridad.');
+      }
+
+      // 3. 🚀 CONSTRUIMOS TU ENLACE PREMIUM PERSONALIZADO A MANO
+      // Apuntamos directamente a tu Hosting saltándonos a Firebase por el camino
+      const customResetLink = `https://adcloslocos-desa.web.app/reset-password?oobCode=${oobCode}`;
+
+      // 4. Generamos el HTML con vuestro diseño y tu enlace directo
+      const correoHtml = EmailTemplates.getPasswordResetTemplate(email, customResetLink);
+
+      // 5. Lo metemos en la colección de correo para el Trigger
+      await db.collection('mail').add({
+          to: email,
+          message: {
+              subject: '🔑 Cambio de contraseña - A.D.C. Los Locos',
+              html: correoHtml
+          }
+      });
+
+      return { success: true, message: 'Correo corporativo directo enviado con éxito.' };
+
+  } catch (error: any) {
+      console.error("Error generando el link directo de reset:", error);
+      throw new functions.https.HttpsError('internal', 'No se pudo procesar la solicitud de contraseña.');
+  }
+});

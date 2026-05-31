@@ -12,7 +12,10 @@
     "lint": "ng lint",
     "serve:desa": "ionic serve",
     "deploy:desa": "firebase use desa && firebase deploy",
-    "deploy:prod": "firebase use prod && firebase deploy"
+    "deploy:prod": "firebase use prod && firebase deploy",
+    "deploy:web": "ng build shared-core && ng build web-onboarding --configuration=production && firebase deploy --only hosting",
+    "build:android": "ng build shared-core && ng build app && npx cap sync android && npx cap open android",
+    "deploy:all": "ng build shared-core && ng build web-onboarding --configuration=production && ng build app && cd functions && npm run build && cd .. && firebase deploy"
   },
   "private": true,
   "dependencies": {

@@ -259,18 +259,4 @@ export class LoginPage {
 
   }
 
-  // ============================================
-  // GO REGISTER
-  // ============================================
-
-  irARegistro() {
-
-    this.router.navigate([
-
-      '/register'
-
-    ]);
-
-  }
-
 }

@@ -274,11 +274,11 @@ export class InvitePage
 
                 currentUser?.nombre
                 ||
-                'Sistema',
+                'Administrador',
 
               invitadoPorUid:
 
-                currentUser?.uid
+                currentUser?.id
                 ||
                 '',
 

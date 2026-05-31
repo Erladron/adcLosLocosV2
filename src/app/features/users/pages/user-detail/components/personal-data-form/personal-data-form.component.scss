@@ -1,939 +1,234 @@
 :host {
-
   display: block;
-
   width: 100%;
 }
 
-/* ================================= */
-/* CARD */
-/* ================================= */
-
+/* ========================================================
+   1. LA TARJETA UNIVERSAL (RESTAURADA)
+======================================================== */
 .section-card {
+  background: rgba(17, 37, 84, 0.94);
+  border-radius: 24px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+}
 
-  background:
-    rgba(17, 37, 84, 0.94);
-
-  border-radius:
-    24px;
-
-  padding:
-    28px;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.08);
-
-  backdrop-filter:
-    blur(10px);
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.25);
-
+/* ========================================================
+   2. CABECERA PRINCIPAL FLEXIBLE (ESTILO WHATSAPP)
+======================================================== */
+.header-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 22px;
 }
 
 .profile-header {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    22px;
-
-  margin-bottom:
-    22px;
-
-}
-
-.avatar-container {
-
-  width:
-    92px;
-
-  height:
-    92px;
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(255, 255, 255, 0.08);
-
-  border:
-    2px solid rgba(255, 255, 255, 0.08);
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  overflow:
-    hidden;
-
-}
-
-.avatar-container ion-icon {
-
-  font-size:
-    3.5rem;
-
-  color:
-    white;
-
-}
-
-.avatar-image {
-
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
-
-}
-
-.profile-header h2 {
-
-  margin:
-    0;
-
-  color:
-    white;
-
-  font-size:
-    2rem;
-
-  font-weight:
-    700;
-
-}
-
-.profile-header p {
-
-  margin-top:
-    6px;
-
-  color:
-    rgba(255, 255, 255, 0.75);
-
-  font-size:
-    1rem;
-
-}
-
-.photo-buttons {
-
-  display:
-    flex;
-
-  gap:
-    14px;
-
-  margin-bottom:
-    28px;
-
-}
-
-.photo-buttons ion-button {
-
-  --background:
-    #0d6efd;
-
-  --border-radius:
-    16px;
-
-  width:
-    52px;
-
-  height:
-    52px;
-
-}
-
-.custom-item {
-
-  --background:
-    rgba(255, 255, 255, 0.12);
-
-  --border-radius:
-    18px;
-
-  --padding-start:
-    18px;
-
-  --padding-end:
-    18px;
-
-  --min-height:
-    74px;
-
-  margin-bottom:
-    18px;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.04);
-
-}
-
-.custom-item ion-label {
-
-  color:
-    rgba(255, 255, 255, 0.85) !important;
-
-  font-size:
-    0.92rem !important;
-
-  font-weight:
-    600 !important;
-
-  margin-bottom:
-    8px !important;
-
-}
-
-.custom-item ion-input {
-
-  --color:
-    white;
-
-  font-size:
-    1.05rem;
-
-  font-weight:
-    500;
-
-}
-
-.dni-helper {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  color:
-    rgba(255, 255, 255, 0.75);
-
-  margin:
-    -8px 0 18px 4px;
-
-  font-size:
-    0.92rem;
-
-}
-
-.dni-helper ion-icon {
-
-  font-size:
-    1rem;
-
-}
-
-/* ================================= */
-/* HEADER */
-/* ================================= */
-
-.compact-header {
-
+  flex: 1; 
   display: flex;
-
   align-items: center;
-
-  gap: 26px;
-
-  margin-bottom: 16px;
-
-  flex-wrap: wrap;
+  gap: 16px;
+  overflow: hidden; 
+  padding-right: 12px;
 }
 
-.header-left {
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-}
-
-.header-right {
-
-  flex: 1;
-
-  min-width: 220px;
-}
-
-/* ================================= */
-/* TITULOS */
-/* ================================= */
-
-.compact-title {
-
-  margin: 0;
-
-  font-size: 2rem;
-
-  font-weight: 700;
-
-  color: white;
-}
-
-.compact-subtitle {
-
-  margin-top: 10px;
-
-  color:
-    rgba(255, 255, 255, 0.75);
-
-  line-height: 1.5;
-}
-
-/* ================================= */
-/* AVATAR */
-/* ================================= */
-
-.avatar-container {
-
-  width: 120px;
-
-  height: 120px;
-
+.avatar-container.circular-profile {
+  width: 72px; 
+  height: 72px;
   border-radius: 50%;
-
-  overflow: hidden;
-
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   display: flex;
-
-  justify-content: center;
-
   align-items: center;
-
-  background:
-    rgba(255, 255, 255, 0.08);
-
-  border:
-    2px solid rgba(255, 255, 255, 0.12);
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.user-avatar {
+.avatar-container.circular-profile ion-icon { font-size: 2.5rem; color: white; }
+.profile-avatar { width: 100%; height: 100%; object-fit: cover; }
 
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-}
-
-.default-avatar {
-
-  font-size: 60px;
-
-  color: white;
-}
-
-/* ================================= */
-/* FOTO */
-/* ================================= */
-
-.photo-buttons {
-
+.user-details {
   display: flex;
-
-  gap: 14px;
-
-  margin-top: 18px;
-}
-
-.icon-button {
-
-  --border-radius: 16px;
-
-  width: 50px;
-
-  height: 50px;
-}
-
-/* ================================= */
-/* FORM */
-/* ================================= */
-
-.compact-form {
-
-  display: flex;
-
   flex-direction: column;
+  justify-content: center;
+  overflow: hidden; 
+}
 
+.user-details h2 {
+  margin: 0;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.user-details p { margin: 4px 0 0; color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
+
+/* Botón Lápiz */
+.header-edit-btn ion-button {
+  --background: #1677ff; 
+  --color: white; 
+  --border-radius: 18px; 
+  width: 48px; 
+  height: 48px; 
+  margin: 0; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================================
+   3. PANEL DE EDICIÓN (AHORA TRANSPARENTE E INTEGRADO)
+======================================================== */
+.edit-mode-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent; /* <-- FONDO ELIMINADO PARA QUE NO HAYA RECUADRO FEO */
+  padding: 8px 0;          /* <-- AJUSTADO PARA NO ROBAR ESPACIO */
+  margin-bottom: 24px;
+  border: none;            /* <-- BORDE ELIMINADO */
+}
+
+.edit-panel-left, .edit-panel-right {
+  display: flex;
   gap: 12px;
 }
 
-/* ================================= */
-/* ITEMS */
-/* ================================= */
-
-.compact-item {
-
-  --background:
-    rgba(255, 255, 255, 0.12);
-
-  --border-radius: 14px;
-
-  --padding-start: 12px;
-
-  --padding-end: 12px;
-
-  --inner-padding-end: 12px;
-
-  --min-height: 36px;
-
-  margin-bottom: 10px;
-
-  border-radius: 14px;
-
-  overflow: hidden;
+.edit-mode-panel ion-button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  --border-radius: 50%; 
 }
 
-ion-item {
+.photo-btn { --background: #0d6efd; }
+.action-btn-glass.save, .edit-panel-right .apply { --background: rgba(34, 197, 94, 0.2); --color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+.action-btn-glass.cancel, .edit-panel-right .cancel { --background: rgba(239, 68, 68, 0.2); --color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
 
-  --background:
-    transparent;
-}
+/* ========================================================
+   4. FORMULARIOS
+======================================================== */
+.custom-item { --background: rgba(255, 255, 255, 0.12); --border-radius: 18px; --padding-start: 18px; --padding-end: 18px; --min-height: 74px; margin-bottom: 18px; border: 1px solid rgba(255, 255, 255, 0.04); }
+.custom-item ion-label { color: rgba(255, 255, 255, 0.85) !important; font-size: 0.92rem !important; font-weight: 600 !important; margin-bottom: 8px !important; }
+.custom-item ion-input { --color: white; font-size: 1.05rem; font-weight: 500; }
+.dni-helper { display: flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.75); margin: -8px 0 18px 4px; font-size: 0.92rem; }
 
-ion-input {
-
-  --color: white;
-
-  color: white;
-
-  font-size: 1rem;
-}
-
-ion-label {
-
-  color:
-    rgba(255, 255, 255, 0.72);
-
-  font-weight: 500;
-}
-
-/* ================================= */
-/* CROPPER */
-/* ================================= */
-
-.cropper-container {
-
-  margin-bottom: 24px;
-
-  padding: 20px;
-
-  border-radius: 22px;
-
-  background:
-    rgba(255, 255, 255, 0.05);
-}
-
-.cropper-buttons {
-
+/* ========================================================
+   5. EL CROPPER: LUPAS SVG Y SIN MARCOS
+======================================================== */
+.cropper-integrated-layout {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  padding-top: 10px;
+}
 
-  justify-content: center;
-
+.cropper-sidebar-left {
+  position: absolute;
+  top: 40%;
+  left: -10px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-
-  margin-top: 18px;
+  z-index: 100;
 }
 
-/* ================================= */
-/* MOBILE */
-/* ================================= */
+button.svg-zoom-btn {
+  background: rgba(16, 119, 255, 0.25);
+  color: #8cc1ff;
+  border: 1px solid rgba(16, 119, 255, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  padding: 0;
+  backdrop-filter: blur(4px);
+}
+button.svg-zoom-btn svg { width: 20px; height: 20px; }
 
-@media (max-width: 768px) {
-
-  .section-card {
-
-    padding: 18px;
-  }
-
-  .compact-header {
-
-    flex-direction: column;
-
-    text-align: center;
-  }
-
-  .header-right {
-
-    min-width: 100%;
-  }
+.cropper-center-stage {
+  width: calc(100% - 40px); 
+  margin-left: 40px; 
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
 }
 
-.cropper-wrapper {
-
-  margin-top: 18px;
-
-  padding: 20px 14px;
-
-  border-radius: 26px;
-
-  background:
-    rgba(7, 25, 74, 0.28);
-
-  border:
-    1px solid rgba(255, 255, 255, 0.05);
-
-  backdrop-filter:
-    blur(8px);
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
-  gap: 18px;
-
-  width:
-    fit-content;
-
-  margin-left:
-    auto;
-
-  margin-right:
-    auto;
-
-}
-
-image-cropper {
-
-  width:
-    100%;
-
-  height:
-    420px;
-
-  display:
-    block;
-
-  background:
-    rgba(255, 255, 255, 0.04);
-
-  border-radius:
-    20px;
-
-  overflow:
-    hidden;
-
-}
-
-.cropper-buttons {
-
-  display:
-    flex;
-
-  justify-content:
-    center;
-
-  gap:
-    14px;
-
-  margin-top:
-    18px;
-
-}
-
-.cropper-buttons ion-button {
-
-  min-width:
-    140px;
-
-  height:
-    48px;
-
-  font-weight:
-    700;
-
-  letter-spacing:
-    0.5px;
-
-  --border-radius:
-    16px;
-
-  text-transform:
-    uppercase;
-
-  box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.25);
-
-}
-
-.cropper-buttons ion-button:first-child {
-
-  --background:
-    linear-gradient(135deg,
-      #2874f0,
-      #4c48d9);
-
-}
-
-.cropper-buttons ion-button:last-child {
-
-  --background:
-    rgba(255, 255, 255, 0.14);
-
-  --color:
-    white;
-
-}
-
-::ng-deep .ngx-ic-overlay {
-
-  border-radius:
-    50% !important;
-
-}
-
-::ng-deep .ngx-ic-source-image {
-
-  max-width:
-    100% !important;
-
-  max-height:
-    100% !important;
-
-  object-fit:
-    contain !important;
-
-}
-
-/* =========================
-   CROPPER NUEVO
-========================= */
-
-.cropper-wrapper {
-
-  margin-top: 22px;
-
-  padding: 30px 20px;
-
-  border-radius: 28px;
-
-  background:
-    rgba(7, 25, 74, 0.45);
-
-  border:
-    1px solid rgba(255, 255, 255, 0.06);
-
-  backdrop-filter:
-    blur(12px);
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
+.custom-cropper { width: 100%; height: 100%; }
+
+.cropper-bottom-actions {
+  display: flex;
+  width: 100%;
+  justify-content: center;
   gap: 24px;
-
+  padding-top: 20px;
 }
 
-.cropper-circle-container {
-
-  width:
-    100%;
-
-  display:
-    flex;
-
-  justify-content:
-    center;
-
-  align-items:
-    center;
-
+::ng-deep .ngx-ic-source-image,
+::ng-deep .ngx-ic-overlay,
+::ng-deep .ngx-ic-wrapper,
+::ng-deep .custom-cropper div,
+::ng-deep .image-cropper div {
+  border: none !important;
+  outline: none !important;
+  background-color: transparent !important;
 }
 
-.custom-cropper {
-
-  width:
-    min(72vw, 300px);
-
-  height:
-    min(72vw, 300px);
-
-  border-radius:
-    50%;
-
-  overflow:
-    hidden;
-
-  background:
-    rgba(255, 255, 255, 0.04);
-
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.30);
-
-  border:
-    5px solid rgba(255, 255, 255, 0.92);
-
-}
-
-/* IMAGEN */
-
-::ng-deep .ngx-ic-source-image {
-
-  max-width:
-    100% !important;
-
-  max-height:
-    100% !important;
-
-  object-fit:
-    contain !important;
-
-}
-
-/* ÁREA DEL CROPPER */
+::ng-deep .ngx-ic-overlay { display: none !important; }
 
 ::ng-deep .ngx-ic-cropper {
-
-  border-radius:
-    50% !important;
-
+  border-radius: 50% !important;
+  border: 2px dashed #ffffff !important;
+  box-shadow: none !important; 
 }
 
-/* OVERLAY */
-
-::ng-deep .ngx-ic-overlay {
-
-  border-radius:
-    50% !important;
-
-  box-shadow:
-    0 0 0 9999px rgba(0, 0, 0, 0.45) !important;
-
+::ng-deep .ngx-ic-top-left,
+::ng-deep .ngx-ic-top-right,
+::ng-deep .ngx-ic-bottom-left,
+::ng-deep .ngx-ic-bottom-right {
+  width: 24px !important;
+  height: 24px !important;
+  background-color: #0d6efd !important;
+  border: 2px solid #ffffff !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  display: block !important;
+  opacity: 1 !important;
 }
 
-/* CONTROLES */
-
-::ng-deep .ngx-ic-move {
-
-  border-radius:
-    50% !important;
-
+::ng-deep .ngx-ic-move,
+::ng-deep div[role="presentation"].ngx-ic-move {
+  width: 32px !important;
+  height: 32px !important;
+  background-color: #0d6efd !important;
+  border: 2.5px solid #ffffff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+  display: block !important;
+  opacity: 1 !important;
+  z-index: 9999 !important;
 }
 
-/* BOTONES */
-
-.cropper-buttons {
-
-  display:
-    flex;
-
-  gap: 18px;
-
-  justify-content:
-    center;
-
-  align-items:
-    center;
-
-}
-
-.apply-btn {
-
-  --background:
-    linear-gradient(135deg,
-      #2f80ff,
-      #5b4dff);
-
-  --border-radius:
-    18px;
-
-  --box-shadow:
-    0 8px 20px rgba(47, 128, 255, 0.35);
-
-  font-weight:
-    700;
-
-  min-width:
-    130px;
-
-  height:
-    54px;
-
-}
-
-.cancel-btn {
-
-  --background:
-    rgba(255, 255, 255, 0.12);
-
-  --color:
-    #ffffff;
-
-  --border-radius:
-    18px;
-
-  font-weight:
-    700;
-
-  min-width:
-    130px;
-
-  height:
-    54px;
-
-}
-
-.section-header {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 18px;
-
-  margin-bottom: 28px;
-
-}
-
-.profile-header {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 22px;
-
-}
-
-.profile-text {
-
-  flex: 1;
-
-  min-width: 0;
-
-}
-
-.section-actions {
-
-  display: flex;
-
-  justify-content: flex-end;
-
-  gap: 12px;
-
-}
-
-.section-actions {
-
-  position: absolute;
-
-  top: 8px;
-
-  right: 8px;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-}
-
-.section-action-btn {
-
-  --background:
-    #1677ff;
-
-  --color:
-    white;
-
-  --border-radius:
-    18px;
-
-  width: 52px;
-
-  height: 52px;
-
-  box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.28);
-
-}
-
-.section-action-btn.save {
-
-  --background:
-    #22c55e;
-
-}
-
-.section-action-btn.cancel {
-
-  --background:
-    #ef4444;
-
-}
-
-.section-action-btn.save {
-
-  --background:
-    rgba(34, 197, 94, 0.18);
-
-  --color:
-    #86efac;
-
-}
-
-.section-action-btn.cancel {
-
-  --background:
-    rgba(239, 68, 68, 0.18);
-
-  --color:
-    #fca5a5;
-
-}
-
-ion-input[readonly] {
-
-  opacity: 0.78;
-
-}
-
-ion-select[disabled] {
-
-  opacity: 0.78;
-
-}
-
-.section-action-btn {
-
-  transition:
-    all 0.18s ease;
-
-}
-
-.section-action-btn:active {
-
-  transform:
-    scale(0.92);
-
-}
+::ng-deep .ngx-ic-dashed,
+::ng-deep .ngx-ic-top,
+::ng-deep .ngx-ic-bottom,
+::ng-deep .ngx-ic-left,
+::ng-deep .ngx-ic-right { display: none !important; }
+
+ion-button.action-btn-glass { width: 54px !important; height: 54px !important; margin: 0 !important; --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); --border-radius: 16px !important; }

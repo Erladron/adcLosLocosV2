@@ -14,19 +14,21 @@
   align-items: center;
   opacity: 0.08;
   pointer-events: none;
-}
 
-.background-logo img {
-  width: 85%;
-  max-width: 500px;
+  img {
+    width: 85%;
+    max-width: 500px;
+  }
 }
 
 .login-container {
   display: flex;
+  flex-direction: column; /* Organiza la tarjeta y el footer en una columna */
   justify-content: center;
   align-items: center;
   min-height: 100%;
   padding: 20px;
+  position: relative;
 }
 
 .form-card {
@@ -39,6 +41,7 @@
   padding: 40px 20px 30px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 40px; /* Espacio de seguridad para que no choque con el footer */
 }
 
 .header-section {
@@ -46,9 +49,9 @@
   margin-bottom: 35px;
 
   .logo-circle {
+    background: rgba(255, 255, 255, 0.9);
     width: 90px;
     height: 90px;
-    background: white;
     border-radius: 50%;
     margin: 0 auto 15px;
     display: flex;
@@ -92,49 +95,63 @@
     ion-input {
       --color: white;
       font-size: 15px;
+      font-weight: 500;
+    }
+
+    .eye-button {
+      --color: rgba(255, 255, 255, 0.6);
+      margin: 0;
+      height: 100%;
+      font-size: 20px;
     }
   }
 }
 
-.eye-button {
-  --color: rgba(255, 255, 255, 0.6);
-  margin-right: -10px;
-}
-
 .button-section {
-  margin-top: 10px;
+  margin-top: 15px;
 
   .main-button {
     --background: white;
     --color: #0b2f73;
-    --border-radius: 12px;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --border-radius: 14px;
     font-weight: 700;
-    height: 52px;
+    font-size: 16px;
+    height: 50px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+
+    span {
+      font-weight: 700;
+    }
+
+    ion-spinner {
+      --color: #0b2f73;
+    }
   }
 }
 
-.footer-links {
+/* ==========================================================================
+   PIE DE PÁGINA NATIVO PROFESIONAL (EVITA COLISIONES CON EL TECLADO)
+   ========================================================================== */
+.app-footer-fixed {
   text-align: center;
-  margin-top: 25px;
-
-  p {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 10;
+  
+  // Si la pantalla tiene altura suficiente (móvil normal/grande), se ancla abajo
+  @media (min-height: 600px) {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
   }
 
-  a {
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
-    margin-left: 5px;
-    cursor: pointer;
-    
-    &:active {
-      opacity: 0.7;
-    }
+  p {
+    color: rgba(255, 255, 255, 0.45); /* Tono semi-translúcido muy elegante */
+    font-size: 13px;
+    margin: 0;
+    letter-spacing: 0.3px;
+    font-weight: 400;
   }
 }
