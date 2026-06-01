@@ -13,35 +13,15 @@ service cloud.firestore {
     }
 
     function currentUser() {
-
-      return exists(
-        /databases/$(database)/documents/users/$(request.auth.uid)
-      )
-
-      ?
-
-      get(
-        /databases/$(database)/documents/users/$(request.auth.uid)
-      ).data
-
-      :
-
-      null;
-
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data
+        : null;
     }
 
     function currentUserRole() {
-
       return currentUser() != null
-
-        ?
-
-        currentUser().tipo
-
-        :
-
-        null;
-
+        ? currentUser().tipo
+        : null;
     }
 
     function isAdmin() {
@@ -57,33 +37,15 @@ service cloud.firestore {
     }
 
     function canManageUsers() {
-
-      return (
-        isAdmin()
-        ||
-        isDirectiva()
-      );
-
+      return (isAdmin() || isDirectiva());
     }
 
     function canInvite() {
-
-      return (
-        isAdmin()
-        ||
-        isDirectiva()
-        ||
-        isSocio()
-      );
-
+      return (isAdmin() || isDirectiva() || isSocio());
     }
 
     function isOwnUser(userId) {
-
-      return request.auth != null
-        &&
-        request.auth.uid == userId;
-
+      return request.auth != null && request.auth.uid == userId;
     }
 
     // =====================================================
@@ -93,61 +55,40 @@ service cloud.firestore {
     match /users/{userId} {
 
       allow read: if isLogged();
-
-      allow create: if
-        request.auth != null
-        &&
-        request.auth.uid == userId;
-
+      
+      allow create: if request.auth != null && request.auth.uid == userId;
+      
       allow update: if
-
         // ADMIN / DIRECTIVA
         canManageUsers()
-
         ||
-
         // ONBOARDING INVITADO
         (
           isOwnUser(userId)
-
-          &&
-
-          resource.data.tipo == 'invitado'
-
-          &&
-
-          resource.data.estado == 'pending_data'
-
-          &&
-
-          request.resource.data.estado == 'pending_approval'
-
-          &&
-
-          request.resource.data.tipo == resource.data.tipo
+          && resource.data.tipo == 'invitado'
+          && resource.data.estado == 'pending_data'
+          && request.resource.data.estado == 'pending_approval'
+          && request.resource.data.tipo == resource.data.tipo
         )
-
         ||
-
         // USUARIO ACTIVO EDITANDO PERFIL
         (
           isOwnUser(userId)
-
-          &&
-
-          resource.data.estado == 'active'
-
-          &&
-
-          request.resource.data.tipo == resource.data.tipo
-
-          &&
-
-          request.resource.data.estado == resource.data.estado
+          && resource.data.estado == 'active'
+          && request.resource.data.tipo == resource.data.tipo
+          && request.resource.data.estado == resource.data.estado
         );
 
       allow delete: if isAdmin();
 
+      // =====================================================
+      // SUBCOLECCIÓN: TOKENS DE NOTIFICACIONES PUSH (FCM)
+      // =====================================================
+      match /tokens/{token} {
+        // Un socio solo puede leer y guardar sus propios tokens del móvil. 
+        // Los administradores o directiva también pueden consultarlos si lo necesitan.
+        allow read, write: if isOwnUser(userId) || canManageUsers();
+      }
     }
 
     // =====================================================
@@ -155,22 +96,10 @@ service cloud.firestore {
     // =====================================================
 
     match /invitedUsers/{inviteId} {
-
       allow read: if true;
-
-      // 🔥 CAMBIO IMPORTANTE
       allow create: if canInvite();
-
-      allow update: if
-
-        canManageUsers()
-
-        ||
-
-        isLogged();
-
+      allow update: if canManageUsers() || isLogged();
       allow delete: if canManageUsers();
-
     }
 
     // =====================================================
@@ -178,11 +107,7 @@ service cloud.firestore {
     // =====================================================
 
     match /mail/{document= **} {
-
       allow create: if canInvite();
-
-
     }
   }
-
 }

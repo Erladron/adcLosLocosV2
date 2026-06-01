@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Los Locos</string>
     <string name="title_activity_main">Los Locos</string>
-    <string name="package_name">com.loslocos.app</string>
-    <string name="custom_url_scheme">com.loslocos.app</string>
+    <string name="package_name">com.adcloslocos_desa.app</string>
+    <string name="custom_url_scheme">com.adcloslocos_desa.app</string>
 </resources>

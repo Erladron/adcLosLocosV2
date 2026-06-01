@@ -1,262 +1,108 @@
-import { Component }
-  from '@angular/core';
-
-import { CommonModule }
-  from '@angular/common';
-
-import { FormsModule }
-  from '@angular/forms';
-
-import {
-
-  IonContent,
-  IonButton,
-  IonInput,
-  IonItem,
-  IonSpinner,
-  IonIcon
-
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { 
+  IonContent, 
+  IonButton, 
+  IonInput, 
+  IonItem, 
+  IonSpinner, 
+  IonIcon 
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline, lockClosedOutline, mailOutline } from 'ionicons/icons';
 
-import {
+// SDK OFICIAL DE FIREBASE
+import { getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
-  Router
-
-} from '@angular/router';
-
-import { addIcons }
-  from 'ionicons';
-
-import {
-
-  eyeOutline,
-  eyeOffOutline,
-  lockClosedOutline,
-  mailOutline
-
-} from 'ionicons/icons';
-
-import { AuthService }
-  from 'projects/shared-core/src/lib/services/auth.service';
-
-import { NotificationService }
-  from 'projects/shared-core/src/lib/services/notification.service';
-
-import { LoadingService }
-  from 'projects/shared-core/src/lib/services/loading.service';
-
-import { ErrorHandlerService }
-  from 'projects/shared-core/src/lib/services/error-handler.service';
-
-import { AppMessageCode }
-  from 'shared-core';
+import { NotificationService } from 'projects/shared-core/src/lib/services/notification.service';
+import { ErrorHandlerService } from 'projects/shared-core/src/lib/services/error-handler.service';
+import { AppMessageCode } from 'shared-core';
 
 @Component({
-
   selector: 'app-login',
-
-  templateUrl:
-    './login.page.html',
-
-  styleUrls:
-    ['./login.page.scss'],
-
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
   standalone: true,
-
   imports: [
-
     CommonModule,
     FormsModule,
-
     IonContent,
     IonButton,
     IonInput,
     IonItem,
     IonSpinner,
     IonIcon,
-
   ]
-
 })
-
 export class LoginPage {
 
-  // ============================================
-  // FORM
-  // ============================================
-
   email = '';
-
   password = '';
-
-  // ============================================
-  // UI
-  // ============================================
-
   cargando = false;
-
   showPassword = false;
 
-  // ============================================
-  // CONSTRUCTOR
-  // ============================================
-
   constructor(
-
-    private authService:
-      AuthService,
-
-    private notification:
-      NotificationService,
-
-    private router:
-      Router,
-
-    private loading:
-      LoadingService,
-
-    private errorHandler:
-      ErrorHandlerService
-
+    private notification: NotificationService,
+    private router: Router,
+    private errorHandler: ErrorHandlerService
   ) {
-
-    // ============================================
-    // ICONS
-    // ============================================
-
     addIcons({
-
       eyeOutline,
       eyeOffOutline,
       lockClosedOutline,
       mailOutline
-
     });
-
   }
 
-  // ============================================
-  // LOGIN
-  // ============================================
-
   async ingresar() {
-
-    // ============================================
-    // VALIDATION
-    // ============================================
-
-    if (
-
-      !this.email ||
-
-      !this.password
-
-    ) {
-
-      await this.notification.error(
-
-        AppMessageCode
-          .ADC_AUTH_ERR_0008
-
-      );
-
+    if (!this.email || !this.password) {
+      await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
       return;
-
     }
 
     try {
-
-      // ============================================
-      // LOADING
-      // ============================================
-
       this.cargando = true;
+      console.log('⏳ [BYPASS-LOGIN] Conectando directamente con Google Firebase Auth...');
 
-      // ============================================
-      // LOGIN
-      // ============================================
-
-      await this.loading.wrap(
-
-        async () => {
-
-          await this.authService.login(
-
-            this.email,
-
-            this.password
-
-          );
-
-          console.log(
-            'LOGIN OK'
-          );
-
-          // ============================================
-          // NAVEGACION
-          // ============================================
-
-          await this.router.navigateByUrl(
-            '/'
-          );
-        },
-
-        'Iniciando sesión...'
-
-      );
-
-    }
-
-    catch (error: any) {
-
-      console.error(error);
-
-      // ============================================
-      // USER DISABLED
-      // ============================================
-
-      if (
-
-        error?.code ===
-        'auth/user-disabled'
-
-      ) {
-
-        await this.notification.error(
-
-          'Tu cuenta ha sido desactivada. Contacta con la directiva para más información.'
-
-        );
-
-        return;
-
-      }
-
-      // ============================================
-      // GLOBAL ERROR HANDLER
-      // ============================================
-
-      await this.errorHandler.handle(
-
-        error,
-
-        AppMessageCode
-          .ADC_AUTH_ERR_0002
-
-      );
-
-    }
-
-    finally {
-
-      // ============================================
-      // LOADING OFF
-      // ============================================
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, this.email.trim(), this.password);
+      console.log('✅ [BYPASS-LOGIN] Autenticación exitosa en Firebase. User UID:', userCredential.user.uid);
 
       this.cargando = false;
 
+      console.log('🔄 [BYPASS-LOGIN] Redirigiendo a la pantalla principal...');
+      await this.router.navigateByUrl('/home');
+
+    } catch (error: any) {
+      console.error('❌ [BYPASS-LOGIN] Error capturado en el SDK:', error);
+      this.cargando = false;
+
+      // 🎯 CONTROL DE CREDENCIALES INCORRECTAS DETECTADO EN TU CAPTURA
+      if (
+        error?.code === 'auth/invalid-credential' || 
+        error?.message?.includes('auth/invalid-credential') ||
+        error?.code === 'auth/user-not-found' ||
+        error?.code === 'auth/wrong-password'
+      ) {
+        await this.notification.error(
+          'El correo electrónico o la contraseña no son correctos. Por favor, compruébalos.'
+        );
+        return;
+      }
+
+      // CONTROL DE CUENTA DESACTIVADA
+      if (error?.code === 'auth/user-disabled') {
+        await this.notification.error(
+          'Tu cuenta ha sido desactivada. Contacta con la directiva para más información.'
+        );
+        return;
+      }
+
+      await this.errorHandler.handle(error, AppMessageCode.ADC_AUTH_ERR_0002);
+    } finally {
+      this.cargando = false;
     }
-
   }
-
 }

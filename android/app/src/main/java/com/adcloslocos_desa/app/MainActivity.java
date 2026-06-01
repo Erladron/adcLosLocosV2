@@ -1,4 +1,4 @@
-package com.loslocos.app;
+package com.adcloslocos_desa.app;
 
 import com.getcapacitor.BridgeActivity;
 

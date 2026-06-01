@@ -15,7 +15,7 @@
     "deploy:prod": "firebase use prod && firebase deploy",
     "deploy:web": "ng build shared-core && ng build web-onboarding --configuration=production && firebase deploy --only hosting",
     "build:android": "ng build shared-core && ng build app && npx cap sync android && npx cap open android",
-    "deploy:all": "ng build shared-core && ng build web-onboarding --configuration=production && ng build app && cd functions && npm run build && cd .. && firebase deploy"
+    "deploy:all": "ng build shared-core && ng build web-onboarding && ng build app --configuration=production && cd functions && npm run build && cd .. && firebase deploy"
   },
   "private": true,
   "dependencies": {
@@ -31,9 +31,10 @@
     "@capacitor/android": "^8.3.3",
     "@capacitor/app": "8.1.0",
     "@capacitor/camera": "^8.2.0",
-    "@capacitor/core": "8.3.3",
+    "@capacitor/core": "8.3.4",
     "@capacitor/haptics": "8.0.2",
     "@capacitor/keyboard": "8.0.3",
+    "@capacitor/push-notifications": "^8.1.1",
     "@capacitor/status-bar": "8.0.2",
     "@ionic/angular": "^8.0.0",
     "firebase": "^12.13.0",
@@ -55,7 +56,7 @@
     "@angular/compiler-cli": "^20.0.0",
     "@angular/language-service": "^20.0.0",
     "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "8.3.3",
+    "@capacitor/cli": "8.3.4",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
