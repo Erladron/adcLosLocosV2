@@ -143,7 +143,7 @@ export class UserDetailDataService {
       const nextStatus =
 
         user.estado ===
-        UserStatus.PENDING_DATA
+          UserStatus.PENDING_DATA
 
           ?
 
@@ -172,8 +172,20 @@ export class UserDetailDataService {
         direccion:
           user.direccion || '',
 
+        detallesDireccion:
+          user.detallesDireccion || null,
+
         foto:
           user.foto || '',
+
+        profesion:
+          user.profesion || '',
+
+        publicarTelefono:
+          !!user.publicarTelefono,
+
+        publicarEmail:
+          !!user.publicarEmail,
 
         estado:
           nextStatus
@@ -574,6 +586,11 @@ export class UserDetailDataService {
       user.password =
         password;
 
+      // ⚙️ INICIALIZACIÓN DE PRIVACIDAD EN CREACIÓN DESDE EL PANEL DE ADMINISTRACIÓN
+      user.publicarTelefono = user.publicarTelefono ?? false;
+      user.publicarEmail = user.publicarEmail ?? false;
+      user.profesion = user.profesion || '';
+
       if (croppedImage) {
 
         const tempUid =
@@ -591,6 +608,8 @@ export class UserDetailDataService {
             );
 
       }
+
+      console.log('NUEVO USUARIO: ', user);
 
       await this.authService
         .createUserAsAdmin(

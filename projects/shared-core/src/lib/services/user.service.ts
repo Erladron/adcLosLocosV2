@@ -138,12 +138,18 @@ export class UserService {
   async updatePersonalData(uid: string, data: UpdatePersonalDataRequest) {
     const ref = doc(this.firestore, 'users', uid);
     console.log('UPDATE PERSONAL DATA PAYLOAD', data);
+    
+    // ⚙️ MAPEADO EXTENDIDO: Se añaden las preferencias de privacidad y profesión al backend
     return await updateDoc(ref, {
       nombre: data.nombre,
       telefono: data.telefono || '',
       dni: data.dni || '',
       direccion: data.direccion || '',
+      detallesDireccion: data.detallesDireccion || '',
       foto: data.foto || '',
+      profesion: data.profesion || '',
+      publicarTelefono: !!data.publicarTelefono,
+      publicarEmail: !!data.publicarEmail,
       estado: data.estado
     });
   }
@@ -192,7 +198,8 @@ export class UserService {
   }
 
   // =================================
-  // REJECT USER
+  // APPROVE USER
+  // CLOUD FUNCTION
   // =================================
   async rejectUser(uid: string) {
     const userRef = doc(this.firestore, 'users', uid);
@@ -223,7 +230,7 @@ export class UserService {
   // ==========================================================================
   async requestUserApproval() {
     const callable = httpsCallable(this.functions, 'requestUserApproval');
-    return await callable(); // En v2 onCall detecta automáticamente la sesión activa de Firebase
+    return await callable(); 
   }
 
 }

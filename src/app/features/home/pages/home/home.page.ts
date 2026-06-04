@@ -13,7 +13,7 @@ import {
   createOutline
 } from 'ionicons/icons';
 
-import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { PageHeaderComponent } from 'shared-core';
 import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
 
 // 🚀 INYECCIÓN DEL SERVICIO DE NOTIFICACIONES PUSH

@@ -358,6 +358,28 @@ export class AuthService {
 
   }
 
+  // ============================================
+  // REFRESH FOR GUARD
+  // ============================================
+
+  /**
+   * Fuerza el refresco de los datos desde el servidor 
+   * y devuelve el perfil actualizado para el Guard.
+   */
+  async refreshUserDataFromServer(): Promise<any> {
+    
+    if (this.currentUser?.uid) {
+      
+      return await this.reloadUserData(
+        this.currentUser.uid
+      );
+      
+    }
+    
+    return null;
+    
+  }
+
   /**
    * 🔥 NUEVA PASARELA DE ACCESO CORPORATIVO
    * Delega el envío del correo premium al servicio especializado de administración

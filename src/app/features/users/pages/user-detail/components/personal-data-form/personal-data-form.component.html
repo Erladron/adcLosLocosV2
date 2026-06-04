@@ -42,26 +42,94 @@
   </div>
 
   <div class="form-fields">
+    
     <ion-item class="custom-item">
       <ion-label position="stacked">Nombre y Apellidos *</ion-label>
       <ion-input [(ngModel)]="user.nombre" (ionChange)="onCapitalizeName()" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
     </ion-item>
-    <ion-item class="custom-item">
-      <ion-label position="stacked">Teléfono (opcional)</ion-label>
+
+    <ion-item class="custom-item" *ngIf="user.telefono || !isEditMode || editing">
+      <ion-label position="stacked">Teléfono</ion-label>
       <ion-input type="tel" maxlength="9" [(ngModel)]="user.telefono" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
     </ion-item>
-    <ion-item class="custom-item">
+
+    <ion-item class="custom-item" *ngIf="user.dni || !isEditMode || editing">
       <ion-label position="stacked">DNI</ion-label>
-      <ion-input maxlength="9" [(ngModel)]="user.dni" (ngModelChange)="onDniInput()" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
+      <ion-input 
+        inputmode="numeric" 
+        [maxlength]="isReadonlyMode ? 9 : 8" 
+        [ngModel]="dniParaMostrar" 
+        (ngModelChange)="onDniChange($event)" 
+        [readonly]="isReadonlyMode"
+        placeholder="Ej. 12345678">
+      </ion-input>
+      
+      <div slot="end" class="dni-badge" *ngIf="letraDni && !isReadonlyMode">
+        - {{ letraDni }}
+      </div>
     </ion-item>
-    <div class="dni-helper">
+    
+    <div class="dni-helper" *ngIf="editing || !isEditMode">
       <ion-icon name="information-circle-outline"></ion-icon>
-      <span>La letra del DNI se calcula automáticamente</span>
+      <span>Introduce solo los 8 números. La letra se añade automáticamente.</span>
     </div>
-    <ion-item class="custom-item">
-      <ion-label position="stacked">Dirección (opcional)</ion-label>
-      <ion-input [(ngModel)]="user.direccion" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
+
+    <div class="direccion-container" *ngIf="user.direccion || !isEditMode || editing">
+      <ion-item class="custom-item">
+        <ion-label position="stacked">Dirección Postal</ion-label>
+        <ion-input 
+          [(ngModel)]="user.direccion" 
+          (ngModelChange)="onDireccionChange($event)"
+          (ionBlur)="ocultarSugerencias()"
+          placeholder="Calle, número o localidad" 
+          [readonly]="!canEdit || (isEditMode && !editing)">
+        </ion-input>
+      </ion-item>
+      
+      <ion-list *ngIf="mostrarSugerencias && sugerencias.length > 0" class="mapbox-suggestions">
+        <ion-item 
+          *ngFor="let sug of sugerencias" 
+          button 
+          (mousedown)="$event.preventDefault()" 
+          (click)="seleccionarDireccion(sug)">
+          <ion-label>
+            <h2 class="sug-title">{{ sug.name }}</h2>
+            <p class="sug-subtitle">{{ sug.place_formatted }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+    <ion-item class="custom-item" *ngIf="user.detallesDireccion || !isEditMode || editing">
+      <ion-label position="stacked">Piso, Puerta, Escalera (Opcional)</ion-label>
+      <ion-input [(ngModel)]="user.detallesDireccion" placeholder="Ej. 3º B, Bloque 2, Puerta Izquierda..." [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
     </ion-item>
+    <ion-item class="custom-item" *ngIf="user.profesion || !isEditMode || editing">
+      <ion-label position="stacked">Profesión</ion-label>
+      <ion-input [(ngModel)]="user.profesion" placeholder="Ej. Carpintero, Abogado, Estudiante" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
+    </ion-item>
+
+    <div class="privacy-section" *ngIf="!simpleMode">
+      <h3 class="privacy-title">
+        <ion-icon name="lock-closed-outline"></ion-icon> Privacidad en el directorio
+      </h3>
+      <p class="privacy-subtitle">Controla qué datos pueden ver otros socios activos de la peña.</p>
+      
+      <ion-item class="privacy-toggle-item" lines="none">
+        <ion-label>
+          <h4>Visibilidad del Teléfono</h4>
+          <p>Permitir que otros socios vean mi número de contacto.</p>
+        </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="user.publicarTelefono" [disabled]="!canEdit || (isEditMode && !editing)"></ion-toggle>
+      </ion-item>
+
+      <ion-item class="privacy-toggle-item" lines="none">
+        <ion-label>
+          <h4>Visibilidad del Email</h4>
+          <p>Permitir que otros socios vean mi dirección de correo.</p>
+        </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="user.publicarEmail" [disabled]="!canEdit || (isEditMode && !editing)"></ion-toggle>
+      </ion-item>
+    </div>
   </div>
 </div>
 

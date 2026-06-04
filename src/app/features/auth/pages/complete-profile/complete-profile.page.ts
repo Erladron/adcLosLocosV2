@@ -62,7 +62,6 @@ import {
     UserDetailFacadeService
 } from 'projects/shared-core/src/lib/services/user-detail-facade.service';
 
-// 👇 IMPORTAMOS EL USER SERVICE PARA PODER HACER LA LLAMADA A LA NUBE
 import {
     UserService
 } from 'projects/shared-core/src/lib/services/user.service';
@@ -80,8 +79,7 @@ import {
         PersonalDataFormComponent
     ]
 })
-export class CompleteProfilePage
-    implements OnInit {
+export class CompleteProfilePage implements OnInit {
 
     user: User = {} as User;
     imageChangedEvent: any = null;
@@ -90,19 +88,12 @@ export class CompleteProfilePage
     editing = true;
 
     constructor(
-        private authService:
-            AuthService,
-        private loading:
-            LoadingService,
-        private notification:
-            NotificationService,
-        private router:
-            Router,
-        private facade:
-            UserDetailFacadeService,
-        // 👇 INYECTAMOS EL SERVICIO DE USUARIOS EN EL CONSTRUCTOR
-        private userService:
-            UserService
+        private authService: AuthService,
+        private loading: LoadingService,
+        private notification: NotificationService,
+        private router: Router,
+        private facade: UserDetailFacadeService,
+        private userService: UserService
     ) {
         addIcons({
             imagesOutline,
@@ -115,168 +106,93 @@ export class CompleteProfilePage
     }
 
     async ngOnInit(): Promise<void> {
-        // ====================================
-        // ESPERAR USUARIO AUTH
-        // ====================================
-        while (
-            !this.authService.currentUser?.uid
-        ) {
-            await new Promise(
-                resolve => setTimeout(resolve, 100)
-            );
+        while (!this.authService.currentUser?.uid) {
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
-        // ====================================
-        // RECARGAR FIRESTORE USER
-        // ====================================
-        await this.authService
-            .reloadUserData(
-                this.authService.currentUser.uid
-            );
+        await this.authService.reloadUserData(this.authService.currentUser.uid);
 
-        // ====================================
-        // ESPERAR SESSION DATA REAL
-        // ====================================
-        while (
-            !this.authService.currentUserData
-        ) {
-            await new Promise(
-                resolve => setTimeout(resolve, 100)
-            );
+        while (!this.authService.currentUserData) {
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
-        const currentUser =
-            this.authService
-                .currentUserData;
+        const currentUser = this.authService.currentUserData;
 
-        console.log(
-            'COMPLETE PROFILE USER:',
-            currentUser
-        );
+        console.log('COMPLETE PROFILE USER:', currentUser);
 
-        // ====================================
-        // USER
-        // ====================================
+        // ⚙️ EXTENSIÓN: Forzamos valores iniciales por defecto en el onboarding de Invitados
         this.user = {
+            publicarTelefono: false,
+            publicarEmail: false,
+            profesion: '',
             ...(currentUser || {}),
-            nombre:
-                normalizeName(
-                    currentUser?.nombre ||
-                    ''
-                ),
-            email:
-                currentUser?.email ||
-                ''
+            nombre: normalizeName(currentUser?.nombre || ''),
+            email: currentUser?.email || ''
         } as User;
     }
 
     get canSave(): boolean {
-        return !!(
-            this.user?.nombre?.trim()
-            &&
-            this.user?.dni?.trim()
-        );
+        return !!(this.user?.nombre?.trim() && this.user?.dni?.trim());
     }
 
     async save(): Promise<void> {
         try {
             await this.loading.wrap(
                 async () => {
-                    // ====================================
-                    // SAVE PERSONAL DATA
-                    // ====================================
-                    const success =
-                        await this.facade
-                            .updatePersonalData({
-                                user: {
-                                    ...this.user,
-                                    estado:
-                                        UserStatus
-                                            .PENDING_APPROVAL
-                                },
-                                userId:
-                                    this.user.id || null,
-                                croppedImage:
-                                    this.croppedImage
-                            });
+                    const success = await this.facade.updatePersonalData({
+                        user: {
+                            ...this.user,
+                            estado: UserStatus.PENDING_APPROVAL
+                        },
+                        userId: this.user.id || null,
+                        croppedImage: this.croppedImage
+                    });
 
-                    if (!success) {
-                        return;
-                    }
+                    if (!success) return;
 
-                    // ====================================
-                    // RELOAD SESSION
-                    // ====================================
-                    await this.authService
-                        .reloadUserData(
-                            this.user.id
-                        );
+                    await this.authService.reloadUserData(this.user.id);
 
-                    // ====================================
-                    // 🔥 LLAMADA AUTOMÁTICA A LA CLOUD FUNCTION
-                    // ====================================
-                    console.log('📡 Disparando solicitud en la nube para alertar a la directiva...');
-                    await this.userService
-                        .requestUserApproval();
+                    console.log('Disparando solicitud en la nube para alertar a la directiva...');
+                    await this.userService.requestUserApproval();
                 },
                 'Guardando perfil y notificando...'
             );
 
-            await this.notification.success(
-                'Perfil completado correctamente'
-            );
-
-            await this.router.navigate([
-                '/pending-approval'
-            ]);
+            await this.notification.success('Perfil completado correctamente');
+            await this.router.navigate(['/pending-approval']);
         }
         catch (error) {
-            console.error('🚨 Error al procesar el guardado automático:', error);
+            console.error('Error al procesar el guardado automático:', error);
         }
     }
 
     imageCropped(event: any): void {
-        this.croppedImage =
-            event.base64;
-        this.user.foto =
-            event.base64;
+        this.croppedImage = event.base64;
+        this.user.foto = event.base64;
     }
 
     applyCropper(): void {
-        this.mostrarCropper =
-            false;
+        this.mostrarCropper = false;
     }
 
     cancelCropper(): void {
-        this.mostrarCropper =
-            false;
+        this.mostrarCropper = false;
     }
 
     async selectPhoto(): Promise<void> {
-        this.imageChangedEvent =
-            await this.facade
-                .selectPhoto();
+        this.imageChangedEvent = await this.facade.selectPhoto();
         this.mostrarCropper = true;
     }
 
     async takePhoto(): Promise<void> {
-        const result =
-            await this.facade
-                .takePhoto();
-
-        if (!result) {
-            return;
-        }
-
-        this.imageChangedEvent =
-            result;
+        const result = await this.facade.takePhoto();
+        if (!result) return;
+        this.imageChangedEvent = result;
         this.mostrarCropper = true;
     }
 
     async logout() {
         await this.authService.logout();
-        await this.router.navigate([
-            '/login'
-        ]);
+        await this.router.navigate(['/login']);
     }
 }

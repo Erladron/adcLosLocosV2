@@ -45,7 +45,7 @@ import {
 
   PageHeaderComponent
 
-} from '@shared/components/page-header/page-header.component';
+} from 'shared-core';
 
 import {
 

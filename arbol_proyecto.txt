@@ -1,0 +1,2251 @@
+C:\Users\JuanJesus\adcLosLocosV2
+├── .browserslistrc
+├── .editorconfig
+├── .eslintrc.json
+├── .firebase
+|  └── hosting.ZGlzdFx3ZWItb25ib2FyZGluZ1xicm93c2Vy.cache
+├── .firebaserc
+├── .gitignore
+├── .idea
+|  ├── .gitignore
+|  ├── adcLosLocosV2.iml
+|  ├── caches
+|  |  └── deviceStreaming.xml
+|  ├── deviceManager.xml
+|  ├── misc.xml
+|  ├── modules.xml
+|  ├── vcs.xml
+|  └── workspace.xml
+├── .vscode
+|  ├── extensions.json
+|  └── settings.json
+├── ADCLosLocosV2_Documentacion_Tecnica_Funcional.md
+├── ADCLosLocosV2_Documentacion_Tecnica_Funcional.pdf
+├── android
+|  ├── .gitignore
+|  ├── .gradle
+|  |  ├── 8.14.3
+|  |  |  ├── checksums
+|  |  |  |  └── checksums.lock
+|  |  |  ├── executionHistory
+|  |  |  |  ├── executionHistory.bin
+|  |  |  |  └── executionHistory.lock
+|  |  |  ├── expanded
+|  |  |  ├── fileChanges
+|  |  |  |  └── last-build.bin
+|  |  |  ├── fileHashes
+|  |  |  |  ├── fileHashes.bin
+|  |  |  |  ├── fileHashes.lock
+|  |  |  |  └── resourceHashesCache.bin
+|  |  |  ├── gc.properties
+|  |  |  └── vcsMetadata
+|  |  ├── 9.0.0
+|  |  |  ├── checksums
+|  |  |  |  └── checksums.lock
+|  |  |  ├── executionHistory
+|  |  |  |  ├── executionHistory.bin
+|  |  |  |  └── executionHistory.lock
+|  |  |  ├── expanded
+|  |  |  ├── fileChanges
+|  |  |  |  └── last-build.bin
+|  |  |  ├── fileHashes
+|  |  |  |  ├── fileHashes.bin
+|  |  |  |  ├── fileHashes.lock
+|  |  |  |  └── resourceHashesCache.bin
+|  |  |  ├── gc.properties
+|  |  |  └── vcsMetadata
+|  |  ├── buildOutputCleanup
+|  |  |  ├── buildOutputCleanup.lock
+|  |  |  ├── cache.properties
+|  |  |  └── outputFiles.bin
+|  |  ├── config.properties
+|  |  ├── file-system.probe
+|  |  └── vcs-1
+|  |     └── gc.properties
+|  ├── .idea
+|  |  ├── AndroidProjectSystem.xml
+|  |  ├── assetWizardSettings.xml
+|  |  ├── caches
+|  |  |  └── deviceStreaming.xml
+|  |  ├── compiler.xml
+|  |  ├── deploymentTargetSelector.xml
+|  |  ├── gradle.xml
+|  |  ├── migrations.xml
+|  |  ├── misc.xml
+|  |  ├── runConfigurations.xml
+|  |  ├── vcs.xml
+|  |  └── workspace.xml
+|  ├── .kotlin
+|  |  └── sessions
+|  ├── app
+|  |  ├── .gitignore
+|  |  ├── build
+|  |  |  ├── generated
+|  |  |  |  ├── ap_generated_sources
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── out
+|  |  |  |  ├── res
+|  |  |  |  |  ├── pngs
+|  |  |  |  |  |  └── debug
+|  |  |  |  |  ├── processDebugGoogleServices
+|  |  |  |  |  |  └── values
+|  |  |  |  |  |     └── values.xml
+|  |  |  |  |  └── resValues
+|  |  |  |  |     └── debug
+|  |  |  |  └── updated_navigation_xml
+|  |  |  |     └── debug
+|  |  |  ├── gmpAppId
+|  |  |  |  └── debug.txt
+|  |  |  ├── intermediates
+|  |  |  |  ├── aar_metadata_check
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── checkDebugAarMetadata
+|  |  |  |  ├── annotation_processor_list
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── javaPreCompileDebug
+|  |  |  |  |        └── annotationProcessors.json
+|  |  |  |  ├── apk
+|  |  |  |  |  └── debug
+|  |  |  |  |     ├── app-debug.apk
+|  |  |  |  |     └── output-metadata.json
+|  |  |  |  ├── apk_ide_redirect_file
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── createDebugApkListingFileRedirect
+|  |  |  |  |        └── redirect.txt
+|  |  |  |  ├── app_metadata
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── writeDebugAppMetadata
+|  |  |  |  |        └── app-metadata.properties
+|  |  |  |  ├── assets
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugAssets
+|  |  |  |  |        ├── capacitor.config.json
+|  |  |  |  |        ├── capacitor.plugins.json
+|  |  |  |  |        ├── native-bridge.js
+|  |  |  |  |        └── public
+|  |  |  |  |           ├── app.component.css.map
+|  |  |  |  |           ├── assets
+|  |  |  |  |           |  ├── icon
+|  |  |  |  |           |  ├── icons
+|  |  |  |  |           |  ├── img
+|  |  |  |  |           |  └── shapes.svg
+|  |  |  |  |           ├── chunk-2I5GZVFD.js
+|  |  |  |  |           ├── chunk-2I5GZVFD.js.map
+|  |  |  |  |           ├── chunk-2K4IBVE7.js
+|  |  |  |  |           ├── chunk-2K4IBVE7.js.map
+|  |  |  |  |           ├── chunk-4VWZEZJW.js
+|  |  |  |  |           ├── chunk-4VWZEZJW.js.map
+|  |  |  |  |           ├── chunk-5M3DDGSE.js
+|  |  |  |  |           ├── chunk-5M3DDGSE.js.map
+|  |  |  |  |           ├── chunk-5O4LBBZR.js
+|  |  |  |  |           ├── chunk-5O4LBBZR.js.map
+|  |  |  |  |           ├── chunk-6GY55RSK.js
+|  |  |  |  |           ├── chunk-6GY55RSK.js.map
+|  |  |  |  |           ├── chunk-6LNEIV63.js
+|  |  |  |  |           ├── chunk-6LNEIV63.js.map
+|  |  |  |  |           ├── chunk-6ZGMALUF.js
+|  |  |  |  |           ├── chunk-6ZGMALUF.js.map
+|  |  |  |  |           ├── chunk-7D2IXJO2.js
+|  |  |  |  |           ├── chunk-7D2IXJO2.js.map
+|  |  |  |  |           ├── chunk-7SLBDTUQ.js
+|  |  |  |  |           ├── chunk-7SLBDTUQ.js.map
+|  |  |  |  |           ├── chunk-AY3U4GYL.js
+|  |  |  |  |           ├── chunk-AY3U4GYL.js.map
+|  |  |  |  |           ├── chunk-BZW6WFSE.js
+|  |  |  |  |           ├── chunk-BZW6WFSE.js.map
+|  |  |  |  |           ├── chunk-CUYIUJP7.js
+|  |  |  |  |           ├── chunk-CUYIUJP7.js.map
+|  |  |  |  |           ├── chunk-DQGO6H6S.js
+|  |  |  |  |           ├── chunk-DQGO6H6S.js.map
+|  |  |  |  |           ├── chunk-DQYVC4XR.js
+|  |  |  |  |           ├── chunk-DQYVC4XR.js.map
+|  |  |  |  |           ├── chunk-EJ5ITET5.js
+|  |  |  |  |           ├── chunk-EJ5ITET5.js.map
+|  |  |  |  |           ├── chunk-F3JJ4YWB.js
+|  |  |  |  |           ├── chunk-F3JJ4YWB.js.map
+|  |  |  |  |           ├── chunk-FDTINQBO.js
+|  |  |  |  |           ├── chunk-FDTINQBO.js.map
+|  |  |  |  |           ├── chunk-FZZSIR43.js
+|  |  |  |  |           ├── chunk-FZZSIR43.js.map
+|  |  |  |  |           ├── chunk-G6TNGK7F.js
+|  |  |  |  |           ├── chunk-G6TNGK7F.js.map
+|  |  |  |  |           ├── chunk-GCPDXH4O.js
+|  |  |  |  |           ├── chunk-GCPDXH4O.js.map
+|  |  |  |  |           ├── chunk-GQIX67BO.js
+|  |  |  |  |           ├── chunk-GQIX67BO.js.map
+|  |  |  |  |           ├── chunk-H2L6IFP4.js
+|  |  |  |  |           ├── chunk-H2L6IFP4.js.map
+|  |  |  |  |           ├── chunk-HDOEHXW5.js
+|  |  |  |  |           ├── chunk-HDOEHXW5.js.map
+|  |  |  |  |           ├── chunk-HEMTIRRM.js
+|  |  |  |  |           ├── chunk-HEMTIRRM.js.map
+|  |  |  |  |           ├── chunk-HN5PFBTI.js
+|  |  |  |  |           ├── chunk-HN5PFBTI.js.map
+|  |  |  |  |           ├── chunk-HYXHLUX7.js
+|  |  |  |  |           ├── chunk-HYXHLUX7.js.map
+|  |  |  |  |           ├── chunk-IVBL4Y7V.js
+|  |  |  |  |           ├── chunk-IVBL4Y7V.js.map
+|  |  |  |  |           ├── chunk-JAKGPJXW.js
+|  |  |  |  |           ├── chunk-JAKGPJXW.js.map
+|  |  |  |  |           ├── chunk-KJBBQORM.js
+|  |  |  |  |           ├── chunk-KJBBQORM.js.map
+|  |  |  |  |           ├── chunk-KVYGDTW4.js
+|  |  |  |  |           ├── chunk-KVYGDTW4.js.map
+|  |  |  |  |           ├── chunk-L42UVOXQ.js
+|  |  |  |  |           ├── chunk-L42UVOXQ.js.map
+|  |  |  |  |           ├── chunk-LBJSUFYP.js
+|  |  |  |  |           ├── chunk-LBJSUFYP.js.map
+|  |  |  |  |           ├── chunk-LMKCSSGQ.js
+|  |  |  |  |           ├── chunk-LMKCSSGQ.js.map
+|  |  |  |  |           ├── chunk-LVWTIQJI.js
+|  |  |  |  |           ├── chunk-LVWTIQJI.js.map
+|  |  |  |  |           ├── chunk-MMEAMNY3.js
+|  |  |  |  |           ├── chunk-MMEAMNY3.js.map
+|  |  |  |  |           ├── chunk-MQS4DBMV.js
+|  |  |  |  |           ├── chunk-MQS4DBMV.js.map
+|  |  |  |  |           ├── chunk-MVM4QJSP.js
+|  |  |  |  |           ├── chunk-MVM4QJSP.js.map
+|  |  |  |  |           ├── chunk-NMJQ5ZVZ.js
+|  |  |  |  |           ├── chunk-NMJQ5ZVZ.js.map
+|  |  |  |  |           ├── chunk-NXJKXO3S.js
+|  |  |  |  |           ├── chunk-NXJKXO3S.js.map
+|  |  |  |  |           ├── chunk-NYMYWYW7.js
+|  |  |  |  |           ├── chunk-NYMYWYW7.js.map
+|  |  |  |  |           ├── chunk-OAU3O6LE.js
+|  |  |  |  |           ├── chunk-OAU3O6LE.js.map
+|  |  |  |  |           ├── chunk-PGSN6FCK.js
+|  |  |  |  |           ├── chunk-PGSN6FCK.js.map
+|  |  |  |  |           ├── chunk-PKLQCMK6.js
+|  |  |  |  |           ├── chunk-PKLQCMK6.js.map
+|  |  |  |  |           ├── chunk-PNHFXO5X.js
+|  |  |  |  |           ├── chunk-PNHFXO5X.js.map
+|  |  |  |  |           ├── chunk-PS6WWY4S.js
+|  |  |  |  |           ├── chunk-PS6WWY4S.js.map
+|  |  |  |  |           ├── chunk-QOQL43QQ.js
+|  |  |  |  |           ├── chunk-QOQL43QQ.js.map
+|  |  |  |  |           ├── chunk-RHIBNVLC.js
+|  |  |  |  |           ├── chunk-RHIBNVLC.js.map
+|  |  |  |  |           ├── chunk-SINOCR7E.js
+|  |  |  |  |           ├── chunk-SINOCR7E.js.map
+|  |  |  |  |           ├── chunk-TCNWEVVV.js
+|  |  |  |  |           ├── chunk-TCNWEVVV.js.map
+|  |  |  |  |           ├── chunk-V5DFZST5.js
+|  |  |  |  |           ├── chunk-V5DFZST5.js.map
+|  |  |  |  |           ├── chunk-W7NNY2EY.js
+|  |  |  |  |           ├── chunk-W7NNY2EY.js.map
+|  |  |  |  |           ├── chunk-WLSPDKGT.js
+|  |  |  |  |           ├── chunk-WLSPDKGT.js.map
+|  |  |  |  |           ├── chunk-X4NBNE3H.js
+|  |  |  |  |           ├── chunk-X4NBNE3H.js.map
+|  |  |  |  |           ├── chunk-YAPSITZV.js
+|  |  |  |  |           ├── chunk-YAPSITZV.js.map
+|  |  |  |  |           ├── chunk-YAS4LRVC.js
+|  |  |  |  |           ├── chunk-YAS4LRVC.js.map
+|  |  |  |  |           ├── chunk-YZCJOGPY.js
+|  |  |  |  |           ├── chunk-YZCJOGPY.js.map
+|  |  |  |  |           ├── chunk-Z5ZVSJUF.js
+|  |  |  |  |           ├── chunk-Z5ZVSJUF.js.map
+|  |  |  |  |           ├── chunk-ZANXXOCD.js
+|  |  |  |  |           ├── chunk-ZANXXOCD.js.map
+|  |  |  |  |           ├── complete-profile.page-UIXJXJGA.js
+|  |  |  |  |           ├── complete-profile.page-UIXJXJGA.js.map
+|  |  |  |  |           ├── complete-profile.page.css.map
+|  |  |  |  |           ├── cordova.js
+|  |  |  |  |           ├── cordova_plugins.js
+|  |  |  |  |           ├── credentials-form.component.css.map
+|  |  |  |  |           ├── empty-state.component.css.map
+|  |  |  |  |           ├── events.page-6MIPDVQL.js
+|  |  |  |  |           ├── events.page-6MIPDVQL.js.map
+|  |  |  |  |           ├── focus-visible-BmVRXR1y-2B65ELPO.js
+|  |  |  |  |           ├── focus-visible-BmVRXR1y-2B65ELPO.js.map
+|  |  |  |  |           ├── gest-user.page-OWP7X7WV.js
+|  |  |  |  |           ├── gest-user.page-OWP7X7WV.js.map
+|  |  |  |  |           ├── gest-user.page.css.map
+|  |  |  |  |           ├── hardware-back-button-CTe4XmL7-SXRFSYNG.js
+|  |  |  |  |           ├── hardware-back-button-CTe4XmL7-SXRFSYNG.js.map
+|  |  |  |  |           ├── home.page-F234RDSN.js
+|  |  |  |  |           ├── home.page-F234RDSN.js.map
+|  |  |  |  |           ├── home.page.css.map
+|  |  |  |  |           ├── index-BtUdxPjv-BZ5L73YT.js
+|  |  |  |  |           ├── index-BtUdxPjv-BZ5L73YT.js.map
+|  |  |  |  |           ├── index-CfgBF1SE-O5BJBOIE.js
+|  |  |  |  |           ├── index-CfgBF1SE-O5BJBOIE.js.map
+|  |  |  |  |           ├── index.html
+|  |  |  |  |           ├── input-shims-AaDhOpKN-WQHQ3HPR.js
+|  |  |  |  |           ├── input-shims-AaDhOpKN-WQHQ3HPR.js.map
+|  |  |  |  |           ├── invite.page-X4NM3LQI.js
+|  |  |  |  |           ├── invite.page-X4NM3LQI.js.map
+|  |  |  |  |           ├── invite.page.css.map
+|  |  |  |  |           ├── ion-accordion_2.entry-QAPAIV73.js
+|  |  |  |  |           ├── ion-accordion_2.entry-QAPAIV73.js.map
+|  |  |  |  |           ├── ion-action-sheet.entry-PCHBOIGR.js
+|  |  |  |  |           ├── ion-action-sheet.entry-PCHBOIGR.js.map
+|  |  |  |  |           ├── ion-alert.entry-IAWVW4MU.js
+|  |  |  |  |           ├── ion-alert.entry-IAWVW4MU.js.map
+|  |  |  |  |           ├── ion-app_8.entry-GUUMF3H5.js
+|  |  |  |  |           ├── ion-app_8.entry-GUUMF3H5.js.map
+|  |  |  |  |           ├── ion-avatar_3.entry-PWJQCOWT.js
+|  |  |  |  |           ├── ion-avatar_3.entry-PWJQCOWT.js.map
+|  |  |  |  |           ├── ion-back-button.entry-UF3LXHYH.js
+|  |  |  |  |           ├── ion-back-button.entry-UF3LXHYH.js.map
+|  |  |  |  |           ├── ion-backdrop.entry-A4ENSJS6.js
+|  |  |  |  |           ├── ion-backdrop.entry-A4ENSJS6.js.map
+|  |  |  |  |           ├── ion-breadcrumb_2.entry-54XXJ7HO.js
+|  |  |  |  |           ├── ion-breadcrumb_2.entry-54XXJ7HO.js.map
+|  |  |  |  |           ├── ion-button_2.entry-NEJVX4S7.js
+|  |  |  |  |           ├── ion-button_2.entry-NEJVX4S7.js.map
+|  |  |  |  |           ├── ion-card_5.entry-BPGEZMWB.js
+|  |  |  |  |           ├── ion-card_5.entry-BPGEZMWB.js.map
+|  |  |  |  |           ├── ion-checkbox.entry-IHEDOMK6.js
+|  |  |  |  |           ├── ion-checkbox.entry-IHEDOMK6.js.map
+|  |  |  |  |           ├── ion-chip.entry-JT3XQZ22.js
+|  |  |  |  |           ├── ion-chip.entry-JT3XQZ22.js.map
+|  |  |  |  |           ├── ion-col_3.entry-HFUDDHDX.js
+|  |  |  |  |           ├── ion-col_3.entry-HFUDDHDX.js.map
+|  |  |  |  |           ├── ion-datetime-button.entry-O7CWQEW7.js
+|  |  |  |  |           ├── ion-datetime-button.entry-O7CWQEW7.js.map
+|  |  |  |  |           ├── ion-datetime_3.entry-FGUWC6KV.js
+|  |  |  |  |           ├── ion-datetime_3.entry-FGUWC6KV.js.map
+|  |  |  |  |           ├── ion-fab_3.entry-7OJIGW7F.js
+|  |  |  |  |           ├── ion-fab_3.entry-7OJIGW7F.js.map
+|  |  |  |  |           ├── ion-img.entry-MTEEX5ZW.js
+|  |  |  |  |           ├── ion-img.entry-MTEEX5ZW.js.map
+|  |  |  |  |           ├── ion-infinite-scroll_2.entry-CQO7HPRQ.js
+|  |  |  |  |           ├── ion-infinite-scroll_2.entry-CQO7HPRQ.js.map
+|  |  |  |  |           ├── ion-input-otp.entry-OIBTKDUL.js
+|  |  |  |  |           ├── ion-input-otp.entry-OIBTKDUL.js.map
+|  |  |  |  |           ├── ion-input-password-toggle.entry-GTPKWPJ3.js
+|  |  |  |  |           ├── ion-input-password-toggle.entry-GTPKWPJ3.js.map
+|  |  |  |  |           ├── ion-input.entry-TGLDGJND.js
+|  |  |  |  |           ├── ion-input.entry-TGLDGJND.js.map
+|  |  |  |  |           ├── ion-item-option_3.entry-TVDOLNF4.js
+|  |  |  |  |           ├── ion-item-option_3.entry-TVDOLNF4.js.map
+|  |  |  |  |           ├── ion-item_8.entry-EIBEBAOE.js
+|  |  |  |  |           ├── ion-item_8.entry-EIBEBAOE.js.map
+|  |  |  |  |           ├── ion-loading.entry-2T2WX36N.js
+|  |  |  |  |           ├── ion-loading.entry-2T2WX36N.js.map
+|  |  |  |  |           ├── ion-menu_3.entry-FOJEFCYR.js
+|  |  |  |  |           ├── ion-menu_3.entry-FOJEFCYR.js.map
+|  |  |  |  |           ├── ion-modal.entry-PBVTPW4E.js
+|  |  |  |  |           ├── ion-modal.entry-PBVTPW4E.js.map
+|  |  |  |  |           ├── ion-nav_2.entry-AHQYVMDG.js
+|  |  |  |  |           ├── ion-nav_2.entry-AHQYVMDG.js.map
+|  |  |  |  |           ├── ion-picker-column-option.entry-5OCHHQRP.js
+|  |  |  |  |           ├── ion-picker-column-option.entry-5OCHHQRP.js.map
+|  |  |  |  |           ├── ion-picker-column.entry-VFMALYVG.js
+|  |  |  |  |           ├── ion-picker-column.entry-VFMALYVG.js.map
+|  |  |  |  |           ├── ion-picker.entry-MZXPA5KV.js
+|  |  |  |  |           ├── ion-picker.entry-MZXPA5KV.js.map
+|  |  |  |  |           ├── ion-popover.entry-IZ5AHWUR.js
+|  |  |  |  |           ├── ion-popover.entry-IZ5AHWUR.js.map
+|  |  |  |  |           ├── ion-progress-bar.entry-I7TXF7AU.js
+|  |  |  |  |           ├── ion-progress-bar.entry-I7TXF7AU.js.map
+|  |  |  |  |           ├── ion-radio_2.entry-T4DZSSLM.js
+|  |  |  |  |           ├── ion-radio_2.entry-T4DZSSLM.js.map
+|  |  |  |  |           ├── ion-range.entry-P52HHEPE.js
+|  |  |  |  |           ├── ion-range.entry-P52HHEPE.js.map
+|  |  |  |  |           ├── ion-refresher_2.entry-M2A3COLU.js
+|  |  |  |  |           ├── ion-refresher_2.entry-M2A3COLU.js.map
+|  |  |  |  |           ├── ion-reorder_2.entry-KJ4DUIYN.js
+|  |  |  |  |           ├── ion-reorder_2.entry-KJ4DUIYN.js.map
+|  |  |  |  |           ├── ion-ripple-effect.entry-ESDUILLS.js
+|  |  |  |  |           ├── ion-ripple-effect.entry-ESDUILLS.js.map
+|  |  |  |  |           ├── ion-route_4.entry-LI7BC3PB.js
+|  |  |  |  |           ├── ion-route_4.entry-LI7BC3PB.js.map
+|  |  |  |  |           ├── ion-searchbar.entry-7P4N62B5.js
+|  |  |  |  |           ├── ion-searchbar.entry-7P4N62B5.js.map
+|  |  |  |  |           ├── ion-segment-content.entry-XQUXR6CI.js
+|  |  |  |  |           ├── ion-segment-content.entry-XQUXR6CI.js.map
+|  |  |  |  |           ├── ion-segment-view.entry-5RHY76DO.js
+|  |  |  |  |           ├── ion-segment-view.entry-5RHY76DO.js.map
+|  |  |  |  |           ├── ion-segment_2.entry-CFJTGCQF.js
+|  |  |  |  |           ├── ion-segment_2.entry-CFJTGCQF.js.map
+|  |  |  |  |           ├── ion-select-modal.entry-UHT5SB4Y.js
+|  |  |  |  |           ├── ion-select-modal.entry-UHT5SB4Y.js.map
+|  |  |  |  |           ├── ion-select_3.entry-HITJJ4U5.js
+|  |  |  |  |           ├── ion-select_3.entry-HITJJ4U5.js.map
+|  |  |  |  |           ├── ion-spinner.entry-GHCCOQEN.js
+|  |  |  |  |           ├── ion-spinner.entry-GHCCOQEN.js.map
+|  |  |  |  |           ├── ion-split-pane.entry-6XD74DG4.js
+|  |  |  |  |           ├── ion-split-pane.entry-6XD74DG4.js.map
+|  |  |  |  |           ├── ion-tab-bar_2.entry-VHEZ5PN7.js
+|  |  |  |  |           ├── ion-tab-bar_2.entry-VHEZ5PN7.js.map
+|  |  |  |  |           ├── ion-tab_2.entry-EPSXOGHZ.js
+|  |  |  |  |           ├── ion-tab_2.entry-EPSXOGHZ.js.map
+|  |  |  |  |           ├── ion-text.entry-G3OYSMZV.js
+|  |  |  |  |           ├── ion-text.entry-G3OYSMZV.js.map
+|  |  |  |  |           ├── ion-textarea.entry-AQOVX3VW.js
+|  |  |  |  |           ├── ion-textarea.entry-AQOVX3VW.js.map
+|  |  |  |  |           ├── ion-toast.entry-PR4NJTTS.js
+|  |  |  |  |           ├── ion-toast.entry-PR4NJTTS.js.map
+|  |  |  |  |           ├── ion-toggle.entry-3TQPVS4S.js
+|  |  |  |  |           ├── ion-toggle.entry-3TQPVS4S.js.map
+|  |  |  |  |           ├── ios.transition--aMF-pDH-EKTECTS2.js
+|  |  |  |  |           ├── ios.transition--aMF-pDH-EKTECTS2.js.map
+|  |  |  |  |           ├── keyboard-ywgs5efA-EIR6AEKM.js
+|  |  |  |  |           ├── keyboard-ywgs5efA-EIR6AEKM.js.map
+|  |  |  |  |           ├── login.page-RLI5M2GS.js
+|  |  |  |  |           ├── login.page-RLI5M2GS.js.map
+|  |  |  |  |           ├── login.page.css.map
+|  |  |  |  |           ├── main.js
+|  |  |  |  |           ├── main.js.map
+|  |  |  |  |           ├── md.transition-BEVbfm8j-M4ZYYJER.js
+|  |  |  |  |           ├── md.transition-BEVbfm8j-M4ZYYJER.js.map
+|  |  |  |  |           ├── membership-form.component.css.map
+|  |  |  |  |           ├── p-BgwEQWW6-Y5YRQ6LC.js
+|  |  |  |  |           ├── p-BgwEQWW6-Y5YRQ6LC.js.map
+|  |  |  |  |           ├── p-BmVRXR1y-6KLTL7L5.js
+|  |  |  |  |           ├── p-BmVRXR1y-6KLTL7L5.js.map
+|  |  |  |  |           ├── p-CBzELu-H-W6RAPBT6.js
+|  |  |  |  |           ├── p-CBzELu-H-W6RAPBT6.js.map
+|  |  |  |  |           ├── p-Cl0B-RWe-MQ2WFARL.js
+|  |  |  |  |           ├── p-Cl0B-RWe-MQ2WFARL.js.map
+|  |  |  |  |           ├── p-CneGxKsZ-TABOUGVB.js
+|  |  |  |  |           ├── p-CneGxKsZ-TABOUGVB.js.map
+|  |  |  |  |           ├── p-CU1SSH8_-OWGHOHP4.js
+|  |  |  |  |           ├── p-CU1SSH8_-OWGHOHP4.js.map
+|  |  |  |  |           ├── p-Cwv-vmkN-6UQDBGZK.js
+|  |  |  |  |           ├── p-Cwv-vmkN-6UQDBGZK.js.map
+|  |  |  |  |           ├── p-Cz5nLPGT-IVEAU4MR.js
+|  |  |  |  |           ├── p-Cz5nLPGT-IVEAU4MR.js.map
+|  |  |  |  |           ├── p-D6Ynv7Xh-SHHOXCUR.js
+|  |  |  |  |           ├── p-D6Ynv7Xh-SHHOXCUR.js.map
+|  |  |  |  |           ├── p-vEbVo2hO-LJNNRD2W.js
+|  |  |  |  |           ├── p-vEbVo2hO-LJNNRD2W.js.map
+|  |  |  |  |           ├── page-header.component.css.map
+|  |  |  |  |           ├── pending-approval.page-KT6EKZFK.js
+|  |  |  |  |           ├── pending-approval.page-KT6EKZFK.js.map
+|  |  |  |  |           ├── pending-approval.page.css.map
+|  |  |  |  |           ├── personal-data-form.component.css.map
+|  |  |  |  |           ├── polyfills.js
+|  |  |  |  |           ├── polyfills.js.map
+|  |  |  |  |           ├── prerendered-routes.json
+|  |  |  |  |           ├── stats.page-3OGIZ4Y5.js
+|  |  |  |  |           ├── stats.page-3OGIZ4Y5.js.map
+|  |  |  |  |           ├── status-tap-BfJqFSLF-JZQ6EY3C.js
+|  |  |  |  |           ├── status-tap-BfJqFSLF-JZQ6EY3C.js.map
+|  |  |  |  |           ├── styles.css
+|  |  |  |  |           ├── styles.css.map
+|  |  |  |  |           ├── swipe-back-BZBFwTQV-UU4HIHH6.js
+|  |  |  |  |           ├── swipe-back-BZBFwTQV-UU4HIHH6.js.map
+|  |  |  |  |           ├── user-audit-form.component.css.map
+|  |  |  |  |           ├── user-detail.page-XQNZWIW5.js
+|  |  |  |  |           ├── user-detail.page-XQNZWIW5.js.map
+|  |  |  |  |           └── user-detail.page.css.map
+|  |  |  |  ├── compatible_screen_manifest
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── createDebugCompatibleScreenManifests
+|  |  |  |  |        └── output-metadata.json
+|  |  |  |  ├── compiled_navigation_res
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── compileDebugNavigationResources
+|  |  |  |  ├── compile_and_runtime_not_namespaced_r_class_jar
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugResources
+|  |  |  |  |        └── R.jar
+|  |  |  |  ├── compressed_assets
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── compressDebugAssets
+|  |  |  |  |        └── out
+|  |  |  |  |           └── assets
+|  |  |  |  |              ├── capacitor.config.json.jar
+|  |  |  |  |              ├── capacitor.plugins.json.jar
+|  |  |  |  |              ├── native-bridge.js.jar
+|  |  |  |  |              └── public
+|  |  |  |  ├── data_binding_layout_info_type_merge
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugResources
+|  |  |  |  |        └── out
+|  |  |  |  ├── data_binding_layout_info_type_package
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── packageDebugResources
+|  |  |  |  |        └── out
+|  |  |  |  ├── desugar_graph
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  |           ├── currentProject
+|  |  |  |  |           |  ├── dirs_bucket_0
+|  |  |  |  |           |  ├── dirs_bucket_1
+|  |  |  |  |           |  ├── jar_58e61a2dbc0657021fb74dc8fdb9e9e719e949d536def96dcae9b24dde09e037_bucket_0
+|  |  |  |  |           |  └── jar_58e61a2dbc0657021fb74dc8fdb9e9e719e949d536def96dcae9b24dde09e037_bucket_1
+|  |  |  |  |           ├── externalLibs
+|  |  |  |  |           ├── mixedScopes
+|  |  |  |  |           └── otherProjects
+|  |  |  |  ├── dex
+|  |  |  |  |  └── debug
+|  |  |  |  |     ├── mergeExtDexDebug
+|  |  |  |  |     |  ├── classes.dex
+|  |  |  |  |     |  └── classes2.dex
+|  |  |  |  |     ├── mergeLibDexDebug
+|  |  |  |  |     |  ├── 0
+|  |  |  |  |     |  ├── 1
+|  |  |  |  |     |  ├── 10
+|  |  |  |  |     |  ├── 11
+|  |  |  |  |     |  ├── 12
+|  |  |  |  |     |  ├── 13
+|  |  |  |  |     |  ├── 14
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  ├── 15
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  ├── 2
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  ├── 3
+|  |  |  |  |     |  ├── 4
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  ├── 5
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  ├── 6
+|  |  |  |  |     |  ├── 7
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  ├── 8
+|  |  |  |  |     |  |  └── classes.dex
+|  |  |  |  |     |  └── 9
+|  |  |  |  |     |     └── classes.dex
+|  |  |  |  |     └── mergeProjectDexDebug
+|  |  |  |  |        ├── 0
+|  |  |  |  |        |  └── classes.dex
+|  |  |  |  |        ├── 1
+|  |  |  |  |        ├── 10
+|  |  |  |  |        ├── 11
+|  |  |  |  |        ├── 12
+|  |  |  |  |        ├── 13
+|  |  |  |  |        |  └── classes.dex
+|  |  |  |  |        ├── 14
+|  |  |  |  |        ├── 15
+|  |  |  |  |        ├── 2
+|  |  |  |  |        ├── 3
+|  |  |  |  |        ├── 4
+|  |  |  |  |        ├── 5
+|  |  |  |  |        ├── 6
+|  |  |  |  |        ├── 7
+|  |  |  |  |        ├── 8
+|  |  |  |  |        └── 9
+|  |  |  |  ├── dex_archive_input_jar_hashes
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── dex_number_of_buckets_file
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── duplicate_classes_check
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── checkDebugDuplicateClasses
+|  |  |  |  ├── external_file_lib_dex_archives
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── desugarDebugFileDependencies
+|  |  |  |  ├── external_libs_dex_archive
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── external_libs_dex_archive_with_artifact_transforms
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── global_synthetics_dex
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugGlobalSynthetics
+|  |  |  |  ├── global_synthetics_external_lib
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── global_synthetics_external_libs_artifact_transform
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── global_synthetics_file_lib
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── desugarDebugFileDependencies
+|  |  |  |  ├── global_synthetics_mixed_scope
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── global_synthetics_project
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── global_synthetics_subproject
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── incremental
+|  |  |  |  |  ├── debug
+|  |  |  |  |  |  ├── mergeDebugResources
+|  |  |  |  |  |  |  ├── compile-file-map.properties
+|  |  |  |  |  |  |  ├── merged.dir
+|  |  |  |  |  |  |  |  ├── values
+|  |  |  |  |  |  |  |  |  └── values.xml
+|  |  |  |  |  |  |  |  ├── values-af
+|  |  |  |  |  |  |  |  |  └── values-af.xml
+|  |  |  |  |  |  |  |  ├── values-am
+|  |  |  |  |  |  |  |  |  └── values-am.xml
+|  |  |  |  |  |  |  |  ├── values-ar
+|  |  |  |  |  |  |  |  |  └── values-ar.xml
+|  |  |  |  |  |  |  |  ├── values-as
+|  |  |  |  |  |  |  |  |  └── values-as.xml
+|  |  |  |  |  |  |  |  ├── values-az
+|  |  |  |  |  |  |  |  |  └── values-az.xml
+|  |  |  |  |  |  |  |  ├── values-b+es+419
+|  |  |  |  |  |  |  |  |  └── values-b+es+419.xml
+|  |  |  |  |  |  |  |  ├── values-b+sr+Latn
+|  |  |  |  |  |  |  |  |  └── values-b+sr+Latn.xml
+|  |  |  |  |  |  |  |  ├── values-be
+|  |  |  |  |  |  |  |  |  └── values-be.xml
+|  |  |  |  |  |  |  |  ├── values-bg
+|  |  |  |  |  |  |  |  |  └── values-bg.xml
+|  |  |  |  |  |  |  |  ├── values-bn
+|  |  |  |  |  |  |  |  |  └── values-bn.xml
+|  |  |  |  |  |  |  |  ├── values-bs
+|  |  |  |  |  |  |  |  |  └── values-bs.xml
+|  |  |  |  |  |  |  |  ├── values-ca
+|  |  |  |  |  |  |  |  |  └── values-ca.xml
+|  |  |  |  |  |  |  |  ├── values-cs
+|  |  |  |  |  |  |  |  |  └── values-cs.xml
+|  |  |  |  |  |  |  |  ├── values-da
+|  |  |  |  |  |  |  |  |  └── values-da.xml
+|  |  |  |  |  |  |  |  ├── values-de
+|  |  |  |  |  |  |  |  |  └── values-de.xml
+|  |  |  |  |  |  |  |  ├── values-el
+|  |  |  |  |  |  |  |  |  └── values-el.xml
+|  |  |  |  |  |  |  |  ├── values-en-rAU
+|  |  |  |  |  |  |  |  |  └── values-en-rAU.xml
+|  |  |  |  |  |  |  |  ├── values-en-rCA
+|  |  |  |  |  |  |  |  |  └── values-en-rCA.xml
+|  |  |  |  |  |  |  |  ├── values-en-rGB
+|  |  |  |  |  |  |  |  |  └── values-en-rGB.xml
+|  |  |  |  |  |  |  |  ├── values-en-rIN
+|  |  |  |  |  |  |  |  |  └── values-en-rIN.xml
+|  |  |  |  |  |  |  |  ├── values-en-rXC
+|  |  |  |  |  |  |  |  |  └── values-en-rXC.xml
+|  |  |  |  |  |  |  |  ├── values-es
+|  |  |  |  |  |  |  |  |  └── values-es.xml
+|  |  |  |  |  |  |  |  ├── values-es-rUS
+|  |  |  |  |  |  |  |  |  └── values-es-rUS.xml
+|  |  |  |  |  |  |  |  ├── values-et
+|  |  |  |  |  |  |  |  |  └── values-et.xml
+|  |  |  |  |  |  |  |  ├── values-eu
+|  |  |  |  |  |  |  |  |  └── values-eu.xml
+|  |  |  |  |  |  |  |  ├── values-fa
+|  |  |  |  |  |  |  |  |  └── values-fa.xml
+|  |  |  |  |  |  |  |  ├── values-fi
+|  |  |  |  |  |  |  |  |  └── values-fi.xml
+|  |  |  |  |  |  |  |  ├── values-fr
+|  |  |  |  |  |  |  |  |  └── values-fr.xml
+|  |  |  |  |  |  |  |  ├── values-fr-rCA
+|  |  |  |  |  |  |  |  |  └── values-fr-rCA.xml
+|  |  |  |  |  |  |  |  ├── values-gl
+|  |  |  |  |  |  |  |  |  └── values-gl.xml
+|  |  |  |  |  |  |  |  ├── values-gu
+|  |  |  |  |  |  |  |  |  └── values-gu.xml
+|  |  |  |  |  |  |  |  ├── values-h320dp-port-v13
+|  |  |  |  |  |  |  |  |  └── values-h320dp-port-v13.xml
+|  |  |  |  |  |  |  |  ├── values-h360dp-land-v13
+|  |  |  |  |  |  |  |  |  └── values-h360dp-land-v13.xml
+|  |  |  |  |  |  |  |  ├── values-h480dp-land-v13
+|  |  |  |  |  |  |  |  |  └── values-h480dp-land-v13.xml
+|  |  |  |  |  |  |  |  ├── values-h480dp-v13
+|  |  |  |  |  |  |  |  |  └── values-h480dp-v13.xml
+|  |  |  |  |  |  |  |  ├── values-h550dp-port-v13
+|  |  |  |  |  |  |  |  |  └── values-h550dp-port-v13.xml
+|  |  |  |  |  |  |  |  ├── values-h720dp-v13
+|  |  |  |  |  |  |  |  |  └── values-h720dp-v13.xml
+|  |  |  |  |  |  |  |  ├── values-hdpi-v4
+|  |  |  |  |  |  |  |  |  └── values-hdpi-v4.xml
+|  |  |  |  |  |  |  |  ├── values-hi
+|  |  |  |  |  |  |  |  |  └── values-hi.xml
+|  |  |  |  |  |  |  |  ├── values-hr
+|  |  |  |  |  |  |  |  |  └── values-hr.xml
+|  |  |  |  |  |  |  |  ├── values-hu
+|  |  |  |  |  |  |  |  |  └── values-hu.xml
+|  |  |  |  |  |  |  |  ├── values-hy
+|  |  |  |  |  |  |  |  |  └── values-hy.xml
+|  |  |  |  |  |  |  |  ├── values-in
+|  |  |  |  |  |  |  |  |  └── values-in.xml
+|  |  |  |  |  |  |  |  ├── values-is
+|  |  |  |  |  |  |  |  |  └── values-is.xml
+|  |  |  |  |  |  |  |  ├── values-it
+|  |  |  |  |  |  |  |  |  └── values-it.xml
+|  |  |  |  |  |  |  |  ├── values-iw
+|  |  |  |  |  |  |  |  |  └── values-iw.xml
+|  |  |  |  |  |  |  |  ├── values-ja
+|  |  |  |  |  |  |  |  |  └── values-ja.xml
+|  |  |  |  |  |  |  |  ├── values-ka
+|  |  |  |  |  |  |  |  |  └── values-ka.xml
+|  |  |  |  |  |  |  |  ├── values-kk
+|  |  |  |  |  |  |  |  |  └── values-kk.xml
+|  |  |  |  |  |  |  |  ├── values-km
+|  |  |  |  |  |  |  |  |  └── values-km.xml
+|  |  |  |  |  |  |  |  ├── values-kn
+|  |  |  |  |  |  |  |  |  └── values-kn.xml
+|  |  |  |  |  |  |  |  ├── values-ko
+|  |  |  |  |  |  |  |  |  └── values-ko.xml
+|  |  |  |  |  |  |  |  ├── values-ky
+|  |  |  |  |  |  |  |  |  └── values-ky.xml
+|  |  |  |  |  |  |  |  ├── values-land
+|  |  |  |  |  |  |  |  |  └── values-land.xml
+|  |  |  |  |  |  |  |  ├── values-large-v4
+|  |  |  |  |  |  |  |  |  └── values-large-v4.xml
+|  |  |  |  |  |  |  |  ├── values-ldltr-v21
+|  |  |  |  |  |  |  |  |  └── values-ldltr-v21.xml
+|  |  |  |  |  |  |  |  ├── values-ldrtl-v17
+|  |  |  |  |  |  |  |  |  └── values-ldrtl-v17.xml
+|  |  |  |  |  |  |  |  ├── values-lo
+|  |  |  |  |  |  |  |  |  └── values-lo.xml
+|  |  |  |  |  |  |  |  ├── values-lt
+|  |  |  |  |  |  |  |  |  └── values-lt.xml
+|  |  |  |  |  |  |  |  ├── values-lv
+|  |  |  |  |  |  |  |  |  └── values-lv.xml
+|  |  |  |  |  |  |  |  ├── values-mk
+|  |  |  |  |  |  |  |  |  └── values-mk.xml
+|  |  |  |  |  |  |  |  ├── values-ml
+|  |  |  |  |  |  |  |  |  └── values-ml.xml
+|  |  |  |  |  |  |  |  ├── values-mn
+|  |  |  |  |  |  |  |  |  └── values-mn.xml
+|  |  |  |  |  |  |  |  ├── values-mr
+|  |  |  |  |  |  |  |  |  └── values-mr.xml
+|  |  |  |  |  |  |  |  ├── values-ms
+|  |  |  |  |  |  |  |  |  └── values-ms.xml
+|  |  |  |  |  |  |  |  ├── values-my
+|  |  |  |  |  |  |  |  |  └── values-my.xml
+|  |  |  |  |  |  |  |  ├── values-nb
+|  |  |  |  |  |  |  |  |  └── values-nb.xml
+|  |  |  |  |  |  |  |  ├── values-ne
+|  |  |  |  |  |  |  |  |  └── values-ne.xml
+|  |  |  |  |  |  |  |  ├── values-night-v33
+|  |  |  |  |  |  |  |  |  └── values-night-v33.xml
+|  |  |  |  |  |  |  |  ├── values-night-v8
+|  |  |  |  |  |  |  |  |  └── values-night-v8.xml
+|  |  |  |  |  |  |  |  ├── values-nl
+|  |  |  |  |  |  |  |  |  └── values-nl.xml
+|  |  |  |  |  |  |  |  ├── values-or
+|  |  |  |  |  |  |  |  |  └── values-or.xml
+|  |  |  |  |  |  |  |  ├── values-pa
+|  |  |  |  |  |  |  |  |  └── values-pa.xml
+|  |  |  |  |  |  |  |  ├── values-pl
+|  |  |  |  |  |  |  |  |  └── values-pl.xml
+|  |  |  |  |  |  |  |  ├── values-port
+|  |  |  |  |  |  |  |  |  └── values-port.xml
+|  |  |  |  |  |  |  |  ├── values-pt
+|  |  |  |  |  |  |  |  |  └── values-pt.xml
+|  |  |  |  |  |  |  |  ├── values-pt-rBR
+|  |  |  |  |  |  |  |  |  └── values-pt-rBR.xml
+|  |  |  |  |  |  |  |  ├── values-pt-rPT
+|  |  |  |  |  |  |  |  |  └── values-pt-rPT.xml
+|  |  |  |  |  |  |  |  ├── values-ro
+|  |  |  |  |  |  |  |  |  └── values-ro.xml
+|  |  |  |  |  |  |  |  ├── values-ru
+|  |  |  |  |  |  |  |  |  └── values-ru.xml
+|  |  |  |  |  |  |  |  ├── values-si
+|  |  |  |  |  |  |  |  |  └── values-si.xml
+|  |  |  |  |  |  |  |  ├── values-sk
+|  |  |  |  |  |  |  |  |  └── values-sk.xml
+|  |  |  |  |  |  |  |  ├── values-sl
+|  |  |  |  |  |  |  |  |  └── values-sl.xml
+|  |  |  |  |  |  |  |  ├── values-sq
+|  |  |  |  |  |  |  |  |  └── values-sq.xml
+|  |  |  |  |  |  |  |  ├── values-sr
+|  |  |  |  |  |  |  |  |  └── values-sr.xml
+|  |  |  |  |  |  |  |  ├── values-sv
+|  |  |  |  |  |  |  |  |  └── values-sv.xml
+|  |  |  |  |  |  |  |  ├── values-sw
+|  |  |  |  |  |  |  |  |  └── values-sw.xml
+|  |  |  |  |  |  |  |  ├── values-sw600dp-v13
+|  |  |  |  |  |  |  |  |  └── values-sw600dp-v13.xml
+|  |  |  |  |  |  |  |  ├── values-ta
+|  |  |  |  |  |  |  |  |  └── values-ta.xml
+|  |  |  |  |  |  |  |  ├── values-te
+|  |  |  |  |  |  |  |  |  └── values-te.xml
+|  |  |  |  |  |  |  |  ├── values-th
+|  |  |  |  |  |  |  |  |  └── values-th.xml
+|  |  |  |  |  |  |  |  ├── values-tl
+|  |  |  |  |  |  |  |  |  └── values-tl.xml
+|  |  |  |  |  |  |  |  ├── values-tr
+|  |  |  |  |  |  |  |  |  └── values-tr.xml
+|  |  |  |  |  |  |  |  ├── values-uk
+|  |  |  |  |  |  |  |  |  └── values-uk.xml
+|  |  |  |  |  |  |  |  ├── values-ur
+|  |  |  |  |  |  |  |  |  └── values-ur.xml
+|  |  |  |  |  |  |  |  ├── values-uz
+|  |  |  |  |  |  |  |  |  └── values-uz.xml
+|  |  |  |  |  |  |  |  ├── values-v16
+|  |  |  |  |  |  |  |  |  └── values-v16.xml
+|  |  |  |  |  |  |  |  ├── values-v17
+|  |  |  |  |  |  |  |  |  └── values-v17.xml
+|  |  |  |  |  |  |  |  ├── values-v18
+|  |  |  |  |  |  |  |  |  └── values-v18.xml
+|  |  |  |  |  |  |  |  ├── values-v21
+|  |  |  |  |  |  |  |  |  └── values-v21.xml
+|  |  |  |  |  |  |  |  ├── values-v22
+|  |  |  |  |  |  |  |  |  └── values-v22.xml
+|  |  |  |  |  |  |  |  ├── values-v23
+|  |  |  |  |  |  |  |  |  └── values-v23.xml
+|  |  |  |  |  |  |  |  ├── values-v24
+|  |  |  |  |  |  |  |  |  └── values-v24.xml
+|  |  |  |  |  |  |  |  ├── values-v25
+|  |  |  |  |  |  |  |  |  └── values-v25.xml
+|  |  |  |  |  |  |  |  ├── values-v26
+|  |  |  |  |  |  |  |  |  └── values-v26.xml
+|  |  |  |  |  |  |  |  ├── values-v27
+|  |  |  |  |  |  |  |  |  └── values-v27.xml
+|  |  |  |  |  |  |  |  ├── values-v28
+|  |  |  |  |  |  |  |  |  └── values-v28.xml
+|  |  |  |  |  |  |  |  ├── values-v29
+|  |  |  |  |  |  |  |  |  └── values-v29.xml
+|  |  |  |  |  |  |  |  ├── values-v30
+|  |  |  |  |  |  |  |  |  └── values-v30.xml
+|  |  |  |  |  |  |  |  ├── values-v31
+|  |  |  |  |  |  |  |  |  └── values-v31.xml
+|  |  |  |  |  |  |  |  ├── values-v33
+|  |  |  |  |  |  |  |  |  └── values-v33.xml
+|  |  |  |  |  |  |  |  ├── values-v34
+|  |  |  |  |  |  |  |  |  └── values-v34.xml
+|  |  |  |  |  |  |  |  ├── values-v35
+|  |  |  |  |  |  |  |  |  └── values-v35.xml
+|  |  |  |  |  |  |  |  ├── values-vi
+|  |  |  |  |  |  |  |  |  └── values-vi.xml
+|  |  |  |  |  |  |  |  ├── values-w320dp-land-v13
+|  |  |  |  |  |  |  |  |  └── values-w320dp-land-v13.xml
+|  |  |  |  |  |  |  |  ├── values-w360dp-port-v13
+|  |  |  |  |  |  |  |  |  └── values-w360dp-port-v13.xml
+|  |  |  |  |  |  |  |  ├── values-w400dp-port-v13
+|  |  |  |  |  |  |  |  |  └── values-w400dp-port-v13.xml
+|  |  |  |  |  |  |  |  ├── values-w600dp-land-v13
+|  |  |  |  |  |  |  |  |  └── values-w600dp-land-v13.xml
+|  |  |  |  |  |  |  |  ├── values-watch-v20
+|  |  |  |  |  |  |  |  |  └── values-watch-v20.xml
+|  |  |  |  |  |  |  |  ├── values-watch-v21
+|  |  |  |  |  |  |  |  |  └── values-watch-v21.xml
+|  |  |  |  |  |  |  |  ├── values-xlarge-v4
+|  |  |  |  |  |  |  |  |  └── values-xlarge-v4.xml
+|  |  |  |  |  |  |  |  ├── values-zh-rCN
+|  |  |  |  |  |  |  |  |  └── values-zh-rCN.xml
+|  |  |  |  |  |  |  |  ├── values-zh-rHK
+|  |  |  |  |  |  |  |  |  └── values-zh-rHK.xml
+|  |  |  |  |  |  |  |  ├── values-zh-rTW
+|  |  |  |  |  |  |  |  |  └── values-zh-rTW.xml
+|  |  |  |  |  |  |  |  └── values-zu
+|  |  |  |  |  |  |  |     └── values-zu.xml
+|  |  |  |  |  |  |  ├── merger.xml
+|  |  |  |  |  |  |  └── stripped.dir
+|  |  |  |  |  |  └── packageDebugResources
+|  |  |  |  |  |     ├── compile-file-map.properties
+|  |  |  |  |  |     ├── merged.dir
+|  |  |  |  |  |     |  └── values
+|  |  |  |  |  |     |     └── values.xml
+|  |  |  |  |  |     ├── merger.xml
+|  |  |  |  |  |     └── stripped.dir
+|  |  |  |  |  ├── debug-mergeJavaRes
+|  |  |  |  |  |  ├── merge-state
+|  |  |  |  |  |  └── zip-cache
+|  |  |  |  |  |     ├── +4HM+fjosMiWbN2HvGIgdQ==
+|  |  |  |  |  |     ├── +OvL9IifhHse07C1+CnyPw==
+|  |  |  |  |  |     ├── +vhYUCrPe9B_u_NKwqa4cg==
+|  |  |  |  |  |     ├── 0rslHpNDygDy1P1bnEh6vg==
+|  |  |  |  |  |     ├── 0TpU66MzQTfOp9RjaL_u6A==
+|  |  |  |  |  |     ├── 0VQ4H726b6fjJVMDb_qqPg==
+|  |  |  |  |  |     ├── 0_nQ5T8VpeJKWO2Duz5vtQ==
+|  |  |  |  |  |     ├── 27H0pa4J+DC+w6oWsXDlIQ==
+|  |  |  |  |  |     ├── 2CUjiTFThO_xNylRX69X7w==
+|  |  |  |  |  |     ├── 2DXsvHwdxbrY3exh4fTZuQ==
+|  |  |  |  |  |     ├── 38uj+ke3n1iw9tScSm1TWg==
+|  |  |  |  |  |     ├── 3YOR9rpx1cCXYmWCXttYOg==
+|  |  |  |  |  |     ├── 48TAgPAZ8xNtMXNMoU+n2g==
+|  |  |  |  |  |     ├── 4omyG+upgl_g89pZXOTGyQ==
+|  |  |  |  |  |     ├── 53GvKNVRbtjPQ8n_FSIAsQ==
+|  |  |  |  |  |     ├── 7h7+ie7SuSAy1oH4NsW+XQ==
+|  |  |  |  |  |     ├── 8+G7BgEfWOfUvLQZG+66IA==
+|  |  |  |  |  |     ├── 8eApiW2xLCg47juJ++7L1g==
+|  |  |  |  |  |     ├── 8gX7xRKd8VAbdDEoObYsCQ==
+|  |  |  |  |  |     ├── 8Jgnh5yZ061RHal5d34Cfg==
+|  |  |  |  |  |     ├── 8TxGavlVGYlDfCjSCIrR1Q==
+|  |  |  |  |  |     ├── 93xWPQu7uH0rKxR_mfFJPA==
+|  |  |  |  |  |     ├── 9B_eqmAGt3ZklLCjWcVg9Q==
+|  |  |  |  |  |     ├── 9SzISLtXK2Zm57n3AzN0uw==
+|  |  |  |  |  |     ├── aB0YH3KJghTj9nMEZ9z0kQ==
+|  |  |  |  |  |     ├── aYfDcJng0GF7AlRZf3AMEg==
+|  |  |  |  |  |     ├── Bbh7XBE+_XXhcS7O1Qnz1w==
+|  |  |  |  |  |     ├── Bic6VwZFiOPobxp+C29uUQ==
+|  |  |  |  |  |     ├── bNUYtLSBfVXyN5HRGYbwvA==
+|  |  |  |  |  |     ├── D6ARgHFciET4fPHUw1mcpA==
+|  |  |  |  |  |     ├── dnONH3ATe86X3W899q4mjA==
+|  |  |  |  |  |     ├── dZWhGawhPxC4IdnuiC9y2w==
+|  |  |  |  |  |     ├── e2rTJXCSoy4yXyKK0Px6eA==
+|  |  |  |  |  |     ├── eQeOy5mgvHL_TRDRtiaSGg==
+|  |  |  |  |  |     ├── ermfe4+IKNWR_azvlpS7FQ==
+|  |  |  |  |  |     ├── FHf55eqJR5xlTGanHkn+LQ==
+|  |  |  |  |  |     ├── FHtivIPIHsK5jPm56zALmA==
+|  |  |  |  |  |     ├── fKFlRbL5U2eS15xVpBXk+Q==
+|  |  |  |  |  |     ├── FlpELZs1DWPpK__k9uizmA==
+|  |  |  |  |  |     ├── Fpa2f1QPv+WcZOSnIJJ2oQ==
+|  |  |  |  |  |     ├── fv2kw3c+v1y9TUSpTDxZ8A==
+|  |  |  |  |  |     ├── g+Aa5O7iy_odjTDxX5vlJw==
+|  |  |  |  |  |     ├── GERIUnOXYq2NtCr6Tk7LPQ==
+|  |  |  |  |  |     ├── GKj+t7TwXBUBUeaowdjtjQ==
+|  |  |  |  |  |     ├── GSu4nqkXomMQCkbWZ+cYKg==
+|  |  |  |  |  |     ├── gUv458mPwB8nyBIsXFm4RQ==
+|  |  |  |  |  |     ├── IcYkaX0ZR4wCD4TRf7N11g==
+|  |  |  |  |  |     ├── IYV+gWbJsWo0q21sV6o9Og==
+|  |  |  |  |  |     ├── IZqNt+qhztPHf9ufLgdhvg==
+|  |  |  |  |  |     ├── JO2LpVFNenwmFWjc_r0S0Q==
+|  |  |  |  |  |     ├── jOEaHZtBQpwNy75yKf7MnQ==
+|  |  |  |  |  |     ├── JvEMiqSY2xmr3zfwL7urFg==
+|  |  |  |  |  |     ├── KJj9K6DdLSzqlWObw3itUA==
+|  |  |  |  |  |     ├── kQZr4AGYTZwR4E58MHNn5w==
+|  |  |  |  |  |     ├── l4DG6dX8R_++M9xsGYo59A==
+|  |  |  |  |  |     ├── lDRJ+UXX8o0R_YMpTzmPFQ==
+|  |  |  |  |  |     ├── lNOUP4CukJCun3GIglyPNw==
+|  |  |  |  |  |     ├── lnWpwVzixsHn4mebfTLp+A==
+|  |  |  |  |  |     ├── lOMk9kcg2pQuPsTU+O8+iA==
+|  |  |  |  |  |     ├── mdO434aVac1yKisJ6wHr5Q==
+|  |  |  |  |  |     ├── MIGxSf3zfcPVExBpUSzcsg==
+|  |  |  |  |  |     ├── Nb1nmRD00Tyd3Pr7LYj_9g==
+|  |  |  |  |  |     ├── NEIjA9VKrmTfDG4T7J5s9A==
+|  |  |  |  |  |     ├── NzUQV1qmI5FPqLGxfVu+oQ==
+|  |  |  |  |  |     ├── OfrXXXdJbV+40V6878kq+Q==
+|  |  |  |  |  |     ├── OVuR6HuAY7W2SOsnQO6qpA==
+|  |  |  |  |  |     ├── OzVCXZBbk0uL0pBXtocKcA==
+|  |  |  |  |  |     ├── p2mLHlm7WAa_EOItETfwUQ==
+|  |  |  |  |  |     ├── Pau2PecZYMhQ8VoJKDD73g==
+|  |  |  |  |  |     ├── Pdk9uif0vkGGC7dJElK4xQ==
+|  |  |  |  |  |     ├── psHEbAGEQ19OQvtzkQLK3g==
+|  |  |  |  |  |     ├── pyQjj6kDNFDFnm37_yixhQ==
+|  |  |  |  |  |     ├── QaqFV78eIsq4fljxcT72rg==
+|  |  |  |  |  |     ├── QhFLojcVuGeMWhc9Cg_2_w==
+|  |  |  |  |  |     ├── QTB9c7c5yjpBtgRSzVogPw==
+|  |  |  |  |  |     ├── RaIK_ILsNvpE_1Y_q5xDww==
+|  |  |  |  |  |     ├── r_rERZjBTGR6xjzdn_TWnA==
+|  |  |  |  |  |     ├── S041oIpoUhKnE8wDuKXK7g==
+|  |  |  |  |  |     ├── STPka8NxOZy+WB6LktH0ig==
+|  |  |  |  |  |     ├── T+rhry7sLuLlmFekmxJ4UA==
+|  |  |  |  |  |     ├── t0Dnw9aLDQJprTK+fBiUJA==
+|  |  |  |  |  |     ├── T8dxsPpSAKQKDHYU3DJcPg==
+|  |  |  |  |  |     ├── tfOAK_jXfnMQoA8hewauQQ==
+|  |  |  |  |  |     ├── VDSmIb1IVG0JTxBNoFmU2w==
+|  |  |  |  |  |     ├── Vhha18_2BOM965czFHkb8A==
+|  |  |  |  |  |     ├── VlqUcosKCp8ezcbKDHD1HQ==
+|  |  |  |  |  |     ├── VupSJumKp5A8e_aTtoFcPA==
+|  |  |  |  |  |     ├── vZkpl_TEUuEPinbZtWKJOQ==
+|  |  |  |  |  |     ├── w8Xl08S6q8fNpZUC1oTQ4Q==
+|  |  |  |  |  |     ├── W90rp4n4MmDwIGwRkgXuGA==
+|  |  |  |  |  |     ├── WElxkqDF6t39UFl0Eebkmw==
+|  |  |  |  |  |     ├── wKK8o6+ozQGNKpg4uB_pbw==
+|  |  |  |  |  |     ├── Wt2kwSw5CneHjgaiId9Cuw==
+|  |  |  |  |  |     ├── WZ3wA1J7BAfPxD8_DhADPQ==
+|  |  |  |  |  |     ├── xJe8P2K3T+xqPDgYwLMCjw==
+|  |  |  |  |  |     ├── XPQ+bEjd3iO+o+fZF4dfjg==
+|  |  |  |  |  |     ├── xS7MnI36MBxOGtYIL1i_pg==
+|  |  |  |  |  |     ├── xtCIFeJZRpalmlnYAXkDAg==
+|  |  |  |  |  |     ├── XWxn32772Z_qwhXp8WUQ2w==
+|  |  |  |  |  |     ├── y+UHDYG4SzApvlQ5CCUfqQ==
+|  |  |  |  |  |     ├── Yt7twIpfllnLDvA+wrc4Fw==
+|  |  |  |  |  |     ├── yzU7S8Xb+zwMUUBpABXwkg==
+|  |  |  |  |  |     ├── Z4Td4djQKZBPfGELWqTyYg==
+|  |  |  |  |  |     ├── zMk5h64PUfWJW_cZbDlY8Q==
+|  |  |  |  |  |     ├── ZTFh3oRakqbTuBU+1i6vAg==
+|  |  |  |  |  |     ├── _bvdjhcekhnmYRk3zcsE4Q==
+|  |  |  |  |  |     └── _wBme6YNUNXk1Fzp+68qmw==
+|  |  |  |  |  ├── mergeDebugAssets
+|  |  |  |  |  |  └── merger.xml
+|  |  |  |  |  ├── mergeDebugJniLibFolders
+|  |  |  |  |  |  └── merger.xml
+|  |  |  |  |  ├── mergeDebugShaders
+|  |  |  |  |  |  └── merger.xml
+|  |  |  |  |  └── packageDebug
+|  |  |  |  |     └── tmp
+|  |  |  |  |        └── debug
+|  |  |  |  |           ├── dex-renamer-state.txt
+|  |  |  |  |           └── zip-cache
+|  |  |  |  |              ├── androidResources
+|  |  |  |  |              └── javaResources0
+|  |  |  |  ├── javac
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── compileDebugJavaWithJavac
+|  |  |  |  |        └── classes
+|  |  |  |  |           └── com
+|  |  |  |  |              └── adcloslocos_desa
+|  |  |  |  ├── linked_resources_binary_format
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugResources
+|  |  |  |  |        ├── linked-resources-binary-format-debug.ap_
+|  |  |  |  |        └── output-metadata.json
+|  |  |  |  ├── local_only_symbol_list
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── parseDebugLocalResources
+|  |  |  |  |        └── R-def.txt
+|  |  |  |  ├── manifest_merge_blame_file
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugMainManifest
+|  |  |  |  |        └── manifest-merger-blame-debug-report.txt
+|  |  |  |  ├── merged_java_res
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugJavaResource
+|  |  |  |  |        └── base.jar
+|  |  |  |  ├── merged_jni_libs
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugJniLibFolders
+|  |  |  |  |        └── out
+|  |  |  |  ├── merged_manifest
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugMainManifest
+|  |  |  |  |        └── AndroidManifest.xml
+|  |  |  |  ├── merged_manifests
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugManifest
+|  |  |  |  |        ├── AndroidManifest.xml
+|  |  |  |  |        └── output-metadata.json
+|  |  |  |  ├── merged_native_libs
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugNativeLibs
+|  |  |  |  |        └── out
+|  |  |  |  |           └── lib
+|  |  |  |  |              ├── arm64-v8a
+|  |  |  |  |              ├── armeabi-v7a
+|  |  |  |  |              ├── x86
+|  |  |  |  |              └── x86_64
+|  |  |  |  ├── merged_res
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugResources
+|  |  |  |  |        ├── drawable-land-hdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-ldpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-mdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-night-hdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-night-ldpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-night-mdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-night-xhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-night-xxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-night-xxxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-xhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-xxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-land-xxxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-night_splash.png.flat
+|  |  |  |  |        ├── drawable-port-hdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-ldpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-mdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-night-hdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-night-ldpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-night-mdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-night-xhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-night-xxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-night-xxxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-xhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-xxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable-port-xxxhdpi_splash.png.flat
+|  |  |  |  |        ├── drawable_ic_stat_icon.xml.flat
+|  |  |  |  |        ├── drawable_splash.png.flat
+|  |  |  |  |        ├── layout_activity_main.xml.flat
+|  |  |  |  |        ├── mipmap-anydpi-v26_ic_launcher.xml.flat
+|  |  |  |  |        ├── mipmap-anydpi-v26_ic_launcher_round.xml.flat
+|  |  |  |  |        ├── mipmap-hdpi_ic_launcher.png.flat
+|  |  |  |  |        ├── mipmap-hdpi_ic_launcher_background.png.flat
+|  |  |  |  |        ├── mipmap-hdpi_ic_launcher_foreground.png.flat
+|  |  |  |  |        ├── mipmap-hdpi_ic_launcher_round.png.flat
+|  |  |  |  |        ├── mipmap-ldpi_ic_launcher.png.flat
+|  |  |  |  |        ├── mipmap-ldpi_ic_launcher_background.png.flat
+|  |  |  |  |        ├── mipmap-ldpi_ic_launcher_foreground.png.flat
+|  |  |  |  |        ├── mipmap-ldpi_ic_launcher_round.png.flat
+|  |  |  |  |        ├── mipmap-mdpi_ic_launcher.png.flat
+|  |  |  |  |        ├── mipmap-mdpi_ic_launcher_background.png.flat
+|  |  |  |  |        ├── mipmap-mdpi_ic_launcher_foreground.png.flat
+|  |  |  |  |        ├── mipmap-mdpi_ic_launcher_round.png.flat
+|  |  |  |  |        ├── mipmap-xhdpi_ic_launcher.png.flat
+|  |  |  |  |        ├── mipmap-xhdpi_ic_launcher_background.png.flat
+|  |  |  |  |        ├── mipmap-xhdpi_ic_launcher_foreground.png.flat
+|  |  |  |  |        ├── mipmap-xhdpi_ic_launcher_round.png.flat
+|  |  |  |  |        ├── mipmap-xxhdpi_ic_launcher.png.flat
+|  |  |  |  |        ├── mipmap-xxhdpi_ic_launcher_background.png.flat
+|  |  |  |  |        ├── mipmap-xxhdpi_ic_launcher_foreground.png.flat
+|  |  |  |  |        ├── mipmap-xxhdpi_ic_launcher_round.png.flat
+|  |  |  |  |        ├── mipmap-xxxhdpi_ic_launcher.png.flat
+|  |  |  |  |        ├── mipmap-xxxhdpi_ic_launcher_background.png.flat
+|  |  |  |  |        ├── mipmap-xxxhdpi_ic_launcher_foreground.png.flat
+|  |  |  |  |        ├── mipmap-xxxhdpi_ic_launcher_round.png.flat
+|  |  |  |  |        ├── values-af_values-af.arsc.flat
+|  |  |  |  |        ├── values-am_values-am.arsc.flat
+|  |  |  |  |        ├── values-ar_values-ar.arsc.flat
+|  |  |  |  |        ├── values-as_values-as.arsc.flat
+|  |  |  |  |        ├── values-az_values-az.arsc.flat
+|  |  |  |  |        ├── values-b+es+419_values-b+es+419.arsc.flat
+|  |  |  |  |        ├── values-b+sr+Latn_values-b+sr+Latn.arsc.flat
+|  |  |  |  |        ├── values-be_values-be.arsc.flat
+|  |  |  |  |        ├── values-bg_values-bg.arsc.flat
+|  |  |  |  |        ├── values-bn_values-bn.arsc.flat
+|  |  |  |  |        ├── values-bs_values-bs.arsc.flat
+|  |  |  |  |        ├── values-ca_values-ca.arsc.flat
+|  |  |  |  |        ├── values-cs_values-cs.arsc.flat
+|  |  |  |  |        ├── values-da_values-da.arsc.flat
+|  |  |  |  |        ├── values-de_values-de.arsc.flat
+|  |  |  |  |        ├── values-el_values-el.arsc.flat
+|  |  |  |  |        ├── values-en-rAU_values-en-rAU.arsc.flat
+|  |  |  |  |        ├── values-en-rCA_values-en-rCA.arsc.flat
+|  |  |  |  |        ├── values-en-rGB_values-en-rGB.arsc.flat
+|  |  |  |  |        ├── values-en-rIN_values-en-rIN.arsc.flat
+|  |  |  |  |        ├── values-en-rXC_values-en-rXC.arsc.flat
+|  |  |  |  |        ├── values-es-rUS_values-es-rUS.arsc.flat
+|  |  |  |  |        ├── values-es_values-es.arsc.flat
+|  |  |  |  |        ├── values-et_values-et.arsc.flat
+|  |  |  |  |        ├── values-eu_values-eu.arsc.flat
+|  |  |  |  |        ├── values-fa_values-fa.arsc.flat
+|  |  |  |  |        ├── values-fi_values-fi.arsc.flat
+|  |  |  |  |        ├── values-fr-rCA_values-fr-rCA.arsc.flat
+|  |  |  |  |        ├── values-fr_values-fr.arsc.flat
+|  |  |  |  |        ├── values-gl_values-gl.arsc.flat
+|  |  |  |  |        ├── values-gu_values-gu.arsc.flat
+|  |  |  |  |        ├── values-h320dp-port-v13_values-h320dp-port-v13.arsc.flat
+|  |  |  |  |        ├── values-h360dp-land-v13_values-h360dp-land-v13.arsc.flat
+|  |  |  |  |        ├── values-h480dp-land-v13_values-h480dp-land-v13.arsc.flat
+|  |  |  |  |        ├── values-h480dp-v13_values-h480dp-v13.arsc.flat
+|  |  |  |  |        ├── values-h550dp-port-v13_values-h550dp-port-v13.arsc.flat
+|  |  |  |  |        ├── values-h720dp-v13_values-h720dp-v13.arsc.flat
+|  |  |  |  |        ├── values-hdpi-v4_values-hdpi-v4.arsc.flat
+|  |  |  |  |        ├── values-hi_values-hi.arsc.flat
+|  |  |  |  |        ├── values-hr_values-hr.arsc.flat
+|  |  |  |  |        ├── values-hu_values-hu.arsc.flat
+|  |  |  |  |        ├── values-hy_values-hy.arsc.flat
+|  |  |  |  |        ├── values-in_values-in.arsc.flat
+|  |  |  |  |        ├── values-is_values-is.arsc.flat
+|  |  |  |  |        ├── values-it_values-it.arsc.flat
+|  |  |  |  |        ├── values-iw_values-iw.arsc.flat
+|  |  |  |  |        ├── values-ja_values-ja.arsc.flat
+|  |  |  |  |        ├── values-ka_values-ka.arsc.flat
+|  |  |  |  |        ├── values-kk_values-kk.arsc.flat
+|  |  |  |  |        ├── values-km_values-km.arsc.flat
+|  |  |  |  |        ├── values-kn_values-kn.arsc.flat
+|  |  |  |  |        ├── values-ko_values-ko.arsc.flat
+|  |  |  |  |        ├── values-ky_values-ky.arsc.flat
+|  |  |  |  |        ├── values-land_values-land.arsc.flat
+|  |  |  |  |        ├── values-large-v4_values-large-v4.arsc.flat
+|  |  |  |  |        ├── values-ldltr-v21_values-ldltr-v21.arsc.flat
+|  |  |  |  |        ├── values-ldrtl-v17_values-ldrtl-v17.arsc.flat
+|  |  |  |  |        ├── values-lo_values-lo.arsc.flat
+|  |  |  |  |        ├── values-lt_values-lt.arsc.flat
+|  |  |  |  |        ├── values-lv_values-lv.arsc.flat
+|  |  |  |  |        ├── values-mk_values-mk.arsc.flat
+|  |  |  |  |        ├── values-ml_values-ml.arsc.flat
+|  |  |  |  |        ├── values-mn_values-mn.arsc.flat
+|  |  |  |  |        ├── values-mr_values-mr.arsc.flat
+|  |  |  |  |        ├── values-ms_values-ms.arsc.flat
+|  |  |  |  |        ├── values-my_values-my.arsc.flat
+|  |  |  |  |        ├── values-nb_values-nb.arsc.flat
+|  |  |  |  |        ├── values-ne_values-ne.arsc.flat
+|  |  |  |  |        ├── values-night-v33_values-night-v33.arsc.flat
+|  |  |  |  |        ├── values-night-v8_values-night-v8.arsc.flat
+|  |  |  |  |        ├── values-nl_values-nl.arsc.flat
+|  |  |  |  |        ├── values-or_values-or.arsc.flat
+|  |  |  |  |        ├── values-pa_values-pa.arsc.flat
+|  |  |  |  |        ├── values-pl_values-pl.arsc.flat
+|  |  |  |  |        ├── values-port_values-port.arsc.flat
+|  |  |  |  |        ├── values-pt-rBR_values-pt-rBR.arsc.flat
+|  |  |  |  |        ├── values-pt-rPT_values-pt-rPT.arsc.flat
+|  |  |  |  |        ├── values-pt_values-pt.arsc.flat
+|  |  |  |  |        ├── values-ro_values-ro.arsc.flat
+|  |  |  |  |        ├── values-ru_values-ru.arsc.flat
+|  |  |  |  |        ├── values-si_values-si.arsc.flat
+|  |  |  |  |        ├── values-sk_values-sk.arsc.flat
+|  |  |  |  |        ├── values-sl_values-sl.arsc.flat
+|  |  |  |  |        ├── values-sq_values-sq.arsc.flat
+|  |  |  |  |        ├── values-sr_values-sr.arsc.flat
+|  |  |  |  |        ├── values-sv_values-sv.arsc.flat
+|  |  |  |  |        ├── values-sw600dp-v13_values-sw600dp-v13.arsc.flat
+|  |  |  |  |        ├── values-sw_values-sw.arsc.flat
+|  |  |  |  |        ├── values-ta_values-ta.arsc.flat
+|  |  |  |  |        ├── values-te_values-te.arsc.flat
+|  |  |  |  |        ├── values-th_values-th.arsc.flat
+|  |  |  |  |        ├── values-tl_values-tl.arsc.flat
+|  |  |  |  |        ├── values-tr_values-tr.arsc.flat
+|  |  |  |  |        ├── values-uk_values-uk.arsc.flat
+|  |  |  |  |        ├── values-ur_values-ur.arsc.flat
+|  |  |  |  |        ├── values-uz_values-uz.arsc.flat
+|  |  |  |  |        ├── values-v16_values-v16.arsc.flat
+|  |  |  |  |        ├── values-v17_values-v17.arsc.flat
+|  |  |  |  |        ├── values-v18_values-v18.arsc.flat
+|  |  |  |  |        ├── values-v21_values-v21.arsc.flat
+|  |  |  |  |        ├── values-v22_values-v22.arsc.flat
+|  |  |  |  |        ├── values-v23_values-v23.arsc.flat
+|  |  |  |  |        ├── values-v24_values-v24.arsc.flat
+|  |  |  |  |        ├── values-v25_values-v25.arsc.flat
+|  |  |  |  |        ├── values-v26_values-v26.arsc.flat
+|  |  |  |  |        ├── values-v27_values-v27.arsc.flat
+|  |  |  |  |        ├── values-v28_values-v28.arsc.flat
+|  |  |  |  |        ├── values-v29_values-v29.arsc.flat
+|  |  |  |  |        ├── values-v30_values-v30.arsc.flat
+|  |  |  |  |        ├── values-v31_values-v31.arsc.flat
+|  |  |  |  |        ├── values-v33_values-v33.arsc.flat
+|  |  |  |  |        ├── values-v34_values-v34.arsc.flat
+|  |  |  |  |        ├── values-v35_values-v35.arsc.flat
+|  |  |  |  |        ├── values-vi_values-vi.arsc.flat
+|  |  |  |  |        ├── values-w320dp-land-v13_values-w320dp-land-v13.arsc.flat
+|  |  |  |  |        ├── values-w360dp-port-v13_values-w360dp-port-v13.arsc.flat
+|  |  |  |  |        ├── values-w400dp-port-v13_values-w400dp-port-v13.arsc.flat
+|  |  |  |  |        ├── values-w600dp-land-v13_values-w600dp-land-v13.arsc.flat
+|  |  |  |  |        ├── values-watch-v20_values-watch-v20.arsc.flat
+|  |  |  |  |        ├── values-watch-v21_values-watch-v21.arsc.flat
+|  |  |  |  |        ├── values-xlarge-v4_values-xlarge-v4.arsc.flat
+|  |  |  |  |        ├── values-zh-rCN_values-zh-rCN.arsc.flat
+|  |  |  |  |        ├── values-zh-rHK_values-zh-rHK.arsc.flat
+|  |  |  |  |        ├── values-zh-rTW_values-zh-rTW.arsc.flat
+|  |  |  |  |        ├── values-zu_values-zu.arsc.flat
+|  |  |  |  |        ├── values_values.arsc.flat
+|  |  |  |  |        ├── xml_config.xml.flat
+|  |  |  |  |        └── xml_file_paths.xml.flat
+|  |  |  |  ├── merged_res_blame_folder
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugResources
+|  |  |  |  |        └── out
+|  |  |  |  |           ├── multi-v2
+|  |  |  |  |           |  ├── mergeDebugResources.json
+|  |  |  |  |           |  ├── values-af.json
+|  |  |  |  |           |  ├── values-am.json
+|  |  |  |  |           |  ├── values-ar.json
+|  |  |  |  |           |  ├── values-as.json
+|  |  |  |  |           |  ├── values-az.json
+|  |  |  |  |           |  ├── values-b+es+419.json
+|  |  |  |  |           |  ├── values-b+sr+Latn.json
+|  |  |  |  |           |  ├── values-be.json
+|  |  |  |  |           |  ├── values-bg.json
+|  |  |  |  |           |  ├── values-bn.json
+|  |  |  |  |           |  ├── values-bs.json
+|  |  |  |  |           |  ├── values-ca.json
+|  |  |  |  |           |  ├── values-cs.json
+|  |  |  |  |           |  ├── values-da.json
+|  |  |  |  |           |  ├── values-de.json
+|  |  |  |  |           |  ├── values-el.json
+|  |  |  |  |           |  ├── values-en-rAU.json
+|  |  |  |  |           |  ├── values-en-rCA.json
+|  |  |  |  |           |  ├── values-en-rGB.json
+|  |  |  |  |           |  ├── values-en-rIN.json
+|  |  |  |  |           |  ├── values-en-rXC.json
+|  |  |  |  |           |  ├── values-es-rUS.json
+|  |  |  |  |           |  ├── values-es.json
+|  |  |  |  |           |  ├── values-et.json
+|  |  |  |  |           |  ├── values-eu.json
+|  |  |  |  |           |  ├── values-fa.json
+|  |  |  |  |           |  ├── values-fi.json
+|  |  |  |  |           |  ├── values-fr-rCA.json
+|  |  |  |  |           |  ├── values-fr.json
+|  |  |  |  |           |  ├── values-gl.json
+|  |  |  |  |           |  ├── values-gu.json
+|  |  |  |  |           |  ├── values-h320dp-port-v13.json
+|  |  |  |  |           |  ├── values-h360dp-land-v13.json
+|  |  |  |  |           |  ├── values-h480dp-land-v13.json
+|  |  |  |  |           |  ├── values-h480dp-v13.json
+|  |  |  |  |           |  ├── values-h550dp-port-v13.json
+|  |  |  |  |           |  ├── values-h720dp-v13.json
+|  |  |  |  |           |  ├── values-hdpi-v4.json
+|  |  |  |  |           |  ├── values-hi.json
+|  |  |  |  |           |  ├── values-hr.json
+|  |  |  |  |           |  ├── values-hu.json
+|  |  |  |  |           |  ├── values-hy.json
+|  |  |  |  |           |  ├── values-in.json
+|  |  |  |  |           |  ├── values-is.json
+|  |  |  |  |           |  ├── values-it.json
+|  |  |  |  |           |  ├── values-iw.json
+|  |  |  |  |           |  ├── values-ja.json
+|  |  |  |  |           |  ├── values-ka.json
+|  |  |  |  |           |  ├── values-kk.json
+|  |  |  |  |           |  ├── values-km.json
+|  |  |  |  |           |  ├── values-kn.json
+|  |  |  |  |           |  ├── values-ko.json
+|  |  |  |  |           |  ├── values-ky.json
+|  |  |  |  |           |  ├── values-land.json
+|  |  |  |  |           |  ├── values-large-v4.json
+|  |  |  |  |           |  ├── values-ldltr-v21.json
+|  |  |  |  |           |  ├── values-ldrtl-v17.json
+|  |  |  |  |           |  ├── values-lo.json
+|  |  |  |  |           |  ├── values-lt.json
+|  |  |  |  |           |  ├── values-lv.json
+|  |  |  |  |           |  ├── values-mk.json
+|  |  |  |  |           |  ├── values-ml.json
+|  |  |  |  |           |  ├── values-mn.json
+|  |  |  |  |           |  ├── values-mr.json
+|  |  |  |  |           |  ├── values-ms.json
+|  |  |  |  |           |  ├── values-my.json
+|  |  |  |  |           |  ├── values-nb.json
+|  |  |  |  |           |  ├── values-ne.json
+|  |  |  |  |           |  ├── values-night-v33.json
+|  |  |  |  |           |  ├── values-night-v8.json
+|  |  |  |  |           |  ├── values-nl.json
+|  |  |  |  |           |  ├── values-or.json
+|  |  |  |  |           |  ├── values-pa.json
+|  |  |  |  |           |  ├── values-pl.json
+|  |  |  |  |           |  ├── values-port.json
+|  |  |  |  |           |  ├── values-pt-rBR.json
+|  |  |  |  |           |  ├── values-pt-rPT.json
+|  |  |  |  |           |  ├── values-pt.json
+|  |  |  |  |           |  ├── values-ro.json
+|  |  |  |  |           |  ├── values-ru.json
+|  |  |  |  |           |  ├── values-si.json
+|  |  |  |  |           |  ├── values-sk.json
+|  |  |  |  |           |  ├── values-sl.json
+|  |  |  |  |           |  ├── values-sq.json
+|  |  |  |  |           |  ├── values-sr.json
+|  |  |  |  |           |  ├── values-sv.json
+|  |  |  |  |           |  ├── values-sw.json
+|  |  |  |  |           |  ├── values-sw600dp-v13.json
+|  |  |  |  |           |  ├── values-ta.json
+|  |  |  |  |           |  ├── values-te.json
+|  |  |  |  |           |  ├── values-th.json
+|  |  |  |  |           |  ├── values-tl.json
+|  |  |  |  |           |  ├── values-tr.json
+|  |  |  |  |           |  ├── values-uk.json
+|  |  |  |  |           |  ├── values-ur.json
+|  |  |  |  |           |  ├── values-uz.json
+|  |  |  |  |           |  ├── values-v16.json
+|  |  |  |  |           |  ├── values-v17.json
+|  |  |  |  |           |  ├── values-v18.json
+|  |  |  |  |           |  ├── values-v21.json
+|  |  |  |  |           |  ├── values-v22.json
+|  |  |  |  |           |  ├── values-v23.json
+|  |  |  |  |           |  ├── values-v24.json
+|  |  |  |  |           |  ├── values-v25.json
+|  |  |  |  |           |  ├── values-v26.json
+|  |  |  |  |           |  ├── values-v27.json
+|  |  |  |  |           |  ├── values-v28.json
+|  |  |  |  |           |  ├── values-v29.json
+|  |  |  |  |           |  ├── values-v30.json
+|  |  |  |  |           |  ├── values-v31.json
+|  |  |  |  |           |  ├── values-v33.json
+|  |  |  |  |           |  ├── values-v34.json
+|  |  |  |  |           |  ├── values-v35.json
+|  |  |  |  |           |  ├── values-vi.json
+|  |  |  |  |           |  ├── values-w320dp-land-v13.json
+|  |  |  |  |           |  ├── values-w360dp-port-v13.json
+|  |  |  |  |           |  ├── values-w400dp-port-v13.json
+|  |  |  |  |           |  ├── values-w600dp-land-v13.json
+|  |  |  |  |           |  ├── values-watch-v20.json
+|  |  |  |  |           |  ├── values-watch-v21.json
+|  |  |  |  |           |  ├── values-xlarge-v4.json
+|  |  |  |  |           |  ├── values-zh-rCN.json
+|  |  |  |  |           |  ├── values-zh-rHK.json
+|  |  |  |  |           |  ├── values-zh-rTW.json
+|  |  |  |  |           |  ├── values-zu.json
+|  |  |  |  |           |  └── values.json
+|  |  |  |  |           └── single
+|  |  |  |  |              └── mergeDebugResources.json
+|  |  |  |  ├── merged_shaders
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugShaders
+|  |  |  |  |        └── out
+|  |  |  |  ├── merged_test_only_native_libs
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mergeDebugNativeLibs
+|  |  |  |  |        └── out
+|  |  |  |  ├── mixed_scope_dex_archive
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── navigation_json
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── extractDeepLinksDebug
+|  |  |  |  |        └── navigation.json
+|  |  |  |  ├── nested_resources_validation_report
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── generateDebugResources
+|  |  |  |  |        └── nestedResourcesValidationReport.txt
+|  |  |  |  ├── packaged_manifests
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugManifestForPackage
+|  |  |  |  |        ├── AndroidManifest.xml
+|  |  |  |  |        └── output-metadata.json
+|  |  |  |  ├── packaged_res
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── packageDebugResources
+|  |  |  |  |        ├── drawable
+|  |  |  |  |        |  ├── ic_stat_icon.xml
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-hdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-ldpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-mdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-night-hdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-night-ldpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-night-mdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-night-xhdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-night-xxhdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-night-xxxhdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-xhdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-xxhdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-land-xxxhdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-night-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-hdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-ldpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-mdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-night-hdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-night-ldpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-night-mdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-night-xhdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-night-xxhdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-night-xxxhdpi-v8
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-xhdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-xxhdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── drawable-port-xxxhdpi-v4
+|  |  |  |  |        |  └── splash.png
+|  |  |  |  |        ├── layout
+|  |  |  |  |        |  └── activity_main.xml
+|  |  |  |  |        ├── mipmap-anydpi-v26
+|  |  |  |  |        |  ├── ic_launcher.xml
+|  |  |  |  |        |  └── ic_launcher_round.xml
+|  |  |  |  |        ├── mipmap-hdpi-v4
+|  |  |  |  |        |  ├── ic_launcher.png
+|  |  |  |  |        |  ├── ic_launcher_background.png
+|  |  |  |  |        |  ├── ic_launcher_foreground.png
+|  |  |  |  |        |  └── ic_launcher_round.png
+|  |  |  |  |        ├── mipmap-ldpi-v4
+|  |  |  |  |        |  ├── ic_launcher.png
+|  |  |  |  |        |  ├── ic_launcher_background.png
+|  |  |  |  |        |  ├── ic_launcher_foreground.png
+|  |  |  |  |        |  └── ic_launcher_round.png
+|  |  |  |  |        ├── mipmap-mdpi-v4
+|  |  |  |  |        |  ├── ic_launcher.png
+|  |  |  |  |        |  ├── ic_launcher_background.png
+|  |  |  |  |        |  ├── ic_launcher_foreground.png
+|  |  |  |  |        |  └── ic_launcher_round.png
+|  |  |  |  |        ├── mipmap-xhdpi-v4
+|  |  |  |  |        |  ├── ic_launcher.png
+|  |  |  |  |        |  ├── ic_launcher_background.png
+|  |  |  |  |        |  ├── ic_launcher_foreground.png
+|  |  |  |  |        |  └── ic_launcher_round.png
+|  |  |  |  |        ├── mipmap-xxhdpi-v4
+|  |  |  |  |        |  ├── ic_launcher.png
+|  |  |  |  |        |  ├── ic_launcher_background.png
+|  |  |  |  |        |  ├── ic_launcher_foreground.png
+|  |  |  |  |        |  └── ic_launcher_round.png
+|  |  |  |  |        ├── mipmap-xxxhdpi-v4
+|  |  |  |  |        |  ├── ic_launcher.png
+|  |  |  |  |        |  ├── ic_launcher_background.png
+|  |  |  |  |        |  ├── ic_launcher_foreground.png
+|  |  |  |  |        |  └── ic_launcher_round.png
+|  |  |  |  |        ├── values
+|  |  |  |  |        |  └── values.xml
+|  |  |  |  |        └── xml
+|  |  |  |  |           ├── config.xml
+|  |  |  |  |           └── file_paths.xml
+|  |  |  |  ├── project_dex_archive
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  |           ├── 074feb6a269a2e583d7cd7d117d0cfe116cdb77aa354b3e8c2763e2cb6a35b0b_0.jar
+|  |  |  |  |           ├── 074feb6a269a2e583d7cd7d117d0cfe116cdb77aa354b3e8c2763e2cb6a35b0b_1.jar
+|  |  |  |  |           └── com
+|  |  |  |  |              └── adcloslocos_desa
+|  |  |  |  ├── runtime_symbol_list
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugResources
+|  |  |  |  |        └── R.txt
+|  |  |  |  ├── signing_config_versions
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── writeDebugSigningConfigVersions
+|  |  |  |  |        └── signing-config-versions.json
+|  |  |  |  ├── source_set_path_map
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── mapDebugSourceSetPaths
+|  |  |  |  |        └── file-map.txt
+|  |  |  |  ├── stable_resource_ids_file
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugResources
+|  |  |  |  |        └── stableIds.txt
+|  |  |  |  ├── stripped_native_libs
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── stripDebugDebugSymbols
+|  |  |  |  |        └── out
+|  |  |  |  |           └── lib
+|  |  |  |  |              ├── arm64-v8a
+|  |  |  |  |              ├── armeabi-v7a
+|  |  |  |  |              ├── x86
+|  |  |  |  |              └── x86_64
+|  |  |  |  ├── sub_project_dex_archive
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── dexBuilderDebug
+|  |  |  |  |        └── out
+|  |  |  |  ├── symbol_list_with_package_name
+|  |  |  |  |  └── debug
+|  |  |  |  |     └── processDebugResources
+|  |  |  |  |        └── package-aware-r.txt
+|  |  |  |  └── validate_signing_config
+|  |  |  |     └── debug
+|  |  |  |        └── validateSigningDebug
+|  |  |  ├── outputs
+|  |  |  |  └── logs
+|  |  |  |     └── manifest-merger-debug-report.txt
+|  |  |  └── tmp
+|  |  |     └── compileDebugJavaWithJavac
+|  |  |        └── previous-compilation-data.bin
+|  |  ├── build.gradle
+|  |  ├── capacitor.build.gradle
+|  |  ├── google-services.json
+|  |  ├── proguard-rules.pro
+|  |  └── src
+|  |     ├── androidTest
+|  |     |  └── java
+|  |     |     └── com
+|  |     |        └── getcapacitor
+|  |     |           └── myapp
+|  |     |              └── ExampleInstrumentedTest.java
+|  |     ├── main
+|  |     |  ├── AndroidManifest.xml
+|  |     |  ├── assets
+|  |     |  |  ├── capacitor.config.json
+|  |     |  |  ├── capacitor.plugins.json
+|  |     |  |  └── public
+|  |     |  |     ├── app.component.css.map
+|  |     |  |     ├── assets
+|  |     |  |     |  ├── icon
+|  |     |  |     |  |  └── favicon.ico
+|  |     |  |     |  ├── icons
+|  |     |  |     |  |  ├── favicon.ico
+|  |     |  |     |  |  ├── icon-128.webp
+|  |     |  |     |  |  ├── icon-192.webp
+|  |     |  |     |  |  ├── icon-256.webp
+|  |     |  |     |  |  ├── icon-48.webp
+|  |     |  |     |  |  ├── icon-512.webp
+|  |     |  |     |  |  ├── icon-72.webp
+|  |     |  |     |  |  └── icon-96.webp
+|  |     |  |     |  ├── img
+|  |     |  |     |  |  ├── escudo.png
+|  |     |  |     |  |  ├── events-construction.png
+|  |     |  |     |  |  └── stats-construction.png
+|  |     |  |     |  └── shapes.svg
+|  |     |  |     ├── chunk-2I5GZVFD.js
+|  |     |  |     ├── chunk-2I5GZVFD.js.map
+|  |     |  |     ├── chunk-2K4IBVE7.js
+|  |     |  |     ├── chunk-2K4IBVE7.js.map
+|  |     |  |     ├── chunk-3SSDN7UQ.js
+|  |     |  |     ├── chunk-3SSDN7UQ.js.map
+|  |     |  |     ├── chunk-4VWZEZJW.js
+|  |     |  |     ├── chunk-4VWZEZJW.js.map
+|  |     |  |     ├── chunk-5M3DDGSE.js
+|  |     |  |     ├── chunk-5M3DDGSE.js.map
+|  |     |  |     ├── chunk-6FXRJ434.js
+|  |     |  |     ├── chunk-6FXRJ434.js.map
+|  |     |  |     ├── chunk-6GY55RSK.js
+|  |     |  |     ├── chunk-6GY55RSK.js.map
+|  |     |  |     ├── chunk-6ZGMALUF.js
+|  |     |  |     ├── chunk-6ZGMALUF.js.map
+|  |     |  |     ├── chunk-7D2IXJO2.js
+|  |     |  |     ├── chunk-7D2IXJO2.js.map
+|  |     |  |     ├── chunk-7SLBDTUQ.js
+|  |     |  |     ├── chunk-7SLBDTUQ.js.map
+|  |     |  |     ├── chunk-AY3U4GYL.js
+|  |     |  |     ├── chunk-AY3U4GYL.js.map
+|  |     |  |     ├── chunk-BTXSJD5P.js
+|  |     |  |     ├── chunk-BTXSJD5P.js.map
+|  |     |  |     ├── chunk-BZW6WFSE.js
+|  |     |  |     ├── chunk-BZW6WFSE.js.map
+|  |     |  |     ├── chunk-CUYIUJP7.js
+|  |     |  |     ├── chunk-CUYIUJP7.js.map
+|  |     |  |     ├── chunk-DQGO6H6S.js
+|  |     |  |     ├── chunk-DQGO6H6S.js.map
+|  |     |  |     ├── chunk-DQYVC4XR.js
+|  |     |  |     ├── chunk-DQYVC4XR.js.map
+|  |     |  |     ├── chunk-DYF5VM24.js
+|  |     |  |     ├── chunk-DYF5VM24.js.map
+|  |     |  |     ├── chunk-EJ5ITET5.js
+|  |     |  |     ├── chunk-EJ5ITET5.js.map
+|  |     |  |     ├── chunk-F3JJ4YWB.js
+|  |     |  |     ├── chunk-F3JJ4YWB.js.map
+|  |     |  |     ├── chunk-FDTINQBO.js
+|  |     |  |     ├── chunk-FDTINQBO.js.map
+|  |     |  |     ├── chunk-FZZSIR43.js
+|  |     |  |     ├── chunk-FZZSIR43.js.map
+|  |     |  |     ├── chunk-GCPDXH4O.js
+|  |     |  |     ├── chunk-GCPDXH4O.js.map
+|  |     |  |     ├── chunk-GQIX67BO.js
+|  |     |  |     ├── chunk-GQIX67BO.js.map
+|  |     |  |     ├── chunk-H2L6IFP4.js
+|  |     |  |     ├── chunk-H2L6IFP4.js.map
+|  |     |  |     ├── chunk-HDOEHXW5.js
+|  |     |  |     ├── chunk-HDOEHXW5.js.map
+|  |     |  |     ├── chunk-HEMTIRRM.js
+|  |     |  |     ├── chunk-HEMTIRRM.js.map
+|  |     |  |     ├── chunk-HN5PFBTI.js
+|  |     |  |     ├── chunk-HN5PFBTI.js.map
+|  |     |  |     ├── chunk-HYXHLUX7.js
+|  |     |  |     ├── chunk-HYXHLUX7.js.map
+|  |     |  |     ├── chunk-IVBL4Y7V.js
+|  |     |  |     ├── chunk-IVBL4Y7V.js.map
+|  |     |  |     ├── chunk-JAKGPJXW.js
+|  |     |  |     ├── chunk-JAKGPJXW.js.map
+|  |     |  |     ├── chunk-KJBBQORM.js
+|  |     |  |     ├── chunk-KJBBQORM.js.map
+|  |     |  |     ├── chunk-L42UVOXQ.js
+|  |     |  |     ├── chunk-L42UVOXQ.js.map
+|  |     |  |     ├── chunk-LBJSUFYP.js
+|  |     |  |     ├── chunk-LBJSUFYP.js.map
+|  |     |  |     ├── chunk-LMKCSSGQ.js
+|  |     |  |     ├── chunk-LMKCSSGQ.js.map
+|  |     |  |     ├── chunk-LVWTIQJI.js
+|  |     |  |     ├── chunk-LVWTIQJI.js.map
+|  |     |  |     ├── chunk-MMEAMNY3.js
+|  |     |  |     ├── chunk-MMEAMNY3.js.map
+|  |     |  |     ├── chunk-MQS4DBMV.js
+|  |     |  |     ├── chunk-MQS4DBMV.js.map
+|  |     |  |     ├── chunk-NMJQ5ZVZ.js
+|  |     |  |     ├── chunk-NMJQ5ZVZ.js.map
+|  |     |  |     ├── chunk-NXJKXO3S.js
+|  |     |  |     ├── chunk-NXJKXO3S.js.map
+|  |     |  |     ├── chunk-NYMYWYW7.js
+|  |     |  |     ├── chunk-NYMYWYW7.js.map
+|  |     |  |     ├── chunk-PGSN6FCK.js
+|  |     |  |     ├── chunk-PGSN6FCK.js.map
+|  |     |  |     ├── chunk-PKLQCMK6.js
+|  |     |  |     ├── chunk-PKLQCMK6.js.map
+|  |     |  |     ├── chunk-PS6WWY4S.js
+|  |     |  |     ├── chunk-PS6WWY4S.js.map
+|  |     |  |     ├── chunk-PTI62GJH.js
+|  |     |  |     ├── chunk-PTI62GJH.js.map
+|  |     |  |     ├── chunk-QOQL43QQ.js
+|  |     |  |     ├── chunk-QOQL43QQ.js.map
+|  |     |  |     ├── chunk-RHIBNVLC.js
+|  |     |  |     ├── chunk-RHIBNVLC.js.map
+|  |     |  |     ├── chunk-RYPY45LK.js
+|  |     |  |     ├── chunk-RYPY45LK.js.map
+|  |     |  |     ├── chunk-SINOCR7E.js
+|  |     |  |     ├── chunk-SINOCR7E.js.map
+|  |     |  |     ├── chunk-TCNWEVVV.js
+|  |     |  |     ├── chunk-TCNWEVVV.js.map
+|  |     |  |     ├── chunk-V5DFZST5.js
+|  |     |  |     ├── chunk-V5DFZST5.js.map
+|  |     |  |     ├── chunk-W7NNY2EY.js
+|  |     |  |     ├── chunk-W7NNY2EY.js.map
+|  |     |  |     ├── chunk-WLSPDKGT.js
+|  |     |  |     ├── chunk-WLSPDKGT.js.map
+|  |     |  |     ├── chunk-X4NBNE3H.js
+|  |     |  |     ├── chunk-X4NBNE3H.js.map
+|  |     |  |     ├── chunk-Y43VVGQQ.js
+|  |     |  |     ├── chunk-Y43VVGQQ.js.map
+|  |     |  |     ├── chunk-YAS4LRVC.js
+|  |     |  |     ├── chunk-YAS4LRVC.js.map
+|  |     |  |     ├── chunk-YZCJOGPY.js
+|  |     |  |     ├── chunk-YZCJOGPY.js.map
+|  |     |  |     ├── chunk-ZANXXOCD.js
+|  |     |  |     ├── chunk-ZANXXOCD.js.map
+|  |     |  |     ├── chunk-ZDJYR4XN.js
+|  |     |  |     ├── chunk-ZDJYR4XN.js.map
+|  |     |  |     ├── complete-profile.page-2LYIQUMG.js
+|  |     |  |     ├── complete-profile.page-2LYIQUMG.js.map
+|  |     |  |     ├── complete-profile.page.css.map
+|  |     |  |     ├── cordova.js
+|  |     |  |     ├── cordova_plugins.js
+|  |     |  |     ├── credentials-form.component.css.map
+|  |     |  |     ├── events.page-IZL7GDG7.js
+|  |     |  |     ├── events.page-IZL7GDG7.js.map
+|  |     |  |     ├── focus-visible-BmVRXR1y-2B65ELPO.js
+|  |     |  |     ├── focus-visible-BmVRXR1y-2B65ELPO.js.map
+|  |     |  |     ├── gest-user.page-KOILQOWL.js
+|  |     |  |     ├── gest-user.page-KOILQOWL.js.map
+|  |     |  |     ├── gest-user.page.css.map
+|  |     |  |     ├── hardware-back-button-CTe4XmL7-SXRFSYNG.js
+|  |     |  |     ├── hardware-back-button-CTe4XmL7-SXRFSYNG.js.map
+|  |     |  |     ├── home.page-R3F5ACUB.js
+|  |     |  |     ├── home.page-R3F5ACUB.js.map
+|  |     |  |     ├── home.page.css.map
+|  |     |  |     ├── index-BtUdxPjv-BZ5L73YT.js
+|  |     |  |     ├── index-BtUdxPjv-BZ5L73YT.js.map
+|  |     |  |     ├── index-CfgBF1SE-O5BJBOIE.js
+|  |     |  |     ├── index-CfgBF1SE-O5BJBOIE.js.map
+|  |     |  |     ├── index.html
+|  |     |  |     ├── input-shims-AaDhOpKN-WQHQ3HPR.js
+|  |     |  |     ├── input-shims-AaDhOpKN-WQHQ3HPR.js.map
+|  |     |  |     ├── invite.page-7GHEV7AE.js
+|  |     |  |     ├── invite.page-7GHEV7AE.js.map
+|  |     |  |     ├── invite.page.css.map
+|  |     |  |     ├── ion-accordion_2.entry-QAPAIV73.js
+|  |     |  |     ├── ion-accordion_2.entry-QAPAIV73.js.map
+|  |     |  |     ├── ion-action-sheet.entry-PCHBOIGR.js
+|  |     |  |     ├── ion-action-sheet.entry-PCHBOIGR.js.map
+|  |     |  |     ├── ion-alert.entry-IAWVW4MU.js
+|  |     |  |     ├── ion-alert.entry-IAWVW4MU.js.map
+|  |     |  |     ├── ion-app_8.entry-GUUMF3H5.js
+|  |     |  |     ├── ion-app_8.entry-GUUMF3H5.js.map
+|  |     |  |     ├── ion-avatar_3.entry-PWJQCOWT.js
+|  |     |  |     ├── ion-avatar_3.entry-PWJQCOWT.js.map
+|  |     |  |     ├── ion-back-button.entry-UF3LXHYH.js
+|  |     |  |     ├── ion-back-button.entry-UF3LXHYH.js.map
+|  |     |  |     ├── ion-backdrop.entry-A4ENSJS6.js
+|  |     |  |     ├── ion-backdrop.entry-A4ENSJS6.js.map
+|  |     |  |     ├── ion-breadcrumb_2.entry-54XXJ7HO.js
+|  |     |  |     ├── ion-breadcrumb_2.entry-54XXJ7HO.js.map
+|  |     |  |     ├── ion-button_2.entry-NEJVX4S7.js
+|  |     |  |     ├── ion-button_2.entry-NEJVX4S7.js.map
+|  |     |  |     ├── ion-card_5.entry-BPGEZMWB.js
+|  |     |  |     ├── ion-card_5.entry-BPGEZMWB.js.map
+|  |     |  |     ├── ion-checkbox.entry-IHEDOMK6.js
+|  |     |  |     ├── ion-checkbox.entry-IHEDOMK6.js.map
+|  |     |  |     ├── ion-chip.entry-JT3XQZ22.js
+|  |     |  |     ├── ion-chip.entry-JT3XQZ22.js.map
+|  |     |  |     ├── ion-col_3.entry-HFUDDHDX.js
+|  |     |  |     ├── ion-col_3.entry-HFUDDHDX.js.map
+|  |     |  |     ├── ion-datetime-button.entry-O7CWQEW7.js
+|  |     |  |     ├── ion-datetime-button.entry-O7CWQEW7.js.map
+|  |     |  |     ├── ion-datetime_3.entry-FGUWC6KV.js
+|  |     |  |     ├── ion-datetime_3.entry-FGUWC6KV.js.map
+|  |     |  |     ├── ion-fab_3.entry-7OJIGW7F.js
+|  |     |  |     ├── ion-fab_3.entry-7OJIGW7F.js.map
+|  |     |  |     ├── ion-img.entry-MTEEX5ZW.js
+|  |     |  |     ├── ion-img.entry-MTEEX5ZW.js.map
+|  |     |  |     ├── ion-infinite-scroll_2.entry-CQO7HPRQ.js
+|  |     |  |     ├── ion-infinite-scroll_2.entry-CQO7HPRQ.js.map
+|  |     |  |     ├── ion-input-otp.entry-OIBTKDUL.js
+|  |     |  |     ├── ion-input-otp.entry-OIBTKDUL.js.map
+|  |     |  |     ├── ion-input-password-toggle.entry-GTPKWPJ3.js
+|  |     |  |     ├── ion-input-password-toggle.entry-GTPKWPJ3.js.map
+|  |     |  |     ├── ion-input.entry-TGLDGJND.js
+|  |     |  |     ├── ion-input.entry-TGLDGJND.js.map
+|  |     |  |     ├── ion-item-option_3.entry-TVDOLNF4.js
+|  |     |  |     ├── ion-item-option_3.entry-TVDOLNF4.js.map
+|  |     |  |     ├── ion-item_8.entry-EIBEBAOE.js
+|  |     |  |     ├── ion-item_8.entry-EIBEBAOE.js.map
+|  |     |  |     ├── ion-loading.entry-2T2WX36N.js
+|  |     |  |     ├── ion-loading.entry-2T2WX36N.js.map
+|  |     |  |     ├── ion-menu_3.entry-FOJEFCYR.js
+|  |     |  |     ├── ion-menu_3.entry-FOJEFCYR.js.map
+|  |     |  |     ├── ion-modal.entry-PBVTPW4E.js
+|  |     |  |     ├── ion-modal.entry-PBVTPW4E.js.map
+|  |     |  |     ├── ion-nav_2.entry-AHQYVMDG.js
+|  |     |  |     ├── ion-nav_2.entry-AHQYVMDG.js.map
+|  |     |  |     ├── ion-picker-column-option.entry-5OCHHQRP.js
+|  |     |  |     ├── ion-picker-column-option.entry-5OCHHQRP.js.map
+|  |     |  |     ├── ion-picker-column.entry-VFMALYVG.js
+|  |     |  |     ├── ion-picker-column.entry-VFMALYVG.js.map
+|  |     |  |     ├── ion-picker.entry-MZXPA5KV.js
+|  |     |  |     ├── ion-picker.entry-MZXPA5KV.js.map
+|  |     |  |     ├── ion-popover.entry-IZ5AHWUR.js
+|  |     |  |     ├── ion-popover.entry-IZ5AHWUR.js.map
+|  |     |  |     ├── ion-progress-bar.entry-I7TXF7AU.js
+|  |     |  |     ├── ion-progress-bar.entry-I7TXF7AU.js.map
+|  |     |  |     ├── ion-radio_2.entry-T4DZSSLM.js
+|  |     |  |     ├── ion-radio_2.entry-T4DZSSLM.js.map
+|  |     |  |     ├── ion-range.entry-P52HHEPE.js
+|  |     |  |     ├── ion-range.entry-P52HHEPE.js.map
+|  |     |  |     ├── ion-refresher_2.entry-M2A3COLU.js
+|  |     |  |     ├── ion-refresher_2.entry-M2A3COLU.js.map
+|  |     |  |     ├── ion-reorder_2.entry-KJ4DUIYN.js
+|  |     |  |     ├── ion-reorder_2.entry-KJ4DUIYN.js.map
+|  |     |  |     ├── ion-ripple-effect.entry-ESDUILLS.js
+|  |     |  |     ├── ion-ripple-effect.entry-ESDUILLS.js.map
+|  |     |  |     ├── ion-route_4.entry-LI7BC3PB.js
+|  |     |  |     ├── ion-route_4.entry-LI7BC3PB.js.map
+|  |     |  |     ├── ion-searchbar.entry-7P4N62B5.js
+|  |     |  |     ├── ion-searchbar.entry-7P4N62B5.js.map
+|  |     |  |     ├── ion-segment-content.entry-XQUXR6CI.js
+|  |     |  |     ├── ion-segment-content.entry-XQUXR6CI.js.map
+|  |     |  |     ├── ion-segment-view.entry-5RHY76DO.js
+|  |     |  |     ├── ion-segment-view.entry-5RHY76DO.js.map
+|  |     |  |     ├── ion-segment_2.entry-CFJTGCQF.js
+|  |     |  |     ├── ion-segment_2.entry-CFJTGCQF.js.map
+|  |     |  |     ├── ion-select-modal.entry-UHT5SB4Y.js
+|  |     |  |     ├── ion-select-modal.entry-UHT5SB4Y.js.map
+|  |     |  |     ├── ion-select_3.entry-HITJJ4U5.js
+|  |     |  |     ├── ion-select_3.entry-HITJJ4U5.js.map
+|  |     |  |     ├── ion-spinner.entry-GHCCOQEN.js
+|  |     |  |     ├── ion-spinner.entry-GHCCOQEN.js.map
+|  |     |  |     ├── ion-split-pane.entry-6XD74DG4.js
+|  |     |  |     ├── ion-split-pane.entry-6XD74DG4.js.map
+|  |     |  |     ├── ion-tab-bar_2.entry-VHEZ5PN7.js
+|  |     |  |     ├── ion-tab-bar_2.entry-VHEZ5PN7.js.map
+|  |     |  |     ├── ion-tab_2.entry-EPSXOGHZ.js
+|  |     |  |     ├── ion-tab_2.entry-EPSXOGHZ.js.map
+|  |     |  |     ├── ion-text.entry-G3OYSMZV.js
+|  |     |  |     ├── ion-text.entry-G3OYSMZV.js.map
+|  |     |  |     ├── ion-textarea.entry-AQOVX3VW.js
+|  |     |  |     ├── ion-textarea.entry-AQOVX3VW.js.map
+|  |     |  |     ├── ion-toast.entry-PR4NJTTS.js
+|  |     |  |     ├── ion-toast.entry-PR4NJTTS.js.map
+|  |     |  |     ├── ion-toggle.entry-3TQPVS4S.js
+|  |     |  |     ├── ion-toggle.entry-3TQPVS4S.js.map
+|  |     |  |     ├── ios.transition--aMF-pDH-EKTECTS2.js
+|  |     |  |     ├── ios.transition--aMF-pDH-EKTECTS2.js.map
+|  |     |  |     ├── keyboard-ywgs5efA-EIR6AEKM.js
+|  |     |  |     ├── keyboard-ywgs5efA-EIR6AEKM.js.map
+|  |     |  |     ├── login.page-LSV5VBGO.js
+|  |     |  |     ├── login.page-LSV5VBGO.js.map
+|  |     |  |     ├── login.page.css.map
+|  |     |  |     ├── main.js
+|  |     |  |     ├── main.js.map
+|  |     |  |     ├── md.transition-BEVbfm8j-M4ZYYJER.js
+|  |     |  |     ├── md.transition-BEVbfm8j-M4ZYYJER.js.map
+|  |     |  |     ├── membership-form.component.css.map
+|  |     |  |     ├── p-BgwEQWW6-Y5YRQ6LC.js
+|  |     |  |     ├── p-BgwEQWW6-Y5YRQ6LC.js.map
+|  |     |  |     ├── p-BmVRXR1y-6KLTL7L5.js
+|  |     |  |     ├── p-BmVRXR1y-6KLTL7L5.js.map
+|  |     |  |     ├── p-CBzELu-H-W6RAPBT6.js
+|  |     |  |     ├── p-CBzELu-H-W6RAPBT6.js.map
+|  |     |  |     ├── p-Cl0B-RWe-MQ2WFARL.js
+|  |     |  |     ├── p-Cl0B-RWe-MQ2WFARL.js.map
+|  |     |  |     ├── p-CneGxKsZ-TABOUGVB.js
+|  |     |  |     ├── p-CneGxKsZ-TABOUGVB.js.map
+|  |     |  |     ├── p-CU1SSH8_-OWGHOHP4.js
+|  |     |  |     ├── p-CU1SSH8_-OWGHOHP4.js.map
+|  |     |  |     ├── p-Cwv-vmkN-6UQDBGZK.js
+|  |     |  |     ├── p-Cwv-vmkN-6UQDBGZK.js.map
+|  |     |  |     ├── p-Cz5nLPGT-IVEAU4MR.js
+|  |     |  |     ├── p-Cz5nLPGT-IVEAU4MR.js.map
+|  |     |  |     ├── p-D6Ynv7Xh-SHHOXCUR.js
+|  |     |  |     ├── p-D6Ynv7Xh-SHHOXCUR.js.map
+|  |     |  |     ├── p-vEbVo2hO-LJNNRD2W.js
+|  |     |  |     ├── p-vEbVo2hO-LJNNRD2W.js.map
+|  |     |  |     ├── pending-approval.page-2W25OTF4.js
+|  |     |  |     ├── pending-approval.page-2W25OTF4.js.map
+|  |     |  |     ├── pending-approval.page.css.map
+|  |     |  |     ├── personal-data-form.component.css.map
+|  |     |  |     ├── polyfills.js
+|  |     |  |     ├── polyfills.js.map
+|  |     |  |     ├── prerendered-routes.json
+|  |     |  |     ├── stats.page-XZA5IXIC.js
+|  |     |  |     ├── stats.page-XZA5IXIC.js.map
+|  |     |  |     ├── status-tap-BfJqFSLF-JZQ6EY3C.js
+|  |     |  |     ├── status-tap-BfJqFSLF-JZQ6EY3C.js.map
+|  |     |  |     ├── styles.css
+|  |     |  |     ├── styles.css.map
+|  |     |  |     ├── swipe-back-BZBFwTQV-UU4HIHH6.js
+|  |     |  |     ├── swipe-back-BZBFwTQV-UU4HIHH6.js.map
+|  |     |  |     ├── user-audit-form.component.css.map
+|  |     |  |     ├── user-detail.page-XOEPTY47.js
+|  |     |  |     ├── user-detail.page-XOEPTY47.js.map
+|  |     |  |     └── user-detail.page.css.map
+|  |     |  ├── java
+|  |     |  |  └── com
+|  |     |  |     └── adcloslocos_desa
+|  |     |  |        └── app
+|  |     |  |           └── MainActivity.java
+|  |     |  └── res
+|  |     |     ├── drawable
+|  |     |     |  ├── .clinesignore
+|  |     |     |  ├── ic_stat_icon.xml
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-hdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-ldpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-mdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-night-hdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-night-ldpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-night-mdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-night-xhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-night-xxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-night-xxxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-xhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-xxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-land-xxxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-night
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-hdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-ldpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-mdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-night-hdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-night-ldpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-night-mdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-night-xhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-night-xxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-night-xxxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-xhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-xxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-port-xxxhdpi
+|  |     |     |  └── splash.png
+|  |     |     ├── drawable-v24
+|  |     |     ├── layout
+|  |     |     |  └── activity_main.xml
+|  |     |     ├── mipmap-anydpi-v26
+|  |     |     |  ├── ic_launcher.xml
+|  |     |     |  └── ic_launcher_round.xml
+|  |     |     ├── mipmap-hdpi
+|  |     |     |  ├── ic_launcher.png
+|  |     |     |  ├── ic_launcher_background.png
+|  |     |     |  ├── ic_launcher_foreground.png
+|  |     |     |  └── ic_launcher_round.png
+|  |     |     ├── mipmap-ldpi
+|  |     |     |  ├── ic_launcher.png
+|  |     |     |  ├── ic_launcher_background.png
+|  |     |     |  ├── ic_launcher_foreground.png
+|  |     |     |  └── ic_launcher_round.png
+|  |     |     ├── mipmap-mdpi
+|  |     |     |  ├── ic_launcher.png
+|  |     |     |  ├── ic_launcher_background.png
+|  |     |     |  ├── ic_launcher_foreground.png
+|  |     |     |  └── ic_launcher_round.png
+|  |     |     ├── mipmap-xhdpi
+|  |     |     |  ├── ic_launcher.png
+|  |     |     |  ├── ic_launcher_background.png
+|  |     |     |  ├── ic_launcher_foreground.png
+|  |     |     |  └── ic_launcher_round.png
+|  |     |     ├── mipmap-xxhdpi
+|  |     |     |  ├── ic_launcher.png
+|  |     |     |  ├── ic_launcher_background.png
+|  |     |     |  ├── ic_launcher_foreground.png
+|  |     |     |  └── ic_launcher_round.png
+|  |     |     ├── mipmap-xxxhdpi
+|  |     |     |  ├── ic_launcher.png
+|  |     |     |  ├── ic_launcher_background.png
+|  |     |     |  ├── ic_launcher_foreground.png
+|  |     |     |  └── ic_launcher_round.png
+|  |     |     ├── values
+|  |     |     |  ├── colors.xml
+|  |     |     |  ├── ic_launcher_background.xml
+|  |     |     |  ├── strings.xml
+|  |     |     |  └── styles.xml
+|  |     |     └── xml
+|  |     |        ├── config.xml
+|  |     |        └── file_paths.xml
+|  |     └── test
+|  |        └── java
+|  |           └── com
+|  |              └── getcapacitor
+|  |                 └── myapp
+|  |                    └── ExampleUnitTest.java
+|  ├── build
+|  |  └── reports
+|  |     └── problems
+|  |        └── problems-report.html
+|  ├── build.gradle
+|  ├── capacitor-cordova-android-plugins
+|  |  ├── build.gradle
+|  |  ├── cordova.variables.gradle
+|  |  └── src
+|  |     └── main
+|  |        ├── AndroidManifest.xml
+|  |        ├── java
+|  |        |  └── .gitkeep
+|  |        └── res
+|  |           └── .gitkeep
+|  ├── capacitor.settings.gradle
+|  ├── gradle
+|  |  └── wrapper
+|  |     ├── gradle-wrapper.jar
+|  |     └── gradle-wrapper.properties
+|  ├── gradle.properties
+|  ├── gradlew
+|  ├── gradlew.bat
+|  ├── local.properties
+|  ├── settings.gradle
+|  └── variables.gradle
+├── angular.json
+├── arbol_proyecto.txt
+├── capacitor.config.ts
+├── cypress
+|  ├── e2e
+|  |  ├── edit-user.cy.ts
+|  |  ├── login.cy.ts
+|  |  ├── user-detail.cy.ts
+|  |  └── users.cy.ts
+|  ├── fixtures
+|  |  └── example.json
+|  └── support
+|     ├── commands.ts
+|     ├── e2e.ts
+|     └── index.d.ts
+├── cypress.config.ts
+├── estructura-clean.txt
+├── firebase.json
+├── firestore.indexes.json
+├── firestore.rules
+├── functions
+|  ├── .eslintrc.js
+|  ├── .gitignore
+|  ├── lib
+|  |  ├── email-templates.js
+|  |  ├── email-templates.js.map
+|  |  ├── fcm-templates.js
+|  |  ├── fcm-templates.js.map
+|  |  ├── index.js
+|  |  ├── index.js.map
+|  |  └── src
+|  |     ├── email-templates.js
+|  |     ├── email-templates.js.map
+|  |     ├── index.js
+|  |     └── index.js.map
+|  ├── package-lock.json
+|  ├── package.json
+|  ├── src
+|  |  ├── email-templates.ts
+|  |  ├── fcm-templates.ts
+|  |  └── index.ts
+|  ├── tsconfig.dev.json
+|  └── tsconfig.json
+├── ionic.config.json
+├── karma.conf.js
+├── package-lock.json
+├── package.json
+├── projects
+|  ├── shared-core
+|  |  ├── ng-package.json
+|  |  ├── package.json
+|  |  ├── README.md
+|  |  ├── src
+|  |  |  ├── lib
+|  |  |  |  ├── components
+|  |  |  |  |  ├── empty-state
+|  |  |  |  |  |  ├── empty-state.component.html
+|  |  |  |  |  |  ├── empty-state.component.scss
+|  |  |  |  |  |  └── empty-state.component.ts
+|  |  |  |  |  └── page-header
+|  |  |  |  |     ├── page-header.component.html
+|  |  |  |  |     ├── page-header.component.scss
+|  |  |  |  |     └── page-header.component.ts
+|  |  |  |  ├── constants
+|  |  |  |  |  ├── app-message-code.enum.ts
+|  |  |  |  |  ├── app-messages.ts
+|  |  |  |  |  └── firebase-error-map.ts
+|  |  |  |  ├── env.token.ts
+|  |  |  |  ├── models
+|  |  |  |  |  ├── invited-user.model.ts
+|  |  |  |  |  ├── update-personal-data-request.model.ts
+|  |  |  |  |  ├── user-detail.model.ts
+|  |  |  |  |  ├── user-role.enum.ts
+|  |  |  |  |  ├── user-status.enum.ts
+|  |  |  |  |  └── users.models.ts
+|  |  |  |  ├── services
+|  |  |  |  |  ├── auth-admin.service.ts
+|  |  |  |  |  ├── auth-credentials.service.ts
+|  |  |  |  |  ├── auth-permissions.service.ts
+|  |  |  |  |  ├── auth-policies.service.ts
+|  |  |  |  |  ├── auth-register.service.ts
+|  |  |  |  |  ├── auth-session.service.ts
+|  |  |  |  |  ├── auth.service.ts
+|  |  |  |  |  ├── dialog.service.ts
+|  |  |  |  |  ├── error-handler.service.ts
+|  |  |  |  |  ├── fcm.service.ts
+|  |  |  |  |  ├── invited-user.service.ts
+|  |  |  |  |  ├── loading.service.ts
+|  |  |  |  |  ├── mapbox
+|  |  |  |  |  |  └── mapbox.service.ts
+|  |  |  |  |  ├── notification.service.ts
+|  |  |  |  |  ├── photo.service.ts
+|  |  |  |  |  ├── user-detail-data.service.ts
+|  |  |  |  |  ├── user-detail-facade.service.ts
+|  |  |  |  |  ├── user-detail-form.service.ts
+|  |  |  |  |  ├── user-detail-permissions.service.ts
+|  |  |  |  |  ├── user-detail-photo.service.ts
+|  |  |  |  |  ├── user-permissions.service.ts
+|  |  |  |  |  ├── user-photo.service.ts
+|  |  |  |  |  └── user.service.ts
+|  |  |  |  ├── templates
+|  |  |  |  |  └── email-templates.ts
+|  |  |  |  └── utils
+|  |  |  |     └── string.utils.ts
+|  |  |  └── public-api.ts
+|  |  ├── tsconfig.lib.json
+|  |  ├── tsconfig.lib.prod.json
+|  |  └── tsconfig.spec.json
+|  └── web-onboarding
+|     ├── public
+|     |  └── favicon.ico
+|     ├── src
+|     |  ├── app
+|     |  |  ├── app.component.html
+|     |  |  ├── app.component.scss
+|     |  |  ├── app.component.ts
+|     |  |  ├── app.config.ts
+|     |  |  ├── app.routes.ts
+|     |  |  ├── core
+|     |  |  |  └── services
+|     |  |  |     ├── token.service.ts
+|     |  |  |     └── token.ts
+|     |  |  └── pages
+|     |  |     ├── politica-privacidad
+|     |  |     |  ├── politica-privacidad.page.html
+|     |  |     |  ├── politica-privacidad.page.scss
+|     |  |     |  └── politica-privacidad.page.ts
+|     |  |     ├── register
+|     |  |     |  ├── register.page.html
+|     |  |     |  ├── register.page.scss
+|     |  |     |  └── register.page.ts
+|     |  |     ├── reset-password
+|     |  |     |  ├── reset-password.page.html
+|     |  |     |  ├── reset-password.page.scss
+|     |  |     |  └── reset-password.page.ts
+|     |  |     ├── success
+|     |  |     |  ├── success.page.html
+|     |  |     |  ├── success.page.scss
+|     |  |     |  └── success.page.ts
+|     |  |     └── welcome
+|     |  |        ├── welcome.page.html
+|     |  |        ├── welcome.page.scss
+|     |  |        └── welcome.page.ts
+|     |  ├── assets
+|     |  |  ├── icon
+|     |  |  ├── icons
+|     |  |  |  ├── icon-128.webp
+|     |  |  |  ├── icon-192.webp
+|     |  |  |  ├── icon-256.webp
+|     |  |  |  ├── icon-48.webp
+|     |  |  |  ├── icon-512.webp
+|     |  |  |  ├── icon-72.webp
+|     |  |  |  └── icon-96.webp
+|     |  |  ├── img
+|     |  |  |  ├── escudo.png
+|     |  |  |  ├── events-construction.png
+|     |  |  |  └── stats-construction.png
+|     |  |  └── shapes.svg
+|     |  ├── environments
+|     |  |  ├── environment.prod.ts
+|     |  |  └── environment.ts
+|     |  ├── index.html
+|     |  ├── main.ts
+|     |  └── styles.scss
+|     ├── tsconfig.app.json
+|     └── tsconfig.spec.json
+├── resources
+|  └── icon.png
+├── src
+|  ├── app
+|  |  ├── app.component.html
+|  |  ├── app.component.scss
+|  |  ├── app.component.ts
+|  |  ├── app.routes.ts
+|  |  └── features
+|  |     ├── auth
+|  |     |  ├── guards
+|  |     |  |  ├── auth.guard.ts
+|  |     |  |  └── role.guard.ts
+|  |     |  └── pages
+|  |     |     ├── complete-profile
+|  |     |     |  ├── complete-profile.page.html
+|  |     |     |  ├── complete-profile.page.scss
+|  |     |     |  └── complete-profile.page.ts
+|  |     |     ├── invite
+|  |     |     |  ├── invite.page.html
+|  |     |     |  ├── invite.page.scss
+|  |     |     |  └── invite.page.ts
+|  |     |     ├── login
+|  |     |     |  ├── login.page.html
+|  |     |     |  ├── login.page.scss
+|  |     |     |  └── login.page.ts
+|  |     |     └── pending-approval
+|  |     |        ├── pending-approval.page.html
+|  |     |        ├── pending-approval.page.scss
+|  |     |        └── pending-approval.page.ts
+|  |     ├── events
+|  |     |  └── pages
+|  |     |     └── events
+|  |     |        ├── event.page.scss
+|  |     |        ├── events.page.html
+|  |     |        └── events.page.ts
+|  |     ├── home
+|  |     |  └── pages
+|  |     |     └── home
+|  |     |        ├── home.page.html
+|  |     |        ├── home.page.scss
+|  |     |        └── home.page.ts
+|  |     ├── stats
+|  |     |  └── pages
+|  |     |     └── stats
+|  |     |        ├── stats.page.html
+|  |     |        ├── stats.page.scss
+|  |     |        └── stats.page.ts
+|  |     └── users
+|  |        ├── components
+|  |        ├── facades
+|  |        ├── models
+|  |        └── pages
+|  |           ├── gest-user
+|  |           |  ├── gest-user.page.html
+|  |           |  ├── gest-user.page.scss
+|  |           |  └── gest-user.page.ts
+|  |           └── user-detail
+|  |              ├── components
+|  |              |  ├── credentials-form
+|  |              |  |  ├── credentials-form.component.html
+|  |              |  |  ├── credentials-form.component.scss
+|  |              |  |  └── credentials-form.component.ts
+|  |              |  ├── membership-form
+|  |              |  |  ├── membership-form.component.html
+|  |              |  |  ├── membership-form.component.scss
+|  |              |  |  └── membership-form.component.ts
+|  |              |  ├── personal-data-form
+|  |              |  |  ├── personal-data-form.component.html
+|  |              |  |  ├── personal-data-form.component.scss
+|  |              |  |  └── personal-data-form.component.ts
+|  |              |  └── user-audit-form
+|  |              |     ├── user-audit-form.component.html
+|  |              |     ├── user-audit-form.component.scss
+|  |              |     └── user-audit-form.component.ts
+|  |              ├── constants
+|  |              |  └── user-detail.constants.ts
+|  |              ├── helpers
+|  |              |  └── user-detail.helpers.ts
+|  |              ├── state
+|  |              |  └── user-detail.state.ts
+|  |              ├── user-detail.page.html
+|  |              ├── user-detail.page.scss
+|  |              └── user-detail.page.ts
+|  ├── assets
+|  |  ├── icon
+|  |  |  └── favicon.ico
+|  |  ├── icons
+|  |  |  ├── favicon.ico
+|  |  |  ├── icon-128.webp
+|  |  |  ├── icon-192.webp
+|  |  |  ├── icon-256.webp
+|  |  |  ├── icon-48.webp
+|  |  |  ├── icon-512.webp
+|  |  |  ├── icon-72.webp
+|  |  |  └── icon-96.webp
+|  |  ├── img
+|  |  |  ├── escudo.png
+|  |  |  ├── events-construction.png
+|  |  |  └── stats-construction.png
+|  |  └── shapes.svg
+|  ├── environments
+|  |  ├── environment.prod.ts
+|  |  └── environment.ts
+|  ├── global.scss
+|  ├── index.html
+|  ├── main.ts
+|  ├── manifest.webmanifest
+|  ├── polyfills.ts
+|  ├── test.ts
+|  ├── theme
+|  |  └── variables.scss
+|  └── zone-flags.ts
+├── tsconfig.app.json
+├── tsconfig.json
+└── tsconfig.spec.json
+
+directory: 16016 file: 94879 symboliclink: 1
+
+ignored: directory (737)

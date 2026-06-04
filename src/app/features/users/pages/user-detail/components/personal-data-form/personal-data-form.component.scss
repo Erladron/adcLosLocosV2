@@ -29,16 +29,16 @@
 }
 
 .profile-header {
-  flex: 1; 
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 16px;
-  overflow: hidden; 
+  overflow: hidden;
   padding-right: 12px;
 }
 
 .avatar-container.circular-profile {
-  width: 72px; 
+  width: 72px;
   height: 72px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
@@ -48,17 +48,25 @@
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.avatar-container.circular-profile ion-icon { font-size: 2.5rem; color: white; }
-.profile-avatar { width: 100%; height: 100%; object-fit: cover; }
+.avatar-container.circular-profile ion-icon {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .user-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .user-details h2 {
@@ -68,19 +76,23 @@
   font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
-.user-details p { margin: 4px 0 0; color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
+.user-details p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}
 
 /* Botón Lápiz */
 .header-edit-btn ion-button {
-  --background: #1677ff; 
-  --color: white; 
-  --border-radius: 18px; 
-  width: 48px; 
-  height: 48px; 
-  margin: 0; 
+  --background: #1677ff;
+  --color: white;
+  --border-radius: 18px;
+  width: 48px;
+  height: 48px;
+  margin: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -91,13 +103,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: transparent; /* <-- FONDO ELIMINADO PARA QUE NO HAYA RECUADRO FEO */
-  padding: 8px 0;          /* <-- AJUSTADO PARA NO ROBAR ESPACIO */
+  background: transparent;
+  /* <-- FONDO ELIMINADO PARA QUE NO HAYA RECUADRO FEO */
+  padding: 8px 0;
+  /* <-- AJUSTADO PARA NO ROBAR ESPACIO */
   margin-bottom: 24px;
-  border: none;            /* <-- BORDE ELIMINADO */
+  border: none;
+  /* <-- BORDE ELIMINADO */
 }
 
-.edit-panel-left, .edit-panel-right {
+.edit-panel-left,
+.edit-panel-right {
   display: flex;
   gap: 12px;
 }
@@ -106,20 +122,61 @@
   width: 44px;
   height: 44px;
   margin: 0;
-  --border-radius: 50%; 
+  --border-radius: 50%;
 }
 
-.photo-btn { --background: #0d6efd; }
-.action-btn-glass.save, .edit-panel-right .apply { --background: rgba(34, 197, 94, 0.2); --color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
-.action-btn-glass.cancel, .edit-panel-right .cancel { --background: rgba(239, 68, 68, 0.2); --color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+.photo-btn {
+  --background: #0d6efd;
+}
+
+.action-btn-glass.save,
+.edit-panel-right .apply {
+  --background: rgba(34, 197, 94, 0.2);
+  --color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.action-btn-glass.cancel,
+.edit-panel-right .cancel {
+  --background: rgba(239, 68, 68, 0.2);
+  --color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
 
 /* ========================================================
    4. FORMULARIOS
 ======================================================== */
-.custom-item { --background: rgba(255, 255, 255, 0.12); --border-radius: 18px; --padding-start: 18px; --padding-end: 18px; --min-height: 74px; margin-bottom: 18px; border: 1px solid rgba(255, 255, 255, 0.04); }
-.custom-item ion-label { color: rgba(255, 255, 255, 0.85) !important; font-size: 0.92rem !important; font-weight: 600 !important; margin-bottom: 8px !important; }
-.custom-item ion-input { --color: white; font-size: 1.05rem; font-weight: 500; }
-.dni-helper { display: flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.75); margin: -8px 0 18px 4px; font-size: 0.92rem; }
+.custom-item {
+  --background: rgba(255, 255, 255, 0.12);
+  --border-radius: 18px;
+  --padding-start: 18px;
+  --padding-end: 18px;
+  --min-height: 74px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.custom-item ion-label {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+.custom-item ion-input {
+  --color: white;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.dni-helper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: -8px 0 18px 4px;
+  font-size: 0.92rem;
+}
 
 /* ========================================================
    5. EL CROPPER: LUPAS SVG Y SIN MARCOS
@@ -159,18 +216,25 @@ button.svg-zoom-btn {
   padding: 0;
   backdrop-filter: blur(4px);
 }
-button.svg-zoom-btn svg { width: 20px; height: 20px; }
+
+button.svg-zoom-btn svg {
+  width: 20px;
+  height: 20px;
+}
 
 .cropper-center-stage {
-  width: calc(100% - 40px); 
-  margin-left: 40px; 
+  width: calc(100% - 40px);
+  margin-left: 40px;
   max-width: 320px;
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
 }
 
-.custom-cropper { width: 100%; height: 100%; }
+.custom-cropper {
+  width: 100%;
+  height: 100%;
+}
 
 .cropper-bottom-actions {
   display: flex;
@@ -190,12 +254,14 @@ button.svg-zoom-btn svg { width: 20px; height: 20px; }
   background-color: transparent !important;
 }
 
-::ng-deep .ngx-ic-overlay { display: none !important; }
+::ng-deep .ngx-ic-overlay {
+  display: none !important;
+}
 
 ::ng-deep .ngx-ic-cropper {
   border-radius: 50% !important;
   border: 2px dashed #ffffff !important;
-  box-shadow: none !important; 
+  box-shadow: none !important;
 }
 
 ::ng-deep .ngx-ic-top-left,
@@ -229,6 +295,94 @@ button.svg-zoom-btn svg { width: 20px; height: 20px; }
 ::ng-deep .ngx-ic-top,
 ::ng-deep .ngx-ic-bottom,
 ::ng-deep .ngx-ic-left,
-::ng-deep .ngx-ic-right { display: none !important; }
+::ng-deep .ngx-ic-right {
+  display: none !important;
+}
 
-ion-button.action-btn-glass { width: 54px !important; height: 54px !important; margin: 0 !important; --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); --border-radius: 16px !important; }
+ion-button.action-btn-glass {
+  width: 54px !important;
+  height: 54px !important;
+  margin: 0 !important;
+  --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  --border-radius: 16px !important;
+}
+
+/* ========================================================
+   6. MAPBOX SUGGESTIONS (ESTILOS NUEVOS)
+======================================================== */
+.direccion-container {
+  position: relative;
+  width: 100%;
+}
+
+.mapbox-suggestions {
+  position: absolute;
+  top: 100%; /* Se coloca justo debajo del input */
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  
+  /* Estética Glassmorphism combinada con tu tarjeta */
+  background: rgba(17, 37, 84, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  
+  /* Ajustes de margen para solapar un poco con el hueco del ion-item */
+  margin-top: -14px;
+  margin-bottom: 18px;
+  
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 4px 0;
+}
+
+/* Scrollbar personalizada para la lista de Mapbox */
+.mapbox-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+.mapbox-suggestions::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.mapbox-suggestions ion-item {
+  --background: transparent;
+  --border-color: rgba(255, 255, 255, 0.08); /* Líneas separadoras sutiles */
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
+}
+
+.mapbox-suggestions ion-item:last-child {
+  --border-width: 0;
+}
+
+/* Tipografía de las sugerencias */
+.sug-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.sug-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========================================================
+   BADGE DEL DNI
+======================================================== */
+.dni-badge {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #64b5f6; /* Azul celeste de alto contraste */
+  margin-top: auto;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+  pointer-events: none; /* Evita que el usuario intente clickar la letra */
+}

@@ -16,5 +16,8 @@ export const environment = {
 
       'https://createuserbyadmin-vhzu37k6jq-uc.a.run.app'
 
-  }
+  },
+   
+  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21weThkMWpjMDFtNjJwc2ltdmJ1eDN4bSJ9.DAUYruGDu8KPsoukZuFP5A'
+  
 };

@@ -13,8 +13,8 @@ export class FcmTemplates {
       android: {
         priority: 'high' as const,
         notification: {
-          icon: 'ic_stat_notif_peña', // Escudo nativo de la peña
-          color: '#0000FF',           // 🚀 ¡Cambiado al Azul oficial de la peña!
+          icon: 'ic_escudo_notificacion', // Escudo nativo de la peña
+          color: '#999999',           // 🚀 ¡Cambiado al Azul oficial de la peña!
           sound: 'default',
           defaultSound: true
         }
@@ -40,8 +40,8 @@ export class FcmTemplates {
       android: {
         priority: 'high' as const,
         notification: {
-          icon: 'ic_stat_notif_peña',
-          color: '#0000FF',           // 🚀 ¡Cambiado al Azul oficial de la peña!
+          icon: 'ic_escudo_notificacion',
+          color: '#999999',           // 🚀 ¡Cambiado al Azul oficial de la peña!
           sound: 'default',
           defaultSound: true
         }

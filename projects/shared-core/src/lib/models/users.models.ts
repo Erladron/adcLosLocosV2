@@ -1,7 +1,10 @@
 import { UserRole } from './user-role.enum';
-
 import { UserStatus } from './user-status.enum';
 
+/**
+ * Modelo representativo de un Usuario/Socio en la plataforma ADC Los Locos.
+ * Incluye datos de identificación, perfil, auditoría multinivel y privacidad.
+ */
 export interface User {
 
   // =================================
@@ -26,7 +29,22 @@ export interface User {
 
   direccion: string;
 
+  detallesDireccion?: string;
+
   foto: string;
+
+  /** Profesión u ocupación actual del socio (Opcional) */
+  profesion?: string;
+
+  // =================================
+  // AJUSTES DE PRIVACIDAD (CONTROL DE VISIBILIDAD)
+  // =================================
+
+  /** Define si el socio autoriza a que otros socios comunes vean su teléfono */
+  publicarTelefono: boolean;
+
+  /** Define si el socio autoriza a que otros socios comunes vean su correo electrónico */
+  publicarEmail: boolean;
 
   // =================================
   // CONTROL

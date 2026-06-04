@@ -1,11 +1,9 @@
 rules_version = '2';
-
 service cloud.firestore {
-
   match /databases/{database}/documents {
 
     // =====================================================
-    // HELPERS
+    // HELPERS (Validaciones maestras)
     // =====================================================
 
     function isLogged() {
@@ -19,9 +17,7 @@ service cloud.firestore {
     }
 
     function currentUserRole() {
-      return currentUser() != null
-        ? currentUser().tipo
-        : null;
+      return currentUser() != null ? currentUser().tipo : null;
     }
 
     function isAdmin() {
@@ -37,11 +33,11 @@ service cloud.firestore {
     }
 
     function canManageUsers() {
-      return (isAdmin() || isDirectiva());
+      return isAdmin() || isDirectiva();
     }
 
     function canInvite() {
-      return (isAdmin() || isDirectiva() || isSocio());
+      return isAdmin() || isDirectiva() || isSocio();
     }
 
     function isOwnUser(userId) {
@@ -49,34 +45,45 @@ service cloud.firestore {
     }
 
     // =====================================================
-    // USERS
+    // USERS (Gestión de usuarios y blindaje de roles)
     // =====================================================
 
     match /users/{userId} {
 
+      // LECTURA: Solo usuarios que pertenezcan a la app (logueados)
       allow read: if isLogged();
-      
-      allow create: if request.auth != null && request.auth.uid == userId;
-      
+
+      // CREACIÓN: Blindado con dos vías (Auto-registro de invitados vs Modo Directiva)
+      allow create: if 
+        (
+          isOwnUser(userId)
+          && request.resource.data.tipo == 'invitado'
+          && request.resource.data.estado == 'pending_data'
+        )
+        || canManageUsers();
+
+      // ACTUALIZACIÓN:
       allow update: if
-        // ADMIN / DIRECTIVA
+        // VÍA A: ADMIN / DIRECTIVA (Poder total de modificación)
         canManageUsers()
         ||
-        // ONBOARDING INVITADO
+        // VÍA B: ONBOARDING INVITADO (Avanzando de estado y rellenando datos)
         (
           isOwnUser(userId)
           && resource.data.tipo == 'invitado'
           && resource.data.estado == 'pending_data'
           && request.resource.data.estado == 'pending_approval'
           && request.resource.data.tipo == resource.data.tipo
+          && (!('dni' in request.resource.data) || request.resource.data.dni.size() <= 9)
         )
         ||
-        // USUARIO ACTIVO EDITANDO PERFIL
+        // VÍA C: USUARIO ACTIVO EDITANDO PERFIL (Previene hackeo de roles y DNI largo)
         (
           isOwnUser(userId)
           && resource.data.estado == 'active'
           && request.resource.data.tipo == resource.data.tipo
           && request.resource.data.estado == resource.data.estado
+          && (!('dni' in request.resource.data) || request.resource.data.dni.size() <= 9)
         );
 
       allow delete: if isAdmin();
@@ -85,28 +92,27 @@ service cloud.firestore {
       // SUBCOLECCIÓN: TOKENS DE NOTIFICACIONES PUSH (FCM)
       // =====================================================
       match /tokens/{token} {
-        // Un socio solo puede leer y guardar sus propios tokens del móvil. 
-        // Los administradores o directiva también pueden consultarlos si lo necesitan.
+        // Un socio maneja sus tokens, directiva puede consultarlos para envíos
         allow read, write: if isOwnUser(userId) || canManageUsers();
       }
     }
 
     // =====================================================
-    // INVITED USERS
+    // INVITED USERS (Gestión de invitaciones)
     // =====================================================
 
     match /invitedUsers/{inviteId} {
-      allow read: if true;
+      allow read: if isLogged(); // Cerrado al público general de internet
       allow create: if canInvite();
-      allow update: if canManageUsers() || isLogged();
-      allow delete: if canManageUsers();
+      // Solo la directiva puede modificar, aprobar o borrar invitaciones ajenas
+      allow update, delete: if canManageUsers(); 
     }
 
     // =====================================================
-    // EMAIL DE INVITACION
+    // EMAIL DE INVITACIÓN (Triggers)
     // =====================================================
 
-    match /mail/{document= **} {
+    match /mail/{document=**} {
       allow create: if canInvite();
     }
   }

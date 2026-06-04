@@ -65,7 +65,7 @@
 .custom-searchbar {
 
   --background:
-    rgba(255, 255, 255, 0.10);
+    rgba(255, 255, 255, 0.12); // Un pelín más opaco el fondo para asentar el texto
 
   --border-radius:
     22px;
@@ -73,17 +73,20 @@
   --box-shadow:
     none;
 
+  // 🔍 ADAPTACIÓN DE ALTO CONTRASTE HUMANO:
   --placeholder-color:
-    rgba(255, 255, 255, 0.55);
+    rgba(255, 255, 255, 0.70); // El texto de "Buscar usuario..." se lee mucho más claro
 
   --color:
-    #ffffff;
+    #ffffff; // Las letras que escribe el usuario pasan a ser blanco puro e intenso
+
+  --icon-color:
+    #ffffff; // 💡 NUEVO: Fuerza a que la lupa (y el botón de borrar) brillen en blanco puro
 
   backdrop-filter:
     blur(10px);
 
 }
-
 /* =========================================
    SEGMENT
 ========================================= */
@@ -307,34 +310,79 @@
 
 }
 
+// ⚙️ OPTIMIZACIÓN MÓVIL HORIZONTAL: Layout elástico e inline para evitar tarjetas estiradas
 .user-subinfo {
 
   display: flex;
 
   align-items: center;
 
-  gap: 8px;
+  gap: 10px; // Espacio uniforme entre los elementos informativos
 
-  margin-top: 8px;
+  margin-top: 6px;
 
-  flex-wrap: wrap;
+  flex-wrap: wrap; // Rompe de línea seguro solo si el dispositivo es extremadamente pequeño
 
 }
 
-.telefono-text {
+/* ==========================================================================
+   🔥 NUEVO MOTOR DE ESTILOS HORIZONTALES DE ALTO CONTRASTE CONTRA FONDO AZUL
+   ========================================================================== */
 
-  color:
-    rgba(255, 255, 255, 0.82);
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; // Separación interna muy ajustada entre el icono y su texto
+  font-size: 13px;
+  
+  ion-icon {
+    font-size: 13px;
+    flex-shrink: 0; // Evita que Ionic encoja el icono si el texto es largo
+  }
+}
 
-  font-size:
-    14px;
+// 💼 PROFESIÓN: Subida a celeste brillante de alta visibilidad
+.profesion-item {
+  color: #64b5f6;
+  font-weight: 600;
+  
+  ion-icon {
+    color: #64b5f6;
+  }
+}
 
+// 📞 TELÉFONO: Subido a blanco translúcido puro para contraste impecable
+.telefono-item {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+  
+  ion-icon {
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+// 🔒 PRIVADO: Tono grisáceo atenuado pero legible para el estado oculto
+.privado-item {
+  color: rgba(255, 255, 255, 0.45);
+  
+  .sub-italic {
+    font-style: italic;
+  }
+}
+
+.meta-text {
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
+}
 
+// Clase heredada antigua de compatibilidad
+.telefono-text {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* =========================================
@@ -574,7 +622,7 @@ ion-fab-button {
 }
 
 /* =========================================
-   MOBILE
+   MOBILE RESPONSIVE RESPALDO
 ========================================= */
 
 @media (max-width: 480px) {
@@ -603,6 +651,10 @@ ion-fab-button {
     font-size:
       18px;
 
+  }
+
+  .meta-text {
+    max-width: 110px; // Recorte elástico para que quepa todo de forma nativa en pantallas pequeñas
   }
 
   .telefono-text {

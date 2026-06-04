@@ -16,6 +16,8 @@ export const environment = {
 
       'https://us-central1-adcloslocos-desa.cloudfunctions.net/createUserByAdmin'
 
-  }
+  },
+
+  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21weThkMWpjMDFtNjJwc2ltdmJ1eDN4bSJ9.DAUYruGDu8KPsoukZuFP5A'
 
 };

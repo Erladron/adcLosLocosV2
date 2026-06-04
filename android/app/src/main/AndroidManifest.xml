@@ -7,7 +7,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        
+
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:name=".MainActivity"
@@ -31,11 +31,11 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@android:color/transparent" />
+            android:resource="@color/ic_launcher_background_color" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_stat_notif_pena" />            
+            android:resource="@drawable/ic_stat_icon" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

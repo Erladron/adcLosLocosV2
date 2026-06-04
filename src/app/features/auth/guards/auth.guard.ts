@@ -51,7 +51,22 @@ export const authGuard: CanActivateFn = async (route, state) => {
     user = authService.currentUserData;
   }
 
-  // Si tras el bypass sigue dando null, la sesión no tiene datos válidos
+  // 🔥 VALIDACIÓN EN TIEMPO REAL ANTI-BUCLE PUSH PENDING_APPROVAL 🔥
+  // Si el estado en memoria es pendiente, congelamos la navegación y exigimos datos reales del servidor
+  if (user && user.estado === UserStatus.PENDING_APPROVAL) {
+    console.log('🔄 [DEBUG-GUARD] Estado local "PENDING_APPROVAL" detectado. Forzando validación en tiempo real con el servidor...');
+    try {
+      const freshUser = await authService.refreshUserDataFromServer();
+      if (freshUser) {
+        user = freshUser;
+        console.log('🆕 [DEBUG-GUARD] Servidor consultado con éxito. Estado real verificado:', user.estado);
+      }
+    } catch (error) {
+      console.error('⚠️ [DEBUG-GUARD] Error al forzar refresco de datos desde el Guard, manteniendo caché local:', error);
+    }
+  }
+
+  // Si tras el intento de refresco sigue dando null, la sesión no tiene datos válidos
   if (!user) {
     console.error('❌ [DEBUG-GUARD] Fallo crítico: Hay sesión en Auth pero Firestore está vacío.');
     if (currentUrl.includes('login')) return true;

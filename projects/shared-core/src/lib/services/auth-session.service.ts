@@ -8,17 +8,14 @@ import {
 } from '@angular/core';
 
 import {
-
   Auth,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   User
-
 } from '@angular/fire/auth';
 
 import {
-
   Firestore,
   collection,
   query,
@@ -27,7 +24,6 @@ import {
   getDocs,
   doc,
   updateDoc
-
 } from '@angular/fire/firestore';
 
 import { Router }
@@ -308,12 +304,12 @@ export class AuthSessionService {
   /**
    * Recarga datos Firestore usuario.
    */
-  async reloadUserData(uid: string) {
+  async reloadUserData(uid: string): Promise<any> {
 
     // 1. Apuntamos DIRECTAMENTE al documento usando el UID
     const userRef = doc(this.firestore, 'users', uid);
 
-    // 2. Leemos ese documento inyectando el contexto (el arreglo de antes)
+    // 2. Leemos ese documento inyectando el contexto
     const userResult = await runInInjectionContext(
       this.injector,
       () => getDoc(userRef)
@@ -326,7 +322,7 @@ export class AuthSessionService {
     if (userResult.exists()) {
 
       const userData: any = {
-        id: userResult.id, // ¡Esto ahora es idéntico al UID!
+        id: userResult.id,
         ...userResult.data()
       };
 
@@ -362,10 +358,10 @@ export class AuthSessionService {
       if (userData.estado === UserStatus.REJECTED) {
         await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
         await this.logout();
-        return;
+        return null;
       }
 
-      return;
+      return userData;
 
     }
 
@@ -374,6 +370,7 @@ export class AuthSessionService {
     // ============================================
 
     this._currentUserData.set(null);
+    return null;
 
   }
 
