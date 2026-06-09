@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service firebase.storage {
+
+  match /b/{bucket}/o {
+
+    // 1. TU REGLA ORIGINAL: Mantenida intacta para las fotos de perfil de los socios
+    match /profilePhotos/{allPaths=**} {
+      
+      allow read: if true;
+
+      allow write:
+        if request.auth != null;
+
+    }
+
+    // 2. NUEVA REGLA: Carteles de los eventos estructurada con la misma lógica
+    match /eventPosters/{allPaths=**} {
+      
+      allow read: if true; // Permite que todos los socios vean los carteles en el listado
+
+      allow write:
+        if request.auth != null; // Permite subir o modificar carteles a cualquier socio logueado
+
+    }
+
+  }
+
+}

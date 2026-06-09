@@ -1,6 +1,5 @@
 import { Timestamp } from '@angular/fire/firestore';
-import { UserRole }
-from './user-role.enum';
+import { UserRole } from './user-role.enum';
 
 export {
   UserRole,
@@ -25,6 +24,9 @@ export interface UserDetail {
   direccion?: string;
 
   foto?: string;
+
+  /** 🚀 Empresa de seguridad a la que pertenece */
+  empresa?: string;
 
   // =========================================
   // MEMBRESIA
@@ -91,6 +93,9 @@ export interface CreateUserRequest {
   direccion?: string;
 
   foto?: string;
+
+  /** 🚀 Empresa de seguridad a la que pertenece */
+  empresa?: string;
 
   tipo: UserRole;
 

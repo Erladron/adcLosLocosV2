@@ -37,702 +37,219 @@
 
 
 ion-content.home-bg {
-  --background: linear-gradient(#0a2a5e,
-      #1e4fa3) !important;
+  --background: linear-gradient(#0a2a5e, #1e4fa3) !important;
 }
 
 ion-header ion-toolbar {
-
   --background: #0b2d6b;
-
   --color: white;
-
   --border-width: 0;
-
-  box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.35);
-
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
 ion-header ion-title {
-
   font-size: 1.9rem;
-
   font-weight: 700;
-
   letter-spacing: 0.5px;
-
   color: white;
-
 }
 
 ion-header ion-menu-button,
 ion-header ion-back-button,
 ion-header ion-button,
 ion-header ion-icon {
-
   color: white;
-
 }
 
 ion-header {
-
-  box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.35);
-
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
   z-index: 999;
-
 }
 
 /* ANIMACION GLOBAL PAGINAS */
-
 ion-content {
-
-  animation:
-    fadeInPage 0.25s ease;
-
+  animation: fadeInPage 0.25s ease;
 }
 
 @keyframes fadeInPage {
-
   from {
-
     opacity: 0;
-
-    transform:
-      translateY(8px);
-
+    transform: translateY(8px);
   }
-
   to {
-
     opacity: 1;
-
-    transform:
-      translateY(0);
-
+    transform: translateY(0);
   }
-
 }
 
 ion-button,
 ion-fab-button {
-
-  transition:
-    transform 0.15s ease,
-    opacity 0.15s ease;
-
+  transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 ion-button:active,
 ion-fab-button:active {
-
-  transform:
-    scale(0.96);
-
+  transform: scale(0.96);
 }
 
+// 🛡️ MODIFICACIÓN SEGURA: Mantenemos tu azul ferial en estado normal
 html,
 body {
-
   background: #0d2f73;
-
   color: white;
-
   color-scheme: dark;
 }
 
 .custom-toast {
-
-  --background:
-    rgba(15, 40, 95, 0.92);
-
-  --color:
-    #ffffff;
-
-  --border-radius:
-    18px;
-
-  --box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.35);
-
-  --width:
-    auto;
-
-  --min-width:
-    280px;
-
-  --max-width:
-    90%;
-
+  --background: rgba(15, 40, 95, 0.92);
+  --color: #ffffff;
+  --border-radius: 18px;
+  --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --width: auto;
+  --min-width: 280px;
+  --max-width: 90%;
   font-weight: 600;
-
   text-align: center;
-
-  backdrop-filter:
-    blur(12px);
-
-  -webkit-backdrop-filter:
-    blur(12px);
-
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .custom-toast::part(container) {
-
-  border:
-    1px solid rgba(255, 255, 255, 0.08);
-
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .custom-toast::part(message) {
-
   font-size: 15px;
-
   letter-spacing: 0.2px;
-
 }
 
 .custom-toast::part(icon) {
-
-  color:
-    #4ade80;
-
-  font-size:
-    22px;
-
+  color: #4ade80;
+  font-size: 22px;
 }
 
 /* =========================================
    PREMIUM TOASTS
 ========================================= */
-
 ion-toast {
-
   --border-radius: 22px;
-
-  --box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.35);
-
-  --width:
-    calc(100% - 32px);
-
-  --max-width:
-    500px;
-
-  backdrop-filter:
-    blur(16px);
-
+  --box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --width: calc(100% - 32px);
+  --max-width: 500px;
+  backdrop-filter: blur(16px);
   font-weight: 500;
-
   letter-spacing: 0.2px;
-
 }
 
-/* =========================================
-   SUCCESS
-========================================= */
+.success-toast { --background: rgba(25, 135, 84, 0.92); --color: #ffffff; }
+.error-toast { --background: rgba(185, 28, 28, 0.92); --color: #ffffff; }
+.warning-toast { --background: rgba(217, 119, 6, 0.92); --color: #ffffff; }
+.info-toast { --background: rgba(30, 64, 175, 0.92); --color: #ffffff; }
 
-.success-toast {
-
-  --background:
-    rgba(25, 135, 84, 0.92);
-
-  --color:
-    #ffffff;
-
-}
-
-/* =========================================
-   ERROR
-========================================= */
-
-.error-toast {
-
-  --background:
-    rgba(185, 28, 28, 0.92);
-
-  --color:
-    #ffffff;
-
-}
-
-/* =========================================
-   WARNING
-========================================= */
-
-.warning-toast {
-
-  --background:
-    rgba(217, 119, 6, 0.92);
-
-  --color:
-    #ffffff;
-
-}
-
-/* =========================================
-   INFO
-========================================= */
-
-.info-toast {
-
-  --background:
-    rgba(30, 64, 175, 0.92);
-
-  --color:
-    #ffffff;
-
-}
-
-/* =========================================
-   TOAST ICON
-========================================= */
-
-ion-toast::part(icon) {
-
-  font-size: 22px;
-
-}
-
-/* =========================================
-   TOAST MESSAGE
-========================================= */
-
-ion-toast::part(message) {
-
-  font-size: 15px;
-
-  line-height: 1.4;
-
-}
-
-/* =========================================
-   TOAST BUTTON
-========================================= */
-
-ion-toast::part(button) {
-
-  color: rgba(255, 255, 255, 0.9);
-
-}
+ion-toast::part(icon) { font-size: 22px; }
+ion-toast::part(message) { font-size: 15px; line-height: 1.4; }
+ion-toast::part(button) { color: rgba(255, 255, 255, 0.9); }
 
 /* =========================================
    CUSTOM ALERT
 ========================================= */
-
 .custom-alert {
-
   --backdrop-opacity: 0.72;
-
 }
-
-/* =========================================
-   ALERT WRAPPER
-========================================= */
 
 .custom-alert .alert-wrapper {
-
   border-radius: 24px !important;
-
-  background:
-    linear-gradient(180deg,
-      rgba(20, 54, 125, 0.96) 0%,
-      rgba(14, 39, 92, 0.96) 100%) !important;
-
-  backdrop-filter:
-    blur(20px);
-
-  border:
-    1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.38);
-
-  padding:
-    4px 0 0;
-
+  background: linear-gradient(180deg, rgba(20, 54, 125, 0.96) 0%, rgba(14, 39, 92, 0.96) 100%) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+  padding: 4px 0 0;
   overflow: hidden;
-
 }
 
-/* =========================================
-   HEADER
-========================================= */
-
-.custom-alert .alert-head {
-
-  padding:
-    22px 22px 6px;
-
-}
-
-.custom-alert .alert-title {
-
-  color:
-    #ffffff !important;
-
-  font-size:
-    22px !important;
-
-  font-weight:
-    700 !important;
-
-  letter-spacing:
-    -0.3px;
-
-}
-
-/* =========================================
-   MESSAGE
-========================================= */
-
-.custom-alert .alert-message {
-
-  padding:
-    0 22px 18px !important;
-
-  color:
-    rgba(255, 255, 255, 0.78) !important;
-
-  font-size:
-    15px !important;
-
-  line-height:
-    1.45;
-
-}
-
-/* =========================================
-   BUTTON GROUP
-========================================= */
-
-.custom-alert .alert-button-group {
-
-  display: flex;
-
-  justify-content: flex-end;
-
-  gap: 18px;
-
-  padding:
-    0 22px 18px;
-
-}
-
-/* =========================================
-   BUTTONS
-========================================= */
+.custom-alert .alert-head { padding: 22px 22px 6px; }
+.custom-alert .alert-title { color: #ffffff !important; font-size: 22px !important; font-weight: 700 !important; letter-spacing: -0.3px; }
+.custom-alert .alert-message { padding: 0 22px 18px !important; color: rgba(255, 255, 255, 0.78) !important; font-size: 15px !important; line-height: 1.45; }
+.custom-alert .alert-button-group { display: flex; justify-content: flex-end; gap: 18px; padding: 0 22px 18px; }
 
 .custom-alert .alert-button {
-
   flex: initial;
-
   min-width: auto;
-
   height: auto;
-
   min-height: auto;
-
-  padding:
-    6px 10px;
-
+  padding: 6px 10px;
   margin: 0 !important;
-
   background: transparent !important;
-
   border: none !important;
-
   box-shadow: none !important;
-
-  font-size:
-    15px !important;
-
-  font-weight:
-    600;
-
-  letter-spacing:
-    0.2px;
-
-  text-transform:
-    none;
-
+  font-size: 15px !important;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: none;
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
 }
 
-.custom-alert .alert-button-inner {
-
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  text-align: center;
-
-}
-
-/* =========================================
-   CANCEL
-========================================= */
-
-.custom-alert .alert-button.role-cancel {
-
-  color:
-    rgba(255,255,255,0.58);
-
-}
-
-/* =========================================
-   CONFIRM
-========================================= */
-
-.custom-alert .alert-button:last-child {
-
-  color:
-    #ff7b7b;
-
-}
-
-/* =========================================
-   BUTTON RIPPLE FIX
-========================================= */
-
-.custom-alert .alert-button-inner {
-
-  justify-content: center;
-
-}
+.custom-alert .alert-button-inner { width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
+.custom-alert .alert-button.role-cancel { color: rgba(255, 255, 255, 0.58); }
+.custom-alert .alert-button:last-child { color: #ff7b7b; }
+.custom-alert .alert-button-inner { justify-content: center; }
 
 /* =========================================
    CUSTOM ALERT / PROMPT
 ========================================= */
-
 .custom-alert {
-
-  --background:
-    rgba(17, 38, 92, 0.96);
-
-  --backdrop-opacity:
-    0.55;
-
-  --width:
-    340px;
-
-  --max-width:
-    calc(100% - 32px);
-
-  --border-radius:
-    24px;
-
-  --box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.38);
-
-  backdrop-filter:
-    blur(14px);
-
-  -webkit-backdrop-filter:
-    blur(14px);
-
+  --background: rgba(17, 38, 92, 0.96);
+  --backdrop-opacity: 0.55;
+  --width: 340px;
+  --max-width: calc(100% - 32px);
+  --border-radius: 24px;
+  --box-shadow: 0 20px 45px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-/* =========================================
-   WRAPPER
-========================================= */
-
-.custom-alert .alert-wrapper {
-
-  border:
-    1px solid rgba(255, 255, 255, 0.08);
-
-  border-radius:
-    24px;
-
-  overflow:
-    hidden;
-
-}
-
-/* =========================================
-   HEADER
-========================================= */
-
-.custom-alert .alert-head {
-
-  padding:
-    24px 24px 12px;
-
-}
-
-.custom-alert .alert-title {
-
-  font-size:
-    1.6rem;
-
-  font-weight:
-    700;
-
-  color:
-    #ffffff;
-
-  letter-spacing:
-    0.2px;
-
-}
-
-.custom-alert .alert-message {
-
-  margin-top:
-    8px;
-
-  color:
-    rgba(255, 255, 255, 0.72);
-
-  font-size:
-    0.95rem;
-
-  line-height:
-    1.45;
-
-}
-
-/* =========================================
-   INPUT
-========================================= */
-
-.custom-alert .alert-input-group {
-
-  padding:
-    8px 24px 4px;
-
-}
-
-.custom-alert .alert-input {
-
-  background:
-    rgba(255, 255, 255, 0.08) !important;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.08) !important;
-
-  border-radius:
-    14px !important;
-
-  color:
-    #ffffff !important;
-
-  padding:
-    14px 16px !important;
-
-  margin-top:
-    12px !important;
-
-  font-size:
-    0.98rem !important;
-
-}
-
-.custom-alert .alert-input::placeholder {
-
-  color:
-    rgba(255, 255, 255, 0.45);
-
-}
-
-/* =========================================
-   BUTTONS
-========================================= */
-
-.custom-alert .alert-button-group {
-
-  padding:
-    18px 20px 20px;
-
-  gap:
-    12px;
-
-}
-
-.custom-alert .alert-button {
-
-  border-radius:
-    14px !important;
-
-  font-weight:
-    600;
-
-  min-height:
-    44px;
-
-  text-transform:
-    none;
-
-  letter-spacing:
-    0.2px;
-
-}
-
-/* CANCEL */
-
-.custom-alert .alert-button-role-cancel {
-
-  color:
-    rgba(255, 255, 255, 0.75) !important;
-
-}
-
-/* CONFIRM */
-
-.custom-alert .alert-button-role-confirm {
-
-  color:
-    #ff6b6b !important;
-
-}
+.custom-alert .alert-wrapper { border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; overflow: hidden; }
+.custom-alert .alert-head { padding: 24px 24px 12px; }
+.custom-alert .alert-title { font-size: 1.6rem; font-weight: 700; color: #ffffff; letter-spacing: 0.2px; }
+.custom-alert .alert-message { margin-top: 8px; color: rgba(255, 255, 255, 0.72); font-size: 0.95rem; line-height: 1.45; }
+.custom-alert .alert-input-group { padding: 8px 24px 4px; }
+.custom-alert .alert-input { background: rgba(255, 255, 255, 0.08) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 14px !important; color: #ffffff !important; padding: 14px 16px !important; margin-top: 12px !important; font-size: 0.98rem !important; }
+.custom-alert .alert-input::placeholder { color: rgba(255, 255, 255, 0.45); }
+.custom-alert .alert-button-group { padding: 18px 20px 20px; gap: 12px; }
+.custom-alert .alert-button { border-radius: 14px !important; font-weight: 600; min-height: 44px; text-transform: none; letter-spacing: 0.2px; }
+.custom-alert .alert-button-role-cancel { color: rgba(255, 255, 255, 0.75) !important; }
+.custom-alert .alert-button-role-confirm { color: #ff6b6b !important; }
 
 /* ==============================================================================
-   FORZADO GLOBAL: CROPPER PREMIUM ESTILO WHATSAPP (DEDOS GORDOS)
+   CROPPER PREMIUM ESTILO WHATSAPP
    ============================================================================== */
+.custom-cropper .ngx-ic-cropper { border-radius: 50% !important; border: 1.5px dashed rgba(255, 255, 255, 0.5) !important; box-shadow: none !important; }
+.custom-cropper .ngx-ic-overlay { background-color: rgba(6, 13, 31, 0.75) !important; }
+.custom-cropper .ngx-ic-move, .custom-cropper div[role="presentation"].ngx-ic-move { width: 32px !important; height: 32px !important; background-color: rgba(56, 128, 255, 0.3) !important; border: 2.5px solid #3880ff !important; border-radius: 50% !important; box-shadow: 0 0 12px rgba(56, 128, 255, 0.6) !important; margin-top: -16px !important; margin-left: -16px !important; touch-action: none !important; }
+.custom-cropper .ngx-ic-dashed { display: none !important; }
+.custom-cropper .ngx-ic-top, .custom-cropper .ngx-ic-bottom, .custom-cropper .ngx-ic-left, .custom-cropper .ngx-ic-right { display: none !important; }
 
-/* Aseguramos que la inyección rompa cualquier encapsulado de la librería */
-.custom-cropper .ngx-ic-cropper {
-  border-radius: 50% !important;
-  border: 1.5px dashed rgba(255, 255, 255, 0.5) !important;
-  box-shadow: none !important;
-}
 
-.custom-cropper .ngx-ic-overlay {
-  background-color: rgba(6, 13, 31, 0.75) !important;
-}
+/* =============================================================================
+   🚀 BLINDAJE ULTRA-TRANSPARENTE PARA EL ESCÁNER NATIVO (CIERRE DEFINITIVO)
+   ============================================================================= */
+body.scanner-active {
+  background: transparent !important;
+  background-color: transparent !important;
+  --background: transparent !important;
 
-/* Dedos Gordos: Convertimos las esquinas grises en esferas táctiles masivas */
-.custom-cropper .ngx-ic-move,
-.custom-cropper div[role="presentation"].ngx-ic-move {
-  width: 32px !important;
-  height: 32px !important;
-  background-color: rgba(56, 128, 255, 0.3) !important;
-  border: 2.5px solid #3880ff !important;
-  border-radius: 50% !important;
-  box-shadow: 0 0 12px rgba(56, 128, 255, 0.6) !important;
-  margin-top: -16px !important;
-  margin-left: -16px !important;
-  touch-action: none !important;
+  html, 
+  body, 
+  ion-app, 
+  ion-router-outlet, 
+  ion-content, 
+  .ion-page, 
+  .scanner-content, 
+  .scanner-container {
+    background: transparent !important;
+    background-color: transparent !important;
+    --background: transparent !important;
+  }
 }
-
-/* Ocultamos líneas discontinuas e indicadores intermedios que ensucian */
-.custom-cropper .ngx-ic-dashed {
-  display: none !important;
-}
-.custom-cropper .ngx-ic-top,
-.custom-cropper .ngx-ic-bottom,
-.custom-cropper .ngx-ic-left,
-.custom-cropper .ngx-ic-right {
-  display: none !important;
-}
-

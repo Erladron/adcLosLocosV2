@@ -1,0 +1,256 @@
+.scanner-content {
+  --background: #040914; 
+  transition: --background 0.3s ease;
+}
+
+.scanner-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+
+  &.success {
+    background: radial-gradient(circle at center, rgba(34, 197, 94, 0.2) 0%, #040914 70%) !important;
+  }
+
+  &.error {
+    background: radial-gradient(circle at center, rgba(239, 68, 68, 0.2) 0%, #040914 70%) !important;
+  }
+
+  &.scanning {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}
+
+// ============================================
+// TERMINAL INTERFACE
+// ============================================
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 40px;
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #64748b;
+
+    &.pulse {
+      background: #4ade80;
+      box-shadow: 0 0 10px #4ade80;
+      animation: blink 1s infinite alternate;
+    }
+  }
+}
+
+@keyframes blink {
+  from { opacity: 0.5; box-shadow: 0 0 5px #4ade80; }
+  to { opacity: 1; box-shadow: 0 0 15px #4ade80; }
+}
+
+.viewport-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.scanner-reticle {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    transition: border-color 0.3s;
+  }
+
+  &.scanning {
+    background: transparent !important;
+    background-color: transparent !important;
+    &::before { border-color: #38bdf8; }
+    box-shadow: 0 0 0 4000px rgba(4, 9, 20, 0.75); 
+  }
+
+  .laser-beam {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: #38bdf8;
+    box-shadow: 0 0 15px 5px rgba(56, 189, 248, 0.4);
+    animation: scanLaser 2.5s infinite linear;
+    z-index: 10;
+  }
+
+  .btn-activate-camera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: none;
+    color: #38bdf8;
+    z-index: 20;
+
+    ion-icon { font-size: 64px; opacity: 0.8; }
+    span { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  }
+
+  .btn-stop-camera {
+    position: absolute;
+    bottom: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 25;
+  }
+}
+
+@keyframes scanLaser {
+  0% { top: 5%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 95%; opacity: 0; }
+}
+
+.scan-instructions {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.5;
+  margin: 30px 20px auto 20px;
+}
+
+.manual-entry-console {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  z-index: 40;
+
+  .console-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    ion-icon { font-size: 14px; }
+  }
+
+  .input-group {
+    display: flex;
+    gap: 12px;
+    input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0 16px;
+      color: white;
+      font-size: 14px;
+      outline: none;
+      &:focus { border-color: #38bdf8; }
+    }
+    .btn-validate {
+      background: #ffb703;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      padding: 0 20px;
+      font-weight: 800;
+      height: 48px;
+      &:disabled { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.3); }
+    }
+  }
+}
+
+// ============================================
+// 🚀 FIX FULLSCREEN FEEDBACK (FUERA DE LA CONSOLA)
+// ============================================
+.feedback-fullscreen {
+  position: fixed; // Ocupa todo el terminal rompiendo herencias
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999 !important; 
+  text-align: center;
+  padding: 24px;
+  box-sizing: border-box;
+
+  &.success-bg {
+    background-color: #16a34a !important; // Verde vibrante masivo
+  }
+
+  &.error-bg {
+    background-color: #dc2626 !important; // Rojo chillón masivo
+  }
+
+  .feedback-content {
+    color: #ffffff;
+
+    ion-icon {
+      font-size: 140px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      margin: 0 0 12px 0;
+    }
+
+    p {
+      font-size: 20px;
+      font-weight: 600;
+      opacity: 0.9;
+      margin: 0;
+    }
+  }
+}
+
+.animate-pop {
+  animation: popEffect 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes popEffect {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

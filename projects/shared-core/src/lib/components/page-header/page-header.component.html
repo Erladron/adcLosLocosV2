@@ -1,47 +1,30 @@
 <ion-header class="ion-no-border">
-
   <ion-toolbar class="custom-toolbar">
 
     <!-- ================================= -->
-    <!-- LEFT BUTTON -->
+    <!-- LEFT BUTTON (HAMBURGUESA) -->
     <!-- ================================= -->
-
     <ion-buttons slot="start">
-
-      <!-- BACK -->
-
-      <ion-back-button
-
-        *ngIf="showBack"
-
-        [defaultHref]="backUrl"
-
-      >
-
-      </ion-back-button>
-
-      <!-- MENU -->
-
-      <ion-menu-button
-
-        *ngIf="showMenu"
-
-      >
-
-      </ion-menu-button>
-
+      <ion-menu-button *ngIf="showMenu"></ion-menu-button>
     </ion-buttons>
 
     <!-- ================================= -->
     <!-- TITLE -->
     <!-- ================================= -->
-
     <ion-title>
-
       {{ title }}
-
     </ion-title>
 
-  </ion-toolbar>
+    <!-- ================================= -->
+    <!-- RIGHT BUTTON (VOLVER ATRÁS) -->
+    <!-- ================================= -->
+    <ion-buttons slot="end">
+      <ion-back-button
+        *ngIf="showBack"
+        [defaultHref]="backUrl"
+      >
+      </ion-back-button>
+    </ion-buttons>
 
+  </ion-toolbar>
 </ion-header>

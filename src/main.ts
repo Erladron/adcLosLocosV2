@@ -42,6 +42,30 @@ import { environment } from './environments/environment';
 import { ENVIRONMENT } from '../projects/shared-core/src/lib/env.token';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+// ==========================================================================
+// 🔥 INTERCEPTOR DE CONSOLA: Limpieza radical de falsos positivos de Firebase
+// ==========================================================================
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  // Si el aviso habla sobre el contexto de inyección (asincronía interna de transacciones), lo omitimos
+  if (
+    args[0] && 
+    typeof args[0] === 'string' && 
+    (args[0].includes('Calling Firebase APIs outside of an Injection context') || 
+     args[0].includes('Firebase API called outside injection context'))
+  ) {
+    return;
+  }
+  // Dejamos pasar cualquier otra advertencia legítima del ecosistema o de tu código
+  originalWarn.apply(console, args);
+};
+
+// Registramos el pack de datos en castellano para toda la App
+registerLocaleData(localeEs, 'es');
+
 bootstrapApplication(
   AppComponent,
   {
@@ -66,7 +90,7 @@ bootstrapApplication(
       // =================================
       provideFirebaseApp(() => {
         const app = initializeApp(environment.firebase);
-        console.log(app.options);
+        console.log(environment);
         return app;
       }),
 

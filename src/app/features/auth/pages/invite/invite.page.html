@@ -1,22 +1,8 @@
-<app-page-header
-
-  title="Invitar Usuario"
-
-  [showBack]="true"
-
-  backUrl="/home"
-
->
+<app-page-header title="Invitar Usuario" [showMenu]="true" [showBack]="true" backUrl="/home">
 
 </app-page-header>
 
-<ion-content
-
-  fullscreen="true"
-
-  class="invite-content"
-
->
+<ion-content fullscreen="true" class="invite-content">
 
   <!-- ================================= -->
   <!-- BACKGROUND -->
@@ -24,13 +10,7 @@
 
   <div class="background-logo">
 
-    <img
-
-      src="assets/img/escudo.png"
-
-      alt="Escudo"
-
-    >
+    <img src="assets/img/escudo.png" alt="Escudo">
 
   </div>
 
@@ -46,13 +26,7 @@
       <!-- ICON -->
       <!-- ============================= -->
 
-      <ion-icon
-
-        name="mail-open-outline"
-
-        class="header-icon"
-
-      >
+      <ion-icon name="mail-open-outline" class="header-icon">
 
       </ion-icon>
 
@@ -78,19 +52,8 @@
 
       <ion-item lines="none">
 
-        <ion-input
-
-          label="Correo electrónico"
-
-          labelPlacement="floating"
-
-          type="email"
-
-          [(ngModel)]="email"
-
-          placeholder="ejemplo@correo.com"
-
-        >
+        <ion-input label="Correo electrónico" labelPlacement="floating" type="email" [(ngModel)]="email"
+          placeholder="ejemplo@correo.com">
 
         </ion-input>
 
@@ -102,15 +65,7 @@
 
       <div class="button-section">
 
-        <ion-button
-
-          expand="block"
-
-          class="main-button"
-
-          (click)="invitar()"
-
-        >
+        <ion-button expand="block" class="main-button" (click)="invitar()">
 
           ENVIAR INVITACIÓN
 

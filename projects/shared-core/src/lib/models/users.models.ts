@@ -36,6 +36,9 @@ export interface User {
   /** Profesión u ocupación actual del socio (Opcional) */
   profesion?: string;
 
+  /** 🚀 Empresa de seguridad a la que pertenece (Exclusivo para Porteros) */
+  empresa?: string;
+
   // =================================
   // AJUSTES DE PRIVACIDAD (CONTROL DE VISIBILIDAD)
   // =================================

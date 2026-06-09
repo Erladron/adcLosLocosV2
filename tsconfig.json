@@ -22,7 +22,10 @@
         "src/app/features/stats/*"
       ],
       "shared-core": [
-        "./dist/shared-core"
+        "projects/shared-core/src/public-api.ts"
+      ],
+      "@env/*": [
+        "src/environments/*"
       ]
     },
     "outDir": "./dist/out-tsc",

@@ -138,6 +138,93 @@ export const APP_MESSAGES = {
     'No tienes permisos para realizar esta acción.',
 
   [AppMessageCode.ADC_SYS_ERR_0004]:
-    'Servicio temporalmente no disponible.'
+    'Servicio temporalmente no disponible.',
+  // ============================================
+  // EVENT ERRORS
+  // ============================================
 
+  [AppMessageCode.ADC_EVENT_ERR_0001]:
+    'No se ha podido guardar el evento. Por favor, inténtalo de nuevo.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0002]:
+    'Error al registrar tu asistencia. Revisa tu conexión.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0003]:
+    'No se ha podido eliminar el evento.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0004]:
+    'El evento no existe o ha sido eliminado.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0005]:
+    'Error al cargar los datos del evento.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0006]:
+    'La fecha y hora inicio no puede ser menor a la actual.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0007]:
+    'La fecha y hora de fin del evento debe ser posterior a la de inicio.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0008]:
+    '¡Aforo completo! Lo sentimos, ya no quedan plazas libres para este evento.',
+
+  [AppMessageCode.ADC_EVENT_ERR_0009]:
+    'El límite de invitados por socio es obligatorio para los eventos de feria y debe ser igual o superior a 1.',
+
+  // ============================================
+  // EVENT INFO
+  // ============================================
+
+  [AppMessageCode.ADC_EVENT_INF_0001]:
+    '¡Evento convocado con éxito!',
+
+  [AppMessageCode.ADC_EVENT_INF_0002]:
+    'Datos del evento actualizados correctamente.',
+
+  [AppMessageCode.ADC_EVENT_INF_0003]:
+    '¡Asistencia confirmada! Te esperamos.',
+
+
+  // ============================================
+  // FAIR ERRORS (Feria)
+  // ============================================
+
+  [AppMessageCode.ADC_FAIR_ERR_0001]:
+    'Límite superado. Solo puedes invitar a un máximo de 6 personas por día.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0002]:
+    'El código QR escaneado no corresponde a ningún pase de feria válido.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0003]:
+    'Acceso denegado. Este pase no es válido para la fecha de hoy.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0004]:
+    'No se pudo emitir la invitación. Verifica tu conexión.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0005]:
+    'No se pudo anular el pase. Inténtalo de nuevo más tarde.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0006]:
+    'Debes seleccionar un invitado del listado desplegable o escribir un nombre.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0007]:
+    'No tienes ningún pase de feria activo disponible para la jornada de hoy.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0008]:
+    'Acceso denegado. El socio no se encuentra en estado activo en el sistema.',
+
+  [AppMessageCode.ADC_FAIR_ERR_0009]:
+    'Acceso denegado. El tipo de usuario no dispone de credenciales de acceso de socio.',
+
+  // ============================================
+  // FAIR INFO (Feria)
+  // ============================================
+
+  [AppMessageCode.ADC_FAIR_INF_0001]:
+    'Pase de caseta emitido correctamente.',
+
+  [AppMessageCode.ADC_FAIR_INF_0002]:
+    'El pase ha sido anulado correctamente.',
+
+  [AppMessageCode.ADC_FAIR_INF_0003]:
+    '¡Pase de Feria disponible! Hemos generado automáticamente tu credencial de acceso para la caseta de feria.',
 };

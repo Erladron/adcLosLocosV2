@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
-import { UserStatus } from 'shared-core';
+import { UserStatus, UserRole } from 'shared-core';
 
 export const authGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
@@ -10,19 +10,11 @@ export const authGuard: CanActivateFn = async (route, state) => {
   const currentUrl = state.url;
   console.log('🛡️ [DEBUG-GUARD] Evaluando acceso a:', currentUrl);
 
-  // ============================================
-  // BYPASS DE INICIALIZACIÓN (SOLUCIÓN DE RAÍZ)
-  // ============================================
-  // Si el servicio se queda colgado esperando, hacemos una lectura directa instantánea.
-  // Si ya está logueado en este microsegundo, saltamos la espera que congela la app.
   if (!authService.authReady) {
     console.log('⏳ [DEBUG-GUARD] Servicio ocupado, aplicando margen de espera reactivo...');
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  // ============================================
-  // 1. COMPROBACIÓN DIRECTA DE SESIÓN
-  // ============================================
   const logged = authService.isLogged();
   console.log('🔑 [DEBUG-GUARD] ¿Usuario autenticado en Firebase?:', logged);
 
@@ -34,25 +26,20 @@ export const authGuard: CanActivateFn = async (route, state) => {
     return router.parseUrl('/login');
   }
 
-  // Si tiene sesión e intenta recargar de forma manual la pantalla de login, va a home
   if (currentUrl.includes('login')) {
-    return router.parseUrl('/home');
+    const esPortero = authService.currentUserData?.tipo === UserRole.PORTERO;
+    return router.parseUrl(esPortero ? '/fair-scan' : '/home');
   }
 
-  // ============================================
-  // 2. LECTURA ASÍNCRONA BLINDADA DEL PERFIL
-  // ============================================
+  if (typeof (authService as any).waitForUserData === 'function') {
+    console.log('⏳ [DEBUG-GUARD] Esperando activamente la sincronización del perfil con Firestore...');
+    await (authService as any).waitForUserData();
+  } else {
+    await new Promise(resolve => setTimeout(resolve, 250));
+  }
+
   let user = authService.currentUserData;
 
-  // Si los datos del documento de Firestore no se han mapeado todavía, esperamos un suspiro
-  if (!user) {
-    console.log('⏳ [DEBUG-GUARD] Esperando sincronización del perfil de socio de Firestore...');
-    await new Promise(resolve => setTimeout(resolve, 250));
-    user = authService.currentUserData;
-  }
-
-  // 🔥 VALIDACIÓN EN TIEMPO REAL ANTI-BUCLE PUSH PENDING_APPROVAL 🔥
-  // Si el estado en memoria es pendiente, congelamos la navegación y exigimos datos reales del servidor
   if (user && user.estado === UserStatus.PENDING_APPROVAL) {
     console.log('🔄 [DEBUG-GUARD] Estado local "PENDING_APPROVAL" detectado. Forzando validación en tiempo real con el servidor...');
     try {
@@ -66,27 +53,27 @@ export const authGuard: CanActivateFn = async (route, state) => {
     }
   }
 
-  // Si tras el intento de refresco sigue dando null, la sesión no tiene datos válidos
   if (!user) {
     console.error('❌ [DEBUG-GUARD] Fallo crítico: Hay sesión en Auth pero Firestore está vacío.');
     if (currentUrl.includes('login')) return true;
     return router.parseUrl('/login');
   }
 
-  // ============================================
-  // 3. DETERMINACIÓN DE RUTA SEGÚN ESTADO CORPORATIVO
-  // ============================================
+  if (user.estado === UserStatus.ACTIVE && user.tipo === UserRole.PORTERO) {
+    if (!currentUrl.includes('fair-scan')) {
+      console.log('🔄 [DEBUG-GUARD] Perfil de Portería detectado. Enrutando hacia zona de Control de Accesos.');
+      return router.parseUrl('/fair-scan');
+    }
+    return true;
+  }
+
   const redirectUrl = getRedirectUrlByStatus(user.estado);
   console.log('📌 [DEBUG-GUARD] Estado del socio:', user.estado, '-> Ruta asignada:', redirectUrl || '/home (ACTIVE)');
 
-  // Si el estado es ACTIVE (null), acceso total concedido
   if (!redirectUrl) {
     return true;
   }
 
-  // ============================================
-  // 4. NORMALIZACIÓN ESTRICTA ANTI-BUCLE DE RUTAS
-  // ============================================
   const cleanCurrent = currentUrl.replace(/^\/|\/$/g, '');
   const cleanRedirect = redirectUrl.replace(/^\/|\/$/g, '');
 
@@ -99,9 +86,6 @@ export const authGuard: CanActivateFn = async (route, state) => {
   return router.parseUrl(redirectUrl);
 };
 
-// ============================================
-// HELPER DE ENRUTAMIENTO UNIFICADO
-// ============================================
 function getRedirectUrlByStatus(status: UserStatus): string | null {
   switch (status) {
     case UserStatus.ACTIVE:

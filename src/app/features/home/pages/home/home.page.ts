@@ -13,10 +13,9 @@ import {
   createOutline
 } from 'ionicons/icons';
 
-import { PageHeaderComponent } from 'shared-core';
+// IMPORTACIÓN DE TUS SERVICIOS DEL CORE COMPARTIDO
+import { PageHeaderComponent, FairService } from 'shared-core';
 import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
-
-// 🚀 INYECCIÓN DEL SERVICIO DE NOTIFICACIONES PUSH
 import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service';
 
 @Component({
@@ -38,7 +37,7 @@ export class HomePage implements OnInit {
   // CURRENT USER
   // =========================================
   get currentUser() {
-    return this.authService.currentUserData;
+    return this.authService.currentUserData; // Vinculación directa con tu perfil[cite: 12]
   }
 
   // =========================================
@@ -46,7 +45,8 @@ export class HomePage implements OnInit {
   // =========================================
   constructor(
     private authService: AuthService,
-    private fcmService: FcmService // Inyectamos el servicio de alertas
+    private fcmService: FcmService,
+    private fairService: FairService // Inyectamos el motor ferial de la librería
   ) {
     addIcons({
       peopleOutline,
@@ -63,13 +63,26 @@ export class HomePage implements OnInit {
   // NATIVE INITIALIZATION
   // =========================================
   async ngOnInit() {
-    console.log('🏠 [HOME] Inicializando flujos de la pantalla principal.');
+    console.log('🏠 [HOME] Inicializando flujos de la pantalla principal.'); //[cite: 12]
     
-    // Disparamos la petición de permisos y registro de hardware de forma asíncrona
+    // 1. Ecosistema de notificaciones push asíncrono
     try {
-      await this.fcmService.inicializarFCM();
+      await this.fcmService.inicializarFCM(); //[cite: 12]
     } catch (error) {
-      console.error('🚨 [HOME] Error al inicializar el ecosistema de notificaciones push:', error);
+      console.error('🚨 [HOME] Error al inicializar el ecosistema de notificaciones push:', error); //[cite: 12]
+    }
+
+    // 2. CIRCUITO DE ENTRADA AUTOMÁTICA DE FERIA
+    try {
+      // Esperamos a que el AuthService termine de hidratar al usuario de Firestore[cite: 12]
+      await this.authService.waitForUserData();
+
+      if (this.currentUser) {
+        // Ejecutamos el inyector silencioso. El servicio decide de forma interna si genera el pase o no.
+        await this.fairService.verificarYGenerarPaseSocioLogueado(this.currentUser);
+      }
+    } catch (feriaError) {
+      console.error('🚨 [HOME] Error en la verificación del pase automático de feria:', feriaError);
     }
   }
 }

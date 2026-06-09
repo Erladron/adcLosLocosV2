@@ -40,6 +40,14 @@ service cloud.firestore {
       return isAdmin() || isDirectiva() || isSocio();
     }
 
+    function isPortero() {
+      return currentUserRole() == 'portero';
+    }
+
+    function canScan() {
+      return isAdmin() || isDirectiva() || isPortero();
+    }
+
     function isOwnUser(userId) {
       return request.auth != null && request.auth.uid == userId;
     }
@@ -50,8 +58,15 @@ service cloud.firestore {
 
     match /users/{userId} {
 
-      // LECTURA: Solo usuarios que pertenezcan a la app (logueados)
-      allow read: if isLogged();
+      // LECTURA INDIVIDUAL: Cualquier usuario logueado puede leer perfiles (para cargar nombres, etc.)
+      allow get: if isLogged();
+
+      // LISTADO FILTRADO POR ROL: 
+      // 1. Admin y Directiva ven todo sin restricciones.
+      // 2. Los Socios pueden listar directiva, socios e invitados (se veta que listen porteros).
+      // 3. Invitados y Porteros no cumplen ninguna y se les deniega el acceso automáticamente.
+      // 🚀 CORREGIDO: Ahora el portero también tiene autorización para hacer búsquedas y listar
+      allow list: if canManageUsers() || isPortero() || (isSocio() && resource.data.tipo != 'portero');
 
       // CREACIÓN: Blindado con dos vías (Auto-registro de invitados vs Modo Directiva)
       allow create: if 
@@ -64,10 +79,8 @@ service cloud.firestore {
 
       // ACTUALIZACIÓN:
       allow update: if
-        // VÍA A: ADMIN / DIRECTIVA (Poder total de modificación)
         canManageUsers()
         ||
-        // VÍA B: ONBOARDING INVITADO (Avanzando de estado y rellenando datos)
         (
           isOwnUser(userId)
           && resource.data.tipo == 'invitado'
@@ -77,7 +90,6 @@ service cloud.firestore {
           && (!('dni' in request.resource.data) || request.resource.data.dni.size() <= 9)
         )
         ||
-        // VÍA C: USUARIO ACTIVO EDITANDO PERFIL (Previene hackeo de roles y DNI largo)
         (
           isOwnUser(userId)
           && resource.data.estado == 'active'
@@ -92,7 +104,6 @@ service cloud.firestore {
       // SUBCOLECCIÓN: TOKENS DE NOTIFICACIONES PUSH (FCM)
       // =====================================================
       match /tokens/{token} {
-        // Un socio maneja sus tokens, directiva puede consultarlos para envíos
         allow read, write: if isOwnUser(userId) || canManageUsers();
       }
     }
@@ -102,9 +113,8 @@ service cloud.firestore {
     // =====================================================
 
     match /invitedUsers/{inviteId} {
-      allow read: if isLogged(); // Cerrado al público general de internet
+      allow read: if isLogged();
       allow create: if canInvite();
-      // Solo la directiva puede modificar, aprobar o borrar invitaciones ajenas
       allow update, delete: if canManageUsers(); 
     }
 
@@ -114,6 +124,48 @@ service cloud.firestore {
 
     match /mail/{document=**} {
       allow create: if canInvite();
+    }
+
+    // =====================================================
+    // EVENTS (Gestión de convocatorias y asistencia)
+    // =====================================================
+
+    match /events/{eventId} {
+      allow read: if isLogged() || resource.data.isPrivate == false; 
+      allow create, delete: if canManageUsers(); 
+      allow update: if canManageUsers() || (
+        isLogged() && 
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attendeeCount'])
+      );
+
+      match /attendance/{userId} {
+        allow read: if isLogged(); 
+        allow write: if isOwnUser(userId) || canManageUsers(); 
+      }
+    }
+
+    // =====================================================
+    // FAIR ACCESS (Control de Accesos y Pases de Feria)
+    // =====================================================
+
+    match /fair-access/{accessId} {
+      
+      allow read: if isLogged() && (
+        resource.data.userId == request.auth.uid || 
+        canInvite() || 
+        canScan()
+      ); 
+      
+      allow create: if canInvite() && 
+        request.resource.data.hostId == request.auth.uid && 
+        request.resource.data.scans.size() == 0; 
+
+      allow update: if canScan() && 
+        request.resource.data.userId == resource.data.userId &&
+        request.resource.data.date == resource.data.date &&
+        request.resource.data.scans.size() == resource.data.scans.size() + 1; 
+
+      allow delete: if isLogged() && (resource.data.hostId == request.auth.uid || canManageUsers());
     }
   }
 }

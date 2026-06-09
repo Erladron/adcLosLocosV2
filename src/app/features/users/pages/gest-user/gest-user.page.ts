@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import { inject } from '@angular/core';
 
-// Importamos los componentes Standalone que usa la pantalla desde Ionic (Añadidos Infinite Scroll)
 import {
   IonContent,
   IonSearchbar,
@@ -17,10 +17,8 @@ import {
   IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
 
-// Importamos el motor de registro de iconos nativo de Ionic
 import { addIcons } from 'ionicons';
 
-// ⚙️ SECCIÓN DE ICONOS
 import {
   addOutline,
   personOutline,
@@ -32,9 +30,11 @@ import {
   eyeOffOutline
 } from 'ionicons/icons';
 
-// Importaciones de servicios del núcleo de la aplicación (Shared Core)
+// Importaciones nativas de la SDK de Firebase para armar la consulta con filtros
+import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
+
 import { UserService } from 'projects/shared-core/src/lib/services/user.service';
-import { User } from 'shared-core';
+import { User, UserRole } from 'shared-core';
 import { NotificationService } from 'projects/shared-core/src/lib/services/notification.service';
 import { DialogService } from 'projects/shared-core/src/lib/services/dialog.service';
 import { LoadingService } from 'projects/shared-core/src/lib/services/loading.service';
@@ -42,7 +42,6 @@ import { ErrorHandlerService } from 'projects/shared-core/src/lib/services/error
 import { AuthPoliciesService } from 'projects/shared-core/src/lib/services/auth-policies.service';
 import { AppMessageCode } from 'shared-core';
 
-// Componentes visuales personalizados compartidos
 import { EmptyStateComponent } from 'shared-core';
 import { PageHeaderComponent } from 'shared-core';
 
@@ -71,9 +70,10 @@ import { PageHeaderComponent } from 'shared-core';
 })
 export class GestUserPage implements OnInit {
 
-  // ==========================================================================
-  // COLECCIONES MAESTRAS Y FILTRADAS
-  // ==========================================================================
+  // Inyección del motor de base de datos de Firestore
+  private firestore = inject(Firestore);
+
+  // Arrays de control para almacenar y filtrar los usuarios según su estado
   users: User[] = [];
   filteredUsers: User[] = [];
   pendingUsers: User[] = [];
@@ -81,24 +81,20 @@ export class GestUserPage implements OnInit {
   inactiveUsers: User[] = [];
   filteredInactiveUsers: User[] = [];
 
-  // ==========================================================================
-  // COLECCIONES VISIBLES (Las que se renderizan en el DOM por lotes)
-  // ==========================================================================
+  // Arrays destinados a la paginación progresiva del scroll infinito
   visibleUsers: User[] = [];
   visiblePendingUsers: User[] = [];
   visibleInactiveUsers: User[] = [];
-  pageSize: number = 15; // Tamaño del lote de carga
+  pageSize: number = 15;
 
-  // ==========================================================================
-  // CONTROL DE INTERFAZ DE USUARIO (UI)
-  // ==========================================================================
+  // Variables de estado de la interfaz gráfica
   searchText = '';
   canAddUsers = false;
   canApproveUsers = false;
   canViewInactiveUsers = false;
   tabActual = 'activos';
 
-  /** 🛡️ BANDERA DE CONTROL */
+  // Variable de control para saber si el usuario conectado es un socio ordinario
   isSocioComun = false;
 
   constructor(
@@ -127,42 +123,75 @@ export class GestUserPage implements OnInit {
     await this.loadUsers();
   }
 
-  // ==========================================================================
-  // MOTOR DE CARGA
-  // ==========================================================================
+  // Método encargado de descargar los usuarios adaptándose a las reglas de Firebase
   async loadUsers() {
-    const rawActiveUsers = await this.userService.getApprovedUsers();
+    try {
+      const usersRef = collection(this.firestore, 'users');
+      
+      // Aseguramos el vaciado radical del array antes de cualquier consulta para evitar duplicados
+      this.users = [];
 
-    if (this.isSocioComun) {
-      this.users = rawActiveUsers.filter(u => 
-        u.tipo === 'directiva' || u.tipo === 'socio' || u.tipo === 'invitado'
-      );
-    } else {
-      this.users = rawActiveUsers;
+      // Si las políticas detectan que es un socio común, filtramos antes de llamar al servidor
+      if (this.isSocioComun) {
+        // Creamos una consulta donde exigimos explícitamente solo los roles comunitarios
+        const qActivosSocio = query(
+          usersRef,
+          where('tipo', 'in', [UserRole.SOCIO, UserRole.DIRECTIVA, UserRole.INVITADO])
+        );
+        
+        // Ejecutamos la consulta en Firestore de forma síncrona
+        const snapshot = await getDocs(qActivosSocio);
+        
+        // Creamos un array temporal local para evitar que hilos en paralelo dupliquen los datos
+        const temporalUsers: User[] = [];
+        
+        // Recorremos los documentos recuperados uno a uno
+        snapshot.forEach(docSnap => {
+          const uData = docSnap.data() as User;
+          // Solo añadimos al listado a aquellos usuarios cuyo estado interno sea activo
+          if (uData.estado === 'active') {
+            temporalUsers.push({ id: docSnap.id, ...uData });
+          }
+        });
+
+        // Asignamos el bloque limpio de una sola vez
+        this.users = temporalUsers;
+        
+      } else {
+        // Si el usuario es administrador o directiva, descarga la colección completa mediante el servicio
+        const rawActiveUsers = await this.userService.getApprovedUsers();
+        this.users = rawActiveUsers;
+      }
+
+      // Duplicamos la lista descargada para la lógica interna de búsquedas
+      this.filteredUsers = [...this.users];
+
+      // Carga de usuarios pendientes (Solo permitida para administración y directivos)
+      if (this.canApproveUsers && !this.isSocioComun) {
+        this.pendingUsers = await this.userService.getPendingUsers();
+        this.filteredPendingUsers = [...this.pendingUsers];
+      } else {
+        this.pendingUsers = [];
+        this.filteredPendingUsers = [];
+      }
+
+      // Carga de usuarios dados de baja (Solo permitida para administración y directivos)
+      if (this.canViewInactiveUsers && !this.isSocioComun) {
+        this.inactiveUsers = await this.userService.getInactiveUsers();
+        this.filteredInactiveUsers = [...this.inactiveUsers];
+      } else {
+        this.inactiveUsers = [];
+        this.filteredInactiveUsers = [];
+      }
+
+      // Reajustamos los fragmentos de lotes visibles para el scroll
+      this.resetPagination();
+    } catch (error) {
+      await this.errorHandler.handle(error);
     }
-
-    this.filteredUsers = [...this.users];
-
-    if (this.canApproveUsers && !this.isSocioComun) {
-      this.pendingUsers = await this.userService.getPendingUsers();
-      this.filteredPendingUsers = [...this.pendingUsers];
-    } else {
-      this.pendingUsers = [];
-      this.filteredPendingUsers = [];
-    }
-
-    if (this.canViewInactiveUsers && !this.isSocioComun) {
-      this.inactiveUsers = await this.userService.getInactiveUsers();
-      this.filteredInactiveUsers = [...this.inactiveUsers];
-    } else {
-      this.inactiveUsers = [];
-      this.filteredInactiveUsers = [];
-    }
-
-    // Inicializamos el primer lote visible tras cargar todo de Firebase
-    this.resetPagination();
   }
 
+  // Mapeado dinámico de permisos basado en el token de sesión activo
   loadPermissions() {
     this.isSocioComun = this.policies.isSocio() && !this.policies.isAdmin() && !this.policies.isDirectiva();
     this.canAddUsers = !this.isSocioComun && (this.policies.isAdmin() || this.policies.isDirectiva());
@@ -170,9 +199,7 @@ export class GestUserPage implements OnInit {
     this.canViewInactiveUsers = (this.policies.isAdmin() || this.policies.isDirectiva()) && !this.isSocioComun;
   }
 
-  // ==========================================================================
-  // BARRA DE BÚSQUEDA INTEGRADORA
-  // ==========================================================================
+  // Motor del buscador que filtra las colecciones en base a la cadena de texto introducida
   filterUsers() {
     const texto = this.searchText.toLowerCase().trim();
 
@@ -204,19 +231,17 @@ export class GestUserPage implements OnInit {
       user.tipo?.toLowerCase().includes(texto)
     );
 
-    // Al filtrar, reiniciamos la paginación visual para mostrar los primeros resultados
     this.resetPagination();
   }
 
-  // ==========================================================================
-  // MOTOR DE PAGINACIÓN (Scroll Infinito)
-  // ==========================================================================
+  // Divide los arrays completos para pintar únicamente los primeros 15 resultados
   resetPagination() {
     this.visibleUsers = this.filteredUsers.slice(0, this.pageSize);
     this.visiblePendingUsers = this.filteredPendingUsers.slice(0, this.pageSize);
     this.visibleInactiveUsers = this.filteredInactiveUsers.slice(0, this.pageSize);
   }
 
+  // Disparador del scroll infinito que concatena lotes adicionales al llegar al final
   cargarMasUsuarios(event: any) {
     if (this.tabActual === 'activos') {
       const currentLen = this.visibleUsers.length;
@@ -232,11 +257,10 @@ export class GestUserPage implements OnInit {
       this.visibleInactiveUsers = [...this.visibleInactiveUsers, ...more];
     }
     
-    // Avisamos a Ionic de que ya hemos inyectado las tarjetas nuevas
     event.target.complete();
   }
 
-  // Comprueba si ya se han pintado todos los usuarios de la pestaña actual
+  // Evalúa si el scroll infinito debe detenerse al no haber más registros que pintar
   isScrollDisabled(): boolean {
     if (this.tabActual === 'activos') return this.visibleUsers.length >= this.filteredUsers.length;
     if (this.tabActual === 'pendientes') return this.visiblePendingUsers.length >= this.filteredPendingUsers.length;
@@ -244,13 +268,12 @@ export class GestUserPage implements OnInit {
     return true;
   }
 
-  // ==========================================================================
-  // ACCIONES
-  // ==========================================================================
+  // Redirección al formulario de creación manual de perfiles
   nuevoUsuario() {
     this.router.navigate(['/user-detail'], { queryParams: { adminCreate: true } });
   }
 
+  // Proceso de aprobación de registros en pre-alta
   async aprobarUsuario(user: User) {
     try {
       await this.loading.wrap(async () => {
@@ -263,6 +286,7 @@ export class GestUserPage implements OnInit {
     }
   }
 
+  // Proceso de denegación y borrado de solicitudes entrantes
   async rechazarUsuario(user: User) {
     const confirmar = await this.dialog.confirm({
       header: 'Rechazar usuario',

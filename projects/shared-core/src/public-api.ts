@@ -5,6 +5,7 @@ export * from './lib/models/user-detail.model';
 export * from './lib/models/user-role.enum';
 export * from './lib/models/user-status.enum';
 export * from './lib/models/users.models';
+export * from './lib/models/events.models';
 
 // Components
 export * from './lib/components/empty-state/empty-state.component';
@@ -27,6 +28,7 @@ export * from './lib/services/auth-credentials.service';
 export * from './lib/services/auth-permissions.service';
 export * from './lib/services/auth-admin.service';
 export * from './lib/services/auth-policies.service';
+export * from './lib/services/fair.service';
 
 // Services (Usuarios)
 export * from './lib/services/user.service';
@@ -47,6 +49,10 @@ export * from './lib/services/dialog.service';
 export * from './lib/services/error-handler.service';
 export * from './lib/services/loading.service';
 export * from './lib/services/photo.service';
+export * from './lib/services/fair.service';
+
+// Services Events
+export * from './lib/services/events.service';
 
 // Enviroments Token
 export * from './lib/env.token';

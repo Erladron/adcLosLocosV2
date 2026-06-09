@@ -21,7 +21,6 @@
   </div>
 
   <div class="edit-mode-panel" *ngIf="!isEditMode || editing">
-    
     <div class="edit-panel-left">
       <ion-button class="photo-btn" shape="round" (click)="selectPhoto.emit()">
         <ion-icon slot="icon-only" name="images-outline"></ion-icon>
@@ -48,6 +47,12 @@
       <ion-input [(ngModel)]="user.nombre" (ionChange)="onCapitalizeName()" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
     </ion-item>
 
+    <ion-item class="custom-item" *ngIf="isPortero && (!isEditMode || editing || user.empresa)">
+      <ion-label position="stacked">Empresa de Seguridad *</ion-label>
+      <ion-input [(ngModel)]="user.empresa" placeholder="Ej. Prosegur, Securitas..." [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
+      <ion-icon slot="start" name="shield-checkmark-outline" style="color: #38bdf8; margin-top: 24px;"></ion-icon>
+    </ion-item>
+
     <ion-item class="custom-item" *ngIf="user.telefono || !isEditMode || editing">
       <ion-label position="stacked">Teléfono</ion-label>
       <ion-input type="tel" maxlength="9" [(ngModel)]="user.telefono" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
@@ -63,7 +68,6 @@
         [readonly]="isReadonlyMode"
         placeholder="Ej. 12345678">
       </ion-input>
-      
       <div slot="end" class="dni-badge" *ngIf="letraDni && !isReadonlyMode">
         - {{ letraDni }}
       </div>
@@ -74,59 +78,49 @@
       <span>Introduce solo los 8 números. La letra se añade automáticamente.</span>
     </div>
 
-    <div class="direccion-container" *ngIf="user.direccion || !isEditMode || editing">
-      <ion-item class="custom-item">
-        <ion-label position="stacked">Dirección Postal</ion-label>
-        <ion-input 
-          [(ngModel)]="user.direccion" 
-          (ngModelChange)="onDireccionChange($event)"
-          (ionBlur)="ocultarSugerencias()"
-          placeholder="Calle, número o localidad" 
-          [readonly]="!canEdit || (isEditMode && !editing)">
-        </ion-input>
-      </ion-item>
-      
-      <ion-list *ngIf="mostrarSugerencias && sugerencias.length > 0" class="mapbox-suggestions">
-        <ion-item 
-          *ngFor="let sug of sugerencias" 
-          button 
-          (mousedown)="$event.preventDefault()" 
-          (click)="seleccionarDireccion(sug)">
-          <ion-label>
-            <h2 class="sug-title">{{ sug.name }}</h2>
-            <p class="sug-subtitle">{{ sug.place_formatted }}</p>
-          </ion-label>
+    <ng-container *ngIf="!isPortero">
+      <div class="direccion-container" *ngIf="user.direccion || !isEditMode || editing">
+        <ion-item class="custom-item">
+          <ion-label position="stacked">Dirección Postal</ion-label>
+          <ion-input 
+            [(ngModel)]="user.direccion" 
+            (ngModelChange)="onDireccionChange($event)"
+            (ionBlur)="ocultarSugerencias()"
+            placeholder="Calle, número o localidad" 
+            [readonly]="!canEdit || (isEditMode && !editing)">
+          </ion-input>
         </ion-item>
-      </ion-list>
-    </div>
-    <ion-item class="custom-item" *ngIf="user.detallesDireccion || !isEditMode || editing">
-      <ion-label position="stacked">Piso, Puerta, Escalera (Opcional)</ion-label>
-      <ion-input [(ngModel)]="user.detallesDireccion" placeholder="Ej. 3º B, Bloque 2, Puerta Izquierda..." [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
-    </ion-item>
-    <ion-item class="custom-item" *ngIf="user.profesion || !isEditMode || editing">
-      <ion-label position="stacked">Profesión</ion-label>
-      <ion-input [(ngModel)]="user.profesion" placeholder="Ej. Carpintero, Abogado, Estudiante" [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
-    </ion-item>
+        
+        <ion-list *ngIf="mostrarSugerencias && sugerencias.length > 0" class="mapbox-suggestions">
+          <ion-item *ngFor="let sug of sugerencias" button (mousedown)="$event.preventDefault()" (click)="seleccionarDireccion(sug)">
+            <ion-label>
+              <h2 class="sug-title">{{ sug.name }}</h2>
+              <p class="sug-subtitle">{{ sug.place_formatted }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+      <ion-item class="custom-item" *ngIf="user.detallesDireccion || !isEditMode || editing">
+        <ion-label position="stacked">Piso, Puerta, Escalera (Opcional)</ion-label>
+        <ion-input [(ngModel)]="user.detallesDireccion" placeholder="Ej. 3º B, Bloque 2..." [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
+      </ion-item>
+      <ion-item class="custom-item" *ngIf="user.profesion || !isEditMode || editing">
+        <ion-label position="stacked">Profesión</ion-label>
+        <ion-input [(ngModel)]="user.profesion" placeholder="Ej. Carpintero, Abogado..." [readonly]="!canEdit || (isEditMode && !editing)"></ion-input>
+      </ion-item>
+    </ng-container>
 
-    <div class="privacy-section" *ngIf="!simpleMode">
+    <div class="privacy-section" *ngIf="!simpleMode && !isPortero">
       <h3 class="privacy-title">
         <ion-icon name="lock-closed-outline"></ion-icon> Privacidad en el directorio
       </h3>
       <p class="privacy-subtitle">Controla qué datos pueden ver otros socios activos de la peña.</p>
-      
       <ion-item class="privacy-toggle-item" lines="none">
-        <ion-label>
-          <h4>Visibilidad del Teléfono</h4>
-          <p>Permitir que otros socios vean mi número de contacto.</p>
-        </ion-label>
+        <ion-label><h4>Visibilidad del Teléfono</h4><p>Permitir que otros socios vean mi número.</p></ion-label>
         <ion-toggle slot="end" [(ngModel)]="user.publicarTelefono" [disabled]="!canEdit || (isEditMode && !editing)"></ion-toggle>
       </ion-item>
-
       <ion-item class="privacy-toggle-item" lines="none">
-        <ion-label>
-          <h4>Visibilidad del Email</h4>
-          <p>Permitir que otros socios vean mi dirección de correo.</p>
-        </ion-label>
+        <ion-label><h4>Visibilidad del Email</h4><p>Permitir que otros socios vean mi correo.</p></ion-label>
         <ion-toggle slot="end" [(ngModel)]="user.publicarEmail" [disabled]="!canEdit || (isEditMode && !editing)"></ion-toggle>
       </ion-item>
     </div>
@@ -135,47 +129,16 @@
 
 <div class="section-card" *ngIf="mostrarCropper && (internalImageEvent || internalImageBase64)">
   <div class="cropper-integrated-layout">
-    
     <div class="cropper-sidebar-left">
-      <button class="svg-zoom-btn" (click)="zoomIn()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line>
-        </svg>
-      </button>
-      <button class="svg-zoom-btn" (click)="zoomOut()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line>
-        </svg>
-      </button>
+      <button class="svg-zoom-btn" (click)="zoomIn()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></button>
+      <button class="svg-zoom-btn" (click)="zoomOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></button>
     </div>
-
     <div class="cropper-center-stage">
-      <image-cropper 
-        class="custom-cropper" 
-        [imageChangedEvent]="internalImageEvent"
-        [imageBase64]="internalImageBase64"
-        [maintainAspectRatio]="true"
-        [aspectRatio]="1 / 1" 
-        [resizeToWidth]="300" 
-        [cropperMinWidth]="100" 
-        [onlyScaleDown]="true" 
-        [roundCropper]="true" 
-        [containWithinAspectRatio]="true"
-        [transform]="transform"
-        [imageQuality]="90"
-        format="jpeg" 
-        (imageCropped)="onImageCropped($event)">
-      </image-cropper>
+      <image-cropper class="custom-cropper" [imageChangedEvent]="internalImageEvent" [imageBase64]="internalImageBase64" [maintainAspectRatio]="true" [aspectRatio]="1 / 1" [resizeToWidth]="300" [cropperMinWidth]="100" [onlyScaleDown]="true" [roundCropper]="true" [containWithinAspectRatio]="true" [transform]="transform" [imageQuality]="90" format="jpeg" (imageCropped)="onImageCropped($event)"></image-cropper>
     </div>
-
     <div class="cropper-bottom-actions">
-      <ion-button class="action-btn-glass apply" shape="round" (click)="onAceptarRecorte()">
-        <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
-      </ion-button>
-      <ion-button class="action-btn-glass cancel" shape="round" (click)="cancelCropper.emit()">
-        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
-      </ion-button>
+      <ion-button class="action-btn-glass apply" shape="round" (click)="onAceptarRecorte()"><ion-icon slot="icon-only" name="checkmark-outline"></ion-icon></ion-button>
+      <ion-button class="action-btn-glass cancel" shape="round" (click)="cancelCropper.emit()"><ion-icon slot="icon-only" name="close-outline"></ion-icon></ion-button>
     </div>
-
   </div>
 </div>

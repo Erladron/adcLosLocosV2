@@ -1,136 +1,300 @@
-================================================================================
-# ADC Los Locos V2 - Documentación Técnica y Funcional (Actualizada 2026)
-================================================================================
+==========================================================================
+CONTEXTO TECNICO Y FUNCIONAL GLOBAL: APP ADC LOS LOCOS V2 (ACTUALIZADO 2026)
+==========================================================================
 
---------------------------------------------------------------------------------
-## Estado Actual del Proyecto
---------------------------------------------------------------------------------
-La aplicación se encuentra en una fase avanzada de consolidación funcional, con un enfoque en la estabilidad y el rendimiento. Actualmente, dispone de un sistema de autenticación robusto, onboarding de invitados, gestión completa de usuarios con diferentes estados y roles, auditoría avanzada, control de permisos detallado, sistema de invitaciones y administración de estados de usuario. El punto actual es estable, con todas las funcionalidades principales operativas y probadas.
+Este documento sirve como transferencia de contexto absoluto (Bootstrap) para cualquier Agente de IA. Describe el estado actual del desarrollo, las caracteristicas ya implementadas, la arquitectura del sistema, hitos recientes del backend, analisis de riesgos y los siguientes pasos pendientes.
 
---------------------------------------------------------------------------------
-## 1. Descripción Funcional
---------------------------------------------------------------------------------
-ADC Los Locos V2 es una aplicación móvil y web desarrollada para la gestión integral de usuarios, socios, invitados y la administración interna de una asociación/peña.
+---
 
-Funcionalidades principales implementadas:
-* Registro mediante invitación.
-* Onboarding guiado para completar perfiles.
-* Estados de usuario avanzados (pending_data, pending_approval, active, inactive, rejected).
-* Directorio y Panel de Gestión de Usuarios Inteligente (Actualizado): Transforma su comportamiento dinámicamente según quién navegue la app.
-* Control de acceso por roles y políticas de seguridad.
-* Sistema de auditoría completo (quién invitó, fecha, quién aprobó, fecha, fecha y motivo de baja, reactivaciones).
-* Gestión de fotografías y avatares con ngx-image-cropper.
-* Protección de navegación mediante Angular Guards.
-* Menú dinámico según el estado y los permisos del usuario.
+1. ARQUITECTURA GENERAL DEL SOFTWARE
 
---------------------------------------------------------------------------------
-## 2. Flujo Funcional de Usuarios (Simplificado)
---------------------------------------------------------------------------------
-1. Un socio/directiva/admin invita a un nuevo usuario.
-2. El usuario recibe un enlace de registro.
-3. El usuario se registra y nace con el estado "invitado".
-4. El usuario completa el onboarding y sus datos personales. El estado cambia automáticamente a "pending_approval".
-5. La directiva o administración aprueba el acceso. El usuario pasa al estado "active".
-6. Con el estado "active", se habilita el menú completo y el acceso a todas las funcionalidades.
+El proyecto es una aplicacion movil y web hibrida desarrollada con Ionic (Standalone Components) y Angular. Sigue una estrategia de desarrollo modular y reutilizacion de codigo mediante una libreria local dedicada.
 
---------------------------------------------------------------------------------
-## 3. Estados de Usuario
---------------------------------------------------------------------------------
-* pending_data:    Usuario pendiente de completar perfil
-* pending_approval: Pendiente de aprobación de directiva
-* active:           Usuario activo con acceso
-* inactive:         Usuario dado de baja
-* rejected:         Usuario rechazado
+* Aplicacion Principal (App): Gestiona las vistas finales, paginas especificas de cada funcionalidad (Features) y los flujos de navegacion (Routes).
+* Nucleo Compartido (shared-core): Una libreria publica ubicada en 'projects/shared-core/'. Centraliza la logica de negocio, modelos de datos, utilidades y servicios de infraestructura. Toda la comunicacion con Firebase se realiza a traves de esta capa.
+* Estructura Visual de Componentes: Los elementos estructurales nativos e interactivos usan layouts basados en Glassmorphism sobre botones y tarjetas, integrados con clases dinamicas e inyecciones de estado reactivo.
 
---------------------------------------------------------------------------------
-## 4. Arquitectura Técnica
---------------------------------------------------------------------------------
-Frontend:
-* Framework: Ionic (^8.0.0) y Angular (^20.0.0).
-* Componentes: Standalone Components de Angular, SCSS personalizado.
-* Estructura: Arquitectura modular por features. Utiliza ngx-image-cropper para la gestión de imágenes.
-* Manejo de estado: RxJS (~7.8.0).
+---
 
-Backend:
-* Plataforma: Firebase (Authentication, Cloud Firestore, Firebase Functions, Firebase Storage).
-* Funciones: Firebase Functions (functions/package.json usa Node.js 24, firebase-admin: ^13.6.0, firebase-functions: ^7.0.0).
-* Reglas de seguridad: firestore.rules y firestore.indexes.json para Cloud Firestore.
+2. FUNCIONALIDADES YA IMPLEMENTADAS (HISTORIAL DEL PROYECTO)
 
-Integración Móvil (Capacitor):
-* Capacitor: (@capacitor/core: 8.3.4, @capacitor/android: 8.3.3).
-* Plugins: @capacitor/push-notifications (con presentationOptions: ["badge", "sound", "alert"]), @capacitor/app, @capacitor/camera, @capacitor/haptics, @capacitor/keyboard, @capacitor/status-bar.
-* Configuración: capacitor.config.ts (appId: com.adcloslocos_desa.app, appName: Los Locos).
+A. Ecosistema de Autenticacion y Registro (Auth Feature)
+* Control de Acceso: Modulo blindado mediante Guards (auth.guard.ts y role.guard.ts) que interceptan las rutas segun el estado de la sesion y los privilegios del usuario.
+* Flujo de Acceso Basico: Pagina de Login integrada con Firebase Authentication y pasarela de Google Auth.
+* Sistema de Invitaciones: Flujo de alta controlado (invite.page) para pre-registrar o invitar a futuros miembros.
+* Onboarding y Aprobacion: Pagina de perfil completo (complete-profile.page) para el alta inicial y pantalla de espera activa (pending-approval.page) para usuarios cuyos perfiles requieren validacion manual por parte de la junta directiva.
 
-Despliegue:
-* Firebase Hosting (dist/web-onboarding/browser).
-* Scripts en package.json para deploy:desa, deploy:prod, deploy:web, build:android, deploy:all.
+B. Gestion Completa de Socios (Users Feature)
+* Administracion Interna: Vista de gestion general (gest-user.page) y ficha individualizada de datos del socio (user-detail.page).
+* Formularios Modulares Especializados (User Detail Components):
+  - credentials-form: Gestion de emails, contrasenas y datos de acceso.
+  - membership-form: Control del estado del socio (Alta, Baja, Suspendido) y asignacion de roles (Socio, Administrador, Directiva). El campo de perfil del documento mapea el rol real bajo la propiedad estricta 'tipo' en Firestore.
+  - personal-data-form: Formulario avanzado para la informacion civil del usuario. Incluye:
+    * Capitalizacion de nombres automaticos mediante utilidades core (string.utils.ts).
+    * Validacion estricta de DNI en caliente (calculo sincrono del digito verificador de la letra y badge visual en pantalla).
+    * Tratamiento de imagen de perfil: Integracion de plugin de recorte (ngx-image-cropper) con optimizacion de escala por Canvas en hardware para almacenar la foto optimizada.
+  - user-audit-form: Vista de logs e historial de modificaciones del usuario para control de auditoria.
 
---------------------------------------------------------------------------------
-## 5. Auditoría Implementada
---------------------------------------------------------------------------------
-La aplicación dispone de auditoría avanzada para usuarios, visible solo para Administradores y Directiva. Registra:
-* Quién invitó al usuario.
-* Fecha de invitación.
-* Quién aprobó el acceso.
-* Fecha de aprobación.
-* Fecha y motivo de baja.
-* Reactivaciones.
+C. Modulo de Infraestructura y Servicios del Core (shared-core)
+* Persistencia: Capa de servicios (user.service.ts, events.service.ts) totalmente desacoplada para interactuar con Cloud Firestore y Firebase Storage.
+* Notificaciones Push: Servicio centralizado (fcm.service.ts) listo para capturar tokens de dispositivo y gestionar alertas push nativas remotas.
+* UI Helpers: Fachadas unificadas para lanzar ventanas emergentes (dialog.service.ts), pantallas de carga sincronizadas (loading.service.ts) y alertas corporativas optimizadas (notification.service.ts).
+* Geocodificacion Predictiva: Integracion con la API de Mapbox (mapbox.service.ts) para autocompletar direcciones postales reales en base a un flujo reactivo controlado por RxJS.
 
---------------------------------------------------------------------------------
-## 6. Estructura del Proyecto (Directorios Clave)
---------------------------------------------------------------------------------
-* android/:   Proyecto nativo de Android (Gradle 8.13.0, Google Services 4.4.4).
-* functions/: Firebase Functions (TypeScript, Node.js 24).
-* projects/:  Espacio de trabajo de Angular para múltiples proyectos/librerías (shared-core, web-onboarding).
-* src/:       Código fuente principal de la aplicación Ionic/Angular.
-* www/:       Directorio de salida de la construcción web para Capacitor.
+---
 
---------------------------------------------------------------------------------
-## 7. Estado Actual del Desarrollo (Últimas Mejoras Incorporadas)
---------------------------------------------------------------------------------
+3. MODULO DE EVENTOS Y NOTIFICACIONES PUSH: HITOS RECIENTES
 
-A. Blindaje del Directorio y Control de Privacidad por Roles (Nuevo)
-* Modo Vista Pública de Comunidad: Si un socio común consulta una ficha de perfil ajena, el controlador (user-detail.page.ts) intercepta la carga y activa una bandera de seguridad estricta.
-* Destrucción del DOM de Campos Vacíos: Al consultar un perfil ajeno en modo público, las variables dni y direccion se vacían en memoria de forma inmediata. El formulario (personal-data-form.component.html) procesa los inputs con directivas condicionales *ngIf; al recibir estas cadenas vacías, elimina los campos por completo de la pantalla, evitando mostrar inputs vacíos o textos fijos inapropiados.
-* Ocultación de Bloques Administrativos: Los componentes de Membresía (app-membership-form) y Auditoría (app-user-audit-form) se destruyen por completo en la interfaz pública de socios.
-* Intimidad de Contacto: El teléfono y el email de un socio ajeno solo se exponen si el dueño activó expresamente sus respectivos selectores de visibilidad en sus opciones de perfil.
-* Ocultación Absoluta del Admin: Para los socios comunes, las cuentas de los administradores quedan 100% invisibles en el listado, mutando el título de la pantalla de "Gestión de Usuarios" a "Directorio de Socios".
+Se ha completado la integracion total de la vista de listados (events.page), la pantalla de detalle (event-detail.page), el servicio core (events.service.ts) y un ecosistema distribuido de Cloud Functions v2 con Cloud Messaging, unificando criterios de rendimiento movil, maquetacion adaptada y robustez de datos:
 
-B. Optimización Gráfica, de Espacio y Contraste en Móviles (Nuevo)
-* Layout Inline de Alta Densidad: Las tarjetas de la lista general muestran el rol (tipo-badge), la profesión y el teléfono en una sola línea horizontal elástica (flex-wrap: wrap; gap: 10px). Esto evita que las tarjetas se estiren verticalmente en los smartphones, garantizando un escaneo visual óptimo en pantallas pequeñas.
-* Marcadores Iconográficos Dedicados: Se eliminaron los puntos de separación planos y se incorporaron iconos específicos Standalone (briefcase-outline, call-outline, eye-off-outline) para identificar inequívocamente cada dato de un vistazo.
-* Subidón de Contraste en Tarjetas (Glass-Card): Para evitar que los textos se ahoguen contra el fondo azul marino de las tarjetas, la profesión se estiliza en azul celeste brillante (#64b5f6) con grosor tipográfico 600, y el número de teléfono en blanco translúcido de alta intensidad (rgba(255, 255, 255, 0.88)).
-* Barra de Búsqueda de Alta Visibilidad: La barra de entrada de texto (custom-searchbar) se configuró mediante variables nativas de Ionic para forzar tanto el texto de guía (Placeholder) como el icono de la lupa y el botón de borrado en blanco puro (#ffffff).
-* Control del Helper del DNI: El texto de aviso "La letra del DNI se calcula automáticamente" se condicionó estrictamente a que el usuario esté en modo edición activo (*ngIf="editing || !isEditMode"), limpiando el ruido visual en las consultas estáticas.
-* Saneamiento Geográfico Postal: El campo de dirección se tipificó explícitamente como "Dirección Postal", desvinculando por completo su propósito del uso de correos electrónicos (que residen de forma aislada en la tarjeta de credenciales).
+A. Pantalla de Detalle, Edicion y Cancelacion Atomica (event-detail.page)
+* Entrada de Fechas Espejo: Ocultacion total de los controles nativos de Ionic en favor de celdas glassmorphic personalizadas. Muestran las fechas formateadas en texto legible en tiempo real.
+* Automatizacion de Fin de Evento: Al confirmar una fecha de inicio (y si no esta marcado como "Todo el dia"), el sistema calcula automaticamente la fecha de finalizacion proyectando mas una (+1) hora en el futuro.
+* Blindaje Temporal del Pasado: No se permite fechar el inicio de un evento en un momento anterior al presente absoluto. Si se intenta, el componente corrige el valor reiniciandolo a la hora actual.
+* Auto-reparacion de Incoherencias: Si el usuario edita la fecha de fin e introduce un valor menor o igual a la de inicio, la aplicacion bloquea el envio, anade la clase de error .control-has-error (borde rojo traslucido) y repara el campo solo devolviendolo al valor seguro (Inicio +1 hora).
+* Mensajeria Centralizada: Vinculacion de las alertas de error de fecha con el enum corporativo AppMessageCode.ADC_EVENT_ERR_0003 mapeado en la libreria core.
+* Direcciones Verificadas para Eventos: Integracion del buscador predictivo de Mapbox dentro del campo de ubicacion del evento. Usa un Subject de RxJS con operadores debounceTime(400) y switchMap para capturar el valor exacto del campo place_formatted consumiendo el token oficial mediante el Path Alias @env/environment.
+* Flujo de Destruccion Atomica con Push Colectivo: La directiva puede cancelar y eliminar convocatorias usando el boton nativo integrado en la UI de cristal .btn-pena-cancel. La accion se procesa mediante el inyector AlertController, congela la UI con LoadingService.wrap para evitar fallos de conectividad o desajustes del DOM, e inyecta la orden de baja masiva en Firestore antes de limpiar la vista reactivamente.
+* Internacionalizacion y Mapeo en Caliente (Espanol): Se integraron diccionarios estrictos globales (EVENT_TYPE_ES) para transformar los strings primitivos del modelo (asamblea, comida, quedada, feria) en etiquetas humanas legibles en la cabecera del cartel.
 
-C. Gestión de Credenciales y Contraseñas Funcional (Nuevo)
-* Flujo Informativo y Seguro: Los usuarios no modifican contraseñas escribiéndolas directamente en inputs locales de la app móvil.
-* Acción Única Descentralizada: La tarjeta de credenciales expone el email del socio en modo lectura y un Botón Único de Restablecer Contraseña. Al pulsarse, se invoca la pasarela segura del servicio de autenticación y se dispara un correo automatizado al peñista con un enlace que lo redirige a la plataforma web de onboarding para completar el cambio con total seguridad.
+B. Listado General, Seguridad y Control de Asistencia (events.page)
+* Consumo de Fachada Centralizada de Autenticacion: Se integro el componente con AuthService, haciendo uso del ciclo asincronico await this.authService.waitForUserData() para recuperar de manera segura el perfil de usuario desde Firestore antes de iniciar las consultas de datos.
+* Filtrado Perimetral por Rol: Conexion directa con la directiva this.authService.isInvitado(). Si un usuario accede con perfil de "Invitado", el flujo RxJS filtra el tablon en caliente para ocultar cualquier convocatoria marcada como privada (event.isPrivate === true), garantizando que solo visualizan los eventos publicos (ej. "Un evento para todo el mundo").
+* Seguro de Desconexion en Cierre de Sesion: Implementacion del patron de destruccion mediante Subject y takeUntil(this.destroy$) combinado con operadores de captura catchError(() => of([])). Al pulsar "Cerrar Sesion", la pagina destruye inmediatamente las suscripciones activas en tiempo real con Firestore. Esto evita que la aplicacion intente leer colecciones de socios en estado anonimo, silenciando por completo los errores de permisos (Missing or insufficient permissions) en la consola del navegador.
+* Logica Avanzada de Aforo Profesional: 
+  - Se diseno una funcion evaluadora isEventFull(event) que analiza si las confirmaciones han alcanzado el limite de maxAttendees.
+  - Comportamiento UX Inteligente: Si el evento esta lleno y el usuario no esta inscrito, se ocultan los botones de accion y se muestra un estado deshabilitado de "Aforo Completo". Si el evento esta lleno pero el usuario ya estaba apuntado, la interfaz preserva los botones para permitirle desapuntarse y liberar su plaza de forma interactiva.
+* Fidelidad Estricta de Maquetacion HTML/SCSS: Se reestructuraron las secciones del DOM mediante contenedores estructurales de Angular (<ng-container>) e inyecciones dinamicas de traduccion en caliente ({{ estadoTraduccion[event.status] | uppercase }}). Esto permite aplicar las condiciones logicas de aforo y asistencia respetando integramente las clases de estilo nativas .card-actions, .btn-action, .btn-accept y .btn-decline definidas en la hoja de estilos de la aplicacion principal, manteniendo los bordes circulares, paddings dinamicos y textos descriptivos en minusculas.
+* Blindaje de la URL de Creacion: Implementacion de guardias de codigo en el ngOnInit de la pagina de detalle. Si un usuario no autorizado intenta forzar la entrada manual escribiendo el path /events/new, el sistema bloquea la inicializacion, muestra una notificacion de advertencia y redirige al infractor de vuelta al menu de listados.
 
---------------------------------------------------------------------------------
-## 8. Próximos Pasos Recomendados
---------------------------------------------------------------------------------
-1. Integración de Autocompletado Geográfico (Siguiente Paso Activo): Incorporar la API de autocompletado y validación predictiva de direcciones postales utilizando la infraestructura premium de Mapbox Search API (aprovechando la cuenta activa del proyecto y su capa gratuita de 100.000 peticiones mensuales).
-2. Estabilización completa y Pruebas E2E: Continuar con la mejora de la estabilidad y la implementación de pruebas end-to-end para garantizar la calidad del software.
-3. Implementación de Estadísticas Reales: Desarrollar módulos para mostrar métricas y datos relevantes de la asociación.
-4. Módulo Completo de Eventos: Crear una sección dedicada a la gestión y visualización de eventos de la peña.
-5. Notificaciones Push: Asegurarse de la correcta implementación y personalización de las notificaciones push para diferentes escenarios comunitarios.
-6. Sistema de Logs Administrativos: Implementar un sistema robusto para registrar y monitorear acciones administrativas críticas.
-7. Preparación PWA / Publicación: Preparar la aplicación para su despliegue como Progressive Web App y su posterior publicación en las tiendas oficiales.
+C. Backend en la Nube: Arquitectura Firebase Cloud Functions v2
+Se configuro y despliego un modulo robusto basado en el SDK de Cloud Functions de segunda generacion (v2) unificado en la region central de almacenamiento (us-central1):
+* FCM Templates Integrados (fcm-templates.ts): Modulo estatico que define los payloads nativos esteticos para hardware movil con el color corporativo oficial de la pena (#1c3f7c), icono corporativo nativo empaquetado en el APK (ic_escudo_notificacion) e imagenes escaladas del escudo oficial desde Storage distribuidas por bloques asincronos rapidos de Firebase Cloud Messaging (messaging().sendEach()).
+* Escuchador de Base de Datos Reactivo (onDocumentWritten): Monitorea la coleccion /events/{eventId} de manera asincrona. 
+* Estrategia Interoperable de Triggers: El cliente Angular no realiza envios masivos directos (ahorrando bateria e impidiendo el robo de tokens). Al crear (createEvent), modificar (updateEvent) o eliminar (deleteEvent) un evento, la aplicacion movil inyecta un nodo temporal privado e invisible en la base de datos denominado _notificationTrigger.
+* Procesamiento de Segmentacion y Autolimpieza Atomica: El backend captura el trigger, lee dinamicamente el array de roles elegidos (destinatarios), extrae de forma segura todos los tokens de terminal vinculados en las subcolecciones /users/{uid}/tokens de socios activos y distribuye los pushes adaptados al tipo de alerta (NUEVO_EVENTO, MODIFICACION_EVENTO, ELIMINACION_EVENTO). 
+* Flujo Destructivo Centralizado: Si la orden interceptada en la nube es una eliminacion, el backend despacha los pushes de cancelacion a los terminales y, en el bloque de salida obligatoria (finally), destruye fisicamente de forma automatica el documento completo del evento de Firestore, evitando colecciones basura o dependencias muertas. Si es un alta o edicion, purga atomicamente el campo de control _notificationTrigger para evitar bucles repetitivos de alertas.
+* Politica de Limpieza en Artifact Registry: Al trabajar con v2 (Cloud Run), se inyecto una regla de retencion automatica de imagenes en el repositorio de contenedores de Google Cloud, asegurando la eliminacion de compilaciones obsoletas y manteniendo la cuota mensual completamente gratuita.
 
---------------------------------------------------------------------------------
-## 9. Recomendaciones Técnicas
---------------------------------------------------------------------------------
-* Evitar añadir nuevas funcionalidades sin estabilizar completamente las existentes.
-* Realizar snapshots o Git commits frecuentes para mantener un historial de cambios claro.
-* Mantener una separación clara entre los servicios para mejorar la modularidad y el mantenimiento.
-* Reducir progresivamente el tamaño de los servicios grandes refactorizándolos en fachadas (Facade Pattern).
-* Evitar la lógica de sesión duplicada, centralizando su manejo en el AuthService.
-* Centralizar enums y modelos para una mayor consistencia y facilidad de mantenimiento.
+D. Reglas de Seguridad en Cloud Firestore (firestore.rules)
+* Actualizacion Atomica y Quirurgica de Eventos: Se refactorizaron las reglas de Firebase en produccion para la coleccion /events/{eventId}. Utilizando la funcion analitica request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attendeeCount']), se concede permiso de actualizacion a los usuarios comunes (socios e invitados) unicamente si el unico campo alterado en la peticion es el contador numerico de asistentes, manteniendo el resto del documento (fechas, titulos, estados) protegido de forma estricta contra manipulaciones malintencionadas.
+* Subcoleccion de Asistencia: Se securizo el subpath /attendance/{userId} garantizando que cualquier usuario autenticado puede consultar el listado de participantes (allow read: if isLogged()), pero limitando la escritura exclusivamente al propio dueno del identificador o a la junta directiva (allow write: if isOwnUser(userId) || canManageUsers()).
 
---------------------------------------------------------------------------------
-## Conclusión
---------------------------------------------------------------------------------
-ADC Los Locos V2 cuenta con una base sólida, moderna y profesional, completamente securizada y adaptada a la privacidad de datos móviles, lista para evolucionar hacia una aplicación completa y avanzada para la gestión de asociaciones, socios y eventos, tanto en plataformas móviles como web.
-================================================================================
+---
+
+4. ANALISIS DE VULNERABILIDADES Y MITIGACION DE RIESGOS (AUDITORIA)
+
+Revisando detalladamente la estructura y el comportamiento de las piezas de software implementadas, se detectan los siguientes puntos criticos que requieren atencion de seguridad:
+
+* Riesgo Alto: Acceso al Trigger de Notificaciones Push Masivas
+  - Vulnerabilidad: Actualmente el metodo deleteEvent (y los de alta/edicion) inyectan el payload _notificationTrigger desde el cliente Angular. Aunque las reglas impiden editar campos estructurales a usuarios corrientes, un socio malicioso con conocimientos de desarrollo web podria interceptar la consola del navegador, ejecutar un comando de actualizacion inyectando un _notificationTrigger modificado en un evento y forzar al backend de Google a enviar notificaciones push masivas falsas, ofensivas o SPAM con el escudo de la pena a todos los moviles de la base de datos.
+  - Mitigacion recomendada: Retirar por completo el objeto _notificationTrigger de la app movil. Los formularios web de la directiva solo deben guardar los datos limpios del evento. El backend de Firebase (index.ts) debe evaluar mediante change.before.data() y change.after.data() de forma automatica si un evento es nuevo, modificado o eliminado, autogenerando la push masiva desde el servidor 100% aislado de los clientes.
+
+* Riesgo Medio: El Borrado Fisico deja subcolecciones Huerfanas
+  - Vulnerabilidad: Al ejecutar event.data.after.ref.delete() en el backend para eliminar el evento, Firestore borra el documento principal del evento, pero no elimina automaticamente las subcolecciones internas como /attendance (las inscripciones de los socios). Esos documentos de asistencia se quedan flotando como datos fantasmas ocupando espacio innecesario de almacenamiento.
+  - Mitigacion recomendada: Modificar el bloque de eliminacion de la Cloud Function para que, antes de borrar el nodo del evento, realice un bucle que borre todos los registros de la subcoleccion attendance vinculados a ese ID.
+
+---
+
+5. BUENAS PRACTICAS SUGERIDAS PARA EL DESARROLLO DEL PROYECTO
+
+1. Gestion de Entornos Seguros (Mapbox Token): Actualmente el token de Mapbox se inyecta desde environment.ts directamente en el codigo de produccion. Dado que los tokens expuestos en aplicaciones web o APKs hibridas pueden ser extraidos facilmente, asegurate de configurar en el panel de Mapbox restricciones perimetrales estrictas de dominio de URL (adcloslocos-desa.web.app) y el identificador de paquete nativo de Android, impidiendo que terceros roben vuestra cuota de geocodificacion.
+2. Uso de Pipes en lugar de Metodos en el HTML: Para la traduccion de idiomas en el listado, se expuso el diccionario estadoTraduccion. Trata de mantener siempre esta estructura de acceso directo por clave estatica en lugar de invocar metodos funcionales (ej. getIconForType(event.type)) en bucles *ngFor. Los metodos en el HTML se ejecutan en cada micro-ciclo de deteccion de cambios de Angular, mermando el rendimiento y la fluidez del scroll en terminales antiguos de gama baja. Reemplazalos por Pipes personalizados reutilizables.
+3. Control Centralizado de Roles en la Nube: Asegurate de que las logicas sensibles (como quien es Administrador o Directiva) se validen con tokens de seguridad JWT de Firebase en las peticiones HTTPS utilizando reclamaciones personalizadas (Custom Claims), impidiendo la suplantacion de identidad alterando el almacenamiento local del navegador (LocalStorage).
+
+---
+
+6. SIGUIENTES PASOS Y FUNCIONALIDADES PENDIENTES (BACKLOG DE LA PENA)
+
+1. Migracion Completa de Funciones v1 a v2: Actualmente conviven funciones HTTP clasicas v1 (createUserByAdmin, deactivateUser...) con el disparador autonomo v2 de Firestore. Se recomienda unificar toda la carpeta functions a la v2 de Firebase para aprovechar el aislamiento nativo por hilos de Cloud Run, reduciendo a cero los problemas de arranque en frio (Cold Start).
+2. Modulo de Estadisticas (stats.page): Pantalla planificada en la arquitectura de carpetas que permanece como contenedor de construccion (stats-construction.png). Debera consumir el historico de asistencia acumulado para mostrar graficas analiticas a la directiva sobre la participacion real de los socios en casetas y convivencias.
+3. Control de Accesos por Codigos QR en Feria: Implementacion del lector e integrador de pases de la interfaz FairAccess de tu modelo. Se requerira un componente escaner de camara integrado en el hardware para validar los picajes de entradas y salidas de la caseta en tiempo real durante la festividad, verificando los pases de invitados vinculados al ID de un socio anfitrion.
+
+---
+
+7. ESTRUCTURA DE CARPETAS COMPLETA DEL REPOSITORIO (ADCLOSLOCOSV2)
+
+C:\USERS\JUANJESUS\ADCLOSLOCOSV2
++---src                                   
+|   |   global.scss                       
+|   |   index.html                        
+|   |   main.ts                           
+|   |   manifest.webmanifest              
+|   |   polyfills.ts                      
+|   |   test.ts                           
+|   |   zone-flags.ts                     
+|   |   
+|   +---app                               
+|   |   |   app.component.html            
+|   |   |   app.component.scss            
+|   |   |   app.component.ts              
+|   |   |   app.routes.ts                 
+|   |   |   
+|   |   +---features                      
+|   |   |   +---auth                      
+|   |   |   |   +---guards                
+|   |   |   |   |       auth.guard.ts      
+|   |   |   |   |       role.guard.ts     
+|   |   |   |   +---pages                 
+|   |   |   |   |   +---complete-profile  
+|   |   |   |   |   |       complete-profile.page.html
+|   |   |   |   |   |       complete-profile.page.scss
+|   |   |   |   |   |       complete-profile.page.ts
+|   |   |   |   |   +---invite            
+|   |   |   |   |   |       invite.page.html
+|   |   |   |   |   |       invite.page.scss
+|   |   |   |   |   |       invite.page.ts
+|   |   |   |   |   +---login             
+|   |   |   |   |   |       login.page.html
+|   |   |   |   |   |       login.page.scss
+|   |   |   |   |   |       login.page.ts 
+|   |   |   |   |   +---pending-approval  
+|   |   |   |   |           pending-approval.page.html
+|   |   |   |   |           pending-approval.page.scss
+|   |   |   |   |           pending-approval.page.ts
+|   |   |   +---events                    
+|   |   |   |   +---pages                 
+|   |   |   |   |   +---event-detail      
+|   |   |   |   |   |       event-detail.page.html
+|   |   |   |   |   |       event-detail.page.scss
+|   |   |   |   |   |       event-detail.page.ts
+|   |   |   |   |   +---events            
+|   |   |   |   |           events.page.html
+|   |   |   |   |           events.page.scss
+|   |   |   |   |           events.page.ts
+|   |   |   +---home                      
+|   |   |   |   +---pages                 
+|   |   |   |   |   +---home              
+|   |   |   |   |           home.page.html
+|   |   |   |   |           home.page.scss
+|   |   |   |   |           home.page.ts  
+|   |   |   +---stats                     
+|   |   |   |   +---pages                 
+|   |   |   |   |   +---stats             
+|   |   |   |   |           stats.page.html
+|   |   |   |   |           stats.page.scss
+|   |   |   |   |           stats.page.ts 
+|   |   |   +---users                     
+|   |   |   |   +---components            
+|   |   |   |   +---facades               
+|   |   |   |   +---models                
+|   |   |   |   +---pages                 
+|   |   |   |   |   +---gest-user         
+|   |   |   |   |   |       gest-user.page.html
+|   |   |   |   |   |       gest-user.page.scss
+|   |   |   |   |   |       gest-user.page.ts
+|   |   |   |   |   +---user-detail       
+|   |   |   |   |   |   |   user-detail.page.html
+|   |   |   |   |   |   |   user-detail.page.scss
+|   |   |   |   |   |   |   user-detail.page.ts
+|   |   |   |   |   |   +---components    
+|   |   |   |   |   |   |   +---credentials-form
+|   |   |   |   |   |   |   |       credentials-form.component.html
+|   |   |   |   |   |   |   |       credentials-form.component.scss
+|   |   |   |   |   |   |   |       credentials-form.component.ts
+|   |   |   |   |   |   |   +---membership-form
+|   |   |   |   |   |   |   |       membership-form.component.html
+|   |   |   |   |   |   |   |       membership-form.component.scss
+|   |   |   |   |   |   |   |       membership-form.component.ts
+|   |   |   |   |   |   |   +---personal-data-form
+|   |   |   |   |   |   |   |       personal-data-form.component.html
+|   |   |   |   |   |   |   |       personal-data-form.component.scss
+|   |   |   |   |   |   |   |       personal-data-form.component.ts
+|   |   |   |   |   |   |   +---user-audit-form
+|   |   |   |   |   |   |           user-audit-form.component.html
+|   |   |   |   |   |   |           user-audit-form.component.scss
+|   |   |   |   |   |   |           user-audit-form.component.ts
+|   |   |   |   |   |   +---constants     
+|   |   |   |   |   |   |       user-detail.constants.ts
+|   |   |   |   |   |   +---helpers       
+|   |   |   |   |   |   |       user-detail.helpers.ts
+|   |   |   |   |   |   +---state         
+|   |   |   |   |   |           user-detail.state.ts
+|   +---assets                            
+|   |   |   shapes.svg                    
+|   |   +---icon                          
+|   |   |       favicon.ico               
+|   |   +---icons                         
+|   |   |       favicon.ico               
+|   |   |       icon-128.webp
+|   |   |       icon-192.webp
+|   |   |       icon-256.webp
+|   |   |       icon-48.webp
+|   |   |       icon-512.webp
+|   |   |       icon-72.webp
+|   |   |       icon-96.webp
+|   |   +---img                           
+|   |           escudo.png                
+|   |           events-construction.png   
+|   |           stats-construction.png    
+|   +---environments                      
+|   |       environment.prod.ts            
+|   |       environment.ts                
+|   +---theme                             
+|           variables.scss                
+|        
++---projects                              
+    +---shared-core                       
+        +---src                           
+            |   public-api.ts             
+            |   
+            +---lib                      
+                |   env.token.ts          
+                |   
+                +---components            
+                |   +---empty-state       
+                |   |       empty-state.component.html
+                |   |       empty-state.component.scss
+                |   |       empty-state.component.ts
+                |   +---page-header       
+                |           page-header.component.html
+                |           page-header.component.scss
+                |           page-header.component.ts
+                |           
+                +---constants             
+                |       app-message-code.enum.ts
+                |       app-messages.ts   
+                |       firebase-error-map.ts
+                |       
+                +---models                
+                |       events.models.ts  
+                |       invited-user.model.ts
+                |       update-personal-data-request.model.ts
+                |       user-detail.model.ts
+                |       user-role.enum.ts 
+                |       user-status.enum.ts
+                |       users.models.ts   
+                |       
+                +---templates             
+                |       email-templates.ts
+                |       
+                +---utils                 
+                |       string.utils.ts   
+                |       
+                +---services              
+                    |   auth-admin.service.ts
+                    |   auth-credentials.service.ts
+                    |   auth-permissions.service.ts
+                    |   auth-policies.service.ts
+                    |   auth-register.service.ts
+                    |   auth-session.service.ts
+                    |   auth.service.ts   
+                    |   dialog.service.ts 
+                    |   error-handler.service.ts
+                    |   events.service.ts 
+                    |   fcm.service.ts    
+                    |   invited-user.service.ts
+                    |   loading.service.ts
+                    |   notification.service.ts
+                    |   photo.service.ts  
+                    |   user-detail-data.service.ts
+                    |   user-detail-facade.service.ts
+                    |   user-detail-form.service.ts
+                    |   user-detail-permissions.service.ts
+                    |   user-detail-photo.service.ts
+                    |   user-permissions.service.ts
+                    |   user-photo.service.ts
+                    |   user.service.ts   
+                    |   
+                    +---mapbox            
+                            mapbox.service.ts

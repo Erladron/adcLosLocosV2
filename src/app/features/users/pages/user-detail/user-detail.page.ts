@@ -13,7 +13,7 @@ import { UserAuditFormComponent } from './components/user-audit-form/user-audit-
 import { PageHeaderComponent } from 'shared-core';
 
 import { UserService } from 'projects/shared-core/src/lib/services/user.service';
-import { User, UserStatus } from 'shared-core';
+import { User, UserStatus, UserRole } from 'shared-core';
 import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
 import { UserDetailFacadeService } from 'projects/shared-core/src/lib/services/user-detail-facade.service';
 import { LoadingService } from 'projects/shared-core/src/lib/services/loading.service';
@@ -390,6 +390,19 @@ export class UserDetailPage implements OnInit {
 
   async save(): Promise<void> {
     if (this.isVistaPublica) return;
+
+    // 🚀 VALIDACIÓN EXTREMA PARA EL PORTERO ANTES DE ENVIAR AL SERVIDOR
+    if (this.user.tipo === UserRole.PORTERO) {
+      if (!this.user.foto && !this.croppedImage) {
+        this.notification.warning('La fotografía es obligatoria para identificar al personal de seguridad.');
+        return;
+      }
+      if (!this.user.empresa || !this.user.empresa.trim()) {
+        this.notification.warning('Debes especificar la empresa a la que pertenece el portero.');
+        return;
+      }
+    }
+
     try {
       await this.loading.wrap(
         async () => {

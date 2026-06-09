@@ -1,110 +1,69 @@
 <ion-app>
 
-  <!-- MENU LATERAL -->
-  <ion-menu *ngIf="canShowMenu()" contentId="main-content" type="overlay">>
+  <ion-menu *ngIf="canShowMenu()" contentId="main-content" type="overlay">
 
     <ion-content class="menu-content">
 
-      <!-- CABECERA -->
       <div class="menu-header">
-
         <img src="assets/img/escudo.png" class="menu-logo">
-
-        <h2>
-          A.C.D. Los Locos
-        </h2>
-
-        <p>
-          Asociación Cultural y Deportiva
-        </p>
-
+        <h2>A.C.D. Los Locos</h2>
+        <p>Asociación Cultural y Deportiva</p>
       </div>
 
-      <!-- OPCIONES -->
       <ion-list lines="none">
 
-        <!-- INICIO -->
-        <ion-item button (click)="navegar('/home')">
-
-          <ion-icon name="home-outline" slot="start">
-          </ion-icon>
-
-          <ion-label>
-            Inicio
-          </ion-label>
-
+        <ion-item *ngIf="puedeVerInicio()" button (click)="navegar('/home')">
+          <ion-icon name="home-outline" slot="start"></ion-icon>
+          <ion-label>Inicio</ion-label>
         </ion-item>
 
-        <!-- USUARIOS -->
+        <ion-item *ngIf="puedeVerCarnet()" button (click)="navegar('/fair')">
+          <ion-icon name="ticket-outline" slot="start"></ion-icon>
+          <ion-label>Mi Carnet Feria</ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="puedeVerInvitacionInvitado()" button (click)="navegar('/fair')">
+          <ion-icon name="qr-code-outline" slot="start" style="color: #fbbf24;"></ion-icon>
+          <ion-label style="color: #fbbf24; font-weight: 600;">Invitación de Feria</ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="puedeEscanearFeria()" button (click)="navegar('/fair-scan')">
+          <ion-icon name="scan-outline" slot="start"></ion-icon>
+          <ion-label>Portería Caseta</ion-label>
+        </ion-item>
 
         <ion-item *ngIf="puedeVerUsers()" button (click)="navegar('/gest-user')">
-
-          <ion-icon name="people-outline" slot="start">
-          </ion-icon>
-
-          <ion-label>
-            Usuarios
-          </ion-label>
-
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label>Usuarios</ion-label>
         </ion-item>
 
-        <!-- EVENTOS -->
-        <ion-item button (click)="navegar('/events')">
-
-          <ion-icon name="calendar-outline" slot="start">
-          </ion-icon>
-
-          <ion-label>
-            Eventos
-          </ion-label>
-
+        <ion-item *ngIf="puedeVerEventos()" button (click)="navegar('/events')">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-label>Eventos</ion-label>
         </ion-item>
 
-        <!-- INVITAR -->
         <ion-item button *ngIf="puedeInvitar()" (click)="navegar('/invite')">
-
-          <ion-icon name="person-add-outline" slot="start">
-          </ion-icon>
-
-          <ion-label>
-            Invitar
-          </ion-label>
-
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          <ion-label>Invitar</ion-label>
         </ion-item>
 
-        <!-- LOGOUT -->
         <ion-item button (click)="logout()">
-
-          <ion-icon name="log-out-outline" slot="start">
-          </ion-icon>
-
-          <ion-label>
-            Cerrar sesión
-          </ion-label>
-
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Cerrar sesión</ion-label>
         </ion-item>
 
       </ion-list>
 
-      <!-- FOOTER -->
       <div class="menu-footer">
-
-        <p>
-          Versión 1.0.0
-        </p>
-
+        <p>Versión 1.0.0</p>
       </div>
 
     </ion-content>
 
   </ion-menu>
 
-  <!-- CONTENIDO -->
   <div class="ion-page" id="main-content">
-
-    <ion-router-outlet>
-    </ion-router-outlet>
-
+    <ion-router-outlet></ion-router-outlet>
   </div>
 
 </ion-app>
