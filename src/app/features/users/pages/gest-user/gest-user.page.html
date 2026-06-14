@@ -1,49 +1,35 @@
-<app-page-header
-  [title]="isSocioComun ? 'Directorio de Socios' : 'Gestión de Usuarios'"
-  [showMenu]="true" [showBack]="true">
+<app-page-header [title]="isSocioComun ? 'Directorio de Socios' : 'Gestión de Usuarios'" [showMenu]="true"
+  [showBack]="true" data-cy="page-header">
 </app-page-header>
 
-<ion-content
-  fullscreen="true"
-  class="users-content">
+<ion-content fullscreen="true" class="users-content" data-cy="gest-user-content">
 
   <div class="background-logo">
     <img src="assets/img/escudo.png" alt="Escudo">
   </div>
 
   <div class="search-container">
-    <ion-searchbar
-      [(ngModel)]="searchText"
-      (ionInput)="filterUsers()"
-      placeholder="Buscar usuario..."
-      animated="true"
-      class="custom-searchbar">
+    <ion-searchbar [(ngModel)]="searchText" (ionInput)="filterUsers()" placeholder="Buscar usuario..." animated="true"
+      class="custom-searchbar" data-cy="searchbar-users">
     </ion-searchbar>
   </div>
 
   <div class="users-segment-wrapper" *ngIf="!isSocioComun">
-    <ion-segment
-      scrollable="true"
-      [(ngModel)]="tabActual"
-      class="users-segment">
+    <ion-segment scrollable="true" [(ngModel)]="tabActual" class="users-segment" data-cy="users-segment-tabs">
 
-      <ion-segment-button value="activos">
+      <ion-segment-button value="activos" data-cy="tab-btn-activos">
         <ion-label>
           Activos ({{ filteredUsers.length }})
         </ion-label>
       </ion-segment-button>
 
-      <ion-segment-button
-        *ngIf="canApproveUsers"
-        value="pendientes">
+      <ion-segment-button *ngIf="canApproveUsers" value="pendientes" data-cy="tab-btn-pendientes">
         <ion-label>
           Pendientes ({{ filteredPendingUsers.length }})
         </ion-label>
       </ion-segment-button>
 
-      <ion-segment-button
-        *ngIf="canViewInactiveUsers"
-        value="inactivos">
+      <ion-segment-button *ngIf="canViewInactiveUsers" value="inactivos" data-cy="tab-btn-inactivos">
         <ion-label>
           Inactivos ({{ filteredInactiveUsers.length }})
         </ion-label>
@@ -52,9 +38,10 @@
     </ion-segment>
   </div>
 
-  <div *ngIf="tabActual === 'activos'" class="users-container">
+  <div *ngIf="tabActual === 'activos'" class="users-container" data-cy="container-users-activos">
 
-    <div class="user-card glass-card" *ngFor="let user of visibleUsers" [routerLink]="['/user-detail', user.id]">
+    <div class="user-card glass-card" *ngFor="let user of visibleUsers" [routerLink]="['/user-detail', user.id]"
+      data-cy="user-card-activo">
       <div class="user-avatar-container">
         <img *ngIf="user.foto" [src]="user.foto" class="user-avatar">
         <div *ngIf="!user.foto" class="default-avatar">
@@ -63,9 +50,9 @@
       </div>
 
       <div class="user-info-mini">
-        <h2>{{ user.nombre }}</h2>
+        <h2 data-cy="user-card-name">{{ user.nombre }}</h2>
         <div class="user-subinfo">
-          <span class="tipo-badge">{{ user.tipo }}</span>
+          <span class="tipo-badge" data-cy="user-card-role-badge">{{ user.tipo }}</span>
           <span *ngIf="user.profesion" class="meta-item profesion-item">
             <ion-icon name="briefcase-outline"></ion-icon>
             <span class="meta-text">{{ user.profesion }}</span>
@@ -90,17 +77,15 @@
       <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
     </div>
 
-    <app-empty-state
-      *ngIf="filteredUsers.length === 0"
-      icon="people-outline"
-      title="Sin usuarios"
-      message="No se encontraron usuarios activos en el directorio">
+    <app-empty-state *ngIf="filteredUsers.length === 0" icon="people-outline" title="Sin usuarios"
+      message="No se encontraron usuarios activos en el directorio" data-cy="empty-state-activos">
     </app-empty-state>
   </div>
 
-  <div *ngIf="tabActual === 'pendientes' && !isSocioComun" class="users-container">
+  <div *ngIf="tabActual === 'pendientes' && !isSocioComun" class="users-container" data-cy="container-users-pendientes">
 
-    <div class="user-card glass-card pending-card" *ngFor="let user of visiblePendingUsers" [routerLink]="['/user-detail', user.id]">
+    <div class="user-card glass-card pending-card" *ngFor="let user of visiblePendingUsers"
+      [routerLink]="['/user-detail', user.id]" data-cy="user-card-pendiente">
       <div class="user-avatar-container">
         <img *ngIf="user.foto" [src]="user.foto" class="user-avatar">
         <div *ngIf="!user.foto" class="default-avatar">
@@ -109,38 +94,39 @@
       </div>
 
       <div class="user-info-mini">
-        <h2>{{ user.nombre }}</h2>
+        <h2 data-cy="user-card-pending-name">{{ user.nombre }}</h2>
         <div class="user-subinfo">
           <span class="tipo-badge pending">Pendiente</span>
           <span class="dot">•</span>
           <span class="telefono-text">{{ user.email }}</span>
         </div>
         <div class="invite-meta">
-          Invitado por: <strong>{{ user.invitadoPorNombre || user.invitadoPor }}</strong> • {{ user.fechaInvitacion?.toDate() | date:'dd/MM/yyyy' }}
+          Invitado por: <strong>{{ user.invitadoPorNombre || user.invitadoPor }}</strong> • {{
+          user.fechaInvitacion?.toDate() | date:'dd/MM/yyyy' }}
         </div>
       </div>
 
       <div class="approval-actions">
-        <button class="action-btn approve-btn" (click)="aprobarUsuario(user); $event.stopPropagation()">
+        <button class="action-btn approve-btn" (click)="aprobarUsuario(user); $event.stopPropagation()"
+          data-cy="btn-approve-user-direct">
           <ion-icon name="checkmark-outline"></ion-icon>
         </button>
-        <button class="action-btn reject-btn" (click)="rechazarUsuario(user); $event.stopPropagation()">
+        <button class="action-btn reject-btn" (click)="rechazarUsuario(user); $event.stopPropagation()"
+          data-cy="btn-reject-user-direct">
           <ion-icon name="close-outline"></ion-icon>
         </button>
       </div>
     </div>
 
-    <app-empty-state
-      *ngIf="filteredPendingUsers.length === 0"
-      icon="person-outline"
-      title="Sin solicitudes"
-      message="No hay usuarios pendientes de aprobación">
+    <app-empty-state *ngIf="filteredPendingUsers.length === 0" icon="person-outline" title="Sin solicitudes"
+      message="No hay usuarios pendientes de aprobación" data-cy="empty-state-pendientes">
     </app-empty-state>
   </div>
 
-  <div *ngIf="tabActual === 'inactivos' && !isSocioComun" class="users-container">
+  <div *ngIf="tabActual === 'inactivos' && !isSocioComun" class="users-container" data-cy="container-users-inactivos">
 
-    <div class="user-card glass-card inactive-card" *ngFor="let user of visibleInactiveUsers" [routerLink]="['/user-detail', user.id]">
+    <div class="user-card glass-card inactive-card" *ngFor="let user of visibleInactiveUsers"
+      [routerLink]="['/user-detail', user.id]" data-cy="user-card-inactivo">
       <div class="user-avatar-container">
         <img *ngIf="user.foto" [src]="user.foto" class="user-avatar">
         <div *ngIf="!user.foto" class="default-avatar">
@@ -149,7 +135,7 @@
       </div>
 
       <div class="user-info-mini">
-        <h2>{{ user.nombre }}</h2>
+        <h2 data-cy="user-card-inactive-name">{{ user.nombre }}</h2>
         <div class="user-subinfo">
           <span class="tipo-badge inactive">Inactivo</span>
           <span class="dot">•</span>
@@ -164,27 +150,18 @@
       <ion-icon name="chevron-forward-outline" class="arrow-icon"></ion-icon>
     </div>
 
-    <app-empty-state
-      *ngIf="filteredInactiveUsers.length === 0"
-      icon="person-outline"
-      title="Sin usuarios inactivos"
-      message="No existen usuarios dados de baja">
+    <app-empty-state *ngIf="filteredInactiveUsers.length === 0" icon="person-outline" title="Sin usuarios inactivos"
+      message="No existen usuarios dados de baja" data-cy="empty-state-inactivos">
     </app-empty-state>
   </div>
 
   <ion-infinite-scroll (ionInfinite)="cargarMasUsuarios($event)" [disabled]="isScrollDisabled()">
-    <ion-infinite-scroll-content 
-      loadingSpinner="bubbles" 
-      loadingText="Cargando más usuarios...">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más usuarios...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-fab
-    *ngIf="canAddUsers && !isSocioComun"
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    class="fab-safe-area">
+  <ion-fab *ngIf="canAddUsers && !isSocioComun" vertical="bottom" horizontal="end" slot="fixed" class="fab-safe-area"
+    data-cy="btn-create-user-manual-fab">
     <ion-fab-button (click)="nuevoUsuario()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>

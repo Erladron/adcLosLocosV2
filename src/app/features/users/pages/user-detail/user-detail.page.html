@@ -1,106 +1,47 @@
-<!-- 🏷️ CABECERA DINÁMICA: Si es vista pública mostramos un título comunitario neutral, sino el de edición corporativa -->
-<app-page-header
-  [title]="
+<app-page-header [title]="
     isVistaPublica
       ? 'Perfil del Socio'
       : (isEditMode ? 'Editar Usuario' : 'Alta Usuario')
-  "
-  [showMenu]="false"
-  [showBack]="true"
-  backUrl="/gest-user">
+  " [showMenu]="false" [showBack]="true" backUrl="/gest-user" data-cy="page-header">
 </app-page-header>
 
-<ion-content class="detail-content">
+<ion-content class="detail-content" data-cy="user-detail-content">
 
-  <!-- ================================= -->
-  <!-- BACKGROUND -->
-  <!-- ================================= -->
   <div class="background-logo">
-    <img
-      src="assets/img/escudo.png"
-      alt="Escudo">
+    <img src="assets/img/escudo.png" alt="Escudo">
   </div>
 
-  <!-- ================================= -->
-  <!-- CONTENT -->
-  <!-- ================================= -->
   <div class="detail-container">
 
-    <!-- ================================= -->
-    <!-- PERSONAL DATA -->
-    <!-- ================================= -->
-    <!-- ⚙️ ADAPTACIÓN MULTINIVEL: Si es vista pública le inyectamos [simpleMode]="true" para ocultar los interruptores de privacidad -->
-    <app-personal-data-form
-      [user]="user"
-      [imageChangedEvent]="imageChangedEvent"
-      [croppedImage]="croppedImage"
-      [mostrarCropper]="mostrarCropper"
-      [isEditMode]="isEditMode"
-      [editing]="editingPersonalData"
-      [canEdit]="canEditPersonalData"
-      [simpleMode]="isVistaPublica"
-      (toggleEdit)="togglePersonalData()"
-      (selectPhoto)="selectPhoto()"
-      (takePhoto)="takePhoto()"
-      (cancelEdit)="editingPersonalData = false"
-      (imageCropped)="imageCropped($event)"
-      (applyCropper)="applyCropper()"
-      (cancelCropper)="cancelCropper()">
+    <app-personal-data-form [user]="user" [imageChangedEvent]="imageChangedEvent" [croppedImage]="croppedImage"
+      [mostrarCropper]="mostrarCropper" [isEditMode]="isEditMode" [editing]="editingPersonalData"
+      [canEdit]="canEditPersonalData" [simpleMode]="isVistaPublica" (toggleEdit)="togglePersonalData()"
+      (selectPhoto)="selectPhoto()" (takePhoto)="takePhoto()" (cancelEdit)="editingPersonalData = false"
+      (imageCropped)="imageCropped($event)" (applyCropper)="applyCropper()" (cancelCropper)="cancelCropper()"
+      data-cy="detail-personal-data-form">
     </app-personal-data-form>
 
-    <!-- ================================= -->
-    <!-- MEMBERSHIP (Oculto al 100% en Modo Vista Pública para Socios Comunes) -->
-    <!-- ================================= -->
-    <app-membership-form
-      *ngIf="!isProfileCompletion && !isVistaPublica"
-      [user]="user"
-      [tiposDisponibles]="tiposDisponibles"
-      [isEditMode]="isEditMode"
-      [editing]="editingMembership"
-      [canEditMembership]="canEditMembership"
-      (toggleEdit)="toggleMembership()"
-      (cancelEdit)="editingMembership = false">
+    <app-membership-form *ngIf="!isProfileCompletion && !isVistaPublica" [user]="user"
+      [tiposDisponibles]="tiposDisponibles" [isEditMode]="isEditMode" [editing]="editingMembership"
+      [canEditMembership]="canEditMembership" (toggleEdit)="toggleMembership()" (cancelEdit)="editingMembership = false"
+      data-cy="detail-membership-form">
     </app-membership-form>
 
-    <!-- ================================= -->
-    <!-- CREDENTIALS (Solo visible si es tu propio perfil o si tienes permisos de gestión) -->
-    <!-- ================================= -->
-      <app-credentials-form
-        *ngIf="isOwnProfile || !isVistaPublica"
-        [user]="user"
-        [isEditMode]="isEditMode"
-        [isOwnProfile]="isOwnProfile"
-        [canEditCredentials]="canEditCredentials"
-        [password]="isAdminCreate ? password : ''"
-        [repeatPassword]="isAdminCreate ? repeatPassword : ''"
-        (passwordChange)="isAdminCreate && (password = $event)"
-        (repeatPasswordChange)="isAdminCreate && (repeatPassword = $event)"
-        (sendResetLink)="onSendPasswordReset($event)">
+    <app-credentials-form *ngIf="isOwnProfile || !isVistaPublica" [user]="user" [isEditMode]="isEditMode"
+      [isOwnProfile]="isOwnProfile" [canEditCredentials]="canEditCredentials" [password]="isAdminCreate ? password : ''"
+      [repeatPassword]="isAdminCreate ? repeatPassword : ''" (passwordChange)="isAdminCreate && (password = $event)"
+      (repeatPasswordChange)="isAdminCreate && (repeatPassword = $event)" (sendResetLink)="onSendPasswordReset($event)"
+      data-cy="detail-credentials-form">
     </app-credentials-form>
 
-    <!-- ================================= -->
-    <!-- AUDIT (Bloqueado radicalmente en Modo Vista Pública) -->
-    <!-- ================================= -->
-    <app-user-audit-form
-      *ngIf="isEditMode && canViewAudit && !isVistaPublica"
-      [user]="user"
-      [canDeactivate]="canDeactivateUser"
-      [canReactivate]="canReactivateUser"
-      (deactivate)="deactivateUser()"
-      (reactivate)="reactivateUser()">
+    <app-user-audit-form *ngIf="isEditMode && canViewAudit && !isVistaPublica" [user]="user"
+      [canDeactivate]="canDeactivateUser" [canReactivate]="canReactivateUser" (deactivate)="deactivateUser()"
+      (reactivate)="reactivateUser()" data-cy="detail-user-audit-form">
     </app-user-audit-form>
 
-    <!-- ================================= -->
-    <!-- CREATE BUTTON (Invisible en Vista Pública) -->
-    <!-- ================================= -->
-    <ion-button
-      *ngIf="!isEditMode && !isVistaPublica"
-      expand="block"
-      class="main-button"
-      (click)="save()">
-      <ion-icon
-        slot="start"
-        name="save-outline">
+    <ion-button *ngIf="!isEditMode && !isVistaPublica" expand="block" class="main-button" (click)="save()"
+      data-cy="btn-detail-create-user">
+      <ion-icon slot="start" name="save-outline">
       </ion-icon>
       Crear Usuario
     </ion-button>

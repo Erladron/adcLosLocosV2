@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http'; // <-- IMPORTANTE: Necesario para que Mapbox funcione
+import { provideHttpClient } from '@angular/common/http'; 
 
 import {
   RouteReuseStrategy,
@@ -18,39 +18,45 @@ import {
 
 import {
   provideAuth,
-  getAuth
+  getAuth,
+  connectAuthEmulator
 } from '@angular/fire/auth';
 
 import {
   provideFirestore,
-  getFirestore
+  getFirestore,
+  connectFirestoreEmulator
 } from '@angular/fire/firestore';
 
 import {
-  provideFunctions,
-  getFunctions
-} from '@angular/fire/functions';
+  provideStorage,
+  getStorage,
+  connectStorageEmulator
+} from '@angular/fire/storage';
 
 import {
-  provideStorage,
-  getStorage
-} from '@angular/fire/storage';
+  provideFunctions,
+  getFunctions,
+  connectFunctionsEmulator
+} from '@angular/fire/functions';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { ENVIRONMENT } from '../projects/shared-core/src/lib/env.token';
+
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { SETTINGS as AUTH_SETTINGS } from '@angular/fire/compat/auth';
+import { SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/compat/firestore';
 
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 
-// ==========================================================================
-// 🔥 INTERCEPTOR DE CONSOLA: Limpieza radical de falsos positivos de Firebase
-// ==========================================================================
+// 📱 IMPORTACIÓN NATIVA DE CAPACITOR PARA DETECTAR LA PLATAFORMA
+import { Capacitor } from '@capacitor/core';
+
 const originalWarn = console.warn;
 console.warn = (...args) => {
-  // Si el aviso habla sobre el contexto de inyección (asincronía interna de transacciones), lo omitimos
   if (
     args[0] && 
     typeof args[0] === 'string' && 
@@ -59,20 +65,21 @@ console.warn = (...args) => {
   ) {
     return;
   }
-  // Dejamos pasar cualquier otra advertencia legítima del ecosistema o de tu código
   originalWarn.apply(console, args);
 };
 
-// Registramos el pack de datos en castellano para toda la App
 registerLocaleData(localeEs, 'es');
+
+// 🤖 CONSTANTE INTELIGENTE: ¿Debemos activar emuladores locales?
+// Solo se activan si useEmulators es true en tu environment Y ADEMÁS estás en la WEB de tu PC.
+// Si estás ejecutando la app en tu móvil (Android/iOS), esto pasará a ser "false" automáticamente.
+const activarEmuladores = (environment as any).useEmulators && Capacitor.getPlatform() === 'web';
 
 bootstrapApplication(
   AppComponent,
   {
     providers: [
-      provideHttpClient(), // ==========================================
-                           // HTTP CLIENT (Requisito para Mapbox API)
-                           // ==========================================
+      provideHttpClient(), 
 
       provideIonicAngular({
         animated: true
@@ -85,35 +92,61 @@ bootstrapApplication(
         useClass: IonicRouteStrategy
       },
 
-      // =================================
-      // FIREBASE
-      // =================================
-      provideFirebaseApp(() => {
-        const app = initializeApp(environment.firebase);
-        console.log(environment);
-        return app;
+      provideFirebaseApp(() => initializeApp(environment.firebase)),
+
+      provideAuth(() => {
+        const auth = getAuth();
+        if (activarEmuladores) {
+          connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+        }
+        return auth;
       }),
 
-      provideAuth(() => getAuth()),
-      provideFirestore(() => getFirestore()),
-      provideStorage(() => getStorage()),
-      provideFunctions(() => getFunctions()),
+      provideFirestore(() => {
+        const firestore = getFirestore();
+        if (activarEmuladores) {
+          connectFirestoreEmulator(firestore, 'localhost', 8080);
+        }
+        return firestore;
+      }),
 
-      // =================================
-      // ENVIRONMENT FOR SHARED-CORE
-      // =================================
+      provideStorage(() => {
+        const storage = getStorage();
+        if (activarEmuladores) {
+          connectStorageEmulator(storage, 'localhost', 9199);
+        }
+        return storage;
+      }),
+
+      provideFunctions(() => {
+        const functions = getFunctions();
+        if (activarEmuladores) {
+          connectFunctionsEmulator(functions, 'localhost', 5001);
+        }
+        return functions;
+      }),
+
       {
         provide: ENVIRONMENT,
         useValue: environment
       },
 
-      // =================================
-      // COMPATIBILITY BRIDGE FOR FIREBASE
-      // =================================
       { 
         provide: FIREBASE_OPTIONS, 
         useValue: environment.firebase 
-      }
+      },
+
+      // Ajustamos también la compatibilidad antigua de AngularFire en base a la constante inteligente
+      ...activarEmuladores ? [
+        {
+          provide: AUTH_SETTINGS,
+          useValue: { emulator: 'http://localhost:9099' }
+        },
+        {
+          provide: FIRESTORE_SETTINGS,
+          useValue: { host: 'localhost:8080', ssl: false }
+        }
+      ] : []
     ]
   }
 ).catch(

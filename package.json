@@ -15,7 +15,8 @@
     "deploy:prod": "firebase use prod && firebase deploy",
     "deploy:web": "ng build shared-core && ng build web-onboarding --configuration=production && firebase deploy --only hosting",
     "build:android": "ng build shared-core && ng build app && npx cap sync android && npx cap open android",
-    "deploy:all": "ng build shared-core && ng build web-onboarding && ng build app --configuration=production && cd functions && npm run build && cd .. && firebase deploy"
+    "deploy:all": "ng build shared-core && ng build web-onboarding && ng build app --configuration=production && cd functions && npm run build && cd .. && firebase deploy",
+    "emuladores": "cross-env FIREBASE_AUTH_EMULATOR_HOST=\"localhost:9099\" firebase emulators:start"
   },
   "private": true,
   "dependencies": {
@@ -65,6 +66,7 @@
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
+    "cross-env": "^10.1.0",
     "cypress": "^15.15.0",
     "eslint": "^9.16.0",
     "eslint-plugin-import": "^2.29.1",

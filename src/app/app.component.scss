@@ -1,121 +1,116 @@
+// ============================================================================
+// 📱 CONFIGURACIÓN ESTRUCTURAL DEL MENÚ (100% NATIVA DE IONIC)
+// ============================================================================
 ion-menu {
-
   --width: 290px;
-
 }
 
 .menu-content {
-
-  --background:
-    linear-gradient(
-      180deg,
-      #0b2d6b 0%,
-      #1d4ea5 100%
-    );
-
+  --background: linear-gradient(180deg, #0b2d6b 0%, #1d4ea5 100%);
   color: white;
-
 }
 
-.menu-header {
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding:
-    50px 20px 30px 20px;
-
+// ============================================================================
+// 🛡️ CABECERA COMPACTA EN HORIZONTAL (BLINDADA CONTRA ESTIRAMIENTOS)
+// ============================================================================
+.menu-header-flex {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px;
+  
+  // Margen superior dinámico para que el reloj del móvil respire y no se tape
+  padding: calc(16px + env(safe-area-inset-top)) 16px 16px 16px;
+  background: #0b2d6b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: auto !important; // Evita que Ionic lo estire hacia abajo
 }
 
-.menu-logo {
-
-  width: 120px;
-
-  margin-bottom: 20px;
-
-  filter:
-    drop-shadow(
-      0 6px 12px rgba(0,0,0,0.35)
-    );
-
+// Control absoluto del tamaño del escudo para que NUNCA crezca
+.menu-logo-small {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
-.menu-header h2 {
+.menu-title-container {
+  h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: left !important;
+  }
 
-  margin: 0;
-
-  font-size: 1.5rem;
-
-  font-weight: 700;
-
-  text-align: center;
-
+  p {
+    margin: 2px 0 0 0;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-align: left !important;
+    color: rgba(255, 255, 255, 0.8);
+  }
 }
 
-.menu-header p {
-
-  margin-top: 8px;
-
-  font-size: 0.9rem;
-
-  opacity: 0.8;
-
-  text-align: center;
-
-}
-
+// ============================================================================
+// 🎛️ LISTADO DE BOTONES (GLASSMORPHISM FIABLE)
+// ============================================================================
 ion-list {
-
-  background: transparent;
-
+  background: transparent !important;
   padding: 12px;
-
 }
 
 ion-item {
-
-  --background:
-    rgba(255,255,255,0.08);
-
+  --background: rgba(255, 255, 255, 0.08);
   --color: white;
-
   --border-radius: 18px;
-
   margin-bottom: 12px;
-
   font-size: 1.05rem;
-
   font-weight: 500;
-
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
+  ion-icon {
+    font-size: 1.3rem;
+    color: white;
+  }
 }
 
-ion-item ion-icon {
-
-  font-size: 1.3rem;
-
-  color: white;
-
+// ============================================================================
+// 🌟 SEPARADORES DE BLOQUE
+// ============================================================================
+.menu-separator {
+  height: 1px;
+  background: linear-gradient(
+    to right, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.15) 20%, 
+    rgba(255, 255, 255, 0.15) 80%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+  margin: 14px 12px;
 }
 
-.menu-footer {
-
+// ============================================================================
+// 🏷️ PIE DE PÁGINA FIJO (USANDO EL ESTILO ORIGINAL QUE SÍ FUNCIONABA)
+// ============================================================================
+.menu-footer-clean {
   position: absolute;
-
-  bottom: 20px;
-
+  bottom: 12px;
+  left: 0;
   width: 100%;
-
   text-align: center;
+  z-index: 999;
+  pointer-events: none; // Evita que bloquee los clicks de los botones traseros
 
-  opacity: 0.65;
-
-  font-size: 0.85rem;
-
+  p {
+    margin: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.8px;
+  }
 }

@@ -15,6 +15,8 @@ export default defineConfig({
     screenshotOnRunFailure: true,
 
     defaultCommandTimeout: 10000,
+    
+    experimentalRunAllSpecs: true,
 
     setupNodeEvents(on, config) {
 

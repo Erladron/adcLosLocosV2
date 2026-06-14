@@ -1,8 +1,4 @@
-<ion-content fullscreen="true" class="approval-content">
-
-  <!-- ================================= -->
-  <!-- BACKGROUND -->
-  <!-- ================================= -->
+<ion-content fullscreen="true" class="approval-content" data-cy="pending-approval-page">
 
   <div class="background-logo">
 
@@ -10,17 +6,9 @@
 
   </div>
 
-  <!-- ================================= -->
-  <!-- CARD -->
-  <!-- ================================= -->
-
   <div class="approval-wrapper">
 
     <div class="approval-card glass-card">
-
-      <!-- ============================= -->
-      <!-- ICON -->
-      <!-- ============================= -->
 
       <div class="icon-container">
 
@@ -30,21 +18,13 @@
 
       </div>
 
-      <!-- ============================= -->
-      <!-- TITLE -->
-      <!-- ============================= -->
-
-      <h1>
+      <h1 data-cy="approval-status-title">
 
         Solicitud enviada
 
       </h1>
 
-      <!-- ============================= -->
-      <!-- MESSAGE -->
-      <!-- ============================= -->
-
-      <p>
+      <p data-cy="approval-welcome-msg">
 
         Hola {{ nombre }},
 
@@ -60,13 +40,9 @@
 
       </p>
 
-      <!-- ============================= -->
-      <!-- ACTIONS -->
-      <!-- ============================= -->
-
       <div class="actions">
 
-        <ion-button expand="block" fill="outline" color="light" (click)="logout()">
+        <ion-button expand="block" fill="outline" color="light" (click)="logout()" data-cy="btn-approval-logout">
 
           <ion-icon slot="start" name="log-out-outline">
 

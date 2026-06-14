@@ -1,17 +1,17 @@
-<ion-header class="ion-no-border">
+<ion-header class="ion-no-border" data-cy="global-page-header">
   <ion-toolbar class="custom-toolbar">
 
     <!-- ================================= -->
     <!-- LEFT BUTTON (HAMBURGUESA) -->
     <!-- ================================= -->
     <ion-buttons slot="start">
-      <ion-menu-button *ngIf="showMenu"></ion-menu-button>
+      <ion-menu-button *ngIf="showMenu" data-cy="header-menu-button"></ion-menu-button>
     </ion-buttons>
 
     <!-- ================================= -->
     <!-- TITLE -->
     <!-- ================================= -->
-    <ion-title>
+    <ion-title data-cy="header-title-text">
       {{ title }}
     </ion-title>
 
@@ -19,10 +19,7 @@
     <!-- RIGHT BUTTON (VOLVER ATRÁS) -->
     <!-- ================================= -->
     <ion-buttons slot="end">
-      <ion-back-button
-        *ngIf="showBack"
-        [defaultHref]="backUrl"
-      >
+      <ion-back-button *ngIf="showBack" [defaultHref]="backUrl" data-cy="header-back-button">
       </ion-back-button>
     </ion-buttons>
 

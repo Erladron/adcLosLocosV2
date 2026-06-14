@@ -1,0 +1,210 @@
+[
+    {
+        "uid": "796qDveLUXC2GKt8RLzNXKZPxwMH",
+        "email": "portero.fundador@adcloslocos.com",
+        "nombre": "Portero Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "",
+            "dni": "56585433M",
+            "email": "portero.fundador@adcloslocos.com",
+            "estado": "active",
+            "foto": "https://api.dicebear.com/7.x/bottts/svg?seed=portero",
+            "nombre": "Portero Test",
+            "profesion": "",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "123456789",
+            "tipo": "portero"
+        }
+    },
+    {
+        "uid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+        "email": "admin.fundador@adcloslocos.com",
+        "nombre": "Administrador Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Plaza Pablo Iglesias, 41900 Camas, provincia de Sevilla, España",
+            "dni": "23456999N",
+            "email": "admin.fundador@adcloslocos.com",
+            "estado": "active",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
+            "nombre": "Administrador Test",
+            "profesion": "Administrador de sistemas",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "123456789",
+            "tipo": "administrador"
+        }
+    },
+    {
+        "uid": "AP8y1keUCnOHk70BJP2SlEWQtgsG",
+        "email": "socio.fundador@adcloslocos.com",
+        "nombre": "Socio Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Calle Azucena 14, 41900 Camas, provincia de Sevilla, España",
+            "dni": "23235456M",
+            "email": "socio.fundador@adcloslocos.com",
+            "estado": "active",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=socio",
+            "nombre": "Socio Test",
+            "numeroSocio": "10",
+            "profesion": "Ama de casa",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "867765654",
+            "tipo": "socio"
+        },
+        "invitedData": {
+            "id": "AP8y1keUCnOHk70BJP2SlEWQtgsG",
+            "email": "socio.fundador@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": true
+        }
+    },
+    {
+        "uid": "CDqv7Xc3y2HAgJng7MMw3KUW7nkT",
+        "email": "directiva.fundador@adcloslocos.com",
+        "nombre": "Directiva Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Plaza Pablo Iglesias, 41900 Camas, provincia de Sevilla, España",
+            "dni": "12312311C",
+            "email": "directiva.fundador@adcloslocos.com",
+            "estado": "active",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=directiva",
+            "nombre": "Directiva Test",
+            "numeroSocio": "1",
+            "profesion": "Contable",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "456423324",
+            "tipo": "directiva"
+        },
+        "invitedData": {
+            "id": "CDqv7Xc3y2HAgJng7MMw3KUW7nkT",
+            "email": "directiva.fundador@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": true
+        }
+    },
+    {
+        "uid": "zTooawT06dS0MKXdUnVO5Tdep2Vu",
+        "email": "invitado.fundador@adcloslocos.com",
+        "nombre": "Invitado Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Calle Córdoba 6, 41900 Camas, provincia de Sevilla, España",
+            "dni": "21323545S",
+            "email": "invitado.fundador@adcloslocos.com",
+            "estado": "active",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=invitado",
+            "nombre": "Invitado Test",
+            "profesion": "Albañil",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "322543457",
+            "tipo": "invitado"
+        },
+        "invitedData": {
+            "id": "zTooawT06dS0MKXdUnVO5Tdep2Vu",
+            "email": "invitado.fundador@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": true
+        }
+    },
+    {
+        "uid": "zTooawT06dS0MKXdUnVO5Tdep001",
+        "email": "invitado.pending_approval@adcloslocos.com",
+        "nombre": "Invitado Pendiente de Aprobar Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Calle Córdoba 8, 41900 Camas, provincia de Sevilla, España",
+            "dni": "21323545S",
+            "email": "invitado.pending_approval@adcloslocos.com",
+            "estado": "pending_approval",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=invitado",
+            "nombre": "Invitado Pendiente de Aprobar Test",
+            "profesion": "Zapatero",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "322543457",
+            "tipo": "invitado"
+        },
+        "invitedData": {
+            "id": "zTooawT06dS0MKXdUnVO5Tdep001",
+            "email": "invitado.pending_approval@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": true
+        }
+    },
+    {
+        "uid": "zTooawT06dS0MKXdUnVO5Tdep002",
+        "email": "invitado.pending_data@adcloslocos.com",
+        "nombre": "Invitado Pendiente de Datos Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Calle Córdoba 8, 41900 Camas, provincia de Sevilla, España",
+            "dni": "21323545S",
+            "email": "invitado.pending_data@adcloslocos.com",
+            "estado": "pending_data",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=invitado",
+            "nombre": "Invitado Pendiente de Datos Test",
+            "profesion": "Pintor",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "322543457",
+            "tipo": "invitado"
+        },
+        "invitedData": {
+            "id": "zTooawT06dS0MKXdUnVO5Tdep002",
+            "email": "invitado.pending_data@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": false
+        }
+    },
+    {
+        "uid": "zTooawT06dS0MKXdUnVO5Tdep003",
+        "email": "invitado.pending_data_2@adcloslocos.com",
+        "nombre": "Invitado Pendiente de Datos Test",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Calle Córdoba 8, 41900 Camas, provincia de Sevilla, España",
+            "dni": "21323545S",
+            "email": "invitado.pending_data_2@adcloslocos.com",
+            "estado": "pending_data",
+            "foto": "https://api.dicebear.com/7.x/avataaars/svg?seed=invitado",
+            "nombre": "Invitado Pendiente de Datos Test",
+            "profesion": "Pintor",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "322543457",
+            "tipo": "invitado"
+        },
+        "invitedData": {
+            "id": "zTooawT06dS0MKXdUnVO5Tdep003",
+            "email": "invitado.pending_data_2@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": false
+        }
+    }
+]

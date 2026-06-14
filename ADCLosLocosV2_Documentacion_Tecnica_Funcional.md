@@ -25,7 +25,7 @@ A. Ecosistema de Autenticacion y Registro (Auth Feature)
 * Onboarding y Aprobacion: Pagina de perfil completo (complete-profile.page) para el alta inicial y pantalla de espera activa (pending-approval.page) para usuarios cuyos perfiles requieren validacion manual por parte de la junta directiva.
 
 B. Gestion Completa de Socios (Users Feature)
-* Administracion Interna: Vista de gestion general (gest-user.page) y ficha individualizada de datos del socio (user-detail.page).
+* Administanion Interna: Vista de gestion general (gest-user.page) y ficha individualizada de datos del socio (user-detail.page).
 * Formularios Modulares Especializados (User Detail Components):
   - credentials-form: Gestion de emails, contrasenas y datos de acceso.
   - membership-form: Control del estado del socio (Alta, Baja, Suspendido) y asignacion de roles (Socio, Administrador, Directiva). El campo de perfil del documento mapea el rol real bajo la propiedad estricta 'tipo' en Firestore.
@@ -43,74 +43,58 @@ C. Modulo de Infraestructura y Servicios del Core (shared-core)
 
 ---
 
-3. MODULO DE EVENTOS Y NOTIFICACIONES PUSH: HITOS RECIENTES
+3. REFACTORIZACION HISTORICA: SEGURIDAD, BACKEND BLINDADO Y UI (CAMBIOS AYER)
 
-Se ha completado la integracion total de la vista de listados (events.page), la pantalla de detalle (event-detail.page), el servicio core (events.service.ts) y un ecosistema distribuido de Cloud Functions v2 con Cloud Messaging, unificando criterios de rendimiento movil, maquetacion adaptada y robustez de datos:
+Durante la ultima sesion tecnica, se aplico una auditoria critica de seguridad y rediseno de interfaz que transformo la interaccion Cliente-Servidor y elimino por completo vulnerabilidades de riesgo alto y medio.
 
-A. Pantalla de Detalle, Edicion y Cancelacion Atomica (event-detail.page)
-* Entrada de Fechas Espejo: Ocultacion total de los controles nativos de Ionic en favor de celdas glassmorphic personalizadas. Muestran las fechas formateadas en texto legible en tiempo real.
-* Automatizacion de Fin de Evento: Al confirmar una fecha de inicio (y si no esta marcado como "Todo el dia"), el sistema calcula automaticamente la fecha de finalizacion proyectando mas una (+1) hora en el futuro.
-* Blindaje Temporal del Pasado: No se permite fechar el inicio de un evento en un momento anterior al presente absoluto. Si se intenta, el componente corrige el valor reiniciandolo a la hora actual.
-* Auto-reparacion de Incoherencias: Si el usuario edita la fecha de fin e introduce un valor menor o igual a la de inicio, la aplicacion bloquea el envio, anade la clase de error .control-has-error (borde rojo traslucido) y repara el campo solo devolviendolo al valor seguro (Inicio +1 hora).
-* Mensajeria Centralizada: Vinculacion de las alertas de error de fecha con el enum corporativo AppMessageCode.ADC_EVENT_ERR_0003 mapeado en la libreria core.
-* Direcciones Verificadas para Eventos: Integracion del buscador predictivo de Mapbox dentro del campo de ubicacion del evento. Usa un Subject de RxJS con operadores debounceTime(400) y switchMap para capturar el valor exacto del campo place_formatted consumiendo el token oficial mediante el Path Alias @env/environment.
-* Flujo de Destruccion Atomica con Push Colectivo: La directiva puede cancelar y eliminar convocatorias usando el boton nativo integrado en la UI de cristal .btn-pena-cancel. La accion se procesa mediante el inyector AlertController, congela la UI con LoadingService.wrap para evitar fallos de conectividad o desajustes del DOM, e inyecta la orden de baja masiva en Firestore antes de limpiar la vista reactivamente.
-* Internacionalizacion y Mapeo en Caliente (Espanol): Se integraron diccionarios estrictos globales (EVENT_TYPE_ES) para transformar los strings primitivos del modelo (asamblea, comida, quedada, feria) en etiquetas humanas legibles en la cabecera del cartel.
+A. Purga del Trigger del Cliente y Optimizacion del Core (`events.service.ts`)
+* Blindaje de Escritura: Se elimino por completo el payload interceptable `_notificationTrigger` de los metodos de creacion, edicion y eliminacion de la app movil. Ahora la app solo envia datos civiles limpios.
+* Reduccion de Costes de Red (Cuota Firebase): En `createEvent`, se sustituyo el encadenamiento ineficiente de `addDoc` + `updateDoc` (2 escrituras) por una generacion sincrona de ID en local seguida de un unico impacto `setDoc` (1 escritura), reduciendo el consumo de la API al 50%.
+* Destruccion Fisica Directa: El metodo `deleteEvent` paso de parchear el documento a ejecutar un `deleteDoc` nativo directo.
 
-B. Listado General, Seguridad y Control de Asistencia (events.page)
-* Consumo de Fachada Centralizada de Autenticacion: Se integro el componente con AuthService, haciendo uso del ciclo asincronico await this.authService.waitForUserData() para recuperar de manera segura el perfil de usuario desde Firestore antes de iniciar las consultas de datos.
-* Filtrado Perimetral por Rol: Conexion directa con la directiva this.authService.isInvitado(). Si un usuario accede con perfil de "Invitado", el flujo RxJS filtra el tablon en caliente para ocultar cualquier convocatoria marcada como privada (event.isPrivate === true), garantizando que solo visualizan los eventos publicos (ej. "Un evento para todo el mundo").
-* Seguro de Desconexion en Cierre de Sesion: Implementacion del patron de destruccion mediante Subject y takeUntil(this.destroy$) combinado con operadores de captura catchError(() => of([])). Al pulsar "Cerrar Sesion", la pagina destruye inmediatamente las suscripciones activas en tiempo real con Firestore. Esto evita que la aplicacion intente leer colecciones de socios en estado anonimo, silenciando por completo los errores de permisos (Missing or insufficient permissions) en la consola del navegador.
-* Logica Avanzada de Aforo Profesional: 
-  - Se diseno una funcion evaluadora isEventFull(event) que analiza si las confirmaciones han alcanzado el limite de maxAttendees.
-  - Comportamiento UX Inteligente: Si el evento esta lleno y el usuario no esta inscrito, se ocultan los botones de accion y se muestra un estado deshabilitado de "Aforo Completo". Si el evento esta lleno pero el usuario ya estaba apuntado, la interfaz preserva los botones para permitirle desapuntarse y liberar su plaza de forma interactiva.
-* Fidelidad Estricta de Maquetacion HTML/SCSS: Se reestructuraron las secciones del DOM mediante contenedores estructurales de Angular (<ng-container>) e inyecciones dinamicas de traduccion en caliente ({{ estadoTraduccion[event.status] | uppercase }}). Esto permite aplicar las condiciones logicas de aforo y asistencia respetando integramente las clases de estilo nativas .card-actions, .btn-action, .btn-accept y .btn-decline definidas en la hoja de estilos de la aplicacion principal, manteniendo los bordes circulares, paddings dinamicos y textos descriptivos en minusculas.
-* Blindaje de la URL de Creacion: Implementacion de guardias de codigo en el ngOnInit de la pagina de detalle. Si un usuario no autorizado intenta forzar la entrada manual escribiendo el path /events/new, el sistema bloquea la inicializacion, muestra una notificacion de advertencia y redirige al infractor de vuelta al menu de listados.
+B. Nuevo Motor Analitico en la Nube (`index.ts` y `fcm-templates.ts` de Cloud Functions v2)
+* Aislamiento del Servidor (Riesgo Alto Mitigado): La Cloud Function v2 (`onEventTriggerNotification`) ahora evalua de forma 100% aislada los estados `event.data.before` y `event.data.after`. Deduce de forma automatica si es un ALTA, EDICION o CANCELACION, impidiendo hackeos de pushes masivos desde la consola web del cliente.
+* Filtro Quirurgico de Ruido de Red: Se implemento un algoritmo comparador que detecta si el unico campo modificado en un evento es `attendeeCount`. De ser asi (un socio haciendo clic en "Asistire"), la funcion aborta su ejecucion en un microsegundo, ahorrando costes de computacion y evitando saturar a la pena con falsos pushes masivos de edicion.
+* Autolimpieza de Datos Huerfanos (Riesgo Medio Mitigado): Al procesarse una eliminacion (`ELIMINACION_EVENTO`), la funcion ejecuta un borrado atomico en bloque (*Batch*) de todas las confirmaciones almacenadas en la subcoleccion huerfana `/attendance`, manteniendo Firestore reluciente y libre de datos fantasmas.
 
-C. Backend en la Nube: Arquitectura Firebase Cloud Functions v2
-Se configuro y despliego un modulo robusto basado en el SDK de Cloud Functions de segunda generacion (v2) unificado en la region central de almacenamiento (us-central1):
-* FCM Templates Integrados (fcm-templates.ts): Modulo estatico que define los payloads nativos esteticos para hardware movil con el color corporativo oficial de la pena (#1c3f7c), icono corporativo nativo empaquetado en el APK (ic_escudo_notificacion) e imagenes escaladas del escudo oficial desde Storage distribuidas por bloques asincronos rapidos de Firebase Cloud Messaging (messaging().sendEach()).
-* Escuchador de Base de Datos Reactivo (onDocumentWritten): Monitorea la coleccion /events/{eventId} de manera asincrona. 
-* Estrategia Interoperable de Triggers: El cliente Angular no realiza envios masivos directos (ahorrando bateria e impidiendo el robo de tokens). Al crear (createEvent), modificar (updateEvent) o eliminar (deleteEvent) un evento, la aplicacion movil inyecta un nodo temporal privado e invisible en la base de datos denominado _notificationTrigger.
-* Procesamiento de Segmentacion y Autolimpieza Atomica: El backend captura el trigger, lee dinamicamente el array de roles elegidos (destinatarios), extrae de forma segura todos los tokens de terminal vinculados en las subcolecciones /users/{uid}/tokens de socios activos y distribuye los pushes adaptados al tipo de alerta (NUEVO_EVENTO, MODIFICACION_EVENTO, ELIMINACION_EVENTO). 
-* Flujo Destructivo Centralizado: Si la orden interceptada en la nube es una eliminacion, el backend despacha los pushes de cancelacion a los terminales y, en el bloque de salida obligatoria (finally), destruye fisicamente de forma automatica el documento completo del evento de Firestore, evitando colecciones basura o dependencias muertas. Si es un alta o edicion, purga atomicamente el campo de control _notificationTrigger para evitar bucles repetitivos de alertas.
-* Politica de Limpieza en Artifact Registry: Al trabajar con v2 (Cloud Run), se inyecto una regla de retencion automatica de imagenes en el repositorio de contenedores de Google Cloud, asegurando la eliminacion de compilaciones obsoletas y manteniendo la cuota mensual completamente gratuita.
+C. Menu Lateral Reactivo, Inteligente y Ajuste de Zona Segura Movil (`app.component.*`)
+* Control de Visibilidad por Calendario: Se inyecto `EventsService` en el archivo raiz. El menu lateral escucha en tiempo real la coleccion de convocatorias; si no existe ningun evento activo de tipo `'feria'`, los accesos de **"Pases de Feria"** y **"Porteria Caseta"** se ocultan por completo de la interfaz de forma reactiva[cite: 2].
+* Apertura de Perimetro para el Rol Invitado (Hotfix UX): Se detecto que un usuario de tipo `'invitado'`, tras salir de la pantalla por redireccion push, perdia el acceso a su pase al no renderizarse la opcion en el menu principal. Se modifico la matriz de rutas reactivas en `app.component.ts` para garantizar que la seccion de consulta de pases sea visible permanentemente para cualquier usuario autenticado (incluyendo el rol restringido `Invitado`), permitiendo la reconsulta del QR de entrada en porteria sin depender exclusivamente del push.
+* Semantica por Bloques y Lineas Divisorias: Se reorganizo el archivo HTML en tres bloques diferenciados (Navegacion General -> Ecosistema de Feria -> Cierre de Sesion), separados por lineas divisoria premium con degradados CSS traslucidos en SCSS que se apagan solas si no hay feria activa[cite: 2].
+* Correccion del Reloj de la Barra de Estado: Se rediseno el encabezado a formato horizontal flexible (`.menu-header-flex`) reduciendo el escudo a un tamano compacto de `44px` atado por reglas estricta `!important`[cite: 2]. Se inyecto la propiedad nativa `env(safe-area-inset-top)` para empujar la cabecera hacia abajo, evitando que tape el reloj y la bateria en terminales iOS y Android[cite: 2].
+* Sistema Anti-solapamiento del Footer: Se extrajo el pie de pagina (`.menu-footer-clean`) fuera del componente de scroll `<ion-content>` y se anclo fijamente al final de la etiqueta `ion-menu` usando layouts limpios compatibles con el enrutador de Ionic[cite: 2]. Se inyecto `env(safe-area-inset-bottom)` para esquivar las barras de gestos fisicas del hardware del movil[cite: 2].
 
-D. Reglas de Seguridad en Cloud Firestore (firestore.rules)
-* Actualizacion Atomica y Quirurgica de Eventos: Se refactorizaron las reglas de Firebase en produccion para la coleccion /events/{eventId}. Utilizando la funcion analitica request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attendeeCount']), se concede permiso de actualizacion a los usuarios comunes (socios e invitados) unicamente si el unico campo alterado en la peticion es el contador numerico de asistentes, manteniendo el resto del documento (fechas, titulos, estados) protegido de forma estricta contra manipulaciones malintencionadas.
-* Subcoleccion de Asistencia: Se securizo el subpath /attendance/{userId} garantizando que cualquier usuario autenticado puede consultar el listado de participantes (allow read: if isLogged()), pero limitando la escritura exclusivamente al propio dueno del identificador o a la junta directiva (allow write: if isOwnUser(userId) || canManageUsers()).
+D. Automatizacion del Flujo de Pases para Invitados
+* Captura Automatica de Invitaciones: Se creo una nueva Cloud Function v2 (`onFairAccessCreatedNotification`) encargada de escuchar la coleccion `fair-access/{accessId}`[cite: 2]. En cuanto un socio genera un pase, el servidor extrae sincronamente los tokens del invitado asignado y despacha un push personalizado[cite: 2].
+* Correccion Critica de Identidad del Anfitrion: Se soluciono un bug en el mapeo de datos donde los pases de feria impresos o visualizados mostraban por defecto el string generico `"Administrador del sistema"`. Se inyecto el estado reactivo de `AuthService` en el formulario emisor (`invite.page.ts`) para capturar explicitamente el `uid` y el nombre civil completo del Socio o Directiva anfitrion, guardandolo de forma limpia y directa en el payload de Firestore.
+* Plantilla Estetica de Entrada (`fcm-templates.ts`): Se diseno el metodo `getNuevoPaseFeriaTemplate` inyectando la etiqueta oculta en los metadatos de red: `tipoNotificacion: 'NUEVO_PASE_FERIA'`[cite: 2].
+* Redireccion Guiada Nvativa (`fcm.service.ts`): Se actualizo el interceptor de acciones de Capacitor en la aplicacion movil para capturar el codigo del pase de feria[cite: 2]. Al hacer clic sobre la notificacion push con el movil bloqueado, el telefono abre la app y viaja directamente a la ruta protegida `/fair`, mostrando el QR del pase al invitado al instante[cite: 2].
 
 ---
 
-4. ANALISIS DE VULNERABILIDADES Y MITIGACION DE RIESGOS (AUDITORIA)
+4. REGLAS DE SEGURIDAD EN CLOUD FIRESTORE (firestore.rules)
 
-Revisando detalladamente la estructura y el comportamiento de las piezas de software implementadas, se detectan los siguientes puntos criticos que requieren atencion de seguridad:
-
-* Riesgo Alto: Acceso al Trigger de Notificaciones Push Masivas
-  - Vulnerabilidad: Actualmente el metodo deleteEvent (y los de alta/edicion) inyectan el payload _notificationTrigger desde el cliente Angular. Aunque las reglas impiden editar campos estructurales a usuarios corrientes, un socio malicioso con conocimientos de desarrollo web podria interceptar la consola del navegador, ejecutar un comando de actualizacion inyectando un _notificationTrigger modificado en un evento y forzar al backend de Google a enviar notificaciones push masivas falsas, ofensivas o SPAM con el escudo de la pena a todos los moviles de la base de datos.
-  - Mitigacion recomendada: Retirar por completo el objeto _notificationTrigger de la app movil. Los formularios web de la directiva solo deben guardar los datos limpios del evento. El backend de Firebase (index.ts) debe evaluar mediante change.before.data() y change.after.data() de forma automatica si un evento es nuevo, modificado o eliminado, autogenerando la push masiva desde el servidor 100% aislado de los clientes.
-
-* Riesgo Medio: El Borrado Fisico deja subcolecciones Huerfanas
-  - Vulnerabilidad: Al ejecutar event.data.after.ref.delete() en el backend para eliminar el evento, Firestore borra el documento principal del evento, pero no elimina automaticamente las subcolecciones internas como /attendance (las inscripciones de los socios). Esos documentos de asistencia se quedan flotando como datos fantasmas ocupando espacio innecesario de almacenamiento.
-  - Mitigacion recomendada: Modificar el bloque de eliminacion de la Cloud Function para que, antes de borrar el nodo del evento, realice un bucle que borre todos los registros de la subcoleccion attendance vinculados a ese ID.
+* Actualizacion Atomica y Quirurgica de Eventos: Utilizando la funcion analitica request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attendeeCount']), se concede permiso de actualizacion a los usuarios comunes unicamente si el unico campo alterado es el contador de asistentes.
+* Subcoleccion de Asistencia: Se securizo el subpath /attendance/{userId} garantizando allow read: if isLogged() y limitando la escritura exclusivamente al propio dueno del identificador o a la junta directiva (allow write: if isOwnUser(userId) || canManageUsers()).
 
 ---
 
 5. BUENAS PRACTICAS SUGERIDAS PARA EL DESARROLLO DEL PROYECTO
 
-1. Gestion de Entornos Seguros (Mapbox Token): Actualmente el token de Mapbox se inyecta desde environment.ts directamente en el codigo de produccion. Dado que los tokens expuestos en aplicaciones web o APKs hibridas pueden ser extraidos facilmente, asegurate de configurar en el panel de Mapbox restricciones perimetrales estrictas de dominio de URL (adcloslocos-desa.web.app) y el identificador de paquete nativo de Android, impidiendo que terceros roben vuestra cuota de geocodificacion.
-2. Uso de Pipes en lugar de Metodos en el HTML: Para la traduccion de idiomas en el listado, se expuso el diccionario estadoTraduccion. Trata de mantener siempre esta estructura de acceso directo por clave estatica en lugar de invocar metodos funcionales (ej. getIconForType(event.type)) en bucles *ngFor. Los metodos en el HTML se ejecutan en cada micro-ciclo de deteccion de cambios de Angular, mermando el rendimiento y la fluidez del scroll en terminales antiguos de gama baja. Reemplazalos por Pipes personalizados reutilizables.
-3. Control Centralizado de Roles en la Nube: Asegurate de que las logicas sensibles (como quien es Administrador o Directiva) se validen con tokens de seguridad JWT de Firebase en las peticiones HTTPS utilizando reclamaciones personalizadas (Custom Claims), impidiendo la suplantacion de identidad alterando el almacenamiento local del navegador (LocalStorage).
+1. Gestion de Entornos Seguros (Mapbox Token): Configurar restricciones perimetrales estrictas de dominio de URL (adcloslocos-desa.web.app) y el bundle ID nativo de Android en el panel de Mapbox.
+2. Uso de Pipes en lugar de Metodos en el HTML: Reemplazar los metodos evaluadores en bucles directos del HTML por Pipes puros para no sobrecargar los micro-ciclos de deteccion de cambios de Angular.
+3. Control Centralizado de Roles en la Nube: Validar tokens de seguridad JWT utilizando reclamaciones personalizadas (Custom Claims).
 
 ---
 
 6. SIGUIENTES PASOS Y FUNCIONALIDADES PENDIENTES (BACKLOG DE LA PENA)
 
-1. Migracion Completa de Funciones v1 a v2: Actualmente conviven funciones HTTP clasicas v1 (createUserByAdmin, deactivateUser...) con el disparador autonomo v2 de Firestore. Se recomienda unificar toda la carpeta functions a la v2 de Firebase para aprovechar el aislamiento nativo por hilos de Cloud Run, reduciendo a cero los problemas de arranque en frio (Cold Start).
-2. Modulo de Estadisticas (stats.page): Pantalla planificada en la arquitectura de carpetas que permanece como contenedor de construccion (stats-construction.png). Debera consumir el historico de asistencia acumulado para mostrar graficas analiticas a la directiva sobre la participacion real de los socios en casetas y convivencias.
-3. Control de Accesos por Codigos QR en Feria: Implementacion del lector e integrador de pases de la interfaz FairAccess de tu modelo. Se requerira un componente escaner de camara integrado en el hardware para validar los picajes de entradas y salidas de la caseta en tiempo real durante la festividad, verificando los pases de invitados vinculados al ID de un socio anfitrion.
+1. Migracion Completa de Funciones v1 a v2: Unificar las funciones HTTP clasicas (createUserByAdmin, deactivateUser...) a la v2 para optimizar los arranques en frio (Cold Start) mediante Cloud Run.
+2. Sistema de Carnet de Socio General: Planificacion a futuro de una tarjeta de identidad virtual corporativa para el uso diario de los miembros, completamente independiente del flujo temporal de pases de la caseta de feria.
+3. Pruebas de Estres de Notificaciones Push: Testeo de envio masivo en caliente de los pases en un entorno de pre-produccion con multiples dispositivos emulados.
 
 ---
+
 
 7. ESTRUCTURA DE CARPETAS COMPLETA DEL REPOSITORIO (ADCLOSLOCOSV2)
 

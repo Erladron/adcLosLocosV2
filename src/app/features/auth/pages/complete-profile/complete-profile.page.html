@@ -1,4 +1,4 @@
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" data-cy="complete-profile-page">
 
   <div class="complete-profile-container">
 
@@ -16,20 +16,11 @@
     <!-- PERSONAL DATA -->
     <!-- ===================================== -->
 
-    <app-personal-data-form *ngIf="user" 
-      [user]="user" 
-      [imageChangedEvent]="imageChangedEvent"
-      [croppedImage]="croppedImage" 
-      [mostrarCropper]="mostrarCropper" 
-      [editing]="true" 
-      [canEdit]="true"
-      [simpleMode]="true" 
-      [isEditMode]="false" 
-      (imageCropped)="imageCropped($event)" 
-      (applyCropper)="applyCropper()"
-      (cancelCropper)="cancelCropper()" 
-      (selectPhoto)="selectPhoto()" 
-      (takePhoto)="takePhoto()">
+    <app-personal-data-form *ngIf="user" [user]="user" [imageChangedEvent]="imageChangedEvent"
+      [croppedImage]="croppedImage" [mostrarCropper]="mostrarCropper" [editing]="true" [canEdit]="true"
+      [simpleMode]="true" [isEditMode]="false" (imageCropped)="imageCropped($event)" (applyCropper)="applyCropper()"
+      (cancelCropper)="cancelCropper()" (selectPhoto)="selectPhoto()" (takePhoto)="takePhoto()"
+      data-cy="onboarding-personal-data-form">
 
     </app-personal-data-form>
 
@@ -41,7 +32,7 @@
     <!-- SAVE -->
     <!-- ===================================== -->
 
-    <ion-button [disabled]="!canSave" expand="block" size="large" (click)="save()">
+    <ion-button [disabled]="!canSave" expand="block" size="large" (click)="save()" data-cy="btn-submit-onboarding">
 
       ENVIAR PARA APROBACIÓN
 
@@ -51,7 +42,7 @@
     <!-- LOGOUT -->
     <!-- ================================= -->
 
-    <ion-button expand="block" fill="outline" class="logout-button" (click)="logout()">
+    <ion-button expand="block" fill="outline" class="logout-button" (click)="logout()" data-cy="btn-onboarding-logout">
 
       Cerrar sesión
 

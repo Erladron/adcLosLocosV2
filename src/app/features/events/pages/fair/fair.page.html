@@ -1,6 +1,6 @@
-<app-page-header title="Carnet de Feria" [showMenu]="true" [showBack]="true"></app-page-header>
+<app-page-header title="Carnet de Feria" [showMenu]="true" [showBack]="true" data-cy="page-header"></app-page-header>
 
-<ion-content fullscreen="true" class="home-content">
+<ion-content fullscreen="true" class="home-content" data-cy="fair-page-content">
   
   <div class="background-logo">
     <img src="assets/img/escudo.png" alt="Escudo" class="small-escudo-bg">
@@ -8,7 +8,7 @@
 
   <div class="home-container">
 
-    <div class="fair-theme-title">
+    <div class="fair-theme-title" data-cy="fair-theme-title">
       <ion-icon name="sparkles-outline"></ion-icon>
       <span>{{ isInvitado ? 'INVITACIÓN INDIVIDUAL DE ACCESO' : 'PASE OFICIAL DE FERIA' }}</span>
       <ion-icon name="wine-outline"></ion-icon>
@@ -16,7 +16,7 @@
 
     <div class="events-list-container" *ngIf="currentUserData">
       
-      <div class="stadium-membership-card fair-style-card" [ngClass]="{'is-guest-card': isInvitado}">
+      <div class="stadium-membership-card fair-style-card" [ngClass]="{'is-guest-card': isInvitado}" data-cy="fair-pass-card">
         <div class="stadium-lines-pattern fair-stripes"></div>
         
         <div class="card-split-layout">
@@ -38,13 +38,13 @@
               
               <div class="player-identity">
                 <span class="card-role-badge-pillar">{{ (currentUserData.tipo || 'Socio').toUpperCase() }}</span>
-                <h2 class="player-name">{{ currentUserData.nombre }}</h2>
+                <h2 class="player-name" data-cy="pass-card-user-name">{{ currentUserData.nombre }}</h2>
                 <span class="player-document" *ngIf="currentUserData.dni">DNI: {{ currentUserData.dni }}</span>
               </div>
             </div>
           </div>
 
-          <div class="card-right-qr-panel" *ngIf="qrPayload" (click)="setQrModal(true); $event.stopPropagation()">
+          <div class="card-right-qr-panel" *ngIf="qrPayload" (click)="setQrModal(true); $event.stopPropagation()" data-cy="btn-open-qr-modal">
             <div class="qr-embedded-box">
               <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + qrPayload" alt="QR Mini">
             </div>
@@ -57,7 +57,7 @@
           <ng-container *ngIf="!isInvitado">
             <div class="stadium-stat-box">
               <span class="stat-label">Nº SOCIO</span>
-              <span class="stat-value">#{{ currentUserData.numeroSocio || '1' }}</span>
+              <span class="stat-value" data-cy="pass-card-socio-num">#{{ currentUserData.numeroSocio || '1' }}</span>
             </div>
             <div class="stadium-stat-box">
               <span class="stat-label">ANTIGÜEDAD</span>
@@ -68,7 +68,7 @@
           <ng-container *ngIf="isInvitado">
             <div class="stadium-stat-box">
               <span class="stat-label">ANFITRIÓN</span>
-              <span class="stat-value guest-highlight">{{ currentUserData.invitadoPorNombre || 'Peña Oficial' }}</span>
+              <span class="stat-value guest-highlight">{{ miPaseHoy.invitedByName || 'Peña Oficial' }}</span>
             </div>
             <div class="stadium-stat-box">
               <span class="stat-label">VALIDEZ</span>
@@ -83,11 +83,11 @@
         </div>
       </div>
 
-      <div class="glass-card" style="padding: 16px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.15);" *ngIf="!isInvitado">
+      <div class="glass-card" style="padding: 16px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.15);" *ngIf="!isInvitado" data-cy="section-emitir-pases">
         
         <div class="card-middle-info" style="margin-bottom: 12px;">
           <span class="availability-text">INVITACIONES DE HOY</span>
-          <span class="availability-value" [style.color]="invitacionesEnviadasHoy >= limiteInvitaciones ? '#f87171' : '#4ade80'">
+          <span class="availability-value" data-cy="fair-pases-counter" [style.color]="invitacionesEnviadasHoy >= limiteInvitaciones ? '#f87171' : '#4ade80'">
             {{ invitacionesEnviadasHoy }} / {{ limiteInvitaciones }} Enviadas
           </span>
         </div>
@@ -104,12 +104,13 @@
                      placeholder="Escribe un nombre o DNI..." 
                      [value]="nombreBusqueda"
                      (input)="filtrarUsuarios($event)"
-                     autocomplete="off">
+                     autocomplete="off"
+                     data-cy="input-search-invitado">
               <ion-icon *ngIf="nombreBusqueda" name="close-outline" class="clear-icon" (click)="limpiarBusqueda()"></ion-icon>
             </div>
 
-            <ul class="autocomplete-dropdown" *ngIf="usuariosFiltrados.length > 0">
-              <li *ngFor="let user of usuariosFiltrados" (click)="seleccionarUsuario(user)">
+            <ul class="autocomplete-dropdown" *ngIf="usuariosFiltrados.length > 0" data-cy="search-results-dropdown">
+              <li *ngFor="let user of usuariosFiltrados" (click)="seleccionarUsuario(user)" data-cy="search-result-item">
                 <div class="dropdown-user-info">
                   <span class="dropdown-name">{{ user.nombre }}</span>
                   <span class="dropdown-dni" *ngIf="user.dni">{{ user.dni }}</span>
@@ -118,14 +119,14 @@
             </ul>
           </div>
 
-          <button class="peña-fab-btn-native btn-invite" [disabled]="!invitadoSeleccionadoId" (click)="enviarInvitacion()">
+          <button class="peña-fab-btn-native btn-invite" [disabled]="!invitadoSeleccionadoId" (click)="enviarInvitacion()" data-cy="btn-submit-fair-pass">
             <ion-icon name="send-outline"></ion-icon>
             Emitir Invitación Caseta
           </button>
         </div>
 
         <ng-template #cupoLlenoTpl>
-          <div class="empty-warning-card" style="padding: 16px; margin: 0;">
+          <div class="empty-warning-card" style="padding: 16px; margin: 0;" data-cy="fair-limit-reached-warning">
             <ion-icon name="alert-circle-outline" style="font-size: 26px; color: #f87171;"></ion-icon>
             <p style="color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 4px;">
               Has alcanzado el cupo máximo de {{ limiteInvitaciones }} invitaciones por día.
@@ -133,16 +134,16 @@
           </div>
         </ng-template>
 
-        <div class="invited-guests-section" *ngIf="misInvitadosHoy.length > 0">
+        <div class="invited-guests-section" *ngIf="misInvitadosHoy.length > 0" data-cy="section-pases-emitidos-list">
           <h3 class="table-title">Tus pases emitidos hoy</h3>
           <div class="invited-guests-table">
-            <div class="table-row" *ngFor="let pase of misInvitadosHoy; let i = index">
+            <div class="table-row" *ngFor="let pase of misInvitadosHoy; let i = index" data-cy="issued-pass-row">
               <div class="row-index">{{ i + 1 }}</div>
               <div class="row-details">
                 <span class="guest-name">{{ pase.userName }}</span>
                 <span class="guest-status">Pase Generado</span>
               </div>
-              <button class="btn-delete-pass" (click)="eliminarPase(pase)" title="Anular pase">
+              <button class="btn-delete-pass" (click)="eliminarPase(pase)" title="Anular pase" data-cy="btn-delete-issued-pass">
                 <ion-icon name="trash-outline"></ion-icon>
               </button>
             </div>
@@ -151,7 +152,7 @@
 
       </div>
 
-      <div *ngIf="isInvitado && !miPaseHoy" class="glass-card empty-warning-card" style="padding: 24px 16px; margin-top: 16px;">
+      <div *ngIf="isInvitado && !miPaseHoy" class="glass-card empty-warning-card" style="padding: 24px 16px; margin-top: 16px;" data-cy="fair-no-pass-assigned">
         <ion-icon name="ticket-outline" style="font-size: 36px; color: rgba(255,255,255,0.2);"></ion-icon>
         <h2>Sin pase de caseta asignado hoy</h2>
         <p style="font-size: 12px; color: rgba(255,255,255,0.5);">Pídele a un socio que te asigne un pase diario.</p>
@@ -161,12 +162,12 @@
 
   </div>
 
-  <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="setQrModal(false)">
+  <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="setQrModal(false)" data-cy="fair-qr-modal">
     <ng-template>
       <ion-header class="ion-no-border">
         <ion-toolbar style="--background: #070d19; --color: white;">
           <ion-buttons slot="end">
-            <ion-button (click)="setQrModal(false)">
+            <ion-button (click)="setQrModal(false)" data-cy="btn-close-qr-modal">
               <ion-icon name="close-outline" style="font-size: 28px; color: white;"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -178,13 +179,13 @@
           <h3>Pase Oficial de Caseta</h3>
           <p style="margin-bottom: 24px;">Presente este código QR en el control de acceso de la puerta</p>
           
-          <div class="qr-fullscreen-box" *ngIf="qrPayload">
+          <div class="qr-fullscreen-box" *ngIf="qrPayload" data-cy="qr-fullscreen-container">
             <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + qrPayload" alt="QR Control Acceso">
           </div>
           
           <div class="manual-code-container" *ngIf="qrPayload">
             <span class="manual-code-label">CÓDIGO DE ENTRADA MANUAL</span>
-            <div class="manual-code-value">{{ qrPayload }}</div>
+            <div class="manual-code-value" data-cy="qr-manual-code-text">{{ qrPayload }}</div>
           </div>
 
           <span class="badge-modal-date" [style.background]="isInvitado ? '#e11d48' : '#ffb703'" [style.color]="isInvitado ? '#ffffff' : '#070d19'">

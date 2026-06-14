@@ -228,9 +228,9 @@ export class UserService {
   // ==========================================================================
   // 🔥 SOLICITAR APROBACIÓN A LA DIRECTIVA (LA PIEZA QUE FALTABA)
   // ==========================================================================
-  async requestUserApproval() {
+  async requestUserApproval(data?: any) {
     const callable = httpsCallable(this.functions, 'requestUserApproval');
-    return await callable(); 
+    return await callable(data); 
   }
 
 }

@@ -62,8 +62,8 @@ export class FairService {
     }
   }
 
-  async crearInvitacion(socioId: string, invitado: User, fecha: string): Promise<FairAccess> {
-    const totalInvitacionesHoy = await this.contarInvitacionesDelDia(socioId, fecha);
+  async crearInvitacion(socio: User, invitado: User, fecha: string): Promise<FairAccess> {
+    const totalInvitacionesHoy = await this.contarInvitacionesDelDia(socio.id, fecha);
     
     if (totalInvitacionesHoy >= 6) {
       throw new Error(APP_MESSAGES[AppMessageCode.ADC_FAIR_ERR_0001]);
@@ -78,7 +78,8 @@ export class FairService {
         userId: invitado.id!,
         userName: `${invitado.nombre}`,
         userType: invitado.tipo || UserRole.INVITADO,
-        hostId: socioId,
+        hostId: socio.id,
+        invitedByName: socio.nombre,
         date: fecha,
         createdAt: new Date().toISOString(),
         scans: [] 
@@ -228,6 +229,7 @@ export class FairService {
           userName: usuarioActivo.nombre || 'Socio Oficial',
           userType: usuarioActivo.tipo,
           hostId: usuarioActivo.id,
+          invitedByName: usuarioActivo.nombre,
           date: identificadorTemporada,
           createdAt: new Date().toISOString(),
           scans: []

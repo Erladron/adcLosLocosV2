@@ -1,6 +1,6 @@
-<app-page-header title="Gestión de Eventos" [showMenu]="true" [showBack]="true"></app-page-header>
+<app-page-header title="Gestión de Eventos" [showMenu]="true" [showBack]="true" data-cy="page-header"></app-page-header>
 
-<ion-content fullscreen="true" class="home-content">
+<ion-content fullscreen="true" class="home-content" data-cy="events-page-content">
 
   <div class="background-logo">
     <img src="assets/img/escudo.png" alt="Escudo">
@@ -9,37 +9,38 @@
   <div class="home-container">
 
     <ion-segment [scrollable]="true" [value]="currentFilter" (ionChange)="setFilter($event.detail.value)" mode="md"
-      class="custom-scroll-segment">
+      class="custom-scroll-segment" data-cy="events-filter-segment">
 
-      <ion-segment-button value="todos">
+      <ion-segment-button value="todos" data-cy="filter-btn-todos">
         <ion-label>Todos</ion-label>
       </ion-segment-button>
 
-      <ion-segment-button value="asamblea">
+      <ion-segment-button value="asamblea" data-cy="filter-btn-asambleas">
         <ion-label>Asambleas</ion-label>
       </ion-segment-button>
 
-      <ion-segment-button value="comida">
+      <ion-segment-button value="comida" data-cy="filter-btn-comidas">
         <ion-label>Comidas</ion-label>
       </ion-segment-button>
 
-      <ion-segment-button value="quedada">
+      <ion-segment-button value="quedada" data-cy="filter-btn-quedadas">
         <ion-label>Quedadas</ion-label>
       </ion-segment-button>
 
-      <ion-segment-button value="feria">
+      <ion-segment-button value="feria" data-cy="filter-btn-feria">
         <ion-label>Feria</ion-label>
       </ion-segment-button>
     </ion-segment>
 
-    <div class="events-list-container" *ngIf="filteredEvents$ | async as events; else loadingTpl">
+    <div class="events-list-container" *ngIf="filteredEvents$ | async as events; else loadingTpl" data-cy="events-list-wrapper">
 
-      <div class="glass-card empty-warning-card" *ngIf="events.length === 0">
+      <div class="glass-card empty-warning-card" *ngIf="events.length === 0" data-cy="events-empty-warning">
         <ion-icon name="alert-circle-outline"></ion-icon>
         <p>No hay eventos convocados en esta categoría.</p>
       </div>
 
       <div *ngFor="let event of events" [routerLink]="['/events', event.id]" class="glass-card event-interactive-card"
+        data-cy="event-card"
         [ngStyle]="{
           'background-image': 'linear-gradient(rgba(13, 27, 62, 0.78), rgba(10, 20, 45, 0.92)), url(' + (event.imageUrl || 'assets/img/events-construction.png') + ')'
         }">
@@ -52,7 +53,7 @@
             </div>
 
             <div class="event-main-details">
-              <h2 class="event-card-title">{{ event.title }}</h2>
+              <h2 class="event-card-title" data-cy="event-title-text">{{ event.title }}</h2>
 
               <div class="meta-info-row">
                 <span class="meta-label">FECHA Y HORA</span>
@@ -76,12 +77,11 @@
               </div>
               <div class="meta-info-row">
                 <span class="meta-label">ASISTENTES</span>
-                <span class="meta-value">{{ event.attendeeCount || 0 }} Confirmados</span>
+                <span class="meta-value" data-cy="event-attendees-counter">{{ event.attendeeCount || 0 }} Confirmados</span>
               </div>
             </div>
 
             <div class="status-badge-area">
-              <!-- 🚀 TRADUCCIÓN NATIVA: Mapeamos el estado al diccionario en español y lo forzamos a mayúsculas -->
               <span class="badge badge-success">{{ (estadoTraduccion[event.status] || event.status) | uppercase }}</span>
             </div>
           </div>
@@ -93,7 +93,7 @@
 
           <ng-container *ngIf="isEventFull(event) && !isUserGoing(event.id!)">
             <div class="card-actions">
-              <button disabled class="btn-action btn-decline" style="width: 100%; opacity: 0.6; cursor: not-allowed;">
+              <button disabled class="btn-action btn-decline" style="width: 100%; opacity: 0.6; cursor: not-allowed;" data-cy="btn-event-full">
                 <ion-icon name="alert-circle-outline"></ion-icon>
                 Aforo Completo
               </button>
@@ -101,10 +101,11 @@
           </ng-container>
 
           <ng-container *ngIf="!isEventFull(event) || isUserGoing(event.id!)">
-            <div class="card-actions">
+            <div class="card-actions" (click)="$event.stopPropagation()">
               
               <button 
                 class="btn-action" 
+                data-cy="btn-confirm-attendance"
                 [ngClass]="isUserGoing(event.id!) ? 'btn-accept' : 'btn-decline'"
                 (click)="confirmAttendance(event.id!, $event)">
                 <ion-icon name="checkmark-circle-outline" *ngIf="isUserGoing(event.id!)"></ion-icon>
@@ -113,6 +114,7 @@
 
               <button 
                 class="btn-action btn-decline"
+                data-cy="btn-decline-attendance"
                 (click)="declineAttendance(event.id!, $event)">
                 <ion-icon name="close-circle-outline" *ngIf="isUserNotGoing(event.id!)"></ion-icon>
                 No puedo ir
@@ -132,7 +134,7 @@
       </div>
     </ng-template>
 
-    <button routerLink="/events/new" class="peña-fab-btn-native" *ngIf="isAdmin">
+    <button routerLink="/events/new" class="peña-fab-btn-native" *ngIf="isAdmin" data-cy="btn-create-event-fab">
       <ion-icon name="add"></ion-icon>
     </button>
 

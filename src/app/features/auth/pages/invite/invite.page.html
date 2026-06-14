@@ -1,12 +1,8 @@
-<app-page-header title="Invitar Usuario" [showMenu]="true" [showBack]="true" backUrl="/home">
+<app-page-header title="Invitar Usuario" [showMenu]="true" [showBack]="true" backUrl="/home" data-cy="page-header">
 
 </app-page-header>
 
-<ion-content fullscreen="true" class="invite-content">
-
-  <!-- ================================= -->
-  <!-- BACKGROUND -->
-  <!-- ================================= -->
+<ion-content fullscreen="true" class="invite-content" data-cy="invite-content-page">
 
   <div class="background-logo">
 
@@ -14,25 +10,13 @@
 
   </div>
 
-  <!-- ================================= -->
-  <!-- CONTENT -->
-  <!-- ================================= -->
-
   <div class="invite-container">
 
     <div class="invite-box">
 
-      <!-- ============================= -->
-      <!-- ICON -->
-      <!-- ============================= -->
-
       <ion-icon name="mail-open-outline" class="header-icon">
 
       </ion-icon>
-
-      <!-- ============================= -->
-      <!-- TITLE -->
-      <!-- ============================= -->
 
       <h2>
 
@@ -46,26 +30,18 @@
 
       </p>
 
-      <!-- ============================= -->
-      <!-- EMAIL -->
-      <!-- ============================= -->
-
       <ion-item lines="none">
 
         <ion-input label="Correo electrónico" labelPlacement="floating" type="email" [(ngModel)]="email"
-          placeholder="ejemplo@correo.com">
+          placeholder="ejemplo@correo.com" data-cy="input-invite-email">
 
         </ion-input>
 
       </ion-item>
 
-      <!-- ============================= -->
-      <!-- ACTIONS -->
-      <!-- ============================= -->
-
       <div class="button-section">
 
-        <ion-button expand="block" class="main-button" (click)="invitar()">
+        <ion-button expand="block" class="main-button" (click)="invitar()" data-cy="btn-send-invite">
 
           ENVIAR INVITACIÓN
 

@@ -5,8 +5,9 @@ import {
   collectionData, 
   doc, 
   docData, 
-  addDoc, 
+  setDoc,
   updateDoc, 
+  deleteDoc,
   runTransaction 
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -99,70 +100,53 @@ export class EventsService {
     });
   }
 
+  /**
+   * 📅 CREAR CONVOCATORIA LIMPIA
+   * Optimizado con setDoc para generar el ID en el cliente y realizar una sola escritura en Firestore.
+   */
   async createEvent(eventData: Partial<AppEvent>): Promise<string> {
-    const eventsRef = collection(this.firestore, 'events');
-    const docRef = await addDoc(eventsRef, eventData);
-    
-    const triggerPayload = {
-      _notificationTrigger: {
-        tipoNotificacion: 'NUEVO_EVENTO',
-        eventId: docRef.id,
-        titulo: '📅 ¡Nueva Convocatoria!',
-        descripcion: `Nuevo evento en ACD Los Locos: "${eventData.title}"`,
-        destinatarios: eventData.isPrivate 
-          ? ['admin', 'directiva', 'socio'] 
-          : ['admin', 'directiva', 'socio', 'invitado'],
-        timestamp: new Date().getTime()
-      }
-    };
+    // Generamos una referencia limpia para obtener un ID único de forma síncrona
+    const newEventRef = doc(collection(this.firestore, 'events'));
+    const eventId = newEventRef.id;
 
-    await updateDoc(docRef, triggerPayload);
-    return docRef.id;
-  }
-
-  async updateEvent(eventId: string, eventData: Partial<AppEvent>): Promise<void> {
-    const eventRef = doc(this.firestore, `events/${eventId}`);
-    
-    const dataWithTrigger = {
+    // Guardamos los datos limpios de la convocatoria en un solo impacto de red
+    const cleanPayload: Partial<AppEvent> = {
       ...eventData,
-      _notificationTrigger: {
-        tipoNotificacion: 'MODIFICACION_EVENTO',
-        eventId: eventId,
-        titulo: '⚠️ Cambio en el Evento',
-        descripcion: `El evento "${eventData.title || 'Informativo'}" ha sufrido modificaciones por parte de la directiva.`,
-        destinatarios: eventData.isPrivate 
-          ? ['admin', 'directiva', 'socio'] 
-          : ['admin', 'directiva', 'socio', 'invitado'],
-        timestamp: new Date().getTime()
-      }
+      id: eventId,
+      attendeeCount: 0
     };
 
-    await updateDoc(eventRef, dataWithTrigger);
+    await setDoc(newEventRef, cleanPayload);
+    return eventId;
   }
 
   /**
-   * 🛑 ELIMINAR EVENTO CON ALERTA PUSH AUTOMÁTICA
-   * En lugar de borrar el documento a capón, inyectamos la orden de eliminación. 
-   * La Cloud Function enviará las notificaciones y luego destruirá el documento de forma segura.
+   * ⚠️ MODIFICAR CONVOCATORIA LIMPIA
+   * Actualiza única y exclusivamente los datos estructurales del formulario.
+   */
+  async updateEvent(eventId: string, eventData: Partial<AppEvent>): Promise<void> {
+    const eventRef = doc(this.firestore, `events/${eventId}`);
+    
+    // Purga total de campos de trigger externos: la app solo actualiza la información civil del evento
+    const { id, attendeeCount, ...cleanData } = eventData;
+
+    await updateDoc(eventRef, cleanData);
+  }
+
+  /**
+   * 🛑 ELIMINAR CONVOCATORIA FÍSICA DIRECTA
+   * La aplicación móvil destruye el documento de inmediato. 
+   * El servidor en la nube (Cloud Function) reaccionará de forma reactiva al borrado.
    */
   async deleteEvent(event: AppEvent): Promise<void> {
+    if (!event.id) {
+      throw new Error('No se puede eliminar un evento sin un identificador válido.');
+    }
+
     const eventRef = doc(this.firestore, `events/${event.id}`);
 
-    const deletionTrigger = {
-      _notificationTrigger: {
-        tipoNotificacion: 'ELIMINACION_EVENTO',
-        eventId: event.id,
-        titulo: '🛑 Evento Cancelado',
-        descripcion: `Atención: El evento "${event.title}" ha sido cancelado definitivamente por la directiva.`,
-        destinatarios: event.isPrivate 
-          ? ['admin', 'directiva', 'socio'] 
-          : ['admin', 'directiva', 'socio', 'invitado'],
-        timestamp: new Date().getTime()
-      }
-    };
-
     return runInInjectionContext(this.injector, () => {
-      return updateDoc(eventRef, deletionTrigger);
+      return deleteDoc(eventRef);
     });
   }
 }

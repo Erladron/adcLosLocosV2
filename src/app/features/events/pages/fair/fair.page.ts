@@ -227,7 +227,7 @@ export class FairPage implements OnInit {
     try {
       await this.loading.wrap(async () => {
         await this.fairService.crearInvitacion(
-          this.currentUserId!,
+          this.currentUserData!,
           usuarioFinal!,
           this.hoyFormateado
         );

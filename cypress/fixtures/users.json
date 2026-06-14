@@ -1,0 +1,17 @@
+{
+  "directiva": {
+    "email": "directiva.test@adcloslocos.com",
+    "password": "PasswordSegura123!",
+    "tipo": "directiva"
+  },
+  "socio": {
+    "email": "socio.test@adcloslocos.com",
+    "password": "PasswordSegura123!",
+    "tipo": "socio"
+  },
+  "invitado": {
+    "email": "invitado.test@gmail.com",
+    "password": "PasswordSegura123!",
+    "tipo": "invitado"
+  }
+}

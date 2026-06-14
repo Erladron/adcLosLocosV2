@@ -23,10 +23,12 @@ import {
   checkmarkCircleOutline,
   ticketOutline,
   scanOutline,
-  qrCodeOutline
+  qrCodeOutline,
+  cloudOfflineOutline
 } from 'ionicons/icons';
 import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
 import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service';
+import { EventsService } from 'projects/shared-core/src/lib/services/events.service'; // 🚀 Inyección del servicio de eventos
 import { CommonModule } from '@angular/common';
 
 // Importaciones nativas de Firebase para escuchar la sesión y consultar la invitación
@@ -34,6 +36,7 @@ import { Auth, user } from '@angular/fire/auth';
 import { Firestore, collection, query, where, getDocs, limit } from '@angular/fire/firestore';
 
 import { UserRole, UserStatus } from 'shared-core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -55,10 +58,15 @@ import { UserRole, UserStatus } from 'shared-core';
 export class AppComponent {
 
   private firestore = inject(Firestore);
-  private auth = inject(Auth); // Inyectamos el motor de autenticación nativo de Firebase
+  private auth = inject(Auth); 
+  private eventsService = inject(EventsService); // 🚀 Inyectamos el motor core de eventos
 
-  // Bandera de control para saber si el invitado tiene una invitación física generada en el backend
+  // Banderas de control dinámicas para el menú
   tieneInvitacionAsignada = false;
+  hayFeriaActiva = false; // 🚀 Nueva propiedad analítica
+
+  // Gestión de suscripciones para evitar fugas de memoria (Memory Leaks)
+  private eventsSubscription?: Subscription;
 
   constructor(
     private router: Router,
@@ -76,7 +84,8 @@ export class AppComponent {
       checkmarkCircleOutline,
       ticketOutline,
       scanOutline,
-      qrCodeOutline
+      qrCodeOutline,
+      cloudOfflineOutline
     });
 
     console.log('ENVIRONMENT:', environment.envName);
@@ -90,18 +99,25 @@ export class AppComponent {
       await this.waitForAuthReady();
       console.log('Firebase sincronizado con éxito. Estado de sesión:', this.authService.isLogged());
 
-      // Sincronización reactiva nativa utilizando la función 'user()' de Angular Fire.
-      // Cada vez que un usuario haga Login o Logout en el navegador, este flujo se activa solo.
       user(this.auth).subscribe(async (userFirebase) => {
         if (userFirebase) {
           console.log('📡 [APP] Cambio de estado detectado (Usuario Logueado). Sincronizando datos...');
           this.fcmService.inicializarFCM();
+          
+          // Escuchamos los eventos en tiempo real para activar o desactivar el carnet de feria
+          this.escucharEventosDeFeria();
           
           // Forzamos la espera de la sincronización de los perfiles y cargamos la invitación
           await this.verificarInvitacionExistente();
         } else {
           console.log('🚪 [APP] Cambio de estado detectado (Sin Sesión). Reseteando banderas del menú.');
           this.tieneInvitacionAsignada = false;
+          this.hayFeriaActiva = false;
+          
+          // Limpieza de suscripciones activas al cerrar sesión
+          if (this.eventsSubscription) {
+            this.eventsSubscription.unsubscribe();
+          }
         }
       });
 
@@ -110,16 +126,36 @@ export class AppComponent {
     }
   }
 
-  // Método encargado de realizar la query de comprobación rápida en Firestore
+  /**
+   * 📣 ESCUCHAR EVENTOS DE FERIA EN TIEMPO REAL
+   * Evalúa la colección global de convocatorias. Si existe algún evento de tipo "feria",
+   * habilita automáticamente el menú del carnet en la interfaz de los socios.
+   */
+  private escucharEventosDeFeria() {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
+
+    this.eventsSubscription = this.eventsService.getEvents().subscribe({
+      next: (eventos) => {
+        // Buscamos si hay algún evento activo cuyo tipo sea estrictamente 'feria'
+        this.hayFeriaActiva = eventos.some(evento => evento.type === 'feria');
+        console.log('🎡 [APP] Verificación de calendario: ¿Hay algún evento de feria activo?:', this.hayFeriaActiva);
+      },
+      error: (err) => {
+        console.error('⚠️ [APP] Error recuperando eventos para el control del menú:', err);
+        this.hayFeriaActiva = false;
+      }
+    });
+  }
+
   async verificarInvitacionExistente() {
-    // Nos aseguramos de que los datos del documento de Firestore estén sincronizados en memoria
     if (typeof (this.authService as any).waitForUserData === 'function') {
       await (this.authService as any).waitForUserData();
     }
 
     const userUid = this.authService.getUid();
     
-    // Ahora que ya tenemos el perfil real mapeado, comprobamos si es un INVITADO de verdad
     if (!userUid || this.role !== UserRole.INVITADO) {
       this.tieneInvitacionAsignada = false;
       return;
@@ -127,12 +163,9 @@ export class AppComponent {
 
     try {
       const fairAccessRef = collection(this.firestore, 'fair-access');
-      
-      // Obtener la fecha de hoy formateada de forma exacta en base local
       const tzoffset = (new Date()).getTimezoneOffset() * 60000;
       const hoy = (new Date(Date.now() - tzoffset)).toISOString().split('T')[0];
 
-      // Buscamos un documento en fair-access que pertenezca al UID del invitado activo Y para el día de hoy
       const q = query(
         fairAccessRef, 
         where('userId', '==', userUid), 
@@ -141,7 +174,6 @@ export class AppComponent {
       );
       const querySnapshot = await getDocs(q);
       
-      // Si el tamaño del snapshot es mayor que cero, es que tiene un pase activo a su nombre hoy
       this.tieneInvitacionAsignada = !querySnapshot.empty;
       console.log('🎫 [APP] Verificación de pase para Invitado finalizada. ¿Tiene invitación hoy?:', this.tieneInvitacionAsignada);
     } catch (error) {
@@ -173,6 +205,10 @@ export class AppComponent {
   async logout() {
     console.log('🚪 [APP] Iniciando proceso de cierre de sesión seguro...');
     this.tieneInvitacionAsignada = false;
+    this.hayFeriaActiva = false;
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
     await this.menuCtrl.close();
     await this.authService.logout();
     window.location.href = '/login';
@@ -233,15 +269,29 @@ export class AppComponent {
     ].includes(this.role as UserRole);
   }
 
-  puedeVerCarnet(): boolean {
-    if (this.esPorteroPuro()) return false;
+  /**
+   * 🎫 CONTROL INTELIGENTE DE PASES DE FERIA
+   * El acceso se habilitará única y exclusivamente si el usuario es Socio o Directiva
+   * Si es invitado y tiene generado el pase del dia
+   * Y ADEMÁS la directiva ha publicado un evento de tipo 'feria' en la base de datos.
+   */
+  puedeVerPasesFeria(): boolean {
+    if (this.esPorteroPuro() || !this.hayFeriaActiva) return false;
+    
     return [
       UserRole.SOCIO,
       UserRole.DIRECTIVA
     ].includes(this.role as UserRole);
   }
 
+  /**
+   * 🔍 CONTROL DE ACCESOS DE PORTERÍA
+   * El escáner de portería se habilitará para Directiva, Admin o Porteros
+   * ÚNICA Y EXCLUSIVAMENTE si hay un evento de feria activo en el calendario.
+   */
   puedeEscanearFeria(): boolean {
+    if (!this.hayFeriaActiva) return false;
+
     return [
       UserRole.DIRECTIVA,
       UserRole.ADMINISTRADOR,
@@ -249,7 +299,6 @@ export class AppComponent {
     ].includes(this.role as UserRole);
   }
 
-  // Helper dinámico para saber si se le debe pintar el botón al perfil invitado
   puedeVerInvitacionInvitado(): boolean {
     return this.role === UserRole.INVITADO && this.tieneInvitacionAsignada;
   }

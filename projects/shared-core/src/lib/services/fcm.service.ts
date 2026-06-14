@@ -54,7 +54,7 @@ export class FcmService {
   // ============================================
   private configurarEscuchadores() {
     
-    // ÉXITO: Firebase nos devuelve el Token único del hardware del teléfono[cite: 6]
+    // ÉXITO: Firebase nos devuelve el Token único del hardware del teléfono
     PushNotifications.addListener('registration', async (token: Token) => {
       console.log('🔑 [FCM] Token de dispositivo generado con éxito:', token.value);
       await this.guardarTokenEnFirestore(token.value);
@@ -68,7 +68,7 @@ export class FcmService {
       console.log('🔔 [FCM] Notificación recibida con la app abierta:', notification);
     });
 
-    // 🎯 REDIRECCIÓN INTELIGENTE PROTEGIDA CONTRA ERRORES[cite: 6]
+    // 🎯 REDIRECCIÓN INTELIGENTE PROTEGIDA CONTRA ERRORES
     PushNotifications.addListener('pushNotificationActionPerformed', async (action) => {
       console.log('🎯 [FCM] El socio ha pulsado la notificación:', action);
       
@@ -76,13 +76,21 @@ export class FcmService {
       
       if (!data) return;
 
+      // Caso A: Cuenta aprobada por la junta directiva
       if (data.tipoNotificacion === 'CUENTA_APROBADA') {
-        console.log('🚀 [FCM] Detectado push de cuenta aprobada. Redirigiendo a la Home...[cite: 6]');
+        console.log('🚀 [FCM] Detectado push de cuenta aprobada. Redirigiendo a la Home...');
         this.router.navigate(['/home']);
         return;
       }
 
-      // 📅 Captura inteligente de Push de Eventos (Creación o Modificación)
+      // 🎟️ Caso B: NUEVO ENRUTAMIENTO - Pase de Feria generado para un Invitado
+      if (data.tipoNotificacion === 'NUEVO_PASE_FERIA') {
+        console.log('🚀 [FCM] Detectado push de nuevo pase de feria. Viajando directo a la pantalla de invitaciones...');
+        this.router.navigate(['/fair']);
+        return;
+      }
+
+      // 📅 Caso C: Captura inteligente de Push de Eventos (Creación o Modificación)
       if ((data.tipoNotificacion === 'NUEVO_EVENTO' || data.tipoNotificacion === 'MODIFICACION_EVENTO') && data.eventId) {
         try {
           console.log(`🔍 [FCM] Verificando existencia previa del evento en Firestore: ${data.eventId}`);
@@ -102,9 +110,9 @@ export class FcmService {
           this.router.navigate(['/events', data.eventId]);
 
         } catch (error) {
-          // 🛡️ CONTROL DE EXCEPCIÓN INTEGRADO: Fallo de red o cobertura en el móvil[cite: 7]
+          // 🛡️ CONTROL DE EXCEPCIÓN INTEGRADO: Fallo de red o cobertura en el móvil
           console.error('🚨 [FCM] Error en la consulta de enrutamiento por Push:', error);
-          await this.errorHandler.handle(error, AppMessageCode.ADC_SYS_ERR_0001); // Utiliza tu manejador corporativo[cite: 7]
+          await this.errorHandler.handle(error, AppMessageCode.ADC_SYS_ERR_0001); // Utiliza tu manejador corporativo
           this.router.navigate(['/events']);
         }
       }
@@ -120,20 +128,20 @@ export class FcmService {
       const uid = auth.currentUser?.uid;
 
       if (!uid) {
-        console.log('⏳ [FCM] UID no detectado en el primer milisegundo, reintentando...[cite: 6]');
+        console.log('⏳ [FCM] UID no detectado en el primer milisegundo, reintentando...');
         await new Promise(resolve => setTimeout(resolve, 300));
       }
 
       const finalUid = auth.currentUser?.uid;
 
       if (!finalUid) {
-        console.error('❌ [FCM] Error crítico: Imposible recuperar el UID del usuario autenticado.[cite: 6]');
+        console.error('❌ [FCM] Error crítico: Imposible recuperar el UID del usuario autenticado.');
         return;
       }
 
-      console.log('💾 [FCM] Guardando token de forma síncrona para el UID:[cite: 6]', finalUid);
+      console.log('💾 [FCM] Guardando token de forma síncrona para el UID:', finalUid);
 
-      // Guardamos en la subcolección dinámica: /users/{uid}/tokens/{token}[cite: 6]
+      // Guardamos en la subcolección dinámica: /users/{uid}/tokens/{token}
       const tokenDocRef = doc(this.firestore, `users/${finalUid}/tokens`, tokenValue);
       
       await setDoc(tokenDocRef, {
@@ -142,7 +150,7 @@ export class FcmService {
         platform: this.platform.is('android') ? 'android' : 'ios'
       });
 
-      console.log('✅ [FCM] ¡Token almacenado con éxito en Firestore para el socio![cite: 6]');
+      console.log('✅ [FCM] ¡Token almacenado con éxito en Firestore para el socio!');
 
     } catch (error) {
       console.error('❌ [FCM] Excepción al almacenar el token en la base de datos:', error);

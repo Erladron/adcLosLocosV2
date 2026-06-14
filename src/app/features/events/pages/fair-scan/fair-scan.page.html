@@ -1,11 +1,10 @@
-<app-page-header title="Control de Accesos" [showMenu]="true"></app-page-header>
+<app-page-header title="Control de Accesos" [showMenu]="true" data-cy="page-header"></app-page-header>
 
-<ion-content fullscreen="true" class="scanner-content">
+<ion-content fullscreen="true" class="scanner-content" data-cy="scanner-page-content">
   
   <div class="scanner-container" [ngClass]="isScanning ? 'scanning' : scanStatus">
     
-    <!-- PANTALLA COMPLETA VERDE: ACCESO PERMITIDO -->
-    <div class="feedback-fullscreen success-bg" *ngIf="scanStatus === 'success'">
+    <div class="feedback-fullscreen success-bg" *ngIf="scanStatus === 'success'" data-cy="scan-feedback-success">
       <div class="feedback-content animate-pop">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
         <h1>ACCESO PERMITIDO</h1>
@@ -13,8 +12,7 @@
       </div>
     </div>
 
-    <!-- PANTALLA COMPLETA ROJA: ACCESO DENEGADO -->
-    <div class="feedback-fullscreen error-bg" *ngIf="scanStatus === 'error'">
+    <div class="feedback-fullscreen error-bg" *ngIf="scanStatus === 'error'" data-cy="scan-feedback-error">
       <div class="feedback-content animate-pop">
         <ion-icon name="close-circle-outline"></ion-icon>
         <h1>ACCESO DENEGADO</h1>
@@ -32,12 +30,12 @@
         
         <div class="laser-beam" *ngIf="isScanning"></div>
 
-        <button class="btn-activate-camera" *ngIf="!isScanning" (click)="activarEscaner()">
+        <button class="btn-activate-camera" *ngIf="!isScanning" (click)="activarEscaner()" data-cy="btn-scan-activate-camera">
           <ion-icon name="scan-outline"></ion-icon>
           <span>Activar Escáner</span>
         </button>
         
-        <button class="btn-stop-camera" *ngIf="isScanning" (click)="detenerEscaner()">
+        <button class="btn-stop-camera" *ngIf="isScanning" (click)="detenerEscaner()" data-cy="btn-scan-stop-camera">
           Detener
         </button>
 
@@ -48,7 +46,7 @@
       Apunta con la cámara al código QR del carnet del socio o invitado para registrar el acceso a la caseta.
     </p>
 
-    <div class="manual-entry-console" *ngIf="scanStatus === 'idle'">
+    <div class="manual-entry-console" *ngIf="scanStatus === 'idle'" data-cy="console-manual-entry">
       <div class="console-title">
         <ion-icon name="key-outline"></ion-icon>
         <span>CONSOLA DE CONTROL MANUAL</span>
@@ -60,8 +58,9 @@
           placeholder="Escribe el ID del pase si la cámara falla..." 
           [(ngModel)]="manualPaseId"
           (keyup.enter)="validarEntradaManual()"
+          data-cy="input-scan-manual-id"
         >
-        <button class="btn-validate" [disabled]="!manualPaseId.trim()" (click)="validarEntradaManual()">
+        <button class="btn-validate" [disabled]="!manualPaseId.trim()" (click)="validarEntradaManual()" data-cy="btn-scan-manual-submit">
           Validar
         </button>
       </div>

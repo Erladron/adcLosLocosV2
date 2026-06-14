@@ -1,18 +1,12 @@
-<app-page-header
-  title="Inicio"
-  [showMenu]="true">
+<app-page-header title="Inicio" [showMenu]="true" data-cy="page-header">
 
 </app-page-header>
 
-<ion-content
-  fullscreen="true"
-  class="home-content">
+<ion-content fullscreen="true" class="home-content" data-cy="home-page-content">
 
   <div class="background-logo">
 
-    <img
-      src="assets/img/escudo.png"
-      alt="Escudo">
+    <img src="assets/img/escudo.png" alt="Escudo">
 
   </div>
 
@@ -22,7 +16,7 @@
 
       <div>
 
-        <h1>
+        <h1 data-cy="welcome-user-title">
 
           Hola,
           {{ currentUser?.nombre || 'Usuario' }}
@@ -36,21 +30,16 @@
 
       </div>
 
-      <img
-        src="assets/img/escudo.png"
-        class="welcome-logo">
+      <img src="assets/img/escudo.png" class="welcome-logo">
 
     </div>
 
-    <div 
-      class="glass-card profile-card"
-      [routerLink]="['/user-detail', currentUser?.id]"
-      style="cursor: pointer;">
+    <div class="glass-card profile-card" [routerLink]="['/user-detail', currentUser?.id]" style="cursor: pointer;"
+      data-cy="home-profile-card">
 
       <div class="profile-header">
 
-        <ion-icon
-          name="person-outline">
+        <ion-icon name="person-outline">
 
         </ion-icon>
 
@@ -58,9 +47,7 @@
           Mi información
         </span>
 
-        <ion-icon 
-          name="create-outline" 
-          style="margin-left: auto; font-size: 18px; opacity: 0.6;">
+        <ion-icon name="create-outline" style="margin-left: auto; font-size: 18px; opacity: 0.6;">
         </ion-icon>
 
       </div>
@@ -69,21 +56,9 @@
 
         <div class="profile-avatar">
 
-          <img
+          <img *ngIf="currentUser?.foto" [src]="currentUser?.foto" data-cy="home-profile-avatar-img">
 
-            *ngIf="currentUser?.foto"
-
-            [src]="currentUser?.foto"
-
-          >
-
-          <ion-icon
-
-            *ngIf="!currentUser?.foto"
-
-            name="person-outline"
-
-          >
+          <ion-icon *ngIf="!currentUser?.foto" name="person-outline">
 
           </ion-icon>
 
@@ -97,7 +72,7 @@
               Nombre
             </span>
 
-            <strong>
+            <strong data-cy="home-info-nombre">
               {{ currentUser?.nombre }}
             </strong>
 
@@ -109,7 +84,7 @@
               Rol
             </span>
 
-            <div class="role-badge">
+            <div class="role-badge" data-cy="home-info-rol">
 
               {{ currentUser?.tipo }}
 
@@ -123,7 +98,7 @@
               Nº Socio
             </span>
 
-            <strong>
+            <strong data-cy="home-info-socio-num">
               {{ currentUser?.numeroSocio || '--' }}
             </strong>
 
@@ -135,10 +110,9 @@
               Estado
             </span>
 
-            <div class="status-badge active">
+            <div class="status-badge active" data-cy="home-info-estado">
 
-              <ion-icon
-                name="checkmark-circle">
+              <ion-icon name="checkmark-circle">
 
               </ion-icon>
 
@@ -162,20 +136,12 @@
 
     <div class="quick-grid">
 
-      <div
-
-        *ngIf="currentUser?.tipo !== 'invitado'"
-
-        class="quick-card glass-card"
-
-        routerLink="/gest-user"
-
-      >
+      <div *ngIf="currentUser?.tipo !== 'invitado'" class="quick-card glass-card" routerLink="/gest-user"
+        data-cy="quick-card-usuarios">
 
         <div class="quick-icon">
 
-          <ion-icon
-            name="people-outline">
+          <ion-icon name="people-outline">
 
           </ion-icon>
 
@@ -193,26 +159,17 @@
 
         </div>
 
-        <ion-icon
-          name="chevron-forward-outline"
-          class="quick-arrow">
+        <ion-icon name="chevron-forward-outline" class="quick-arrow">
 
         </ion-icon>
 
       </div>
 
-      <div
-
-        class="quick-card glass-card"
-
-        routerLink="/events"
-
-      >
+      <div class="quick-card glass-card" routerLink="/events" data-cy="quick-card-eventos">
 
         <div class="quick-icon">
 
-          <ion-icon
-            name="calendar-outline">
+          <ion-icon name="calendar-outline">
 
           </ion-icon>
 
@@ -230,9 +187,7 @@
 
         </div>
 
-        <ion-icon
-          name="chevron-forward-outline"
-          class="quick-arrow">
+        <ion-icon name="chevron-forward-outline" class="quick-arrow">
 
         </ion-icon>
 

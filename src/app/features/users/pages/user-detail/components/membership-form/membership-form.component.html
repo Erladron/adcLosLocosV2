@@ -1,4 +1,4 @@
-<div class="section-card">
+<div class="section-card" data-cy="membership-form-card">
 
   <div class="section-header">
     <div>
@@ -7,13 +7,13 @@
     </div>
 
     <div *ngIf="isEditMode && canEditMembership" class="section-actions">
-      <ion-button *ngIf="!editing" class="section-action-btn" shape="round" (click)="toggleEdit.emit()">
+      <ion-button *ngIf="!editing" class="section-action-btn" shape="round" (click)="toggleEdit.emit()" data-cy="btn-membership-edit">
         <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="editing" class="section-action-btn save" shape="round" (click)="toggleEdit.emit()">
+      <ion-button *ngIf="editing" class="section-action-btn save" shape="round" (click)="toggleEdit.emit()" data-cy="btn-membership-save">
         <ion-icon slot="icon-only" name="save-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="editing" class="section-action-btn cancel" shape="round" (click)="cancelEdit.emit()">
+      <ion-button *ngIf="editing" class="section-action-btn cancel" shape="round" (click)="cancelEdit.emit()" data-cy="btn-membership-cancel">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </div>
@@ -27,7 +27,8 @@
         interface="popover" 
         [interfaceOptions]="{ cssClass: 'glass-dropdown' }"
         [(ngModel)]="user.tipo"
-        [disabled]="isEditMode && !editing">
+        [disabled]="isEditMode && !editing"
+        data-cy="select-membership-role">
         
         <ion-select-option value="administrador">Administrador</ion-select-option>
         <ion-select-option value="directiva">Directiva</ion-select-option>
@@ -40,7 +41,8 @@
       <ion-label position="stacked">Nº Socio</ion-label>
       <ion-input 
         [(ngModel)]="user.numeroSocio" 
-        [readonly]="isEditMode && !editing">
+        [readonly]="isEditMode && !editing"
+        data-cy="input-membership-socio-num">
       </ion-input>
     </ion-item>
 

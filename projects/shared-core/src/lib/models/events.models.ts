@@ -72,6 +72,7 @@ export interface FairAccess {
   userName: string;      // Nombre completo para que el portero lo vea en pantalla al escanear
   userType: string;      // Rol ('socio', 'directiva', 'invitado') para control visual en puerta
   hostId: string | null; // UID del socio que invita (null si es el carnet del propio socio)
+  invitedByName: string | null; //Nombre de la persona que genera el pase de feria al invitado
   date: string;          // Fecha del pase o código de temporada única (ej: "FERIA-2026")
   createdAt: string;     // Timestamp de cuándo se emitió el pase/invitación
   

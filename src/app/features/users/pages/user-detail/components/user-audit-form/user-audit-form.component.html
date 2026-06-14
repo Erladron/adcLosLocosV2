@@ -1,4 +1,4 @@
-<ion-card class="audit-card">
+<ion-card class="audit-card" data-cy="audit-form-card">
 
   <!-- ========================================= -->
   <!-- HEADER -->
@@ -32,38 +32,19 @@
 
       </span>
 
-      <div
-        class="status-pill"
-        [ngClass]="user.estado">
+      <div class="status-pill" [ngClass]="user.estado" data-cy="audit-status-pill">
 
-        <ion-icon
-
-          *ngIf="isActive"
-
-          name="checkmark-circle-outline">
-
+        <ion-icon *ngIf="isActive" name="checkmark-circle-outline">
         </ion-icon>
 
-        <ion-icon
-
-          *ngIf="isInactive"
-
-          name="close-circle-outline">
-
+        <ion-icon *ngIf="isInactive" name="close-circle-outline">
         </ion-icon>
 
-        <ion-icon
-
-          *ngIf="isPending"
-
-          name="time-outline">
-
+        <ion-icon *ngIf="isPending" name="time-outline">
         </ion-icon>
 
-        <span>
-
+        <span data-cy="audit-status-text">
           {{ statusLabel }}
-
         </span>
 
       </div>
@@ -74,12 +55,11 @@
     <!-- ALTA -->
     <!-- ========================================= -->
 
-    <div class="audit-modern-card">
+    <div class="audit-modern-card" data-cy="audit-card-alta">
 
       <div class="audit-modern-title">
 
-        <ion-icon
-          name="person-add-outline">
+        <ion-icon name="person-add-outline">
         </ion-icon>
 
         <span>
@@ -92,35 +72,25 @@
 
       <div class="audit-modern-content">
 
-        <div
-          *ngIf="user.createdAt"
-          class="audit-modern-line">
+        <div *ngIf="user.createdAt" class="audit-modern-line">
 
-          <ion-icon
-            name="time-outline">
+          <ion-icon name="time-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-alta-date">
             {{ user.createdAt?.toDate()
-              | date:'dd/MM/yyyy · HH:mm' }}
-
+            | date:'dd/MM/yyyy · HH:mm' }}
           </span>
 
         </div>
 
-        <div
-          *ngIf="user.creadoPorNombre"
-          class="audit-modern-line">
+        <div *ngIf="user.creadoPorNombre" class="audit-modern-line">
 
-          <ion-icon
-            name="person-outline">
+          <ion-icon name="person-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-alta-by">
             {{ user.creadoPorNombre }}
-
           </span>
 
         </div>
@@ -133,22 +103,12 @@
     <!-- INVITACIÓN -->
     <!-- ========================================= -->
 
-    <div
-
-      *ngIf="
-
-        user.invitadoPorNombre
-        ||
-        user.fechaInvitacion
-
-      "
-
-      class="audit-modern-card">
+    <div *ngIf="user.invitadoPorNombre || user.fechaInvitacion" class="audit-modern-card"
+      data-cy="audit-card-invitacion">
 
       <div class="audit-modern-title">
 
-        <ion-icon
-          name="mail-open-outline">
+        <ion-icon name="mail-open-outline">
         </ion-icon>
 
         <span>
@@ -161,35 +121,25 @@
 
       <div class="audit-modern-content">
 
-        <div
-          *ngIf="user.invitadoPorNombre"
-          class="audit-modern-line">
+        <div *ngIf="user.invitadoPorNombre" class="audit-modern-line">
 
-          <ion-icon
-            name="person-outline">
+          <ion-icon name="person-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-invitacion-by">
             {{ user.invitadoPorNombre }}
-
           </span>
 
         </div>
 
-        <div
-          *ngIf="user.fechaInvitacion"
-          class="audit-modern-line">
+        <div *ngIf="user.fechaInvitacion" class="audit-modern-line">
 
-          <ion-icon
-            name="time-outline">
+          <ion-icon name="time-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-invitacion-date">
             {{ user.fechaInvitacion?.toDate()
-              | date:'dd/MM/yyyy · HH:mm' }}
-
+            | date:'dd/MM/yyyy · HH:mm' }}
           </span>
 
         </div>
@@ -202,22 +152,12 @@
     <!-- APROBACIÓN -->
     <!-- ========================================= -->
 
-    <div
-
-      *ngIf="
-
-        user.approvedAt
-        ||
-        user.aprobadoPorNombre
-
-      "
-
-      class="audit-modern-card approval-card">
+    <div *ngIf="user.approvedAt || user.aprobadoPorNombre" class="audit-modern-card approval-card"
+      data-cy="audit-card-aprobacion">
 
       <div class="audit-modern-title">
 
-        <ion-icon
-          name="checkmark-circle-outline">
+        <ion-icon name="checkmark-circle-outline">
         </ion-icon>
 
         <span>
@@ -230,35 +170,25 @@
 
       <div class="audit-modern-content">
 
-        <div
-          *ngIf="user.aprobadoPorNombre"
-          class="audit-modern-line">
+        <div *ngIf="user.aprobadoPorNombre" class="audit-modern-line">
 
-          <ion-icon
-            name="person-outline">
+          <ion-icon name="person-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-aprobacion-by">
             {{ user.aprobadoPorNombre }}
-
           </span>
 
         </div>
 
-        <div
-          *ngIf="user.approvedAt"
-          class="audit-modern-line">
+        <div *ngIf="user.approvedAt" class="audit-modern-line">
 
-          <ion-icon
-            name="time-outline">
+          <ion-icon name="time-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-aprobacion-date">
             {{ user.approvedAt?.toDate()
-              | date:'dd/MM/yyyy · HH:mm' }}
-
+            | date:'dd/MM/yyyy · HH:mm' }}
           </span>
 
         </div>
@@ -271,16 +201,11 @@
     <!-- BAJA -->
     <!-- ========================================= -->
 
-    <div
-
-      *ngIf="isInactive"
-
-      class="audit-modern-card danger-card">
+    <div *ngIf="isInactive" class="audit-modern-card danger-card" data-cy="audit-card-baja">
 
       <div class="audit-modern-title">
 
-        <ion-icon
-          name="close-circle-outline">
+        <ion-icon name="close-circle-outline">
         </ion-icon>
 
         <span>
@@ -295,43 +220,34 @@
 
         <div class="audit-modern-line">
 
-          <ion-icon
-            name="time-outline">
+          <ion-icon name="time-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-baja-date">
             {{ formatDeactivatedAt()
-              | date:'dd/MM/yyyy · HH:mm' }}
-
+            | date:'dd/MM/yyyy · HH:mm' }}
           </span>
 
         </div>
 
         <div class="audit-modern-line">
 
-          <ion-icon
-            name="alert-circle-outline">
+          <ion-icon name="alert-circle-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-baja-reason">
             {{ user.motivoBaja || '-' }}
-
           </span>
 
         </div>
 
         <div class="audit-modern-line">
 
-          <ion-icon
-            name="person-outline">
+          <ion-icon name="person-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-baja-by">
             {{ user.bajaRealizadaPorNombre || '-' }}
-
           </span>
 
         </div>
@@ -344,16 +260,11 @@
     <!-- REACTIVACIÓN -->
     <!-- ========================================= -->
 
-    <div
-
-      *ngIf="user.reactivatedAt"
-
-      class="audit-modern-card">
+    <div *ngIf="user.reactivatedAt" class="audit-modern-card" data-cy="audit-card-reactivacion">
 
       <div class="audit-modern-title">
 
-        <ion-icon
-          name="refresh-outline">
+        <ion-icon name="refresh-outline">
         </ion-icon>
 
         <span>
@@ -368,29 +279,23 @@
 
         <div class="audit-modern-line">
 
-          <ion-icon
-            name="time-outline">
+          <ion-icon name="time-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-reactivacion-date">
             {{ formatReactivatedAt()
-              | date:'dd/MM/yyyy · HH:mm' }}
-
+            | date:'dd/MM/yyyy · HH:mm' }}
           </span>
 
         </div>
 
         <div class="audit-modern-line">
 
-          <ion-icon
-            name="person-outline">
+          <ion-icon name="person-outline">
           </ion-icon>
 
-          <span>
-
+          <span data-cy="audit-reactivacion-by">
             {{ user.reactivadoPorNombre || '-' }}
-
           </span>
 
         </div>
@@ -400,29 +305,16 @@
     </div>
 
     <!-- ========================================= -->
-    <!-- ACTIONS -->
+    <!-- ACTIONS ADMINISTRATIVE BUTTONS -->
     <!-- ========================================= -->
 
     <div class="actions-container">
 
       <!-- DEACTIVATE -->
+      <ion-button *ngIf="canDeactivate" expand="block" class="danger-button" (click)="onDeactivate()"
+        data-cy="btn-audit-deactivate">
 
-      <ion-button
-
-        *ngIf="canDeactivate"
-
-        expand="block"
-
-        class="danger-button"
-
-        (click)="onDeactivate()">
-
-        <ion-icon
-
-          slot="start"
-
-          name="trash-outline">
-
+        <ion-icon slot="start" name="trash-outline">
         </ion-icon>
 
         Dar de baja
@@ -430,23 +322,10 @@
       </ion-button>
 
       <!-- REACTIVATE -->
+      <ion-button *ngIf="canReactivate" expand="block" class="success-button" (click)="onReactivate()"
+        data-cy="btn-audit-reactivate">
 
-      <ion-button
-
-        *ngIf="canReactivate"
-
-        expand="block"
-
-        class="success-button"
-
-        (click)="onReactivate()">
-
-        <ion-icon
-
-          slot="start"
-
-          name="refresh-outline">
-
+        <ion-icon slot="start" name="refresh-outline">
         </ion-icon>
 
         Reactivar usuario

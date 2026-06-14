@@ -66,6 +66,8 @@ import {
     UserService
 } from 'projects/shared-core/src/lib/services/user.service';
 
+import { AppMessageCode } from 'shared-core';
+
 @Component({
     selector: 'app-complete-profile',
     templateUrl: './complete-profile.page.html',
@@ -120,7 +122,6 @@ export class CompleteProfilePage implements OnInit {
 
         console.log('COMPLETE PROFILE USER:', currentUser);
 
-        // ⚙️ EXTENSIÓN: Forzamos valores iniciales por defecto en el onboarding de Invitados
         this.user = {
             publicarTelefono: false,
             publicarEmail: false,
@@ -139,30 +140,38 @@ export class CompleteProfilePage implements OnInit {
         try {
             await this.loading.wrap(
                 async () => {
-                    const success = await this.facade.updatePersonalData({
-                        user: {
-                            ...this.user,
-                            estado: UserStatus.PENDING_APPROVAL
-                        },
-                        userId: this.user.id || null,
+                    console.log('Enviando paquete transaccional a la Cloud Function...');
+                    
+                    // 🚀 UNICA LLAMADA ACCIÓN: Le pasamos los datos del formulario y la foto a la función
+                    // Tu Cloud Function se encargará de:
+                    //   1. Validar la petición.
+                    //   2. Subir la imagen al Storage internamente.
+                    //   3. Actualizar el documento en Firestore cambiando el estado a PENDING_APPROVAL.
+                    //   4. Notificar a la directiva de la Peña Los Locos.
+                    // Todo empaquetado en el servidor de forma atómica.
+                    await this.userService.requestUserApproval({
+                        ...this.user,
                         croppedImage: this.croppedImage
                     });
 
-                    if (!success) return;
+                    // Forzamos la recarga del estado local una vez que el servidor ha dado el OK transaccional
+                    if (this.user.id) {
+                        await this.authService.reloadUserData(this.user.id);
+                    }
 
-                    await this.authService.reloadUserData(this.user.id);
-
-                    console.log('Disparando solicitud en la nube para alertar a la directiva...');
-                    await this.userService.requestUserApproval();
+                    // 🟢 ÉXITO: El servidor completó la transacción sin caídas
+                    await this.notification.success('Perfil completado correctamente');
+                    await this.router.navigate(['/pending-approval']);
                 },
-                'Guardando perfil y notificando...'
+                'Procesando perfil y notificando...'
             );
-
-            await this.notification.success('Perfil completado correctamente');
-            await this.router.navigate(['/pending-approval']);
         }
         catch (error) {
-            console.error('Error al procesar el guardado automático:', error);
+            console.error('Error en la transacción del Onboarding:', error);
+            
+            // Si la Cloud Function revienta con el error 500 simulado por el interceptor del test,
+            // el catch captura el problema, pinta el Toast controlado y el usuario no se mueve.
+            await this.notification.error(AppMessageCode.ADC_SYS_ERR_0001);
         }
     }
 

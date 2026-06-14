@@ -113,7 +113,7 @@ export class FcmTemplates {
   }
 
   /**
-   * 🛑 NUEVA: Plantilla para alertar de la cancelación/eliminación de un evento
+   * 🛑 Plantilla para alertar de la cancelación/eliminación de un evento
    */
   static getElimacionEventoTemplate(token: string, tituloPush: string, descripcionPush: string) {
     return {
@@ -133,7 +133,33 @@ export class FcmTemplates {
         }
       },
       data: {
-        tipoNotificacion: 'ELIMINACION_EVENTO' // Le dice a la app que no intente abrir este detalle porque ya no existe
+        tipoNotificacion: 'ELIMINACION_EVENTO'
+      }
+    };
+  }
+
+  /**
+   * 🎟️ NUEVA: Plantilla para alertar a un invitado de que le han generado un Pase de Feria
+   */
+  static getNuevoPaseFeriaTemplate(token: string, nombreSocio: string) {
+    return {
+      token: token,
+      notification: {
+        title: '🎟️ Tu Pase de Feria está listo',
+        body: `${nombreSocio} te ha asignado una invitación para la caseta. Abre la app para ver tu código QR de acceso.`,
+        image: FcmTemplates.urlEscudo
+      },
+      android: {
+        priority: 'high' as const,
+        notification: {
+          icon: 'ic_escudo_notificacion',
+          color: '#1c3f7c',
+          sound: 'default',
+          defaultSound: true
+        }
+      },
+      data: {
+        tipoNotificacion: 'NUEVO_PASE_FERIA' // Le sirve a la app para saber que debe abrir la vista del pase
       }
     };
   }

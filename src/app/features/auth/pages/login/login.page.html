@@ -1,4 +1,4 @@
-<ion-content fullscreen="true" class="login-content">
+<ion-content fullscreen="true" class="login-content" data-cy="login-page">
   <div class="background-logo">
     <img src="assets/img/escudo.png" alt="Escudo">
   </div>
@@ -17,23 +17,25 @@
       <div class="form-section">
         <ion-item lines="none">
           <ion-input label="Email" labelPlacement="floating" type="email" [(ngModel)]="email"
-            placeholder="ejemplo@correo.com">
+            placeholder="ejemplo@correo.com" data-cy="input-login-email">
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
           <ion-input [type]="showPassword ? 'text' : 'password'" label="Contraseña" labelPlacement="floating"
-            [(ngModel)]="password">
+            [(ngModel)]="password" data-cy="input-login-password">
           </ion-input>
-          <ion-button slot="end" fill="clear" (click)="showPassword = !showPassword" class="eye-button">
+          <ion-button slot="end" fill="clear" (click)="showPassword = !showPassword" class="eye-button"
+            data-cy="btn-login-toggle-password">
             <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
           </ion-button>
         </ion-item>
 
         <div class="button-section">
-          <ion-button expand="block" (click)="ingresar()" [disabled]="cargando" class="main-button">
-            <span *ngIf="!cargando">Entrar</span>
-            <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
+          <ion-button expand="block" (click)="ingresar()" [disabled]="cargando" class="main-button"
+            data-cy="btn-login-submit">
+            <span *ngIf="!cargando" data-cy="btn-login-text">Entrar</span>
+            <ion-spinner *ngIf="cargando" name="crescent" data-cy="login-spinner"></ion-spinner>
           </ion-button>
         </div>
       </div>

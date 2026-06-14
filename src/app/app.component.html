@@ -2,63 +2,74 @@
 
   <ion-menu *ngIf="canShowMenu()" contentId="main-content" type="overlay">
 
+    <div class="menu-header-flex">
+      <img src="assets/img/escudo.png" class="menu-logo-small" alt="Escudo">
+      <div class="menu-title-container">
+        <h2>A.D.C. Los Locos</h2>
+        <p>Yo no estoy loco, yo vivo la locura</p>
+      </div>
+    </div>
+
     <ion-content class="menu-content">
 
-      <div class="menu-header">
-        <img src="assets/img/escudo.png" class="menu-logo">
-        <h2>A.C.D. Los Locos</h2>
-        <p>Asociación Cultural y Deportiva</p>
-      </div>
+      <ion-list lines="none" class="menu-main-list" data-cy="menu-main-list">
 
-      <ion-list lines="none">
-
-        <ion-item *ngIf="puedeVerInicio()" button (click)="navegar('/home')">
+        <ion-item *ngIf="puedeVerInicio()" button (click)="navegar('/home')" data-cy="menu-item-home">
           <ion-icon name="home-outline" slot="start"></ion-icon>
           <ion-label>Inicio</ion-label>
         </ion-item>
 
-        <ion-item *ngIf="puedeVerCarnet()" button (click)="navegar('/fair')">
-          <ion-icon name="ticket-outline" slot="start"></ion-icon>
-          <ion-label>Mi Carnet Feria</ion-label>
-        </ion-item>
-
-        <ion-item *ngIf="puedeVerInvitacionInvitado()" button (click)="navegar('/fair')">
-          <ion-icon name="qr-code-outline" slot="start" style="color: #fbbf24;"></ion-icon>
-          <ion-label style="color: #fbbf24; font-weight: 600;">Invitación de Feria</ion-label>
-        </ion-item>
-
-        <ion-item *ngIf="puedeEscanearFeria()" button (click)="navegar('/fair-scan')">
-          <ion-icon name="scan-outline" slot="start"></ion-icon>
-          <ion-label>Portería Caseta</ion-label>
-        </ion-item>
-
-        <ion-item *ngIf="puedeVerUsers()" button (click)="navegar('/gest-user')">
+        <ion-item *ngIf="puedeVerUsers()" button (click)="navegar('/gest-user')" data-cy="menu-item-gest-user">
           <ion-icon name="people-outline" slot="start"></ion-icon>
           <ion-label>Usuarios</ion-label>
         </ion-item>
 
-        <ion-item *ngIf="puedeVerEventos()" button (click)="navegar('/events')">
+        <ion-item *ngIf="puedeVerEventos()" button (click)="navegar('/events')" data-cy="menu-item-events">
           <ion-icon name="calendar-outline" slot="start"></ion-icon>
           <ion-label>Eventos</ion-label>
         </ion-item>
 
-        <ion-item button *ngIf="puedeInvitar()" (click)="navegar('/invite')">
+        <ion-item button *ngIf="puedeInvitar()" (click)="navegar('/invite')" data-cy="menu-item-invite">
           <ion-icon name="person-add-outline" slot="start"></ion-icon>
           <ion-label>Invitar</ion-label>
         </ion-item>
 
-        <ion-item button (click)="logout()">
+
+        <div *ngIf="puedeVerPasesFeria() || puedeVerInvitacionInvitado() || puedeEscanearFeria()"
+          class="menu-separator"></div>
+
+
+        <ion-item *ngIf="puedeVerPasesFeria()" button (click)="navegar('/fair')" data-cy="menu-item-fair-socio">
+          <ion-icon name="ticket-outline" slot="start"></ion-icon>
+          <ion-label>Pase de Feria</ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="puedeVerInvitacionInvitado()" button (click)="navegar('/fair')" data-cy="menu-item-fair-guest">
+          <ion-icon name="ticket-outline" slot="start"></ion-icon>
+          <ion-label>Invitación de Feria</ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="puedeEscanearFeria()" button (click)="navegar('/fair-scan')" data-cy="menu-item-fair-scan">
+          <ion-icon name="scan-outline" slot="start"></ion-icon>
+          <ion-label>Portería Caseta</ion-label>
+        </ion-item>
+
+
+        <div class="menu-separator"></div>
+
+
+        <ion-item button (click)="logout()" class="menu-item-logout" data-cy="menu-item-logout">
           <ion-icon name="log-out-outline" slot="start"></ion-icon>
           <ion-label>Cerrar sesión</ion-label>
         </ion-item>
 
       </ion-list>
 
-      <div class="menu-footer">
-        <p>Versión 1.0.0</p>
-      </div>
-
     </ion-content>
+
+    <div class="menu-footer-clean">
+      <p>Versión 1.0.0</p>
+    </div>
 
   </ion-menu>
 

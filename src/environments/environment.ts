@@ -18,6 +18,7 @@ export const environment = {
 
   },
 
-  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21weThkMWpjMDFtNjJwc2ltdmJ1eDN4bSJ9.DAUYruGDu8KPsoukZuFP5A'
+  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21weThkMWpjMDFtNjJwc2ltdmJ1eDN4bSJ9.DAUYruGDu8KPsoukZuFP5A',
+  useEmulators: true
 
 };

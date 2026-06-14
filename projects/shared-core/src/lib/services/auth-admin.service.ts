@@ -28,109 +28,45 @@ export class AuthAdminService {
 
   ) { }
 
-  // ============================================
+// ============================================
   // CREATE USER AS ADMIN
   // ============================================
 
-  /**
-   * Crea usuario desde backend seguro.
-   *
-   * Flujo:
-   * - obtiene token Firebase
-   * - llama backend/cloud function
-   * - backend crea usuario
-   */
-  async createUserAsAdmin(
-    user: any
-  ) {
-
-    // ============================================
-    // CHECK AUTH
-    // ============================================
-
+  async createUserAsAdmin(user: any) {
     if (!this.auth.currentUser) {
-
-      throw new Error(
-
-        AppMessageCode.ADC_AUTH_ERR_0001
-
-      );
-
+      throw new Error(AppMessageCode.ADC_AUTH_ERR_0001);
     }
 
-    // ============================================
-    // GET TOKEN
-    // ============================================
+    const token = await this.auth.currentUser?.getIdToken();
 
-    const token =
+    // 🎯 REGLA INTELIGENTE AUTOMÁTICA: 
+    // Si estamos en desarrollo usando emuladores, mandamos el fetch al puerto 5001 local.
+    // Si estamos en producción, usamos la URL original de tu objeto this.env.api.
+    const urlCloudFunction = (this.env as any).useEmulators 
+      ? 'http://localhost:5001/adcloslocos-desa/us-central1/createUserByAdmin'
+      : this.env.api.createUserByAdmin;
 
-      await this.auth
-        .currentUser
-        ?.getIdToken();
+    const response = await fetch(
+      urlCloudFunction, // ← Usamos la URL dinámica corregida
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          data: user
+        })
+      }
+    );
 
-    // ============================================
-    // CALL BACKEND
-    // ============================================
-
-    const response =
-
-      await fetch(
-
-        this.env.api.createUserByAdmin,
-
-        {
-
-          method: 'POST',
-
-          headers: {
-
-            'Content-Type':
-              'application/json',
-
-            Authorization:
-              `Bearer ${token}`
-
-          },
-
-          body: JSON.stringify({
-
-            data: user
-
-          })
-
-        }
-
-      );
-
-    // ============================================
-    // RESPONSE JSON
-    // ============================================
-
-    const result =
-      await response.json();
-
-    // ============================================
-    // ERROR RESPONSE
-    // ============================================
+    const result = await response.json();
 
     if (!response.ok) {
-
-      throw new Error(
-
-        result.error ||
-
-        AppMessageCode.ADC_AUTH_ERR_0006
-
-      );
-
+      throw new Error(result.error || AppMessageCode.ADC_AUTH_ERR_0006);
     }
 
-    // ============================================
-    // SUCCESS
-    // ============================================
-
     return result;
-
   }
 
   // ============================================
