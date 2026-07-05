@@ -1,333 +1,180 @@
-/* ==========================================================================
-   PAGE BACKGROUND & CONTAINER
-   ========================================================================== */
-.home-content {
-  --background: linear-gradient(180deg, #123d92 0%, #0d327c 100%) !important;
-  position: relative;
-
-  .background-logo {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    opacity: 0.04;
-    z-index: 0;
-
-    img {
-      width: 80%;
-      max-width: 340px;
-    }
-  }
-}
-
-.home-container {
-  position: relative;
-  z-index: 2;
-  padding: 16px 14px 100px;
-  /* Incrementado el padding inferior para asegurar scroll completo */
-}
-
-/* ==========================================================================
-   ESTILOS PARA EL MENÚ HORIZONTAL SCROLLABLE COMPLETO
-   ========================================================================== */
-.custom-scroll-segment {
-  --background: transparent !important;
-  background: transparent !important;
-  margin: 8px 0 20px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex !important;
-  overflow-x: auto !important;
-  white-space: nowrap !important;
-
-  ion-segment-button {
-    min-width: 110px !important;
-    --color: rgba(255, 255, 255, 0.5) !important;
-    --color-checked: #ffffff !important;
-    --indicator-color: #ffffff !important;
-    font-weight: 600;
-    --padding-top: 12px;
-    --padding-bottom: 12px;
-
-    ion-label {
-      font-size: 14px;
-      letter-spacing: 0.3px;
-      overflow: visible !important;
-      text-overflow: clip !important;
-    }
-  }
-}
-
-/* ==========================================================================
-   ESTRUCTURA MAESTRA DE LA CARD DE EVENTO (Con imagen de fondo sellada)
-   ========================================================================== */
-.events-list-container {
+.unified-events-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 8px;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  .event-interactive-card {
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 22px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
-    padding: 0 !important;
-    display: flex;
-    flex-direction: column;
-    color: #ffffff !important;
+// 🎛️ FILTROS ARRIBA DEL TODO
+.custom-scroll-segment {
+  width: 100%;
+  background: rgba(13, 27, 62, 0.45) !important;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 4px;
 
-    position: relative !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
-    transform: translate3d(0, 0, 0) !important;
-    -webkit-transform: translate3d(0, 0, 0) !important;
-    /* Compatibilidad estricta WebKit */
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-image: inherit;
-      background-size: cover !important;
-      background-position: center center !important;
-      background-repeat: no-repeat !important;
-      border-radius: inherit !important;
-    }
-
-    /* 🔥 CORRECCIÓN CRÍTICA: Forzar el redondeado al contenedor del cuerpo */
-    .card-body-content {
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-      background: transparent !important;
-
-      /* Replicamos el border-radius aquí dentro para que actúe de escudo definitivo abajo */
-      border-radius: 22px !important;
-      overflow: hidden !important;
-    }
-
-    /* Alineación horizontal: Icono + Detalles */
-    .card-top-info {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      position: relative;
-    }
-
-    /* Caja del Icono izquierdo */
-    .event-type-icon-wrapper {
-      width: 48px;
-      height: 48px;
-      min-width: 48px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
-
-      ion-icon {
-        font-size: 22px;
-        color: rgba(255, 255, 255, 1);
-      }
-    }
-
-    /* Bloque de textos principales */
-    .event-main-details {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      .event-card-title {
-        margin: 0;
-        font-size: 19px;
-        font-weight: 800;
-        color: #ffffff !important;
-        line-height: 1.3;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-        padding-right: 75px;
-      }
-    }
-
-    /* Filas de metadatos */
-    .meta-info-row {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-
-      .meta-label {
-        color: rgba(255, 255, 255, 0.55) !important;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.6px;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-      }
-
-      .meta-value {
-        font-size: 13.5px;
-        color: #ffffff !important;
-        font-weight: 600;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-
-        strong {
-          font-weight: 700;
-        }
-      }
-
-      .meta-subvalue {
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.85) !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-      }
-    }
-
-    /* Badge flotante de estado */
-    .status-badge-area {
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      .badge {
-        display: inline-block;
-        padding: 4px 8px;
-        border-radius: 8px;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-
-        &-success {
-          background: rgba(34, 197, 94, 0.35) !important;
-          border: 1px solid rgba(34, 197, 94, 0.5);
-          color: #4ade80 !important;
-          backdrop-filter: blur(4px);
-        }
-      }
-    }
-
-    /* Fila del aforo */
-    .card-middle-info {
-      padding: 8px 12px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .availability-text {
-        font-size: 11px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .availability-value {
-        font-size: 12px;
-        font-weight: 700;
-        color: #4ade80;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-      }
-    }
-
-    /* Botonera inferior */
-    .card-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 4px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      background: transparent !important; /* Evita fondos opacos raros abajo */
-
-      .btn-action {
-        flex: 1;
-        padding: 10px;
-        border-radius: 12px;
-        font-size: 13px;
-        font-weight: 700;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        backdrop-filter: blur(4px);
-
-        &.btn-accept {
-          background: rgba(34, 197, 94, 0.35) !important;
-          border: 1px solid rgba(34, 197, 94, 0.5) !important;
-          color: #4ade80 !important;
-        }
-
-        &.btn-decline {
-          background: rgba(0, 0, 0, 0.4) !important;
-          border: 1px solid rgba(255, 255, 255, 0.2) !important;
-          color: #ffffff !important;
-        }
-      }
-    }
+  ion-segment-button {
+    --color: #94a3b8;
+    --color-checked: #ffffff;
+    --indicator-color: #38bdf8;
+    font-weight: 600;
+    font-size: 13px;
   }
 }
 
-/* ==========================================================================
-   EMPTY STATE & PLACEHOLDERS
-   ========================================================================== */
+// 📆 CALENDARIO FULL WIDTH
+.calendar-dashboard-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(14, 30, 76, 0.72) 0%, rgba(8, 17, 38, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  width: 100%; // Ocupa todo el ancho de pantalla sin restricciones
+}
+
+.calendar-watermark-logo {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58%;
+  height: auto;
+  opacity: 0.11;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+  z-index: 0;
+}
+
+.calendar-inline-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 6px;
+  color: #38bdf8;
+  ion-icon { font-size: 20px; }
+  h2 { margin: 0; font-size: 15px; font-weight: 700; color: #fff; }
+}
+
+.peña-integrated-datetime {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: transparent !important;
+  --background: transparent !important;
+  color: #ffffff !important;
+  --color: #cbd5e1;
+  --color-checked: #070f24;
+
+  // 🚀 REPARADO: Capitalizado estricto del nombre del mes / año
+  &::part(calendar-month-year) {
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: capitalize !important;
+  }
+
+  &::part(calendar-weekday) { 
+    color: #64748b; 
+    font-weight: 600; 
+    text-transform: capitalize !important;
+  }
+  
+  &::part(calendar-day-active) { 
+    background: #38bdf8 !important; 
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.5); 
+    border-radius: 8px; 
+  }
+}
+
+// 📋 TARJETA MINIMALISTA INTERACTIVA
+.event-minimal-card {
+  width: 100%;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  margin-bottom: 8px;
+  transition: transform 0.15s ease;
+
+  &:active { transform: scale(0.99); }
+}
+
+.minimal-card-body {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.event-type-icon-wrapper-mini {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 8px;
+  border-radius: 8px;
+  color: #38bdf8;
+  display: flex;
+  ion-icon { font-size: 18px; }
+}
+
+.event-minimal-title {
+  margin: 0;
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.arrow-link-icon {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 18px;
+}
+
 .empty-warning-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
-
-  ion-icon {
-    font-size: 40px;
-    color: rgba(255, 255, 255, 0.2);
-    margin-bottom: 10px;
-  }
-
-  p {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 14px;
-    font-weight: 500;
-  }
-}
-
-.loading-card-placeholder {
   padding: 24px;
   text-align: center;
-  color: rgba(255, 255, 255, 0.4);
+  gap: 10px;
+  background: rgba(13, 27, 62, 0.4);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  ion-icon { font-size: 30px; }
 }
 
-/* ==========================================================================
-   🔥 CORRECCIÓN: BOTÓN FLOTANTE (FAB) SEGURO PARA DISPOSITIVOS MÓVILES
-   ========================================================================== */
+// Garantiza el posicionamiento flotante del FAB por encima del layout unificado
 .peña-fab-btn-native {
   position: fixed;
-  /* Utiliza el safe-area para respetar los controles virtuales e inferiores de Android/iOS */
-  bottom: calc(24px + env(safe-area-inset-bottom));
+  bottom: 24px;
   right: 24px;
   width: 56px;
   height: 56px;
+  background: #38bdf8;
+  color: #070f24;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 999;
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
+  z-index: 9999 !important; // 🚀 FIJADO: Rompe cualquier jerarquía de Shadow DOM residual
+  border: none;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 28px;
+    font-weight: bold;
+  }
 }

@@ -1,0 +1,105 @@
+<app-page-header title="Mantenimiento de Cuotas" [showMenu]="true" [showBack]="true" backUrl="/gest-user"
+  data-cy="page-header-cuotas">
+</app-page-header>
+
+<ion-content fullscreen="true" class="cuotas-content" data-cy="cuotas-content-panel">
+
+  <div class="background-logo">
+    <img src="assets/img/escudo.png" alt="Escudo">
+  </div>
+
+  <div class="filters-grid-wrapper" style="padding-bottom: 4px;">
+    <div class="search-box">
+      <ion-searchbar class="custom-searchbar" placeholder="Buscar por socio, nombre, DNI..." [value]="searchText"
+        (ionInput)="searchText = $event.target.value; aplicarFiltros()" (ionClear)="searchText = ''; aplicarFiltros()">
+      </ion-searchbar>
+    </div>
+
+    <div class="select-box">
+      <ion-item class="custom-filter-item">
+        <ion-label position="stacked">Visualizar</ion-label>
+        <ion-select [(ngModel)]="filtroEstado" (ionChange)="aplicarFiltros()" interface="popover"
+          [interfaceOptions]="{ cssClass: 'glass-dropdown' }" data-cy="select-filtro-cuotas">
+          <ion-select-option value="todos">Todos los miembros</ion-select-option>
+          <ion-select-option value="al_corriente">Solventes (Al corriente)</ion-select-option>
+          <ion-select-option value="pendiente">Pendientes de pago</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+  </div>
+
+  <div style="padding: 0 16px 12px 16px; display: flex; align-items: center; justify-content: flex-start;">
+    <ion-item lines="none" style="--background: transparent; margin: 0; padding: 0; width: 100%;">
+      <ion-checkbox [(ngModel)]="modoMasivoActivo" (ionChange)="aplicarFiltros()" color="secondary" style="--size: 20px;">
+        <span style="color: white; font-size: 0.9rem; font-weight: 600; padding-left: 4px;">Selección múltiple (Edición por lote)</span>
+      </ion-checkbox>
+    </ion-item>
+  </div>
+
+  <div class="cuotas-container" style="padding-bottom: 90px;" data-cy="container-control-cuotas">
+
+    @for (socio of filteredUsers; track socio.id || socio.numeroSocio) {
+      <div class="cuota-card glass-card" [style.border-color]="sociosModificadosTemporalmente[socio.id!] !== undefined ? 'rgba(56, 189, 248, 0.6)' : ''" data-cy="socio-cuota-row">
+
+        <div class="socio-profile-wrapper">
+          <div class="socio-num-badge" data-cy="socio-num-text">
+            {{ socio.numeroSocio ? '#' + socio.numeroSocio : 'S/N' }}
+          </div>
+          <div class="socio-info">
+            <h2 data-cy="socio-name-text">
+              {{ socio.nombre }} 
+              @if (sociosModificadosTemporalmente[socio.id!] !== undefined) {
+                <span style="color: #38bdf8; font-size: 0.75rem; font-weight: 700; margin-left: 6px;">✏️ (Modificado)</span>
+              }
+            </h2>
+            <p class="socio-meta-sub">
+              <span>{{ socio.tipo | titlecase }}</span> • <span>{{ socio.dni }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="toggle-control-zone">
+          <div class="status-indicator-text" [ngClass]="{ 'solvente': obtenerEstadoCuotaActual(socio) }">
+            <ion-icon [name]="obtenerEstadoCuotaActual(socio) ? 'checkmark-circle-outline' : 'close-circle-outline'"></ion-icon>
+            <span>{{ obtenerEstadoCuotaActual(socio) ? 'Al corriente' : 'Pendiente' }}</span>
+          </div>
+
+          <ion-toggle [checked]="obtenerEstadoCuotaActual(socio)" (ionChange)="toggleCuotaSocio(socio, $event)" color="success"
+            class="cuota-switcher" data-cy="toggle-row-cuota">
+          </ion-toggle>
+        </div>
+
+        @if (socio.cuotaActualizadaPorNombre) {
+          <div class="row-audit-footer" data-cy="row-audit-footer">
+            Modificado por: <strong>{{ socio.cuotaActualizadaPorNombre }}</strong> el {{ socio.cuotaActualizadaAt?.toDate ?
+            (socio.cuotaActualizadaAt.toDate() | date:'dd/MM/yyyy · HH:mm') : (socio.cuotaActualizadaAt | date:'dd/MM/yyyy ·
+            HH:mm') }}
+          </div>
+        }
+
+      </div>
+    } @empty {
+      <app-empty-state icon="cash-outline" title="Sin registros financieros"
+        message="No se encontraron socios que coincidan con los criterios de tesorería seleccionados."
+        data-cy="empty-state-cuotas">
+      </app-empty-state>
+    }
+
+  </div>
+
+ @if (modoMasivoActivo && tieneCambiosPendientesMasivos) {
+    <div class="floating-actions-bar">
+      
+      <ion-button (click)="cancelarModoMasivo()" fill="clear" class="btn-cancelar">
+        Cancelar
+      </ion-button>
+
+      <ion-button (click)="procesarActualizacionMasiva()" fill="clear" class="btn-guardar">
+        <ion-icon slot="start" name="save-outline"></ion-icon>
+        Actualizar cuota
+      </ion-button>
+
+    </div>
+  }
+
+</ion-content>

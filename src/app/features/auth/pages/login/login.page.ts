@@ -2,13 +2,13 @@ import { Component, inject, EnvironmentInjector, runInInjectionContext } from '@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { 
-  IonContent, 
-  IonButton, 
-  IonInput, 
-  IonItem, 
-  IonSpinner, 
-  IonIcon 
+import {
+  IonContent,
+  IonButton,
+  IonInput,
+  IonItem,
+  IonSpinner,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, lockClosedOutline, mailOutline } from 'ionicons/icons';
@@ -38,7 +38,7 @@ import { AppMessageCode } from 'shared-core';
 })
 export class LoginPage {
   // 🔥 INYECCIONES DE SINTAXIS MODERNA (Evitan fugas de contexto asíncronas)
-  private auth = inject(Auth); 
+  private auth = inject(Auth);
   private injector = inject(EnvironmentInjector);
   private notification = inject(NotificationService);
   private router = inject(Router);
@@ -56,6 +56,33 @@ export class LoginPage {
       lockClosedOutline,
       mailOutline
     });
+  }
+
+  /**
+   * @method ionViewDidEnter
+   * @description Ciclo de vida nativo de Ionic. Se ejecuta SIEMPRE que la pantalla 
+   * de login aparece en primer plano, solucionando el bloqueo de caché tras un logout.
+   */
+  public ionViewDidEnter(): void {
+    console.log('🔄 [LoginPage] Reiniciando estado y limpiando bloqueos de la vista.');
+
+    // 1. Forzamos el desbloqueo del botón por si se quedó colgado en true
+    this.cargando = false;
+
+    // 2. Reseteamos los campos del formulario para limpiar la memoria del DOM
+    this.email = '';
+    this.password = '';
+
+    // 3. Pequeño hack profesional: Forzamos un evento de scroll mínimo e invisible 
+    // en el contenedor nativo para obligar a Chrome/WebView a recalcular los PointerEvents del ratón.
+    const content = document.querySelector('ion-content');
+    if (content) {
+      (content as any).getScrollElement().then((scrollEl: HTMLElement) => {
+        if (scrollEl) {
+          scrollEl.style.pointerEvents = 'auto';
+        }
+      });
+    }
   }
 
   async ingresar() {
@@ -85,7 +112,7 @@ export class LoginPage {
 
         // CONTROL DE CREDENCIALES INCORRECTAS DETECTADO EN TU CAPTURA
         if (
-          error?.code === 'auth/invalid-credential' || 
+          error?.code === 'auth/invalid-credential' ||
           error?.message?.includes('auth/invalid-credential') ||
           error?.code === 'auth/user-not-found' ||
           error?.code === 'auth/wrong-password'

@@ -1,396 +1,158 @@
-import { Component, OnInit }
-  from '@angular/core';
-
-import { CommonModule }
-  from '@angular/common';
-
-import { FormsModule }
-  from '@angular/forms';
-
-import {
-
-  IonContent,
-  IonItem,
-  IonInput,
-  IonButton,
-  IonIcon
-
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { 
+  IonContent, 
+  IonItem, 
+  IonInput, 
+  IonButton, 
+  IonIcon 
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { mailOpenOutline } from 'ionicons/icons';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
-import { addIcons }
-  from 'ionicons';
-
-import { mailOpenOutline }
-  from 'ionicons/icons';
-
-import { UserService }
-  from 'projects/shared-core/src/lib/services/user.service';
-
-import { AuthService }
-  from 'projects/shared-core/src/lib/services/auth.service';
-
-import { NotificationService }
-  from 'projects/shared-core/src/lib/services/notification.service';
-
-import { LoadingService }
-  from 'projects/shared-core/src/lib/services/loading.service';
-
-import { ErrorHandlerService }
-  from 'projects/shared-core/src/lib/services/error-handler.service';
-
-import { AppMessageCode }
-  from 'shared-core';
-
-import {
-
-  PageHeaderComponent
-
+// Importaciones unificadas del dominio y utilidades compartidas de shared-core
+import { 
+  NotificationService, 
+  AppMessageCode, 
+  InvitedUserService, 
+  EmailTemplates, 
+  PageHeaderComponent, 
+  ErrorHandlerService, 
+  LoadingService, 
+  AuthService, 
+  UserService 
 } from 'shared-core';
 
-import {
-
-  InvitedUserService
-
-} from 'projects/shared-core/src/lib/services/invited-user.service';
-
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-import { EmailTemplates } from 'shared-core'; // Ajusta la ruta exacta según tu estructura
-
+/**
+ * @class InvitePage
+ * @description Pantalla controladora encargada de la gestión operativa de invitaciones para nuevos miembros.
+ * Valida la existencia previa en el censo, genera un token estructurado y despacha correos automáticos mediante Firestore Mail.
+ */
 @Component({
-
   selector: 'app-invite',
-
-  templateUrl:
-    './invite.page.html',
-
-  styleUrls:
-    ['./invite.page.scss'],
-
+  templateUrl: './invite.page.html',
+  styleUrls: ['./invite.page.scss'],
   standalone: true,
-
   imports: [
-
     CommonModule,
     FormsModule,
-
     IonContent,
     IonItem,
     IonInput,
     IonButton,
     IonIcon,
-
     PageHeaderComponent
-
   ]
-
 })
+export class InvitePage implements OnInit {
 
-export class InvitePage
-  implements OnInit {
+  // =========================================================================
+  // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+  // =========================================================================
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private invitedUserService = inject(InvitedUserService);
+  private notification = inject(NotificationService);
+  private loading = inject(LoadingService);
+  private errorHandler = inject(ErrorHandlerService);
+  private firestore = inject(Firestore);
 
-  // ============================================
-  // FORM
-  // ============================================
+  // =========================================================================
+  // 📋 ESTADOS DEL FORMULARIO
+  // =========================================================================
+  public email = '';
 
-  email = '';
-
-  // ============================================
-  // CONSTRUCTOR
-  // ============================================
-
-  constructor(
-
-    private authService:
-      AuthService,
-
-    private userService:
-      UserService,
-
-    private invitedUserService:
-      InvitedUserService,
-
-    private notification:
-      NotificationService,
-
-    private loading:
-      LoadingService,
-
-    private errorHandler:
-      ErrorHandlerService,
-
-    private firestore:
-      Firestore
-  ) {
-
-    addIcons({
-
-      mailOpenOutline
-
-    });
-
+  /**
+   * @constructor
+   * @description Inicializa la pantalla y registra el icono de mensajería.
+   */
+  constructor() {
+    addIcons({ mailOpenOutline });
   }
 
-  // ============================================
-  // INIT
-  // ============================================
+  public ngOnInit(): void { }
 
-  ngOnInit() { }
-
-  // ============================================
-  // INVITAR
-  // ============================================
-
-  async invitar() {
-
-    // ============================================
-    // EMPTY EMAIL
-    // ============================================
-
+  /**
+   * @method invitar
+   * @description Normaliza, valida y despacha la invitación al correo electrónico proporcionado.
+   */
+  public async invitar(): Promise<void> {
     if (!this.email) {
-
-      await this.notification.error(
-
-        AppMessageCode
-          .ADC_INV_ERR_0001
-
-      );
-
+      await this.notification.error(AppMessageCode.ADC_INV_ERR_0001);
       return;
-
     }
 
-    // ============================================
-    // NORMALIZE EMAIL
-    // ============================================
+    const emailClean = this.email.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const email =
-
-      this.email
-        .trim()
-        .toLowerCase();
-
-    // ============================================
-    // VALIDATE EMAIL
-    // ============================================
-
-    const emailRegex =
-
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (
-
-      !emailRegex.test(email)
-
-    ) {
-
-      await this.notification.error(
-
-        AppMessageCode
-          .ADC_INV_ERR_0002
-
-      );
-
+    if (!emailRegex.test(emailClean)) {
+      await this.notification.error(AppMessageCode.ADC_INV_ERR_0002);
       return;
-
     }
 
     try {
-
       await this.loading.wrap(
-
         async () => {
+          // Check de usuario existente en el censo
+          const canContinue = await this.validateExisting(emailClean);
+          if (!canContinue) return;
 
-          // ============================================
-          // CHECK EXISTING USER
-          // ============================================
-
-          const canContinue =
-
-            await this.validateExisting(
-              email
-            );
-
-          if (!canContinue) {
-
+          // Check de invitación pendiente duplicada
+          const existingInvitation = await this.invitedUserService.getInvitationByEmail(emailClean);
+          if (existingInvitation && !existingInvitation.usado) {
+            await this.notification.warning(AppMessageCode.ADC_INV_ERR_0005);
             return;
-
           }
 
-          // ============================================
-          // CHECK EXISTING INVITATION
-          // ============================================
+          const currentUser = this.authService.currentUserData;
 
-          const existingInvitation =
+          // Registro de la invitación en la base de datos
+          await this.invitedUserService.createInvitation({
+            nombre: '',
+            email: emailClean,
+            telefono: '',
+            invitadoPor: currentUser?.nombre || 'Administrador',
+            invitadoPorUid: currentUser?.id || '',
+            fechaInvitacion: null,
+            usado: false
+          });
 
-            await this.invitedUserService
-              .getInvitationByEmail(
-                email
-              );
-
-          if (
-
-            existingInvitation
-
-            &&
-
-            !existingInvitation.usado
-
-          ) {
-
-            await this.notification.warning(
-
-              AppMessageCode
-                .ADC_INV_ERR_0005
-
-            );
-
-            return;
-
-          }
-
-          // ============================================
-          // CURRENT USER
-          // ============================================
-
-          const currentUser =
-
-            this.authService
-              .currentUserData;
-
-          // ============================================
-          // CREATE INVITATION
-          // ============================================
-
-          await this.invitedUserService
-            .createInvitation({
-
-              nombre: '',
-
-              email,
-
-              telefono: '',
-
-              invitadoPor:
-
-                currentUser?.nombre
-                ||
-                'Administrador',
-
-              invitadoPorUid:
-
-                currentUser?.id
-                ||
-                '',
-
-              fechaInvitacion:
-                null,
-
-              usado: false
-
-            });
-
-          // ============================================
-          // GET TOKEN (DOCUMENT ID)
-          // ============================================
-
-          // Recuperamos la invitación recién creada para sacar su ID y usarlo como Token
-          const nuevaInvitacion =
-            await this.invitedUserService
-              .getInvitationByEmail(email);
-
-          // ============================================
-          // PREPARE EMAIL TEMPLATE
-          // ============================================
-
+          // Recuperación del documento para extraer el ID que actúa como Token de Onboarding
+          const nuevaInvitacion = await this.invitedUserService.getInvitationByEmail(emailClean);
           const htmlTemplate = EmailTemplates.getInvitationTemplate(nuevaInvitacion.id);
 
-          // ============================================
-          // SEND EMAIL VIA FIRESTORE (MODULAR API)
-          // ============================================
-
+          // Envío de correo mediante trigger de la colección mail en Firestore (API Modular)
           const mailCollection = collection(this.firestore, 'mail');
-
           await addDoc(mailCollection, {
-            to: email,
+            to: emailClean,
             message: {
               subject: '¡Bienvenido! Completa tu inscripción - ADC Los Locos',
               html: htmlTemplate
             }
           });
-          // ============================================
-          // SUCCESS
-          // ============================================
 
-          await this.notification.success(
-
-            AppMessageCode
-              .ADC_INV_INF_0001
-
-          );
-
-          // ============================================
-          // CLEAR FORM
-          // ============================================
-
+          await this.notification.success(AppMessageCode.ADC_INV_INF_0001);
           this.email = '';
-
         },
-
         'Enviando invitación...'
-
       );
-
+    } catch (error) {
+      await this.errorHandler.handle(error, AppMessageCode.ADC_INV_ERR_0003);
     }
-
-    catch (error) {
-
-      await this.errorHandler.handle(
-
-        error,
-
-        AppMessageCode
-          .ADC_INV_ERR_0003
-
-      );
-
-    }
-
   }
 
-  // ============================================
-  // VALIDATE EXISTING USER
-  // ============================================
-
-  async validateExisting(
-    email: string
-  ): Promise<boolean> {
-
-    const existing =
-
-      await this.userService
-        .existsByEmail(
-          email
-        );
-
-    // ============================================
-    // EXISTS
-    // ============================================
-
+  /**
+   * @method validateExisting
+   * @description Verifica de forma asíncrona si el correo ya pertenece a un usuario registrado.
+   */
+  public async validateExisting(email: string): Promise<boolean> {
+    const existing = await this.userService.existsByEmail(email);
     if (existing.exists) {
-
-      await this.notification.warning(
-
-        AppMessageCode
-          .ADC_INV_ERR_0004
-
-      );
-
+      await this.notification.warning(AppMessageCode.ADC_INV_ERR_0004);
       return false;
-
     }
-
     return true;
-
   }
-
 }

@@ -1,50 +1,9 @@
-import {
-    Component,
-    OnInit
-} from '@angular/core';
-
-import {
-    CommonModule
-} from '@angular/common';
-
-import {
-    FormsModule
-} from '@angular/forms';
-
-import {
-    Router
-} from '@angular/router';
-
-import {
-    IonContent,
-    IonButton
-} from '@ionic/angular/standalone';
-
-import {
-    PersonalDataFormComponent
-} from '@users/pages/user-detail/components/personal-data-form/personal-data-form.component';
-
-import {
-    User, 
-    UserStatus
-} from 'shared-core';
-
-import {
-    AuthService
-} from 'projects/shared-core/src/lib/services/auth.service';
-
-import {
-    LoadingService
-} from 'projects/shared-core/src/lib/services/loading.service';
-
-import {
-    NotificationService
-} from 'projects/shared-core/src/lib/services/notification.service';
-
-import {
-    addIcons
-} from 'ionicons';
-
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { IonContent, IonButton } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
 import {
     imagesOutline,
     cameraOutline,
@@ -54,20 +13,27 @@ import {
     informationCircleOutline
 } from 'ionicons/icons';
 
+// Importaciones atómicas y optimizadas desde el paquete central de shared-core
 import {
+    User,
+    UserStatus,
+    AuthService,
+    LoadingService,
+    NotificationService,
+    UserDetailFacadeService,
+    UserService,
+    AppMessageCode,
+    ErrorHandlerService,
     normalizeName
 } from 'shared-core';
 
-import {
-    UserDetailFacadeService
-} from 'projects/shared-core/src/lib/services/user-detail-facade.service';
+import { PersonalDataFormComponent } from '@users/pages/user-detail/components/personal-data-form/personal-data-form.component';
 
-import {
-    UserService
-} from 'projects/shared-core/src/lib/services/user.service';
-
-import { AppMessageCode } from 'shared-core';
-
+/**
+ * @class CompleteProfilePage
+ * @description Pantalla controladora para el flujo autónomo de onboarding y completado
+ * pos-registro de datos civiles de los nuevos miembros de la Peña.
+ */
 @Component({
     selector: 'app-complete-profile',
     templateUrl: './complete-profile.page.html',
@@ -83,20 +49,31 @@ import { AppMessageCode } from 'shared-core';
 })
 export class CompleteProfilePage implements OnInit {
 
-    user: User = {} as User;
-    imageChangedEvent: any = null;
-    croppedImage = '';
-    mostrarCropper = false;
-    editing = true;
+    // =========================================================================
+    // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+    // =========================================================================
+    private authService = inject(AuthService);
+    private loading = inject(LoadingService);
+    private notification = inject(NotificationService);
+    private router = inject(Router);
+    private facade = inject(UserDetailFacadeService);
+    private userService = inject(UserService);
+    private errorHandler = inject(ErrorHandlerService);
 
-    constructor(
-        private authService: AuthService,
-        private loading: LoadingService,
-        private notification: NotificationService,
-        private router: Router,
-        private facade: UserDetailFacadeService,
-        private userService: UserService
-    ) {
+    // =========================================================================
+    // 📋 VARIABLES DE ESTADO Y MODELOS
+    // =========================================================================
+    public user: User = {} as User;
+    public imageChangedEvent: any = null;
+    public croppedImage = '';
+    public mostrarCropper = false;
+    public editing = true;
+
+    /**
+     * @constructor
+     * @description Registra la colección de iconos vectoriales necesarios para el Onboarding.
+     */
+    constructor() {
         addIcons({
             imagesOutline,
             cameraOutline,
@@ -107,7 +84,12 @@ export class CompleteProfilePage implements OnInit {
         });
     }
 
-    async ngOnInit(): Promise<void> {
+    /**
+     * @method ngOnInit
+     * @description Ciclo de vida inicial. Gestiona la espera activa del estado de sesión 
+     * en Firebase y normaliza las propiedades de identidad del usuario.
+     */
+    public async ngOnInit(): Promise<void> {
         while (!this.authService.currentUser?.uid) {
             await new Promise(resolve => setTimeout(resolve, 100));
         }
@@ -132,34 +114,30 @@ export class CompleteProfilePage implements OnInit {
         } as User;
     }
 
+    /** @description Valida los requisitos de campos civiles mínimos antes de habilitar la persistencia. */
     get canSave(): boolean {
         return !!(this.user?.nombre?.trim() && this.user?.dni?.trim());
     }
 
-    async save(): Promise<void> {
+    /**
+     * @method save
+     * @description Empaqueta los cambios y despacha la transacción hacia el servidor para solicitar aprobación.
+     */
+    public async save(): Promise<void> {
         try {
             await this.loading.wrap(
                 async () => {
                     console.log('Enviando paquete transaccional a la Cloud Function...');
                     
-                    // 🚀 UNICA LLAMADA ACCIÓN: Le pasamos los datos del formulario y la foto a la función
-                    // Tu Cloud Function se encargará de:
-                    //   1. Validar la petición.
-                    //   2. Subir la imagen al Storage internamente.
-                    //   3. Actualizar el documento en Firestore cambiando el estado a PENDING_APPROVAL.
-                    //   4. Notificar a la directiva de la Peña Los Locos.
-                    // Todo empaquetado en el servidor de forma atómica.
                     await this.userService.requestUserApproval({
                         ...this.user,
                         croppedImage: this.croppedImage
                     });
 
-                    // Forzamos la recarga del estado local una vez que el servidor ha dado el OK transaccional
                     if (this.user.id) {
                         await this.authService.reloadUserData(this.user.id);
                     }
 
-                    // 🟢 ÉXITO: El servidor completó la transacción sin caídas
                     await this.notification.success('Perfil completado correctamente');
                     await this.router.navigate(['/pending-approval']);
                 },
@@ -167,40 +145,37 @@ export class CompleteProfilePage implements OnInit {
             );
         }
         catch (error) {
-            console.error('Error en la transacción del Onboarding:', error);
-            
-            // Si la Cloud Function revienta con el error 500 simulado por el interceptor del test,
-            // el catch captura el problema, pinta el Toast controlado y el usuario no se mueve.
+            await this.errorHandler.handle(error);
             await this.notification.error(AppMessageCode.ADC_SYS_ERR_0001);
         }
     }
 
-    imageCropped(event: any): void {
+    public imageCropped(event: any): void {
         this.croppedImage = event.base64;
         this.user.foto = event.base64;
     }
 
-    applyCropper(): void {
+    public applyCropper(): void {
         this.mostrarCropper = false;
     }
 
-    cancelCropper(): void {
+    public cancelCropper(): void {
         this.mostrarCropper = false;
     }
 
-    async selectPhoto(): Promise<void> {
+    public async selectPhoto(): Promise<void> {
         this.imageChangedEvent = await this.facade.selectPhoto();
         this.mostrarCropper = true;
     }
 
-    async takePhoto(): Promise<void> {
+    public async takePhoto(): Promise<void> {
         const result = await this.facade.takePhoto();
         if (!result) return;
         this.imageChangedEvent = result;
         this.mostrarCropper = true;
     }
 
-    async logout() {
+    public async logout(): Promise<void> {
         await this.authService.logout();
         await this.router.navigate(['/login']);
     }

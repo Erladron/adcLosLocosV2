@@ -1,4 +1,4 @@
-<app-page-header title="Carnet de Feria" [showMenu]="true" [showBack]="true" data-cy="page-header"></app-page-header>
+<app-page-header title="Mis Pases Digitales" [showMenu]="true" [showBack]="true" data-cy="page-header"></app-page-header>
 
 <ion-content fullscreen="true" class="home-content" data-cy="fair-page-content">
   
@@ -10,13 +10,22 @@
 
     <div class="fair-theme-title" data-cy="fair-theme-title">
       <ion-icon name="sparkles-outline"></ion-icon>
-      <span>{{ isInvitado ? 'INVITACIÓN INDIVIDUAL DE ACCESO' : 'PASE OFICIAL DE FERIA' }}</span>
-      <ion-icon name="wine-outline"></ion-icon>
+      <span>PASES VÁLIDOS PARA HOY</span>
+      <ion-icon name="qr-code-outline"></ion-icon>
     </div>
 
-    <div class="events-list-container" *ngIf="currentUserData">
+    <div class="events-list-container" *ngIf="misPasesHoy.length > 0; else sinPasesTpl">
       
-      <div class="stadium-membership-card fair-style-card" [ngClass]="{'is-guest-card': isInvitado}" data-cy="fair-pass-card">
+      <div *ngFor="let pase of misPasesHoy" 
+           class="stadium-membership-card fair-style-card card-spacer" 
+           [ngClass]="{'is-guest-card': isInvitado}" 
+           [style.--custom-bg]="pase.backgroundStyle"
+           [style.--custom-img]="pase.eventImg ? 'url(' + pase.eventImg + ')' : 'none'"
+           (click)="irAGestionInvitados(pase)"
+           data-cy="fair-pass-card">
+        
+        <div class="card-contrast-overlay"></div>
+        
         <div class="stadium-lines-pattern fair-stripes"></div>
         
         <div class="card-split-layout">
@@ -25,30 +34,38 @@
               <div class="club-branding">
                 <img src="assets/img/escudo.png" alt="Logo Peña" class="club-badge">
                 <div class="club-titles">
-                  <h1>A.C.D. LOS LOCOS</h1>
-                  <h2>FERIA {{ anioActual }}</h2>
+                  <h1 class="event-main-title">
+                    {{ pase.eventTitle }}
+                  </h1>
+                  <h2 class="event-subtitle">CONVOCATORIA {{ anioActual }}</h2>
                 </div>
               </div>
             </div>
 
             <div class="card-official-body">
               <div class="fair-frame">
-                <img [src]="currentUserData.foto || 'assets/icons/icon-128.webp'" alt="Foto Socio">
+                <img [src]="currentUserData?.foto || 'assets/icons/icon-128.webp'" alt="Foto Usuario">
               </div>
               
               <div class="player-identity">
-                <span class="card-role-badge-pillar">{{ (currentUserData.tipo || 'Socio').toUpperCase() }}</span>
-                <h2 class="player-name" data-cy="pass-card-user-name">{{ currentUserData.nombre }}</h2>
-                <span class="player-document" *ngIf="currentUserData.dni">DNI: {{ currentUserData.dni }}</span>
+                <span class="card-role-badge-pillar" [style.background]="isInvitado ? '#e11d48' : '#38bdf8'">
+                  {{ (currentUserData?.tipo || 'Socio').toUpperCase() }}
+                </span>
+                <h2 class="player-name" data-cy="pass-card-user-name">
+                  {{ currentUserData?.nombre }}
+                </h2>
+                <span class="player-document" *ngIf="currentUserData?.dni">DNI: {{ currentUserData?.dni }}</span>
               </div>
             </div>
           </div>
 
-          <div class="card-right-qr-panel" *ngIf="qrPayload" (click)="setQrModal(true); $event.stopPropagation()" data-cy="btn-open-qr-modal">
+          <div class="card-right-qr-panel" (click)="abrirCodigoQR(pase); $event.stopPropagation()" data-cy="btn-open-qr-modal">
             <div class="qr-embedded-box">
-              <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + qrPayload" alt="QR Mini">
+              <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + (isInvitado ? pase.id : 'SOCIO:' + currentUserId + ':EVENTO-' + pase.eventId)" alt="QR Mini">
             </div>
-            <span class="qr-tap-hint">PULSAR <ion-icon name="qr-code-outline"></ion-icon></span>
+            <span class="qr-tap-hint">
+              VER QR <ion-icon name="qr-code-outline"></ion-icon>
+            </span>
           </div>
         </div>
 
@@ -57,18 +74,26 @@
           <ng-container *ngIf="!isInvitado">
             <div class="stadium-stat-box">
               <span class="stat-label">Nº SOCIO</span>
-              <span class="stat-value" data-cy="pass-card-socio-num">#{{ currentUserData.numeroSocio || '1' }}</span>
+              <span class="stat-value" data-cy="pass-card-socio-num">#{{ currentUserData?.numeroSocio || '1' }}</span>
             </div>
             <div class="stadium-stat-box">
-              <span class="stat-label">ANTIGÜEDAD</span>
-              <span class="stat-value">{{ antiguedadAnio }}</span>
+              <span class="stat-label">VALIDEZ</span>
+              <span class="stat-value validez-diaria">
+                {{ pase.validezTexto || 'ABONO EVENTO' }}
+              </span>
+            </div>
+            <div class="stadium-stat-box" *ngIf="pase.limiteInvitadosPorSocio && pase.limiteInvitadosPorSocio > 0">
+              <span class="stat-label">INVITADOS</span>
+              <span class="stat-value guest-highlight">
+                Gestionar <ion-icon name="arrow-forward-outline"></ion-icon>
+              </span>
             </div>
           </ng-container>
 
           <ng-container *ngIf="isInvitado">
             <div class="stadium-stat-box">
               <span class="stat-label">ANFITRIÓN</span>
-              <span class="stat-value guest-highlight">{{ miPaseHoy.invitedByName || 'Peña Oficial' }}</span>
+              <span class="stat-value guest-highlight">{{ pase.invitedByName || 'Peña Oficial' }}</span>
             </div>
             <div class="stadium-stat-box">
               <span class="stat-label">VALIDEZ</span>
@@ -77,97 +102,33 @@
           </ng-container>
 
           <div class="stadium-stat-box">
-            <span class="stat-label">RECINTO</span>
-            <span class="stat-value" style="color: #ffb703;">CASETA</span>
+            <span class="stat-label">ACCESO</span>
+            <span class="stat-value acceso-validado">VALIDADO</span>
           </div>
         </div>
-      </div>
-
-      <div class="glass-card" style="padding: 16px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.15);" *ngIf="!isInvitado" data-cy="section-emitir-pases">
-        
-        <div class="card-middle-info" style="margin-bottom: 12px;">
-          <span class="availability-text">INVITACIONES DE HOY</span>
-          <span class="availability-value" data-cy="fair-pases-counter" [style.color]="invitacionesEnviadasHoy >= limiteInvitaciones ? '#f87171' : '#4ade80'">
-            {{ invitacionesEnviadasHoy }} / {{ limiteInvitaciones }} Enviadas
-          </span>
-        </div>
-
-        <div *ngIf="invitacionesEnviadasHoy < limiteInvitaciones; else cupoLlenoTpl">
-          <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin: 0 0 8px 0;">
-            Buscar invitado verificado para otorgar pase:
-          </p>
-
-          <div class="autocomplete-wrapper">
-            <div class="search-input-box">
-              <ion-icon name="search-outline" class="search-icon"></ion-icon>
-              <input type="text" 
-                     placeholder="Escribe un nombre o DNI..." 
-                     [value]="nombreBusqueda"
-                     (input)="filtrarUsuarios($event)"
-                     autocomplete="off"
-                     data-cy="input-search-invitado">
-              <ion-icon *ngIf="nombreBusqueda" name="close-outline" class="clear-icon" (click)="limpiarBusqueda()"></ion-icon>
-            </div>
-
-            <ul class="autocomplete-dropdown" *ngIf="usuariosFiltrados.length > 0" data-cy="search-results-dropdown">
-              <li *ngFor="let user of usuariosFiltrados" (click)="seleccionarUsuario(user)" data-cy="search-result-item">
-                <div class="dropdown-user-info">
-                  <span class="dropdown-name">{{ user.nombre }}</span>
-                  <span class="dropdown-dni" *ngIf="user.dni">{{ user.dni }}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <button class="peña-fab-btn-native btn-invite" [disabled]="!invitadoSeleccionadoId" (click)="enviarInvitacion()" data-cy="btn-submit-fair-pass">
-            <ion-icon name="send-outline"></ion-icon>
-            Emitir Invitación Caseta
-          </button>
-        </div>
-
-        <ng-template #cupoLlenoTpl>
-          <div class="empty-warning-card" style="padding: 16px; margin: 0;" data-cy="fair-limit-reached-warning">
-            <ion-icon name="alert-circle-outline" style="font-size: 26px; color: #f87171;"></ion-icon>
-            <p style="color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 4px;">
-              Has alcanzado el cupo máximo de {{ limiteInvitaciones }} invitaciones por día.
-            </p>
-          </div>
-        </ng-template>
-
-        <div class="invited-guests-section" *ngIf="misInvitadosHoy.length > 0" data-cy="section-pases-emitidos-list">
-          <h3 class="table-title">Tus pases emitidos hoy</h3>
-          <div class="invited-guests-table">
-            <div class="table-row" *ngFor="let pase of misInvitadosHoy; let i = index" data-cy="issued-pass-row">
-              <div class="row-index">{{ i + 1 }}</div>
-              <div class="row-details">
-                <span class="guest-name">{{ pase.userName }}</span>
-                <span class="guest-status">Pase Generado</span>
-              </div>
-              <button class="btn-delete-pass" (click)="eliminarPase(pase)" title="Anular pase" data-cy="btn-delete-issued-pass">
-                <ion-icon name="trash-outline"></ion-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div *ngIf="isInvitado && !miPaseHoy" class="glass-card empty-warning-card" style="padding: 24px 16px; margin-top: 16px;" data-cy="fair-no-pass-assigned">
-        <ion-icon name="ticket-outline" style="font-size: 36px; color: rgba(255,255,255,0.2);"></ion-icon>
-        <h2>Sin pase de caseta asignado hoy</h2>
-        <p style="font-size: 12px; color: rgba(255,255,255,0.5);">Pídele a un socio que te asigne un pase diario.</p>
       </div>
 
     </div>
 
+    <ng-template #sinPasesTpl>
+      <div class="glass-card empty-warning-card" data-cy="fair-no-pass-assigned">
+        <ion-icon name="ticket-outline" class="empty-icon"></ion-icon>
+        <h2>No tienes pases activos para hoy</h2>
+        <p class="empty-p">
+          Confirma tu asistencia en la sección de Eventos para que el sistema genere tus credenciales digitales de acceso.
+          {{ isInvitado ? 'O solicita a un socio autorizado que emita una invitación a tu nombre.' : '' }}
+        </p>
+      </div>
+    </ng-template>
+
   </div>
 
-  <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="setQrModal(false)" data-cy="fair-qr-modal">
+  <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="cerrarCodigoQR()" data-cy="fair-qr-modal">
     <ng-template>
       <ion-header class="ion-no-border">
         <ion-toolbar style="--background: #070d19; --color: white;">
           <ion-buttons slot="end">
-            <ion-button (click)="setQrModal(false)" data-cy="btn-close-qr-modal">
+            <ion-button (click)="cerrarCodigoQR()" data-cy="btn-close-qr-modal">
               <ion-icon name="close-outline" style="font-size: 28px; color: white;"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -175,21 +136,23 @@
       </ion-header>
       
       <ion-content style="--background: #070d19;">
-        <div class="modal-contents">
-          <h3>Pase Oficial de Caseta</h3>
-          <p style="margin-bottom: 24px;">Presente este código QR en el control de acceso de la puerta</p>
+        <div class="modal-contents" *ngIf="paseSeleccionadoModal">
+          <h3>Control de Accesos</h3>
+          <p class="modal-event-title">
+            {{ paseSeleccionadoModal.eventTitle }}
+          </p>
           
-          <div class="qr-fullscreen-box" *ngIf="qrPayload" data-cy="qr-fullscreen-container">
+          <div class="qr-fullscreen-box" data-cy="qr-fullscreen-container">
             <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + qrPayload" alt="QR Control Acceso">
           </div>
           
-          <div class="manual-code-container" *ngIf="qrPayload">
-            <span class="manual-code-label">CÓDIGO DE ENTRADA MANUAL</span>
+          <div class="manual-code-container">
+            <span class="manual-code-label">CÓDIGO DE VERIFICACIÓN ALFANUMÉRICO</span>
             <div class="manual-code-value" data-cy="qr-manual-code-text">{{ qrPayload }}</div>
           </div>
 
           <span class="badge-modal-date" [style.background]="isInvitado ? '#e11d48' : '#ffb703'" [style.color]="isInvitado ? '#ffffff' : '#070d19'">
-            {{ isInvitado ? 'INVITACIÓN DIARIA CONTINUA' : 'VALIDACIÓN DE ACCESO - FERIA ' + anioActual }}
+            {{ isInvitado ? 'INVITACIÓN DIGITAL DE ACCESO' : 'PASE EXCLUSIVO DE ASISTENTE - TEMPORADA ' + anioActual }}
           </span>
         </div>
       </ion-content>

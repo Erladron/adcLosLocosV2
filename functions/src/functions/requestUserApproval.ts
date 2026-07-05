@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import { FcmTemplates } from '../constants/fcm-templates';
+import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
 const db = admin.firestore();
 
@@ -37,21 +38,27 @@ export const requestUserApproval = functions.https.onCall(async (request) => {
       return { success: true, message: 'Estado guardado de forma segura. No se pudo alertar a la junta por falta de cuentas directivas.' };
     }
 
-    const tokensDirectiva: string[] = [];
+    const listaDispositivos: DispositivoToken[] = [];
     for (const doc of directivosSnapshot.docs) {
       const tokensSnapshot = await db.collection(`users/${doc.id}/tokens`).get();
       tokensSnapshot.forEach(tokenDoc => {
         const tokenData = tokenDoc.data();
-        if (tokenData.token) tokensDirectiva.push(tokenData.token);
+        if (tokenData.token) {
+          listaDispositivos.push({
+            token: tokenData.token,
+            uidUsuario: doc.id,
+            tokenId: tokenDoc.id
+          });
+        }
       });
     }
 
-    if (tokensDirectiva.length > 0) {
-      const messages = tokensDirectiva.map(token => 
-        FcmTemplates.getAvisoDirectivaTemplate(token, totalPendientes, applicantUid)
+    if (listaDispositivos.length > 0) {
+      const messages = listaDispositivos.map(item => 
+        FcmTemplates.getAvisoDirectivaTemplate(item.token, totalPendientes, applicantUid)
       );
-      await admin.messaging().sendEach(messages);
-      console.log(`... Alerta distribuida a la directiva. Total pendientes en cola: ${totalPendientes}`);
+      
+      await enviarConAutoLimpieza(listaDispositivos, messages);
     } else {
       console.log('ℹ️ Los miembros de la directiva no disponen de la app nativa instalada o sincronizada actualmente.');
     }

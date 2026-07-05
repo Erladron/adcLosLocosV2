@@ -1,169 +1,133 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { AuthService } from './auth.service'; // 🚀 Saneado: Importación relativa limpia para evitar la rotura en CI/CD
+import { UserStatus } from '../models/user-status.enum';
+import { User } from '../models/users.models';
 
-import {
-  AuthService
-} from 'projects/shared-core/src/lib/services/auth.service';
-
-import {
-  UserStatus
-} from '../models/user-status.enum';
-
+/**
+ * @class AuthPoliciesService
+ * @description Servicio de nivel superior especialista en la resolución de políticas de negocio complejas
+ * y restricciones de acceso perimetral. Utilizado por los Guards de enrutamiento y las directivas estructurales 
+ * de la vista para determinar si un socio puede alterar el estado de un componente.
+ */
 @Injectable({
-
   providedIn: 'root'
-
 })
-
 export class AuthPoliciesService {
 
-  constructor(
+  /** @description Instancia inyectada de la fachada maestra de sesiones. @private */
+  private authService = inject(AuthService);
 
-    private authService:
-      AuthService
+  /**
+   * @constructor
+   * @description Inicializa el motor de evaluación de políticas y capacidades.
+   */
+  constructor() { }
 
-  ) { }
+  // =========================================================================
+  // 🔐 SESSION POLICIES
+  // =========================================================================
 
-  // ============================================
-  // SESSION
-  // ============================================
-
-  isLogged(): boolean {
-
-    return this.authService
-      .isLogged();
-
+  /**
+   * @method isLogged
+   * @description Informa si consta un canal de autenticación autenticado en la sesión local.
+   * @returns {boolean}
+   */
+  public isLogged(): boolean {
+    return this.authService.isLogged();
   }
 
-  // ============================================
-  // CURRENT USER
-  // ============================================
+  // =========================================================================
+  // 👤 CURRENT CONTEXTS
+  // =========================================================================
 
-  get currentUser() {
-
-    return this.authService
-      .currentUserData;
-
+  /**
+   * @description Provee el documento completo de Firestore con los metadatos de auditoría del socio.
+   * @type {User | null}
+   */
+  get currentUser(): User | null {
+    return this.authService.currentUserData;
   }
 
-  // ============================================
-  // ROLE
-  // ============================================
-
+  /**
+   * @description Devuelve la cadena del rango jerárquico que ostenta el usuario logueado.
+   * @type {string}
+   */
   get role(): string {
-
-    return this.authService
-      .getRole();
-
+    return this.authService.getRole();
   }
 
-  // ============================================
-  // ROLES
-  // ============================================
+  // =========================================================================
+  // 🏅 ROLE EVALUATIONS (Delegación Homogénea en Fachada Core)
+  // =========================================================================
 
-  isAdmin(): boolean {
-
-    return this.role
-      === 'administrador';
-
+  /** @description Informa si el usuario posee privilegios de Administrador Supremo. */
+  public isAdmin(): boolean {
+    return this.authService.isAdmin();
   }
 
-  isDirectiva(): boolean {
-
-    return this.role
-      === 'directiva';
-
+  /** @description Informa si el usuario pertenece formalmente a la Junta Directiva de la peña. */
+  public isDirectiva(): boolean {
+    return this.authService.isDirectiva();
   }
 
-  isSocio(): boolean {
-
-    return this.role
-      === 'socio';
-
+  /** @description Informa si el usuario posee la ficha regular sujeta a cuotas de Socio. */
+  public isSocio(): boolean {
+    return this.authService.isSocio();
   }
 
-  isInvitado(): boolean {
-
-    return this.role
-      === 'invitado';
-
+  /** @description Informa si la cuenta se encuentra tipada como un Invitado externo latente. */
+  public isInvitado(): boolean {
+    return this.authService.isInvitado();
   }
 
-  // ============================================
-  // STATUS
-  // ============================================
+  // =========================================================================
+  // ⚙️ STATE POLICIES (Evaluación de Ciclos de Vida Civiles)
+  // =========================================================================
 
-  hasStatus(
-    status: UserStatus
-  ): boolean {
-
-    return (
-
-      this.currentUser?.estado
-
-      ===
-
-      status
-
-    );
-
+  /**
+   * @method hasStatus
+   * @description Contrasta si el estado del chasis del perfil coincide con la directiva solicitada.
+   * @param {UserStatus} status Constante de verificación de estado.
+   * @returns {boolean}
+   */
+  public hasStatus(status: UserStatus): boolean {
+    return this.currentUser?.estado === status;
   }
 
-  isActive(): boolean {
-
-    return this.hasStatus(
-      UserStatus.ACTIVE
-    );
-
+  /** @description Retorna true si el socio se encuentra en estado plenamente verificado y activo. */
+  public isActive(): boolean {
+    return this.hasStatus(UserStatus.ACTIVE);
   }
 
-  isPendingData(): boolean {
-
-    return this.hasStatus(
-      UserStatus.PENDING_DATA
-    );
-
+  /** @description Retorna true si el aspirante tiene pendiente la cumplimentación de sus datos de onboarding. */
+  public isPendingData(): boolean {
+    return this.hasStatus(UserStatus.PENDING_DATA);
   }
 
-  isPendingApproval(): boolean {
-
-    return this.hasStatus(
-      UserStatus.PENDING_APPROVAL
-    );
-
+  /** @description Retorna true si el alta civil está en la cola a la espera de aprobación formal de la junta. */
+  public isPendingApproval(): boolean {
+    return this.hasStatus(UserStatus.PENDING_APPROVAL);
   }
 
-  // ============================================
-  // ADMIN
-  // ============================================
+  // =========================================================================
+  // ⚔️ MATRIX CAPABILITIES (Pasarelas de Gobierno del Sistema)
+  // =========================================================================
 
-  canAccessAdminArea(): boolean {
-
-    return (
-
-      this.isAdmin()
-
-      ||
-
-      this.isDirectiva()
-
-    );
-
+  /**
+   * @method canAccessAdminArea
+   * @description Regla de negocio que concede o deniega el acceso perimetral a las vistas de administración.
+   * @returns {boolean} True si el operador es Administrador o Directiva.
+   */
+  public canAccessAdminArea(): boolean {
+    return this.isAdmin() || this.isDirectiva();
   }
 
-  canManageUsers(): boolean {
-
-    return (
-
-      this.isAdmin()
-
-      ||
-
-      this.isDirectiva()
-
-    );
-
+  /**
+   * @method canManageUsers
+   * @description Regla de negocio que otorga privilegios de modificación de altas, bajas y estados en el padrón de socios.
+   * @returns {boolean} True si el operador es Administrador o Directiva.
+   */
+  public canManageUsers(): boolean {
+    return this.isAdmin() || this.isDirectiva();
   }
-
 }

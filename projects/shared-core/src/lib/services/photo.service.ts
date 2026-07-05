@@ -10,26 +10,43 @@ import {
   uploadBytes, 
   getDownloadURL 
 } from '@angular/fire/storage';
+import { ErrorHandlerService } from './error-handler.service';
 
+/**
+ * @class PhotoService
+ * @description Servicio core especialista de infraestructura encargado de administrar la persistencia de ficheros
+ * binarios multimedia en Firebase Storage. Provee capacidades de transformación atómica (DataURL Base64 a Blobs binarios)
+ * y gestiona las estructuras de directorios aislados para perfiles y cartelería de la peña.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
 
-  // Injector de entorno para ejecutar contextos de inyección dinámicos en promesas asíncronas
+  /** @description Instancia inyectada del inyector de entorno para contextos dinámicos asíncronos. @private */
   private injector = inject(EnvironmentInjector);
 
-  constructor(
-    private storage: Storage
-  ) { }
+  /** @description Instancia inyectada del motor core de almacenamiento Firebase Storage. @private */
+  private storage = inject(Storage);
+
+  /** @description Instancia inyectada del interceptor y gestor centralizado de excepciones. @private */
+  private errorHandler = inject(ErrorHandlerService);
 
   /**
-   * Sube la foto de perfil de un socio a la carpeta 'profilePhotos'
-   * @param uid Identificador único del usuario
-   * @param base64 String de la imagen en formato DataURL
-   * @returns Promesa con la URL de descarga pública de Firebase Storage
+   * @constructor
+   * @description Inicializa el gestor especialista de almacenamiento multimedia.
    */
-  async uploadProfilePhoto(uid: string, base64: string): Promise<string> {
+  constructor() { }
+
+  /**
+   * @method uploadProfilePhoto
+   * @description Sube la fotografía de avatar de un socio a la carpeta dedicada 'profilePhotos'.
+   * Transforma el string DataURL en un Blob físico optimizado antes de realizar la transferencia de red.
+   * @param {string} uid Identificador único universal del usuario titular.
+   * @param {string} base64 Cadena de caracteres de la imagen en formato DataURL codificada.
+   * @returns {Promise<string>} Promesa que resuelve con la URL de descarga pública emitida por Firebase Storage.
+   */
+  public async uploadProfilePhoto(uid: string, base64: string): Promise<string> {
     return await runInInjectionContext(
       this.injector,
       async () => {
@@ -41,7 +58,7 @@ export class PhotoService {
           await uploadBytes(storageRef, blob);
           return await getDownloadURL(storageRef);
         } catch (error) {
-          console.error('ERROR STORAGE PERFIL:', error);
+          await this.errorHandler.handle(error);
           throw error;
         }
       }
@@ -49,13 +66,14 @@ export class PhotoService {
   }
 
   /**
-   * OPTIMIZACIÓN PEÑA: Sube el póster o cartel de un evento a la carpeta dedicada 'eventPosters'
-   * Mantiene el mismo flujo atómico y eficiente de conversión binaria que la foto de perfil.
-   * * @param eventId Identificador único del evento (UUID generado en cliente o Firestore)
-   * @param base64 String de la imagen optimizada en formato DataURL desde el canvas local
-   * @returns Promesa con la URL de descarga pública para almacenar en el documento del evento
+   * @method uploadEventPoster
+   * @description Sube el póster, cartel publicitario o imagen de una convocatoria a la carpeta 'eventPosters'.
+   * Mantiene el mismo flujo de conversión binaria eficiente que la foto de perfil para blindar la memoria móvil.
+   * @param {string} eventId Identificador único universal de la convocatoria de referencia.
+   * @param {string} base64 Cadena de caracteres de la imagen optimizada desde el canvas local en formato DataURL.
+   * @returns {Promise<string>} Promesa que resuelve con la URL de descarga pública para inyectar en el documento de Firestore.
    */
-  async uploadEventPoster(eventId: string, base64: string): Promise<string> {
+  public async uploadEventPoster(eventId: string, base64: string): Promise<string> {
     return await runInInjectionContext(
       this.injector,
       async () => {
@@ -79,7 +97,7 @@ export class PhotoService {
           // Retornamos el enlace público definitivo
           return await getDownloadURL(storageRef);
         } catch (error) {
-          console.error('ERROR STORAGE EVENTOS:', error);
+          await this.errorHandler.handle(error);
           throw error;
         }
       }

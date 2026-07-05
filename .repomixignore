@@ -1,0 +1,43 @@
+# Dependencias y paquetes
+node_modules/
+bower_components/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Archivos de salida de Repomix (para que no se meta a sí mismo)
+repomix-output.txt
+repomix-output.md
+repomix-output.xml
+
+# Carpetas de compilación y Builds
+dist/
+build/
+.next/
+.nuxt/
+out/
+
+# Entornos virtuales (Python)
+venv/
+.venv/
+env/
+
+# Archivos del sistema y de configuración del editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Archivos de variables de entorno (seguridad)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Control de versiones
+.git/
+.gitignore
+
+# Otros ficheros a ignorar
+.clinerules

@@ -1,200 +1,131 @@
 <app-page-header title="Inicio" [showMenu]="true" data-cy="page-header">
-
 </app-page-header>
 
 <ion-content fullscreen="true" class="home-content" data-cy="home-page-content">
 
   <div class="background-logo">
-
     <img src="assets/img/escudo.png" alt="Escudo">
-
   </div>
 
   <div class="home-container">
 
     <div class="welcome-section">
-
       <div>
-
         <h1 data-cy="welcome-user-title">
-
-          Hola,
-          {{ currentUser?.nombre || 'Usuario' }}
-          👋
-
+          Hola, {{ currentUser?.nombre || 'Usuario' }} 👋
         </h1>
-
-        <p>
-          Bienvenido a A.C.D. Los Locos
-        </p>
-
+        <p>Bienvenido a A.C.D. Los Locos</p>
       </div>
-
-      <img src="assets/img/escudo.png" class="welcome-logo">
-
     </div>
 
-    <div class="glass-card profile-card" [routerLink]="['/user-detail', currentUser?.id]" style="cursor: pointer;"
-      data-cy="home-profile-card">
+    <div class="peña-membership-card" 
+         [ngClass]="currentUser?.tipo" 
+         (click)="irAPerfil(currentUser?.id)" 
+         style="cursor: pointer;"
+         data-cy="home-profile-card">
 
-      <div class="profile-header">
+      <div class="card-geometric-line line-primary"></div>
+      <div class="card-geometric-line line-secondary"></div>
 
-        <ion-icon name="person-outline">
+      <div class="card-header-corporate">
+        <div class="header-left">
+          <span class="club-title-text">A.C.D. LOS LOCOS</span>
 
-        </ion-icon>
+          <span class="card-type-subtitle"
+            *ngIf="currentUser?.tipo === 'socio' || currentUser?.tipo === 'directiva'">CARNET DE SOCIO</span>
+          <span class="card-type-subtitle" *ngIf="currentUser?.tipo === 'administrador'">CREDENCIAL DE STAFF</span>
+          <span class="card-type-subtitle" *ngIf="currentUser?.tipo === 'invitado'">PASE DE INVITADO</span>
+        </div>
 
-        <span>
-          Mi información
+        <span class="seniority-badge-text" *ngIf="currentUser?.tipo === 'socio' || currentUser?.tipo === 'directiva'">
+          SOCIO DESDE {{ currentUser?.antiguedad || '2026' }}
         </span>
+        <span class="seniority-badge-text admin-badge"
+          *ngIf="currentUser?.tipo === 'admin' || currentUser?.tipo === 'administrador'">
+          SISTEMA S.O.
+        </span>
+        <span class="seniority-badge-text invitado-badge" *ngIf="currentUser?.tipo === 'invitado'">
+          ACCESO LIMITADO
+        </span>
+      </div>
 
-        <ion-icon name="create-outline" style="margin-left: auto; font-size: 18px; opacity: 0.6;">
-        </ion-icon>
+      <div class="card-body-corporate">
+
+        <div class="avatar-block">
+          <img *ngIf="currentUser?.foto" [src]="currentUser?.foto" data-cy="home-profile-avatar-img"
+            class="photo-render">
+          <div *ngIf="!currentUser?.foto" class="photo-render-placeholder">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+        </div>
+
+        <div class="details-block">
+          <div class="data-row-corporate">
+            <span class="data-label">Usuario</span>
+            <strong class="data-value-strong" data-cy="home-info-nombre">{{ currentUser?.nombre }}</strong>
+          </div>
+
+          <div class="data-subgrid">
+            <div class="data-row-corporate" *ngIf="currentUser?.tipo === 'socio' || currentUser?.tipo === 'directiva'">
+              <span class="data-label">Nº Socio</span>
+              <span class="data-value" data-cy="home-info-socio-num"># {{ currentUser?.numeroSocio || '--' }}</span>
+            </div>
+
+            <div class="data-row-corporate">
+              <span class="data-label">Categoría</span>
+              <span class="data-value text-uppercase" data-cy="home-info-rol">{{ currentUser?.tipo | uppercase }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="shield-block">
+          <img src="assets/img/escudo.png" alt="Escudo Peña" class="integrated-shield-img" />
+        </div>
 
       </div>
 
-      <div class="profile-content">
-
-        <div class="profile-avatar">
-
-          <img *ngIf="currentUser?.foto" [src]="currentUser?.foto" data-cy="home-profile-avatar-img">
-
-          <ion-icon *ngIf="!currentUser?.foto" name="person-outline">
-
-          </ion-icon>
-
+      <div class="card-footer-corporate">
+        <div class="status-pill active">
+          <span class="status-dot"></span>
+          <span *ngIf="currentUser?.tipo === 'socio' || currentUser?.tipo === 'directiva'">MIEMBRO ACTIVO</span>
+          <span *ngIf="currentUser?.tipo === 'administrador'">ADMINISTRADOR</span>
+          <span *ngIf="currentUser?.tipo === 'invitado'">VALIDADO</span>
         </div>
-
-        <div class="profile-info">
-
-          <div class="info-item">
-
-            <span class="label">
-              Nombre
-            </span>
-
-            <strong data-cy="home-info-nombre">
-              {{ currentUser?.nombre }}
-            </strong>
-
-          </div>
-
-          <div class="info-item">
-
-            <span class="label">
-              Rol
-            </span>
-
-            <div class="role-badge" data-cy="home-info-rol">
-
-              {{ currentUser?.tipo }}
-
-            </div>
-
-          </div>
-
-          <div class="info-item">
-
-            <span class="label">
-              Nº Socio
-            </span>
-
-            <strong data-cy="home-info-socio-num">
-              {{ currentUser?.numeroSocio || '--' }}
-            </strong>
-
-          </div>
-
-          <div class="info-item">
-
-            <span class="label">
-              Estado
-            </span>
-
-            <div class="status-badge active" data-cy="home-info-estado">
-
-              <ion-icon name="checkmark-circle">
-
-              </ion-icon>
-
-              Activo
-
-            </div>
-
-          </div>
-
-        </div>
-
+        <ion-icon name="create-outline" class="edit-icon-card"></ion-icon>
       </div>
 
     </div>
 
     <div class="section-title">
-
       Accesos rápidos
-
     </div>
 
     <div class="quick-grid">
 
-      <div *ngIf="currentUser?.tipo !== 'invitado'" class="quick-card glass-card" routerLink="/gest-user"
+      <div *ngIf="currentUser?.tipo !== 'invitado'" class="quick-card glass-card" (click)="irAUsuarios()"
         data-cy="quick-card-usuarios">
-
         <div class="quick-icon">
-
-          <ion-icon name="people-outline">
-
-          </ion-icon>
-
+          <ion-icon name="people-outline"></ion-icon>
         </div>
-
         <div class="quick-info">
-
-          <h3>
-            Usuarios
-          </h3>
-
-          <p>
-            Gestiona usuarios
-          </p>
-
+          <h3>Usuarios</h3>
+          <p>Gestiona usuarios</p>
         </div>
-
-        <ion-icon name="chevron-forward-outline" class="quick-arrow">
-
-        </ion-icon>
-
+        <ion-icon name="chevron-forward-outline" class="quick-arrow"></ion-icon>
       </div>
 
-      <div class="quick-card glass-card" routerLink="/events" data-cy="quick-card-eventos">
-
+      <div class="quick-card glass-card" (click)="irAEventos()" data-cy="quick-card-eventos">
         <div class="quick-icon">
-
-          <ion-icon name="calendar-outline">
-
-          </ion-icon>
-
+          <ion-icon name="calendar-outline"></ion-icon>
         </div>
-
         <div class="quick-info">
-
-          <h3>
-            Eventos
-          </h3>
-
-          <p>
-            Consulta eventos
-          </p>
-
+          <h3>Eventos</h3>
+          <p>Consulta eventos</p>
         </div>
-
-        <ion-icon name="chevron-forward-outline" class="quick-arrow">
-
-        </ion-icon>
-
+        <ion-icon name="chevron-forward-outline" class="quick-arrow"></ion-icon>
       </div>
 
     </div>
 
   </div>
-
 </ion-content>

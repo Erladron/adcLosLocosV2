@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http'; 
+import { provideHttpClient } from '@angular/common/http';
 
 import {
   RouteReuseStrategy,
@@ -40,6 +40,12 @@ import {
   connectFunctionsEmulator
 } from '@angular/fire/functions';
 
+// 🚀 IMPORTS AÑADIDOS: Proveedor nativo de mensajería web de AngularFire
+import {
+  provideMessaging,
+  getMessaging
+} from '@angular/fire/messaging';
+
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
@@ -55,31 +61,40 @@ import localeEs from '@angular/common/locales/es';
 // 📱 IMPORTACIÓN NATIVA DE CAPACITOR PARA DETECTAR LA PLATAFORMA
 import { Capacitor } from '@capacitor/core';
 
+/**
+ * Interceptor de Logs y Advertencias de la Consola
+ * Silencia advertencias internas del ciclo de vida y falsos positivos de tipos.
+ */
 const originalWarn = console.warn;
 console.warn = (...args) => {
-  if (
-    args[0] && 
-    typeof args[0] === 'string' && 
-    (args[0].includes('Calling Firebase APIs outside of an Injection context') || 
-     args[0].includes('Firebase API called outside injection context'))
-  ) {
-    return;
+  if (args[0] && typeof args[0] === 'string') {
+    if (args[0].includes('Calling Firebase APIs outside of an Injection context') ||
+      args[0].includes('Firebase API called outside injection context')) {
+      return;
+    }
+    if (args[0].includes('Sincronizando contextos de datos feriales en el monorrepo')) {
+      return;
+    }
   }
   originalWarn.apply(console, args);
 };
 
 registerLocaleData(localeEs, 'es');
 
-// 🤖 CONSTANTE INTELIGENTE: ¿Debemos activar emuladores locales?
-// Solo se activan si useEmulators es true en tu environment Y ADEMÁS estás en la WEB de tu PC.
-// Si estás ejecutando la app en tu móvil (Android/iOS), esto pasará a ser "false" automáticamente.
+/** * @description CONSTANTE INTELIGENTE: ¿Debemos activar los emuladores locales de Firebase?
+ * Comprueba el flag del environment y valida que estemos en ejecución web de escritorio.
+ */
 const activarEmuladores = (environment as any).useEmulators && Capacitor.getPlatform() === 'web';
 
+/**
+ * Inicialización asíncrona del framework Angular y arranque del AppComponent.
+ * Configura la inyección de dependencias modular unificada para toda la Peña.
+ */
 bootstrapApplication(
   AppComponent,
   {
     providers: [
-      provideHttpClient(), 
+      provideHttpClient(),
 
       provideIonicAngular({
         animated: true
@@ -126,17 +141,38 @@ bootstrapApplication(
         return functions;
       }),
 
+      // 🍏 INYECCIÓN AÑADIDA: Habilita el canal de mensajería en la nube para la web de la Peña
+      provideMessaging(() => {
+        return getMessaging();
+      }),
+
+      {
+        provide: 'ENVIRONMENT_INITIALIZER',
+        useValue: () => {
+          const originalError = console.error;
+          console.error = function (...args) {
+            if (args[0] && args[0].toString().includes('NG01203')) {
+              originalError.apply(console, ['🚨 DETECTOR DE CRASH REAL:', args[0]]);
+              console.trace('🔍 SEGUIMIENTO DE LA PILA DE COMPILACIÓN:');
+            } else {
+              originalError.apply(console, args);
+            }
+          };
+        },
+        multi: true
+      },
+
       {
         provide: ENVIRONMENT,
         useValue: environment
       },
 
-      { 
-        provide: FIREBASE_OPTIONS, 
-        useValue: environment.firebase 
+      {
+        provide: FIREBASE_OPTIONS,
+        useValue: environment.firebase
       },
 
-      // Ajustamos también la compatibilidad antigua de AngularFire en base a la constante inteligente
+      // Ajustamos también la compatibilidad antigua de AngularFire
       ...activarEmuladores ? [
         {
           provide: AUTH_SETTINGS,

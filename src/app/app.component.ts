@@ -1,4 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Auth, user } from '@angular/fire/auth';
 import {
   IonApp,
   IonRouterOutlet,
@@ -8,11 +12,10 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
-  MenuController
+  MenuController,
+  NavController
 } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { environment } from '../environments/environment';
 import {
   homeOutline,
   peopleOutline,
@@ -24,29 +27,42 @@ import {
   ticketOutline,
   scanOutline,
   qrCodeOutline,
-  cloudOfflineOutline
+  cloudOfflineOutline,
+  cashOutline,
+  chevronDownOutline,
+  chevronDown,
+  chevronForward
 } from 'ionicons/icons';
-import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
-import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service';
-import { EventsService } from 'projects/shared-core/src/lib/services/events.service'; // 🚀 Inyección del servicio de eventos
-import { CommonModule } from '@angular/common';
 
-// Importaciones nativas de Firebase para escuchar la sesión y consultar la invitación
-import { Auth, user } from '@angular/fire/auth';
-import { Firestore, collection, query, where, getDocs, limit } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
 
-import { UserRole, UserStatus } from 'shared-core';
-import { Subscription } from 'rxjs';
+import {
+  UserRole,
+  UserStatus,
+  AuthService,
+  FcmService,
+  EventsService,
+  ErrorHandlerService,
+  AppEvent,
+  FairAccessStatus
+} from 'shared-core';
+import { environment } from '@env/environment';
 
+/**
+ * @class AppComponent
+ * @description Componente raíz de la aplicación de la Peña A.D.C. Los Locos.
+ * Se encarga de la orquestación del menú lateral dinámico, la gestión de sesiones en tiempo real
+ * y el cálculo reactivo del estado de los pases digitales según las convocatorias de la caseta.
+ */
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
   imports: [
+    CommonModule,
     IonApp,
     IonRouterOutlet,
-    CommonModule,
     IonMenu,
     IonContent,
     IonList,
@@ -55,25 +71,90 @@ import { Subscription } from 'rxjs';
     IonLabel
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
-  private firestore = inject(Firestore);
-  private auth = inject(Auth); 
-  private eventsService = inject(EventsService); // 🚀 Inyectamos el motor core de eventos
+  // =========================================================================
+  // 💉 INYECCIÓN DE SERVICIOS (PATRÓN MODERNO INJECT)
+  // =========================================================================
+  private authService = inject(AuthService);
+  private fcmService = inject(FcmService);
+  private eventsService = inject(EventsService);
+  private errorHandler = inject(ErrorHandlerService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private menuCtrl = inject(MenuController);
+  private auth = inject(Auth);
+  private firestore = inject(Firestore); 
+  private zone = inject(NgZone);
+  private navCtrl = inject(NavController);
 
-  // Banderas de control dinámicas para el menú
-  tieneInvitacionAsignada = false;
-  hayFeriaActiva = false; // 🚀 Nueva propiedad analítica
+  /** @description Instancia de acceso directo al SDK de Cloud Firestore. */
+  private dbNativa: any;
 
-  // Gestión de suscripciones para evitar fugas de memoria (Memory Leaks)
-  private eventsSubscription?: Subscription;
+  // =========================================================================
+  // 🔄 SUSCRIPCIONES Y DESUSCRIPCIONES (Gestión de Memoria)
+  // =========================================================================
+  /** @description Almacena la suscripción activa al estado de autenticación de Firebase. */
+  private authSubscription!: Subscription;
+  /** @description Almacena la suscripción activa al catálogo de eventos de la peña. */
+  private eventsSubscription!: Subscription;
+  /** @description Función de limpieza para cerrar el canal onSnapshot nativo de pases. */
+  private pasesUnsubscribeFn: Unsubscribe | null = null;
 
-  constructor(
-    private router: Router,
-    private menuCtrl: MenuController,
-    public authService: AuthService,
-    private fcmService: FcmService
-  ) {
+  // =========================================================================
+  // 🎛️ BANDERAS DE CONTROL ESTANCIAL DE MENÚ (UX Dinámica)
+  // =========================================================================
+  /** @description Interruptor visual para desplegar la sección de administración de usuarios. */
+  public menuGestionAbierto = false;
+  /** @description Bandera que determina si se pinta el acceso a "Mis Pases Digitales". */
+  public tienePasesActivos = false;
+  /** @description Determina si existen eventos activos que requieran control de aforo por portería. */
+  public hayEventosConControlActivos = false;
+
+  // =========================================================================
+  // 📦 ALMACENAMIENTO DE DATOS EN MEMORIA LOCAL
+  // =========================================================================
+  /** @description Array local con los pases calculados y listos para su uso por la interfaz. */
+  public pasesUsuario: any[] = [];
+  /** @description Caché local in-memory que clona los eventos para cruzar estados de vigencia. */
+  private cacheEvents: AppEvent[] = [];
+
+  /**
+   * @constructor
+   * @description Inicializa la carga de iconos nativos y vincula la instancia de base de datos.
+   */
+  constructor() {
+    this.inicializarIconos();
+    this.vincularInstanciaFirestoreNativa();
+  }
+
+  /**
+   * @method ngOnInit
+   * @description Ciclo de vida inicial. Arranca el motor de escucha reactiva de credenciales.
+   */
+  public ngOnInit(): void {
+    this.escucharEstadoAutenticacion();
+  }
+
+  /**
+   * @method ngOnDestroy
+   * @description Ciclo de vida de destrucción. Purga y mata los hilos abiertos para evitar fugas de memoria.
+   */
+  public ngOnDestroy(): void {
+    if (this.authSubscription) this.authSubscription.unsubscribe();
+    if (this.eventsSubscription) this.eventsSubscription.unsubscribe();
+    if (this.pasesUnsubscribeFn) {
+      this.pasesUnsubscribeFn();
+      this.pasesUnsubscribeFn = null;
+    }
+  }
+
+  /**
+   * @method inicializarIconos
+   * @private
+   * @description Registra el catálogo de iconos de Ionic usados en las opciones de la barra lateral.
+   */
+  private inicializarIconos(): void {
     addIcons({
       homeOutline,
       peopleOutline,
@@ -85,148 +166,203 @@ export class AppComponent {
       ticketOutline,
       scanOutline,
       qrCodeOutline,
-      cloudOfflineOutline
+      cloudOfflineOutline,
+      cashOutline,
+      chevronDownOutline,
+      chevronDown,
+      chevronForward
     });
-
-    console.log('ENVIRONMENT:', environment.envName);
-    console.log('PROJECT:', environment.firebase.projectId);
-
-    this.checkLogin();
-  }
-
-  async checkLogin() {
-    try {
-      await this.waitForAuthReady();
-      console.log('Firebase sincronizado con éxito. Estado de sesión:', this.authService.isLogged());
-
-      user(this.auth).subscribe(async (userFirebase) => {
-        if (userFirebase) {
-          console.log('📡 [APP] Cambio de estado detectado (Usuario Logueado). Sincronizando datos...');
-          this.fcmService.inicializarFCM();
-          
-          // Escuchamos los eventos en tiempo real para activar o desactivar el carnet de feria
-          this.escucharEventosDeFeria();
-          
-          // Forzamos la espera de la sincronización de los perfiles y cargamos la invitación
-          await this.verificarInvitacionExistente();
-        } else {
-          console.log('🚪 [APP] Cambio de estado detectado (Sin Sesión). Reseteando banderas del menú.');
-          this.tieneInvitacionAsignada = false;
-          this.hayFeriaActiva = false;
-          
-          // Limpieza de suscripciones activas al cerrar sesión
-          if (this.eventsSubscription) {
-            this.eventsSubscription.unsubscribe();
-          }
-        }
-      });
-
-    } catch (error) {
-      console.error('Error crítico al sincronizar Firebase:', error);
-    }
   }
 
   /**
-   * 📣 ESCUCHAR EVENTOS DE FERIA EN TIEMPO REAL
-   * Evalúa la colección global de convocatorias. Si existe algún evento de tipo "feria",
-   * habilita automáticamente el menú del carnet en la interfaz de los socios.
+   * @method vincularInstanciaFirestoreNativa
+   * @private
+   * @description Asigna la referencia del SDK de Firestore inyectado directamente por AngularFire.
    */
-  private escucharEventosDeFeria() {
+  private vincularInstanciaFirestoreNativa(): void {
+    this.dbNativa = this.firestore;
+  }
+
+  /**
+   * @method escucharEstadoAutenticacion
+   * @private
+   * @description Escucha activa sobre el estado del Auth. Si detecta sesión, orquesta el arranque de datos feriales.
+   */
+  private escucharEstadoAutenticacion(): void {
+    this.authSubscription = user(this.auth).subscribe(async (userFirebase) => {
+      if (userFirebase) {
+        console.log('📡 [APP] Sincronizando datos de usuario logueado en la Peña...');
+        this.fcmService.inicializarFCM(environment);
+
+        this.escucharEventosActivos();
+        await this.escucharPasesExistentesTiempoReal();
+      } else {
+        console.log('🔌 [APP] Sesión destruida o inexistente.');
+        this.limpiarEstadoComponente();
+      }
+    });
+  }
+
+  /**
+   * @method escucharEventosActivos
+   * @private
+   * @description Se conecta a la agenda de convocatorias e hidrata la caché local para los cálculos de vigencia.
+   */
+  private escucharEventosActivos(): void {
     if (this.eventsSubscription) {
       this.eventsSubscription.unsubscribe();
     }
 
     this.eventsSubscription = this.eventsService.getEvents().subscribe({
-      next: (eventos) => {
-        // Buscamos si hay algún evento activo cuyo tipo sea estrictamente 'feria'
-        this.hayFeriaActiva = eventos.some(evento => evento.type === 'feria');
-        console.log('🎡 [APP] Verificación de calendario: ¿Hay algún evento de feria activo?:', this.hayFeriaActiva);
+      next: (eventos: AppEvent[]) => {
+        this.cacheEvents = eventos || [];
+        const datosPlanos = JSON.parse(JSON.stringify(eventos || []));
+        this.hayEventosConControlActivos = datosPlanos.some((evento: any) => evento.requiresAccessControl === true);
+
+        console.log(`📅 [Caché Eventos] Actualizada con ${this.cacheEvents.length} convocatorias.`);
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('⚠️ [APP] Error recuperando eventos para el control del menú:', err);
-        this.hayFeriaActiva = false;
+        console.warn('📡 Error sincronizando contextos de eventos:', err.message || err);
+        this.hayEventosConControlActivos = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  async verificarInvitacionExistente() {
+  /**
+   * @method escucharPasesExistentesTiempoReal
+   * @public
+   * @async
+   * @returns {Promise<void>} Cobertura asíncrona de inicialización.
+   * @description Abre la pasarela en tiempo real sobre la colección `/fair-access`. Calcula en caliente si
+   * el pase está pendiente, activo o expirado cruzando cronologías con los eventos publicados de la Peña.
+   */
+  public async escucharPasesExistentesTiempoReal(): Promise<void> {
+    await this.authService.waitForAuthReady();
+
+    if (!this.authService.isLogged()) {
+      this.tienePasesActivos = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
     if (typeof (this.authService as any).waitForUserData === 'function') {
       await (this.authService as any).waitForUserData();
     }
 
     const userUid = this.authService.getUid();
-    
-    if (!userUid || this.role !== UserRole.INVITADO) {
-      this.tieneInvitacionAsignada = false;
+
+    if (!userUid || this.esPorteroPuro()) {
+      this.tienePasesActivos = false;
+      this.cdr.detectChanges();
       return;
     }
 
+    if (this.pasesUnsubscribeFn) {
+      this.pasesUnsubscribeFn();
+    }
+
     try {
-      const fairAccessRef = collection(this.firestore, 'fair-access');
-      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-      const hoy = (new Date(Date.now() - tzoffset)).toISOString().split('T')[0];
+      console.log(`📌 [DEBUG PASES] Identidad válida. Registrando onSnapshot de fair-access para UID: ${userUid}`);
 
-      const q = query(
-        fairAccessRef, 
-        where('userId', '==', userUid), 
-        where('date', '==', hoy),
-        limit(1)
-      );
-      const querySnapshot = await getDocs(q);
-      
-      this.tieneInvitacionAsignada = !querySnapshot.empty;
-      console.log('🎫 [APP] Verificación de pase para Invitado finalizada. ¿Tiene invitación hoy?:', this.tieneInvitacionAsignada);
-    } catch (error) {
-      console.error('⚠️ [APP] No se pudo verificar la asignación del pase de feria en el servidor:', error);
-      this.tieneInvitacionAsignada = false;
-    }
-  }
+      const fairAccessRef = collection(this.dbNativa, 'fair-access');
+      const q = query(fairAccessRef, where('userId', '==', userUid));
 
-  private waitForAuthReady(): Promise<void> {
-    if (this.authService.authReady) {
-      return Promise.resolve();
-    }
-    return new Promise((resolve) => {
-      const check = setInterval(() => {
-        if (this.authService.authReady) {
-          clearInterval(check);
-          resolve();
+      this.pasesUnsubscribeFn = onSnapshot(q,
+        (snapshot) => {
+          console.log(`📡 [DEBUG PASES] Snapshot capturado de Firestore. Total docs: ${snapshot.size}`);
+
+          if (snapshot.empty) {
+            console.warn('⚠️ [DEBUG PASES] Base de datos vacía o sin pases para este UID.');
+            this.pasesUsuario = [];
+            this.tienePasesActivos = false;
+            this.cdr.detectChanges();
+            return;
+          }
+
+          const pases: any[] = [];
+          const ahora = new Date();
+
+          snapshot.forEach((doc) => {
+            pases.push({ id: doc.id, ...doc.data() });
+          });
+
+          const pasesProcesados = pases.map(pass => {
+            const ev = this.cacheEvents?.find(e => e.id === pass.eventId);
+            let estadoCalculado = pass.status;
+
+            if (ev) {
+              const fechaFin = ev.endDate ? new Date(ev.endDate) : new Date(ev.startDate);
+              if (ev.allDay) fechaFin.setHours(23, 59, 59, 999);
+
+              if (ev.status === 'cancelled' || ev.status === 'completed' || ahora > fechaFin) {
+                estadoCalculado = FairAccessStatus.EXPIRED;
+              } else if (ev.status === 'published') {
+                estadoCalculado = FairAccessStatus.ACTIVE;
+              }
+            }
+
+            return {
+              ...pass,
+              statusCalculado: estadoCalculado,
+              eventoEstado: ev ? ev.status : 'NO_ENCONTRADO_EN_CACHE'
+            };
+          });
+
+          this.pasesUsuario = pasesProcesados;
+          this.tienePasesActivos = pasesProcesados.some(pass => pass.statusCalculado === FairAccessStatus.ACTIVE);
+
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          console.error('❌ [DEBUG PASES] Error en el canal activo de Firestore:', error.message);
+          this.tienePasesActivos = false;
+          this.cdr.detectChanges();
         }
-      }, 50);
-    });
-  }
+      );
 
-  async navegar(ruta: string) {
-    console.log('NAVEGAR:', ruta);
-    await this.menuCtrl.close();
-    await this.router.navigateByUrl(ruta);
-  }
-
-  async logout() {
-    console.log('🚪 [APP] Iniciando proceso de cierre de sesión seguro...');
-    this.tieneInvitacionAsignada = false;
-    this.hayFeriaActiva = false;
-    if (this.eventsSubscription) {
-      this.eventsSubscription.unsubscribe();
+    } catch (error) {
+      console.error('❌ [DEBUG PASES] Captura de excepción en asignación:', error);
+      this.tienePasesActivos = false;
+      this.cdr.detectChanges();
     }
-    await this.menuCtrl.close();
-    await this.authService.logout();
-    window.location.href = '/login';
   }
 
-  get role(): UserRole | string {
+  /**
+   * @method limpiarEstadoComponente
+   * @private
+   * @description Purga las memorias y estados de los interruptores cuando el socio cierra sesión.
+   */
+  private limpiarEstadoComponente(): void {
+    if (this.pasesUnsubscribeFn) {
+      this.pasesUnsubscribeFn();
+      this.pasesUnsubscribeFn = null;
+    }
+    this.pasesUsuario = [];
+    this.cacheEvents = [];
+    this.tienePasesActivos = false;
+    this.hayEventosConControlActivos = false;
+    this.cdr.detectChanges();
+  }
+
+  /** @get role @returns {string} Código del rol jerárquico del usuario actual ('tipo' en Firestore). */
+  get role(): string {
     return this.authService.currentUserData?.tipo || '';
   }
 
-  get status(): UserStatus | string {
+  /** @get status @returns {string} Estado de admisión de la ficha del socio. */
+  get status(): string {
     return this.authService.currentUserData?.estado || '';
   }
 
-  esPorteroPuro(): boolean {
+  /** @method esPorteroPuro @returns {boolean} */
+  public esPorteroPuro(): boolean {
     return this.role === UserRole.PORTERO;
   }
 
-  canShowMenu(): boolean {
+  /** @method canShowMenu @returns {boolean} */
+  public canShowMenu(): boolean {
     if (!this.authService.isLogged()) return false;
     if (!this.authService.currentUserData) return false;
 
@@ -240,66 +376,78 @@ export class AppComponent {
     return true;
   }
 
-  puedeVerInicio(): boolean {
+  /** @method puedeVerInicio @returns {boolean} */
+  public puedeVerInicio(): boolean {
     return !this.esPorteroPuro();
   }
 
-  puedeInvitar(): boolean {
-    return [
-      UserRole.SOCIO,
-      UserRole.DIRECTIVA,
-      UserRole.ADMINISTRADOR
-    ].includes(this.role as UserRole);
+  /** @method puedeInvitar @returns {boolean} */
+  public puedeInvitar(): boolean {
+    return [UserRole.SOCIO, UserRole.DIRECTIVA, UserRole.ADMINISTRADOR].includes(this.role as UserRole);
   }
 
-  puedeVerUsers(): boolean {
-    return [
-      UserRole.SOCIO,
-      UserRole.DIRECTIVA,
-      UserRole.ADMINISTRADOR
-    ].includes(this.role as UserRole);
+  /** @method puedeVerUsers @returns {boolean} */
+  public puedeVerUsers(): boolean {
+    return [UserRole.SOCIO, UserRole.DIRECTIVA, UserRole.ADMINISTRADOR].includes(this.role as UserRole);
   }
 
-  puedeVerEventos(): boolean {
-    return [
-      UserRole.INVITADO,
-      UserRole.SOCIO,
-      UserRole.DIRECTIVA,
-      UserRole.ADMINISTRADOR,
-    ].includes(this.role as UserRole);
+  /** @method puedeGestionarCuotas @returns {boolean} */
+  public puedeGestionarCuotas(): boolean {
+    return [UserRole.DIRECTIVA, UserRole.ADMINISTRADOR].includes(this.role as UserRole);
   }
 
-  /**
-   * 🎫 CONTROL INTELIGENTE DE PASES DE FERIA
-   * El acceso se habilitará única y exclusivamente si el usuario es Socio o Directiva
-   * Si es invitado y tiene generado el pase del dia
-   * Y ADEMÁS la directiva ha publicado un evento de tipo 'feria' en la base de datos.
-   */
-  puedeVerPasesFeria(): boolean {
-    if (this.esPorteroPuro() || !this.hayFeriaActiva) return false;
-    
-    return [
-      UserRole.SOCIO,
-      UserRole.DIRECTIVA
-    ].includes(this.role as UserRole);
+  /** @method puedeVerEventos @returns {boolean} */
+  public puedeVerEventos(): boolean {
+    return [UserRole.INVITADO, UserRole.SOCIO, UserRole.DIRECTIVA, UserRole.ADMINISTRADOR].includes(this.role as UserRole);
+  }
+
+  /** @method puedeVerPasesEventos @returns {boolean} */
+  public puedeVerPasesEventos(): boolean {
+    if (this.esPorteroPuro()) return false;
+    return this.tienePasesActivos;
+  }
+
+  /** @method puedeEscanearEventos @returns {boolean} */
+  public puedeEscanearEventos(): boolean {
+    return [UserRole.PORTERO, UserRole.DIRECTIVA, UserRole.ADMINISTRADOR].includes(this.role as UserRole);
   }
 
   /**
-   * 🔍 CONTROL DE ACCESOS DE PORTERÍA
-   * El escáner de portería se habilitará para Directiva, Admin o Porteros
-   * ÚNICA Y EXCLUSIVAMENTE si hay un evento de feria activo en el calendario.
+   * @method navegar
+   * @param {string} ruta - Segmento destino (ej: '/home').
+   * @description Ejecuta el enrutamiento y pliega el menú lateral deslizable nativo.
    */
-  puedeEscanearFeria(): boolean {
-    if (!this.hayFeriaActiva) return false;
-
-    return [
-      UserRole.DIRECTIVA,
-      UserRole.ADMINISTRADOR,
-      UserRole.PORTERO
-    ].includes(this.role as UserRole);
+  public navegar(ruta: string): void {
+    this.router.navigate([ruta]);
+    this.menuCtrl.close();
   }
 
-  puedeVerInvitacionInvitado(): boolean {
-    return this.role === UserRole.INVITADO && this.tieneInvitacionAsignada;
+  /**
+   * @method logout
+   * @description 🛡️ VULNERABILIDAD RESUELTA: Cierra explícitamente el socket activo (onSnapshot) 
+   * antes de revocar las credenciales. Esto previene excepciones repetidas de falta de permisos 
+   * en la pantalla de login debido a tokens nulos.
+   * @returns {Promise<void>} Promesa asíncrona de desvinculación completa.
+   */
+  public async logout(): Promise<void> {
+    try {
+      this.menuCtrl.close();
+      
+      // 💥 MATAMOS EL SOCKET PRIMERO: Bloqueo proactivo ante ráfagas asíncronas
+      if (this.pasesUnsubscribeFn) {
+        this.pasesUnsubscribeFn();
+        this.pasesUnsubscribeFn = null;
+        console.log('🧹 [APP] Canal onSnapshot de fair-access cerrado preventivamente con éxito.');
+      }
+
+      this.limpiarEstadoComponente();
+      await this.authService.logout();
+
+      this.zone.run(async () => {
+        await this.router.navigateByUrl('/login');
+      });
+    } catch (error) {
+      await this.errorHandler.handle(error);
+    }
   }
 }

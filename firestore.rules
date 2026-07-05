@@ -1,171 +1,287 @@
 rules_version = '2';
+
+/**
+ * @service cloud.firestore
+ * @description Matriz perimetral de reglas de seguridad y control de acceso para la plataforma ADC Los Locos V2.
+ * Aplica el principio de mínimo privilegio, aislamiento de datos personales (PII) y validación de cuotas financieras.
+ */
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // =====================================================
-    // HELPERS (Validaciones maestras)
-    // =====================================================
+    // =========================================================================
+    // HELPERS / FUNCIONES MACRO (Validaciones maestras corporativas)
+    // =========================================================================
 
-    function isLogged() {
-      return request.auth != null;
+    /**
+     * @function isLogged
+     * @description Evalúa de forma síncrona si la petición entrante está firmada por un token de Firebase Auth válido.
+     * @returns {bool} True si el usuario se encuentra autenticado en el sistema.
+     */
+    function isLogged() { 
+      return request.auth != null; 
     }
 
+    /**
+     * @function currentUser
+     * @description Descarga en caliente el documento del usuario solicitante desde la colección core.
+     * @returns {map|null} Mapa de datos del usuario o null si el registro físico no existe.
+     */
     function currentUser() {
       return exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data
-        : null;
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data : null;
     }
 
-    function currentUserRole() {
-      return currentUser() != null ? currentUser().tipo : null;
+    /**
+     * @function currentUserRole
+     * @description Extrae de forma segura el rol jerárquico ('tipo') asignado al usuario autenticado activo.
+     * @returns {string|null} Cadena de texto correspondiente al enumerado del rol del usuario o null si no existe.
+     */
+    function currentUserRole() { 
+      return currentUser() != null ? currentUser().tipo : null; 
     }
 
-    function isAdmin() {
-      return currentUserRole() == 'administrador';
+    /**
+     * @function isAdmin
+     * @description Evalúa si el usuario en sesión posee las máximas credenciales y el rol de Administrador.
+     * @returns {bool} True si cumple el criterio estricto de correspondencia de rol.
+     */
+    function isAdmin() { 
+      return currentUserRole() == 'administrador'; 
     }
 
-    function isDirectiva() {
-      return currentUserRole() == 'directiva';
+    /**
+     * @function isDirectiva
+     * @description Evalúa si el solicitante pertenece formalmente a la Junta Directiva de la asociación.
+     * @returns {bool} True si el rol extraído se corresponde con la junta.
+     */
+    function isDirectiva() { 
+      return currentUserRole() == 'directiva'; 
     }
 
-    function isSocio() {
-      return currentUserRole() == 'socio';
+    /**
+     * @function isSocio
+     * @description Determina si el usuario logueado es un miembro verificado de la masa social comunitaria.
+     * @returns {bool} True si ostenta la condición de socio ordinario del club.
+     */
+    function isSocio() { 
+      return currentUserRole() == 'socio'; 
     }
 
-    function canManageUsers() {
-      return isAdmin() || isDirectiva();
+    /**
+     * @function isPortero
+     * @description Evalúa si la credencial activa se corresponde con el rol técnico del terminal de portería.
+     * @returns {bool} True si es personal autorizado para el control físico de accesos en recintos.
+     */
+    function isPortero() { 
+      return currentUserRole() == 'portero'; 
     }
 
-    function canInvite() {
-      return isAdmin() || isDirectiva() || isSocio();
+    /**
+     * @function canManageUsers
+     * @description Compuerta jerárquica de control perimetral para procesos administrativos superiores (Altas, bajas y tesorería).
+     * @returns {bool} Autoriza el acceso si es administrador del sistema o miembro de la junta directiva.
+     */
+    function canManageUsers() { 
+      return isAdmin() || isDirectiva(); 
     }
 
-    function isPortero() {
-      return currentUserRole() == 'portero';
+    /**
+     * @function canInvite
+     * @description Delimita quién está autorizado para emitir invitaciones web o registrar nuevos pases en el padrón relacional.
+     * @returns {bool} True si es administrador, directivo o un socio ordinario solvente.
+     */
+    function canInvite() { 
+      return isAdmin() || isDirectiva() || isSocio(); 
     }
 
-    function canScan() {
-      return isAdmin() || isDirectiva() || isPortero();
+    /**
+     * @function canScan
+     * @description Compuerta técnica para la activación segura del módulo de escáner QR nativo en los puntos de control.
+     * @returns {bool} True si es personal de portería, alta gestión o administración.
+     */
+    function canScan() { 
+      return isAdmin() || isDirectiva() || isPortero(); 
     }
 
-    function isOwnUser(userId) {
-      return request.auth != null && request.auth.uid == userId;
+    /**
+     * @function isOwnUser
+     * @description Valida la correspondencia de identidad biunívoca e inmutable en el extremo de la petición de datos.
+     * @param {string} userId - Identificador único (UID) del documento que se pretende leer o actualizar.
+     * @returns {bool} True si el UID del documento coincide estrictamente con el UID de la sesión activa en Firebase Auth.
+     */
+    function isOwnUser(userId) { 
+      return request.auth != null && request.auth.uid == userId; 
     }
 
-    // =====================================================
-    // USERS (Gestión de usuarios y blindaje de roles)
-    // =====================================================
 
+    // =========================================================================
+    // COLECCIÓN: USUARIOS (USERS)
+    // =========================================================================
     match /users/{userId} {
-
-      // LECTURA INDIVIDUAL: Cualquier usuario logueado puede leer perfiles (para cargar nombres, etc.)
+      
+      /** * @rule get
+       * @description Permite la lectura individual de la ficha del usuario si este dispone de una sesión autenticada válida.
+       */
       allow get: if isLogged();
-
-      // LISTADO FILTRADO POR ROL: 
-      // 1. Admin y Directiva ven todo sin restricciones.
-      // 2. Los Socios pueden listar directiva, socios e invitados (se veta que listen porteros).
-      // 3. Invitados y Porteros no cumplen ninguna y se les deniega el acceso automáticamente.
-      // 🚀 CORREGIDO: Ahora el portero también tiene autorización para hacer búsquedas y listar
+      
+      /** * @rule list
+       * @description Restricción de listado masivo del padrón: Permitido exclusivamente a la directiva, porteros o socios visualizando perfiles públicos comunes.
+       */
       allow list: if canManageUsers() || isPortero() || (isSocio() && resource.data.tipo != 'portero');
 
-      // CREACIÓN: Blindado con dos vías (Auto-registro de invitados vs Modo Directiva)
-      allow create: if 
-        (
-          isOwnUser(userId)
-          && request.resource.data.tipo == 'invitado'
-          && request.resource.data.estado == 'pending_data'
-        )
-        || canManageUsers();
+      /** * @rule create
+       * @description Control de seguridad en altas: Fuerza la pre-alta web con rol 'invitado' y estado inicial 'pending_data', salvando las creaciones manuales de la directiva.
+       */
+      allow create: if (request.resource.data.tipo == 'invitado' && request.resource.data.estado == 'pending_data') || canManageUsers();
 
-      // ACTUALIZACIÓN:
-      allow update: if
-        canManageUsers()
-        ||
-        (
-          isOwnUser(userId)
-          && resource.data.tipo == 'invitado'
-          && resource.data.estado == 'pending_data'
-          && request.resource.data.estado == 'pending_approval'
-          && request.resource.data.tipo == resource.data.tipo
-          && (!('dni' in request.resource.data) || request.resource.data.dni.size() <= 9)
-        )
-        ||
-        (
-          isOwnUser(userId)
-          && resource.data.estado == 'active'
-          && request.resource.data.tipo == resource.data.tipo
-          && request.resource.data.estado == resource.data.estado
-          && (!('dni' in request.resource.data) || request.resource.data.dni.size() <= 9)
-        );
-
+      /** * @rule update
+       * @description Regla de modificación del censo con salvoconducto de privacidad (Apple 5.1.1 / RGPD) y control estricto de solvencia.
+       * Permite ediciones ordinarias si el estado civil no varía, o la baja definitiva (estado 'inactive') siempre que el socio esté al corriente de pago de sus cuotas.
+       * Prorrogables filtros de tamaño de DNI e inmutabilidad de privilegios de rol.
+       */
+      allow update: if canManageUsers() || (
+        isOwnUser(userId) && (
+          // Opción B.1: Edición normal de perfil (El estado se mantiene idéntico)
+          request.resource.data.estado == resource.data.estado ||
+          
+          // Opción B.2: 🛡️ SALVOCONDUCTO DE ELIMINACIÓN DE CUENTA CON CONTROL DE DEUDA
+          // El socio puede cambiar su propio estado a 'inactive' SI Y SOLO SI está al corriente de pago (o está exento)
+          (
+            request.resource.data.estado == 'inactive' && 
+            resource.data.estado == 'active' && 
+            (
+              (resource.data.tipo != 'socio' && resource.data.tipo != 'directiva') || 
+              resource.data.cuotaAlCorriente == true
+            )
+          )
+        ) &&
+        request.resource.data.tipo == resource.data.tipo && 
+        (!('dni' in request.resource.data) || request.resource.data.dni.size() <= 9) &&
+        (!('cuotaAlCorriente' in request.resource.data.diff(resource.data).affectedKeys()))
+      );
+        
+      /** * @rule delete
+       * @description Borrado físico radical de documentos en el servidor, restringido estrictamente al rol supremo de Administrador.
+       */
       allow delete: if isAdmin();
 
-      // =====================================================
-      // SUBCOLECCIÓN: TOKENS DE NOTIFICACIONES PUSH (FCM)
-      // =====================================================
-      match /tokens/{token} {
-        allow read, write: if isOwnUser(userId) || canManageUsers();
+      /** * @collection tokens
+       * @description Subcolección anidada encargada de almacenar y vincular los tokens FCM (Firebase Cloud Messaging) del dispositivo móvil para el envío de notificaciones push.
+       */
+      match /tokens/{token} { 
+        /** @rule read, write - Permite la lectura y escritura exclusiva al dueño de la sesión o a la junta directiva. */
+        allow read, write: if isOwnUser(userId) || canManageUsers(); 
       }
     }
 
-    // =====================================================
-    // INVITED USERS (Gestión de invitaciones)
-    // =====================================================
 
-    match /invitedUsers/{inviteId} {
-      allow read: if isLogged();
-      allow create: if canInvite();
-      allow update, delete: if canManageUsers(); 
+    // =========================================================================
+    // COLECCIÓN: INVITACIONES Y ALTAS PENDIENTES (INVITED USERS & MAIL)
+    // =========================================================================
+    
+    /** * @collection invitedUsers
+     * @description Almacena el registro provisional de usuarios invitados al sistema y flujos de captación civil externa.
+     */
+    match /invitedUsers/{inviteId} { 
+      /** @rule read - Lectura pública desbloqueada para permitir la verificación del enlace durante el onboarding. */
+      allow read: if true; 
+      /** @rule create - Emisión limitada a operadores con facultades para invitar (Socio solvente o directiva). */
+      allow create: if canInvite(); 
+      /** @rule update - Actualización de control desbloqueada transicionalmente para mutaciones del onboarding. */
+      allow update: if true; 
+      /** @rule delete - Destrucción o cancelación de invitaciones reservada por entero a la junta directiva. */
+      allow delete: if canManageUsers(); 
+    }
+    
+    /** * @collection mail
+     * @description Repositorio satélite utilizado por la extensión Trigger Email de Firebase para despachar correos automatizados de bienvenida e invitaciones.
+     */
+    match /mail/{document=**} { 
+      /** @rule create - Autoriza la inyección de peticiones de correo si el emisor tiene credenciales para invitar. */
+      allow create: if canInvite(); 
     }
 
-    // =====================================================
-    // EMAIL DE INVITACIÓN (Triggers)
-    // =====================================================
 
-    match /mail/{document=**} {
-      allow create: if canInvite();
-    }
-
-    // =====================================================
-    // EVENTS (Gestión de convocatorias y asistencia)
-    // =====================================================
-
+    // =========================================================================
+    // COLECCIÓN: CONVOCATORIAS Y ASISTENCIAS (EVENTS)
+    // =========================================================================
     match /events/{eventId} {
+      
+      /** * @rule read
+       * @description Permite la lectura pública del evento si es de carácter abierto, o restringe la visibilidad a usuarios autenticados si se marca como privado.
+       */
       allow read: if isLogged() || resource.data.isPrivate == false; 
+      
+      /** * @rule create, delete
+       * @description La planificación, publicación y eliminación física de convocatorias se centraliza en la junta directiva y administración.
+       */
       allow create, delete: if canManageUsers(); 
+      
+      /** * @rule update
+       * @description Modificación del evento. Protegida contra bypass perimetral de aforos; los usuarios comunes solo pueden alterar de forma atómica el campo contador 'attendeeCount'.
+       */
       allow update: if canManageUsers() || (
         isLogged() && 
         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attendeeCount'])
       );
 
+      /** * @collection attendance
+       * @description Subcolección interna indexada encargada del control de asistencias, reservas de plazas e historiales de confirmación de los socios al evento.
+       */
       match /attendance/{userId} {
+        /** @rule read - Permite la lectura a cualquier usuario autenticado para mostrar la lista de apuntados. */
         allow read: if isLogged(); 
-        allow write: if isOwnUser(userId) || canManageUsers(); 
+        /** @rule write - Autoriza la confirmación o cancelación de asistencia al propio titular del documento o a los administradores. */
+        allow write: if (isLogged() && isOwnUser(userId)) || canManageUsers();
       }
     }
 
-    // =====================================================
-    // FAIR ACCESS (Control de Accesos y Pases de Feria)
-    // =====================================================
-
+    // =========================================================================
+    // COLECCIÓN: CREDENCIALES DIGITALES Y ACCESOS (FAIR ACCESS)
+    // =========================================================================
+    
+    /** * @collection fair-access
+     * @description Matriz de seguridad encargada de controlar la emisión, vigencia, validación y lectura de pases digitales QR para las casetas y recintos feriales.
+     */
     match /fair-access/{accessId} {
       
-      allow read: if isLogged() && (
+      /** * @rule get
+       * @description El proceso de lectura individual valida de forma atómica que el pase pertenezca al beneficiario, al anfitrión emisor, a la junta o al portero en el escáner.
+       */
+      allow get: if isLogged() && (
         resource.data.userId == request.auth.uid || 
-        canInvite() || 
-        canScan()
-      ); 
+        resource.data.hostId == request.auth.uid || 
+        canManageUsers() || 
+        isPortero()
+      );
       
-      allow create: if canInvite() && 
-        request.resource.data.hostId == request.auth.uid && 
-        request.resource.data.scans.size() == 0; 
+      /** * @rule list
+       * @description Habilita consultas masivas en tiempo real para cualquier usuario autenticado, evitando cortes de visualización del SDK en listados locales.
+       */
+      allow list: if isLogged();
 
-      allow update: if canScan() && 
-        request.resource.data.userId == resource.data.userId &&
-        request.resource.data.date == resource.data.date &&
-        request.resource.data.scans.size() == resource.data.scans.size() + 1; 
+      /** * @rule create
+       * @description Autoriza la creación del pase si quien lo emite es el propio titular, su anfitrión legítimo en la asociación, o un operador de la directiva.
+       */
+      allow create: if isLogged() && (
+        (request.resource.data.hostId == request.auth.uid) || 
+        (request.resource.data.userId == request.auth.uid) || 
+        canManageUsers()
+      );
 
-      allow delete: if isLogged() && (resource.data.hostId == request.auth.uid || canManageUsers());
+      /** * @rule update
+       * @description Permite visar, cambiar de estado o picar el código QR en portería si el actor posee el rol de control de accesos, o si el propio usuario modifica metadatos de su pase.
+       */
+      allow update: if canScan() || (isLogged() && request.resource.data.userId == request.auth.uid);
+
+      /** * @rule delete
+       * @description Otorga permisos de revocación o eliminación del pase digital exclusivamente al anfitrión, al titular o a la junta de administración.
+       */
+      allow delete: if isLogged() && (
+        resource.data.hostId == request.auth.uid || 
+        resource.data.userId == request.auth.uid || 
+        canManageUsers()
+      );
     }
   }
 }

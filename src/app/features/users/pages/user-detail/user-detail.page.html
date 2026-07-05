@@ -28,9 +28,9 @@
     </app-membership-form>
 
     <app-credentials-form *ngIf="isOwnProfile || !isVistaPublica" [user]="user" [isEditMode]="isEditMode"
-      [isOwnProfile]="isOwnProfile" [canEditCredentials]="canEditCredentials" [password]="isAdminCreate ? password : ''"
-      [repeatPassword]="isAdminCreate ? repeatPassword : ''" (passwordChange)="isAdminCreate && (password = $event)"
-      (repeatPasswordChange)="isAdminCreate && (repeatPassword = $event)" (sendResetLink)="onSendPasswordReset($event)"
+      [isOwnProfile]="isOwnProfile" [canEditCredentials]="canEditCredentials" [password]="password"
+      [repeatPassword]="repeatPassword" (passwordChange)="password = $event"
+      (repeatPasswordChange)="repeatPassword = $event" (sendResetLink)="onSendPasswordReset($event)"
       data-cy="detail-credentials-form">
     </app-credentials-form>
 
@@ -38,6 +38,15 @@
       [canDeactivate]="canDeactivateUser" [canReactivate]="canReactivateUser" (deactivate)="deactivateUser()"
       (reactivate)="reactivateUser()" data-cy="detail-user-audit-form">
     </app-user-audit-form>
+
+    <div *ngIf="isEditMode && isOwnProfile && user.estado === 'active'" class="self-delete-container"
+      data-cy="profile-self-delete-wrapper">
+      <ion-button expand="block" fill="outline" color="danger" class="btn-self-delete"
+        (click)="solicitarBajaVoluntaria()" data-cy="btn-profile-self-delete">
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Eliminar mi cuenta definitivamente
+      </ion-button>
+    </div>
 
     <ion-button *ngIf="!isEditMode && !isVistaPublica" expand="block" class="main-button" (click)="save()"
       data-cy="btn-detail-create-user">

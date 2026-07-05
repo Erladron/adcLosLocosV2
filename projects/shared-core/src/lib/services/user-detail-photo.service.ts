@@ -1,210 +1,116 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { PhotoService } from './photo.service';
 
-import {
-  Camera,
-  CameraResultType,
-  CameraSource
-} from '@capacitor/camera';
-
-import { PhotoService }
-from 'projects/shared-core/src/lib/services/photo.service';
-
+/**
+ * @class UserDetailPhotoService
+ * @description Servicio core de soporte especializado en la gestión multimedia para la ficha de usuario.
+ * Interactúa con los plugins por hardware de Capacitor Camera y gestiona la conversión de streams binarios
+ * delegando la inserción final en el PhotoService de infraestructura.
+ */
 @Injectable({
   providedIn: 'root'
 })
-
 export class UserDetailPhotoService {
 
-  constructor(
-    private photoService: PhotoService
-  ) { }
-
-  // ============================================
-  // SELECT PHOTO
-  // ============================================
+  /** @description Instancia inyectada del servicio core de almacenamiento fotográfico de Storage. @private */
+  private photoService: PhotoService = inject(PhotoService);
 
   /**
-   * Abre selector archivos.
+   * @constructor
+   * @description Inicializa el gestor de capturas multimedia del detalle de usuarios.
    */
-  selectPhoto(): Promise<any> {
+  constructor() { }
 
+  /**
+   * @method selectPhoto
+   * @description Genera dinámicamente un elemento input de tipo archivo en el DOM del navegador para lanzar el explorador nativo.
+   * @returns {Promise<any>} Promesa que resuelve el evento de cambio (`change`) del archivo multimedia seleccionado.
+   */
+  public selectPhoto(): Promise<any> {
     return new Promise((resolve) => {
-
-      const input = document.createElement(
-        'input'
-      );
-
+      const input = document.createElement('input');
       input.type = 'file';
-
       input.accept = 'image/*';
-
       input.onchange = (event: any) => {
-
         resolve(event);
-
       };
-
       input.click();
+    });
+  }
 
+  /**
+   * @method takePhoto
+   * @description Despierta e inicializa los sensores de la cámara del chasis móvil. 
+   * Pre-escala la resolución física por hardware a un ratio idóneo de 800x800px para aligerar la cuota de almacenamiento de Storage.
+   * @returns {Promise<any>} Promesa asíncrona que resuelve el archivo empaquetado dentro de una simulación de estructura DataTransfer.
+   */
+  public async takePhoto(): Promise<any> {
+    const image = await Camera.getPhoto({
+      quality: 65,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera,
+      width: 800,
+      height: 800
     });
 
-  }
-
-  // ============================================
-  // TAKE PHOTO (¡Ahora optimizada!)
-  // ============================================
-
-  /**
-   * Abrir cámara dispositivo.
-   */
-  async takePhoto(): Promise<any> {
-
-    const image =
-      await Camera.getPhoto({
-
-        quality: 65, // Reducimos para aligerar la carga de datos
-
-        resultType:
-          CameraResultType.DataUrl,
-
-        source:
-          CameraSource.Camera,
-
-        // Forzamos al hardware a pre-escalar la foto para el avatar
-        width: 800,
-
-        height: 800
-
-      });
-
-    // ============================================
-    // EMPTY IMAGE
-    // ============================================
-
     if (!image.dataUrl) {
-
       return null;
-
     }
 
-    // ============================================
-    // CONVERT FILE
-    // ============================================
-
-    const file =
-      this.dataURLtoFile(
-        image.dataUrl,
-        'camera.jpg'
-      );
-
-    // ============================================
-    // DATA TRANSFER
-    // ============================================
-
-    const dataTransfer =
-      new DataTransfer();
-
+    const file = this.dataURLtoFile(image.dataUrl, 'camera.jpg');
+    const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
 
-    // ============================================
-    // RETURN EVENT
-    // ============================================
-
     return {
-
       target: {
-
-        files:
-          dataTransfer.files
-
+        files: dataTransfer.files
       }
-
     };
-
   }
 
-  // ============================================
-  // DATA URL TO FILE
-  // ============================================
-
   /**
-   * Convierte base64 a File.
+   * @method dataURLtoFile
+   * @description Algoritmo de desestructuración que convierte una cadena DataURL en Base64 hacia un objeto binario File indexado.
+   * @param {string} dataurl Cadena Base64 estructurada procedente de la API de la cámara.
+   * @param {string} filename Nombre físico de salida que se le asignará al fichero binario.
+   * @returns {File} Fichero binario listo para la manipulación de streams.
    */
-  dataURLtoFile(
-    dataurl: string,
-    filename: string
-  ): File {
-
-    const arr =
-      dataurl.split(',');
-
-    const mime =
-      arr[0].match(/:(.*?);/)?.[1]
-      || '';
-
-    const bstr =
-      atob(arr[1]);
-
-    let n =
-      bstr.length;
-
-    const u8arr =
-      new Uint8Array(n);
+  public dataURLtoFile(dataurl: string, filename: string): File {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || '';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
 
     while (n--) {
-
-      u8arr[n] =
-        bstr.charCodeAt(n);
-
+      u8arr[n] = bstr.charCodeAt(n);
     }
 
-    return new File(
-      [u8arr],
-      filename,
-      { type: mime }
-    );
-
+    return new File([u8arr], filename, { type: mime });
   }
 
-  // ============================================
-  // PROCESS CROPPED IMAGE
-  // ============================================
-
   /**
-   * Procesa imagen cropper.
+   * @method processCroppedImage
+   * @description Sanea e independiza la porción de bits Base64 puros procedentes de los cortes del lienzo de ngx-image-cropper.
+   * @param {any} event Objeto evento resultante emitido por el cropper.
+   * @returns {string} Cadena Base64 de la imagen limpia o un string vacío en caso de inconsistencia.
    */
-  processCroppedImage(
-    event: any
-  ): string {
-
+  public processCroppedImage(event: any): string {
     if (!event?.base64) {
-
       return '';
-
     }
-
     return event.base64;
-
   }
-
-  // ============================================
-  // UPLOAD PROFILE PHOTO
-  // ============================================
 
   /**
-   * Subida foto perfil.
+   * @method uploadProfilePhoto
+   * @description Invoca de forma asíncrona al PhotoService core para tramitar la subida física del binario del avatar a Firebase Storage.
+   * @param {string} id Identificador único de usuario (UID) que se usará para nombrar al fichero en Storage.
+   * @param {string} imageBase64 Flujo de caracteres en Base64 de la fotografía de perfil solvente.
+   * @returns {Promise<string>} Promesa que resuelve la URL pública de descarga emitida por el servidor de Storage.
    */
-  async uploadProfilePhoto(
-    id: string, // Sincronizado de uid a id
-    imageBase64: string
-  ): Promise<string> {
-
-    return await this.photoService
-      .uploadProfilePhoto(
-        id,
-        imageBase64
-      );
-
+  public async uploadProfilePhoto(id: string, imageBase64: string): Promise<string> {
+    return await this.photoService.uploadProfilePhoto(id, imageBase64);
   }
-
 }

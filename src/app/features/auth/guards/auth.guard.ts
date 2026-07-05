@@ -1,24 +1,37 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
-import { UserStatus, UserRole } from 'shared-core';
 
+// Importaciones unificadas del dominio y utilidades compartidas de shared-core
+import { 
+  AuthService, 
+  NotificationService, 
+  UserStatus, 
+  UserRole, 
+  User 
+} from 'shared-core';
+
+/**
+ * @function authGuard
+ * @description Guardián de enrutamiento funcional encargado de interceptar los accesos de sesión.
+ * Evalúa los estados civiles del censo en Firestore y coordina las redirecciones automáticas o el control de accesos.
+ */
 export const authGuard: CanActivateFn = async (route, state) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+  const authService = inject(AuthService); 
+  const router = inject(Router); 
+  const notificationService = inject(NotificationService); 
 
-  const currentUrl = state.url;
+  const currentUrl = state.url; 
   console.log('🛡️ [DEBUG-GUARD] Evaluando acceso a:', currentUrl);
 
-  if (!authService.authReady) {
-    console.log('⏳ [DEBUG-GUARD] Servicio ocupado, aplicando margen de espera reactivo...');
+  if (!authService.authReady) { 
+    console.log('⏳ [DEBUG-GUARD] Servicio ocupado, applying margen de espera reactivo...');
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  const logged = authService.isLogged();
+  const logged = authService.isLogged(); 
   console.log('🔑 [DEBUG-GUARD] ¿Usuario autenticado en Firebase?:', logged);
 
-  if (!logged) {
+  if (!logged) { 
     if (currentUrl.includes('login')) {
       return true;
     }
@@ -31,14 +44,15 @@ export const authGuard: CanActivateFn = async (route, state) => {
     return router.parseUrl(esPortero ? '/fair-scan' : '/home');
   }
 
-  if (typeof (authService as any).waitForUserData === 'function') {
+  // Espera activa para asegurar la sincronización con el documento de Firestore
+  if ('waitForUserData' in authService && typeof (authService as any).waitForUserData === 'function') { 
     console.log('⏳ [DEBUG-GUARD] Esperando activamente la sincronización del perfil con Firestore...');
     await (authService as any).waitForUserData();
   } else {
     await new Promise(resolve => setTimeout(resolve, 250));
   }
 
-  let user = authService.currentUserData;
+  let user: User | null = authService.currentUserData; 
 
   if (user && user.estado === UserStatus.PENDING_APPROVAL) {
     console.log('🔄 [DEBUG-GUARD] Estado local "PENDING_APPROVAL" detectado. Forzando validación en tiempo real con el servidor...');
@@ -82,10 +96,31 @@ export const authGuard: CanActivateFn = async (route, state) => {
     return true;
   }
 
+  // =========================================================================
+  // 📢 SISTEMA INFORMATIVO DE REDIRECCIONES (CANALIZADO A NOTIFICATIONSERVICE)
+  // =========================================================================
+  switch (user.estado) {
+    case UserStatus.PENDING_DATA:
+      await notificationService.info('¡Bienvenido a la Peña! Por favor, completa tus datos de perfil para continuar.');
+      break;
+    case UserStatus.PENDING_APPROVAL:
+      await notificationService.info('Tu documentación está bajo revisión por la Junta Directiva. Te avisaremos muy pronto.');
+      break;
+    case UserStatus.INACTIVE:
+    case UserStatus.REJECTED:
+    default:
+      await notificationService.error('Esta cuenta de socio se encuentra desactivada o dada de baja. Contacta con secretaría.');
+      break;
+  }
+
   console.log('🔀 [DEBUG-GUARD] Forzando redirección de seguridad hacia:', redirectUrl);
   return router.parseUrl(redirectUrl);
 };
 
+/**
+ * @function getRedirectUrlByStatus
+ * @description Mapeador auxiliar que asienta las reglas fijas de pantallas para los estados de la membresía.
+ */
 function getRedirectUrlByStatus(status: UserStatus): string | null {
   switch (status) {
     case UserStatus.ACTIVE:

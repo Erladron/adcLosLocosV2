@@ -2,127 +2,58 @@
 
 <ion-content fullscreen="true" class="home-content" data-cy="events-page-content">
 
-  <div class="background-logo">
-    <img src="assets/img/escudo.png" alt="Escudo">
-  </div>
+  <div class="home-container unified-events-container">
 
-  <div class="home-container">
-
+    <!-- 🎛️ FILTROS POR TIPO DE EVENTO (ARRIBA DEL TODO, BAJO EL HEADER) -->
     <ion-segment [scrollable]="true" [value]="currentFilter" (ionChange)="setFilter($event.detail.value)" mode="md"
       class="custom-scroll-segment" data-cy="events-filter-segment">
-
-      <ion-segment-button value="todos" data-cy="filter-btn-todos">
-        <ion-label>Todos</ion-label>
-      </ion-segment-button>
-
-      <ion-segment-button value="asamblea" data-cy="filter-btn-asambleas">
-        <ion-label>Asambleas</ion-label>
-      </ion-segment-button>
-
-      <ion-segment-button value="comida" data-cy="filter-btn-comidas">
-        <ion-label>Comidas</ion-label>
-      </ion-segment-button>
-
-      <ion-segment-button value="quedada" data-cy="filter-btn-quedadas">
-        <ion-label>Quedadas</ion-label>
-      </ion-segment-button>
-
-      <ion-segment-button value="feria" data-cy="filter-btn-feria">
-        <ion-label>Feria</ion-label>
-      </ion-segment-button>
+      <ion-segment-button value="todos" data-cy="filter-btn-todos"><ion-label>Todos</ion-label></ion-segment-button>
+      <ion-segment-button value="asamblea" data-cy="filter-btn-asambleas"><ion-label>Asambleas</ion-label></ion-segment-button>
+      <ion-segment-button value="comida" data-cy="filter-btn-comidas"><ion-label>Comidas</ion-label></ion-segment-button>
+      <ion-segment-button value="quedada" data-cy="filter-btn-quedadas"><ion-label>Quedadas</ion-label></ion-segment-button>
+      <ion-segment-button value="feria" data-cy="filter-btn-feria"><ion-label>Feria</ion-label></ion-segment-button>
     </ion-segment>
 
+    <!-- 📆 BLOQUE CALENDARIO: OCUPANDO TODO EL ANCHO CON SEMANA EN LUNES (first-day-of-week="1") -->
+    <div class="glass-card calendar-dashboard-card full-width-card">
+      <img src="assets/img/escudo.png" alt="Escudo Peña" class="calendar-watermark-logo">
+
+      <div class="calendar-inline-header">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <h2>Agenda de la Peña</h2>
+      </div>
+
+      <ion-datetime 
+        presentation="date" 
+        locale="es-ES" 
+        size="cover"
+        first-day-of-week="1"
+        [value]="selectedDate"
+        [highlightedDates]="highlightedDates"
+        (ionChange)="onDateChanged($event)"
+        class="peña-integrated-datetime">
+      </ion-datetime>
+    </div>
+
+    <!-- 📋 LISTADO MINIMALISTA DE EVENTOS (SÓLO TÍTULO SOBRE FONDO) -->
     <div class="events-list-container" *ngIf="filteredEvents$ | async as events; else loadingTpl" data-cy="events-list-wrapper">
 
       <div class="glass-card empty-warning-card" *ngIf="events.length === 0" data-cy="events-empty-warning">
         <ion-icon name="alert-circle-outline"></ion-icon>
-        <p>No hay eventos convocados en esta categoría.</p>
+        <p>No hay convocatorias para esta fecha o categoría.</p>
       </div>
 
-      <div *ngFor="let event of events" [routerLink]="['/events', event.id]" class="glass-card event-interactive-card"
-        data-cy="event-card"
+      <!-- Tarjeta interactiva estilizada (Al hacer clic redirige al detalle) -->
+      <div *ngFor="let event of events" [routerLink]="['/events', event.id]" class="glass-card event-minimal-card" data-cy="event-card"
         [ngStyle]="{
-          'background-image': 'linear-gradient(rgba(13, 27, 62, 0.78), rgba(10, 20, 45, 0.92)), url(' + (event.imageUrl || 'assets/img/events-construction.png') + ')'
+          'background-image': 'linear-gradient(rgba(13, 27, 62, 0.65), rgba(10, 20, 45, 0.85)), url(' + (event.imageUrl || 'assets/img/events-construction.png') + ')'
         }">
-
-        <div class="card-body-content">
-
-          <div class="card-top-info">
-            <div class="event-type-icon-wrapper">
-              <ion-icon [name]="getIconForType(event.type)"></ion-icon>
-            </div>
-
-            <div class="event-main-details">
-              <h2 class="event-card-title" data-cy="event-title-text">{{ event.title }}</h2>
-
-              <div class="meta-info-row">
-                <span class="meta-label">FECHA Y HORA</span>
-
-                <span class="meta-value" *ngIf="event.allDay; else normalDatesTpl">
-                  Todo el día del {{ event.startDate | date:'dd/MM/yyyy' }}
-                </span>
-
-                <ng-template #normalDatesTpl>
-                  <span class="meta-value">
-                    Del {{ event.startDate | date:'dd/MM/yyyy HH:mm' }}h al {{ event.endDate | date:'dd/MM/yyyy HH:mm'
-                    }}h
-                  </span>
-                </ng-template>
-              </div>
-
-              <div class="meta-info-row">
-                <span class="meta-label">UBICACIÓN</span>
-                <span class="meta-value"><strong>{{ event.location?.name }}</strong></span>
-                <span class="meta-subvalue">{{ event.location?.address }}</span>
-              </div>
-              <div class="meta-info-row">
-                <span class="meta-label">ASISTENTES</span>
-                <span class="meta-value" data-cy="event-attendees-counter">{{ event.attendeeCount || 0 }} Confirmados</span>
-              </div>
-            </div>
-
-            <div class="status-badge-area">
-              <span class="badge badge-success">{{ (estadoTraduccion[event.status] || event.status) | uppercase }}</span>
-            </div>
+        <div class="minimal-card-body">
+          <div class="event-type-icon-wrapper-mini">
+            <ion-icon [name]="getIconForType(event.type)"></ion-icon>
           </div>
-
-          <div class="card-middle-info" *ngIf="event.maxAttendees">
-            <span class="availability-text">DISPONIBILIDAD</span>
-            <span class="availability-value">{{ event.maxAttendees - (event.attendeeCount || 0) }} Plazas Libres</span>
-          </div>
-
-          <ng-container *ngIf="isEventFull(event) && !isUserGoing(event.id!)">
-            <div class="card-actions">
-              <button disabled class="btn-action btn-decline" style="width: 100%; opacity: 0.6; cursor: not-allowed;" data-cy="btn-event-full">
-                <ion-icon name="alert-circle-outline"></ion-icon>
-                Aforo Completo
-              </button>
-            </div>
-          </ng-container>
-
-          <ng-container *ngIf="!isEventFull(event) || isUserGoing(event.id!)">
-            <div class="card-actions" (click)="$event.stopPropagation()">
-              
-              <button 
-                class="btn-action" 
-                data-cy="btn-confirm-attendance"
-                [ngClass]="isUserGoing(event.id!) ? 'btn-accept' : 'btn-decline'"
-                (click)="confirmAttendance(event.id!, $event)">
-                <ion-icon name="checkmark-circle-outline" *ngIf="isUserGoing(event.id!)"></ion-icon>
-                {{ isUserGoing(event.id!) ? '¡Apuntado!' : 'Asistiré' }}
-              </button>
-
-              <button 
-                class="btn-action btn-decline"
-                data-cy="btn-decline-attendance"
-                (click)="declineAttendance(event.id!, $event)">
-                <ion-icon name="close-circle-outline" *ngIf="isUserNotGoing(event.id!)"></ion-icon>
-                No puedo ir
-              </button>
-
-            </div>
-          </ng-container>
-
+          <h2 class="event-minimal-title" data-cy="event-title-text">{{ event.title }}</h2>
+          <ion-icon name="chevron-forward-outline" class="arrow-link-icon"></ion-icon>
         </div>
       </div>
 
@@ -130,7 +61,7 @@
 
     <ng-template #loadingTpl>
       <div class="glass-card loading-card-placeholder">
-        <p>Buscando convocatorias...</p>
+        <p>Sincronizando agenda...</p>
       </div>
     </ng-template>
 

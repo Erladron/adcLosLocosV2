@@ -1,0 +1,98 @@
+<app-page-header title="Gestión de Invitados" [showMenu]="false" [showBack]="true" data-cy="page-header"></app-page-header>
+
+<ion-content fullscreen="true" class="home-content" data-cy="event-guests-content">
+  
+  <div class="background-logo">
+    <img src="assets/img/escudo.png" alt="Escudo" class="small-escudo-bg">
+  </div>
+
+  <div class="home-container" *ngIf="eventoData">
+
+    <!-- Tarjeta de Identificación Corporativa del Evento -->
+    <div class="glass-card event-info-summary">
+      <div class="badge-row">
+        <ion-icon name="sparkles-outline" class="amber-glow"></ion-icon>
+        <span>Administración de Invitaciones</span>
+      </div>
+      <h2 class="summary-title">{{ eventoData.title }}</h2>
+      <p class="summary-subtitle">
+        <ion-icon name="calendar-outline"></ion-icon> 
+        Asistentes totales: <strong>{{ eventoData.attendeeCount || 0 }}</strong> 
+        {{ eventoData.maxAttendees ? '/ ' + eventoData.maxAttendees : '' }}
+      </p>
+    </div>
+
+    <!-- Módulo Operativo Principal (Cristal Encapsulado) -->
+    <div class="glass-card operations-card">
+      
+      <div class="quota-header">
+        <span class="quota-label">CUPO ASIGNADO POR SOCIO</span>
+        <span class="quota-value" [class.quota-limit]="invitacionesEnviadasHoy >= limiteInvitaciones">
+          {{ invitacionesEnviadasHoy }} / {{ limiteInvitaciones }} Enviadas
+        </span>
+      </div>
+
+      <div *ngIf="invitacionesEnviadasHoy < limiteInvitaciones; else cupoLlenoTpl">
+        <p class="section-instruction-text">
+          Introduzca los datos del invitado verificado para generarle la credencial de portería:
+        </p>
+
+        <!-- Buscador Inteligente Dropdown -->
+        <div class="autocomplete-wrapper">
+          <div class="search-input-box">
+            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+            <input type="text" 
+                   placeholder="Buscar por nombre completo o DNI..." 
+                   [(ngModel)]="nombreBusqueda"
+                   (input)="filtrarUsuarios($event)"
+                   autocomplete="off"
+                   data-cy="input-search-invitado">
+            <ion-icon *ngIf="nombreBusqueda" name="close-outline" class="clear-icon" (click)="limpiarBusqueda()"></ion-icon>
+          </div>
+
+          <ul class="autocomplete-dropdown" *ngIf="usuariosFiltrados.length > 0" data-cy="search-results-dropdown">
+            <li *ngFor="let user of usuariosFiltrados" (click)="seleccionarUsuario(user)" data-cy="search-result-item">
+              <div class="dropdown-user-info">
+                <span class="dropdown-name">{{ user.nombre }}</span>
+                <span class="dropdown-dni" *ngIf="user.dni">DNI: {{ user.dni }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <button class="peña-action-btn-submit" [disabled]="!invitadoSeleccionadoId" (click)="enviarInvitacion()" data-cy="btn-submit-fair-pass">
+          <ion-icon name="send-outline"></ion-icon>
+          Emitir Pase Digital de Acceso
+        </button>
+      </div>
+
+      <!-- Warning Si se consume el Cupo -->
+      <ng-template #cupoLlenoTpl>
+        <div class="warning-card-alert" data-cy="fair-limit-reached-warning">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <p>Has completado el cupo máximo de {{ limiteInvitaciones }} pases autorizados para esta convocatoria.</p>
+        </div>
+      </ng-template>
+
+      <!-- TABLA ESTRUCTURADA DE PASES EMITIDOS POR EL SOCIO LOGUEADO -->
+      <div class="invited-guests-section" *ngIf="misInvitadosEvento.length > 0" data-cy="section-pases-emitidos-list">
+        <h3 class="table-title">Pases emitidos bajo tu responsabilidad</h3>
+        
+        <div class="invited-guests-table">
+          <div class="table-row" *ngFor="let pase of misInvitadosEvento; let i = index" data-cy="issued-pass-row">
+            <div class="row-index">#{{ i + 1 }}</div>
+            <div class="row-details">
+              <span class="guest-name">{{ pase.userName }}</span>
+              <span class="guest-status">VÍNCULO ACTIVO</span>
+            </div>
+            <button class="btn-delete-pass" (click)="eliminarPase(pase)" title="Anular pase de invitado" data-cy="btn-delete-issued-pass">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</ion-content>

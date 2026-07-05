@@ -1,0 +1,35 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "parsable": true,
+    "headerText": "ADC Los Locos V2 - Contexto de Auditoría Consolidado en Castellano para Inteligencia Artificial.",
+    "instructionFilePath": "",
+    "customInstruction": "Actúa como un documentador técnico experto. Analiza el monorrepo de la Peña en base a los componentes standalone de Angular, la lógica desacoplada en shared-core y las reglas de seguridad de Firebase. Todo el análisis debe realizarse en español."
+  },
+  "include": ["**/*"],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/.agents/**",
+      "**/.firebase/**",
+      "**/.vscode/**",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "repomix-output.xml",
+      "repomix.config.json",
+      ".repomixignore",
+      "firebase-key.json",
+      "arbol_project_completo.txt",
+      "estructura_limpia.txt",
+      ".editorconfig",
+      ".eslintrc.json",
+      "karma.conf.js"
+    ]
+  }
+}

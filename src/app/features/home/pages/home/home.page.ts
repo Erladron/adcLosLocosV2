@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
 import { addIcons } from 'ionicons';
 import {
   peopleOutline,
@@ -13,11 +13,21 @@ import {
   createOutline
 } from 'ionicons/icons';
 
-// IMPORTACIÓN DE TUS SERVICIOS DEL CORE COMPARTIDO
-import { PageHeaderComponent, FairService } from 'shared-core';
-import { AuthService } from 'projects/shared-core/src/lib/services/auth.service';
-import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service';
+// Importaciones unificadas de la API Pública e infraestructura de shared-core
+import { 
+  PageHeaderComponent, 
+  FairService, 
+  AuthService, 
+  FcmService,
+  User
+} from 'shared-core';
+import { environment } from '@env/environment';
 
+/**
+ * @class HomePage
+ * @description Componente controlador de la pantalla de bienvenida principal de la aplicación.
+ * Inicializa los servicios push con Capacitor e inyecta proactivamente las credenciales feriales del socio.
+ */
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -27,27 +37,33 @@ import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service';
     CommonModule,
     IonContent,
     IonIcon,
-    RouterLink,
     PageHeaderComponent
   ]
 })
 export class HomePage implements OnInit {
 
-  // =========================================
-  // CURRENT USER
-  // =========================================
-  get currentUser() {
-    return this.authService.currentUserData; // Vinculación directa con tu perfil[cite: 12]
+  // =========================================================================
+  // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+  // =========================================================================
+  private authService = inject(AuthService);
+  private fcmService = inject(FcmService);
+  private fairService = inject(FairService);
+  private router = inject(Router);
+
+  // =========================================================================
+  // 📋 PROPIEDADES Y MÉTODOS DE ACCESO
+  // =========================================================================
+  
+  /** @description Vinculación directa con los datos del perfil hidratados desde Firestore. */
+  public get currentUser(): User | null {
+    return this.authService.currentUserData;
   }
 
-  // =========================================
-  // CONSTRUCTOR
-  // =========================================
-  constructor(
-    private authService: AuthService,
-    private fcmService: FcmService,
-    private fairService: FairService // Inyectamos el motor ferial de la librería
-  ) {
+  /**
+   * @constructor
+   * @description Registra de forma atómica e independiente la colección de iconos vectoriales.
+   */
+  constructor() {
     addIcons({
       peopleOutline,
       calendarOutline,
@@ -59,30 +75,51 @@ export class HomePage implements OnInit {
     });
   }
 
-  // =========================================
-  // NATIVE INITIALIZATION
-  // =========================================
-  async ngOnInit() {
-    console.log('🏠 [HOME] Inicializando flujos de la pantalla principal.'); //[cite: 12]
+  /**
+   * @method ngOnInit
+   * @description Inicializa el sistema de notificaciones masivas y valida el circuito de acceso automático.
+   */
+  public async ngOnInit(): Promise<void> {
+    console.log('🏠 [HOME] Inicializando flujos de la pantalla principal.'); 
     
     // 1. Ecosistema de notificaciones push asíncrono
     try {
-      await this.fcmService.inicializarFCM(); //[cite: 12]
+      await this.fcmService.inicializarFCM(environment); 
     } catch (error) {
-      console.error('🚨 [HOME] Error al inicializar el ecosistema de notificaciones push:', error); //[cite: 12]
+      console.error('🚨 [HOME] Error al inicializar el ecosistema de notificaciones push:', error); 
     }
 
-    // 2. CIRCUITO DE ENTRADA AUTOMÁTICA DE FERIA
+    // 2. Circuito de entrada automática de Feria
     try {
-      // Esperamos a que el AuthService termine de hidratar al usuario de Firestore[cite: 12]
+      // Esperamos a que el AuthService termine de hidratar al usuario de Firestore
       await this.authService.waitForUserData();
 
       if (this.currentUser) {
-        // Ejecutamos el inyector silencioso. El servicio decide de forma interna si genera el pase o no.
+        // El servicio decide de forma interna si genera el pase o no.
         await this.fairService.verificarYGenerarPaseSocioLogueado(this.currentUser);
       }
     } catch (feriaError) {
       console.error('🚨 [HOME] Error en la verificación del pase automático de feria:', feriaError);
     }
+  }
+
+  // =========================================================================
+  // 🔀 NAVEGACIÓN MANUAL (Previene warnings de foco/activeElement)
+  // =========================================================================
+
+  public irAEventos(): void {
+    (document.activeElement as HTMLElement)?.blur();
+    this.router.navigate(['/events']);
+  }
+
+  public irAUsuarios(): void {
+    (document.activeElement as HTMLElement)?.blur();
+    this.router.navigate(['/gest-user']);
+  }
+
+  public irAPerfil(userId: string | undefined): void {
+    if (!userId) return;
+    (document.activeElement as HTMLElement)?.blur();
+    this.router.navigate(['/user-detail', userId]);
   }
 }

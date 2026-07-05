@@ -2,13 +2,30 @@ import { onDocumentWritten, FirestoreEvent, Change } from 'firebase-functions/v2
 import { DocumentSnapshot } from 'firebase-admin/firestore';
 import * as admin from 'firebase-admin';
 import { FcmTemplates } from '../constants/fcm-templates';
+import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
+/** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
 const db = admin.firestore();
 
+/**
+ * @type {string}
+ * @description Tipado estricto para discriminar el ciclo de vida mutacional del evento detectado.
+ */
+type TipoNotificacion = 'NUEVO_EVENTO' | 'MODIFICACION_EVENTO' | 'ELIMINACION_EVENTO';
+
+/**
+ * @function onEventTriggerNotification
+ * @description Trigger de Cloud Functions v2 que intercepta cualquier escritura (creación, edición o purga)
+ * en la colección raíz de eventos. Realiza una segmentación perimetral estricta basada en roles y 
+ * solvencia de tesorería del socio antes de delegar el envío masivo en el motor Firebase Cloud Messaging (FCM).
+ * Aplica criterios de optimización industrial omitiendo alertas en incrementos automáticos de aforo.
+ * * @param {FirestoreEvent<Change<DocumentSnapshot> | undefined>} event Contexto del evento Firestore v2.
+ * @returns {Promise<null>} Retorno síncrono controlado para liberar hilos de ejecución en el entorno cloud.
+ */
 export const onEventTriggerNotification = onDocumentWritten({
   document: 'events/{eventId}',
   region: 'us-central1'
-}, async (event: FirestoreEvent<Change<DocumentSnapshot> | undefined>) => {
+}, async (event: FirestoreEvent<Change<DocumentSnapshot> | undefined>): Promise<null> => {
   const eventId = event.params.eventId;
   
   if (!event.data) return null;
@@ -19,10 +36,13 @@ export const onEventTriggerNotification = onDocumentWritten({
   const beforeData = beforeDoc.exists ? beforeDoc.data() : null;
   const afterData = afterDoc.exists ? afterDoc.data() : null;
 
-  let tipoNotificacion: 'NUEVO_EVENTO' | 'MODIFICACION_EVENTO' | 'ELIMINACION_EVENTO';
+  let tipoNotificacion: TipoNotificacion;
   let dataParaPush: any = null;
   let esPrivado = false;
 
+  // =========================================================================
+  // 🔍 EVALUACIÓN MUTACIONAL DEL DOCUMENTO (ESTADOS DE BASE DE DATOS)
+  // =========================================================================
   if (beforeDoc.exists && !afterDoc.exists) {
     tipoNotificacion = 'ELIMINACION_EVENTO';
     esPrivado = beforeData?.isPrivate || false;
@@ -30,7 +50,7 @@ export const onEventTriggerNotification = onDocumentWritten({
       titulo: '🛑 Evento Cancelado',
       descripcion: `Atención: El evento "${beforeData?.title || 'Convocatoria'}" ha sido cancelado definitivamente por la directiva.`
     };
-    console.log(`🗑️ [BACKEND] Detectada eliminación del evento: ${eventId}. Despachando alertas...`);
+    console.log(`🗑️ [BACKEND] Detectada eliminación del evento: ${eventId}. Preparando exclusión de segmentos...`);
   } 
   else if (!beforeDoc.exists && afterDoc.exists) {
     tipoNotificacion = 'NUEVO_EVENTO';
@@ -39,14 +59,15 @@ export const onEventTriggerNotification = onDocumentWritten({
       titulo: '📅 ¡Nueva Convocatoria!',
       descripcion: `Nuevo evento en ACD Los Locos: "${afterData?.title || 'Sin título'}"`
     };
-    console.log(`🎯 [BACKEND] Detectado nuevo evento: ${eventId}. Despachando alertas...`);
+    console.log(`🎯 [BACKEND] Detectado alta de nuevo evento: ${eventId}. Evaluando restricciones feriales...`);
   } 
   else if (beforeDoc.exists && afterDoc.exists) {
     const keys = Object.keys({ ...beforeData, ...afterData });
     const camposModificados = keys.filter(key => JSON.stringify(beforeData?.[key]) !== JSON.stringify(afterData?.[key]));
 
+    // 💡 OPTIMIZACIÓN EN COSTES Y BATERÍA: Si el único cambio es el aforo atómico, ignoramos el push masivo
     if (camposModificados.length === 1 && camposModificados[0] === 'attendeeCount') {
-      console.log(`ℹ️ [BACKEND] Incremento de asistencia detectado (${beforeData?.attendeeCount} -> ${afterData?.attendeeCount}). Omitiendo push masiva.`);
+      console.log(`ℹ️ [BACKEND] Incremento atómico de asistencia detectado (${beforeData?.attendeeCount} -> ${afterData?.attendeeCount}). Omitiendo proceso de mensajería.`);
       return null;
     }
 
@@ -54,18 +75,21 @@ export const onEventTriggerNotification = onDocumentWritten({
     esPrivado = afterData?.isPrivate || false;
     dataParaPush = {
       titulo: '⚠️ Cambio en el Evento',
-      descripcion: `El evento "${afterData?.title || 'Informativo'}" ha sufrido modificaciones por parte de la directiva.`
+      descripcion: `El evento "${afterData?.title || 'Informativo'}" ha sufrido modificaciones estructurales por parte de la directiva.`
     };
-    console.log(`🔄 [BACKEND] Detectada modificación estructural en evento: ${eventId}. Despachando alertas...`);
+    console.log(`🔄 [BACKEND] Detectada mutación en evento activo: ${eventId}. Recalculando destinatarios...`);
   } 
   else {
     return null;
   }
 
+  // =========================================================================
+  // 🔐 SEGMENTACIÓN PERIMETRAL Y FILTRADO RADICAL DE TESORERÍA
+  // =========================================================================
   try {
     const rolesDestinatarios = esPrivado 
-      ? ['admin', 'directiva', 'socio'] 
-      : ['admin', 'directiva', 'socio', 'invitado'];
+      ? ['directiva', 'socio'] 
+      : ['directiva', 'socio', 'invitado'];
 
     const usersSnapshot = await db.collection('users')
       .where('tipo', 'in', rolesDestinatarios)
@@ -73,50 +97,83 @@ export const onEventTriggerNotification = onDocumentWritten({
       .get();
 
     if (usersSnapshot.empty) {
-      console.log('ℹ️ No hay usuarios activos en los segmentos objetivo para notificar.');
+      console.log('ℹ️ [SEGMENTACIÓN PUSH] No se han localizado usuarios activos que cumplan con los perfiles del evento.');
     } else {
-      const tokensDestinatarios: string[] = [];
       
-      for (const userDoc of usersSnapshot.docs) {
+      // 🚀 BLINDAJE INDUSTRIAL: Filtramos en memoria los socios morosos si el evento es privado
+      const docsFiltrados = usersSnapshot.docs.filter(userDoc => {
+        const uData = userDoc.data();
+        
+        if (esPrivado) {
+          // Los roles de control jerárquico saltan el control de cuotas por defecto
+          if (uData.tipo === 'directiva') return true;
+          
+          // CRÍTICO: Si el socio debe dinero en tesorería, le denegamos de forma proactiva la alerta push
+          if (uData.cuotaAlCorriente === false) {
+            console.log(`🔒 [SEGMENTACIÓN PUSH] Socio moroso detectado. Excluyendo del envío masivo: UID: ${userDoc.id}`);
+            return false;
+          }
+        }
+        return true;
+      });
+
+      if (docsFiltrados.length === 0) {
+        console.log('ℹ️ [SEGMENTACIÓN PUSH] Proceso abortado. Ningún socio solvente califica para recibir la alerta.');
+        return null;
+      }
+
+      const listaDispositivos: DispositivoToken[] = [];
+      
+      // Extracción limpia de tokens únicamente de los usuarios validados
+      for (const userDoc of docsFiltrados) {
         const tokensSnapshot = await db.collection(`users/${userDoc.id}/tokens`).get();
         tokensSnapshot.forEach(tDoc => {
           const tData = tDoc.data();
-          if (tData.token && !tokensDestinatarios.includes(tData.token)) {
-            tokensDestinatarios.push(tData.token);
+          if (tData.token) {
+            listaDispositivos.push({
+              token: tData.token,
+              uidUsuario: userDoc.id,
+              tokenId: tDoc.id
+            });
           }
         });
       }
 
-      if (tokensDestinatarios.length > 0) {
-        const messages = tokensDestinatarios.map(token => {
+      // =========================================================================
+      // 🚀 DESPACHO CONTROLADO EN PLATAFORMA FCM (FIREBASE CLOUD MESSAGING)
+      // =========================================================================
+      if (listaDispositivos.length > 0) {
+        const messages = listaDispositivos.map(item => {
           if (tipoNotificacion === 'MODIFICACION_EVENTO') {
-            return FcmTemplates.getModificacionEventoTemplate(token, dataParaPush.titulo, dataParaPush.descripcion, eventId);
+            return FcmTemplates.getModificacionEventoTemplate(item.token, dataParaPush.titulo, dataParaPush.descripcion, eventId);
           } else if (tipoNotificacion === 'ELIMINACION_EVENTO') {
-            return FcmTemplates.getElimacionEventoTemplate(token, dataParaPush.titulo, dataParaPush.descripcion);
+            return FcmTemplates.getElimacionEventoTemplate(item.token, dataParaPush.titulo, dataParaPush.descripcion);
           } else {
-            return FcmTemplates.getNuevoEventoTemplate(token, dataParaPush.titulo, dataParaPush.descripcion, eventId);
+            return FcmTemplates.getNuevoEventoTemplate(item.token, dataParaPush.titulo, dataParaPush.descripcion, eventId);
           }
         });
 
-        await admin.messaging().sendEach(messages);
-        console.log(`✅ Pushes distribuidas con éxito a ${tokensDestinatarios.length} terminales móviles.`);
+        // Envía masivamente limpiando del tirón los tokens obsoletos del servidor
+        await enviarConAutoLimpieza(listaDispositivos, messages);
+        console.log(`✅ [MOTORES DE ALERTA] Despachados con éxito ${listaDispositivos.length} pushes segmentados.`);
       }
     }
 
+    // Purgado automático de cascadas en base de datos si el evento ha sido borrado
     if (tipoNotificacion === 'ELIMINACION_EVENTO') {
-      console.log(`🧹 [BACKEND] Limpiando en bloque la subcolección de asistencias de ${eventId}...`);
+      console.log(`🧹 [BACKEND] Limpiando en lote subcolección /attendance del ID: ${eventId}...`);
       const attendanceSnapshot = await db.collection(`events/${eventId}/attendance`).get();
       
       if (!attendanceSnapshot.empty) {
         const batch = db.batch();
         attendanceSnapshot.docs.forEach(docSnapshot => batch.delete(docSnapshot.ref));
         await batch.commit();
-        console.log(`✅ Subcolección /attendance eliminada por completo (${attendanceSnapshot.size} registros).`);
+        console.log(`✅ [PURGA] Subcolección interna /attendance eliminada por completo (${attendanceSnapshot.size} documentos).`);
       }
     }
 
   } catch (error) {
-    console.error('🚨 Error crítico en el motor distribuidor de Cloud Functions:', error);
+    console.error('🚨 [ERROR CRÍTICO] Colapso en el motor distribuidor de Cloud Functions backend:', error);
   }
 
   return null;

@@ -1,0 +1,31 @@
+# Monorepo Refactoring Rules (Angular 20 & Ionic 8 / Capacitor 8)
+
+Eres un ingeniero de software senior experto en Angular 20, Ionic 8 y arquitecturas de monorrepos. Tu tarea es refactorizar el código existente siguiendo estrictamente las directrices de modernización del ecosistema de 2026.
+
+## 1. Reglas del Motor de Compilación y Tipado (TypeScript)
+- Añade SIEMPRE `"skipLibCheck": true` en las opciones del compilador (`compilerOptions`) de cualquier archivo `tsconfig.*.json` que modifiques para evitar colisiones de tipos con librerías externas de terceros (como @ionic/core e interfaces con autocorrect).
+- No uses tipos comodín `any`. Busca y destruye los `any` en los componentes, sustituyéndolos por las interfaces del dominio real (`User`, `AppEvent`, `InvitedUser`).
+- Para manejar marcas de tiempo mutables de Firebase Cloud Firestore de forma segura (que admiten string, Date o Timestamp), haz un check estructural seguro antes de llamar a `.toDate()`:
+  `const date = (val && typeof val === 'object' && 'toDate' in val) ? val.toDate() : new Date(val);`
+
+## 2. Componentes Standalone Modernos
+- Todos los componentes visuales de Angular deben ser `standalone: true`.
+- Elimina cualquier dependencia de módulos declarativos antiguos (`NgModule`).
+- Inyecta explícitamente en el array de `imports` del `@Component` todos los componentes web nativos de Ionic que se utilicen en la plantilla HTML asociada (ej. `IonContent`, `IonItem`, `IonInput`, `IonButton`, `IonIcon`, `IonSpinner`, `IonText`).
+- Si el componente usa iconos vectoriales, impórtalos de forma atómica desde 'ionicons/icons' y regístralos en el constructor mediante la función `addIcons({...})`.
+
+## 3. Patrón de Inyección de Dependencias
+- Prohibido usar la inyección clásica por constructor `constructor(private service: Service)`.
+- Usa EXCLUSIVAMENTE el patrón moderno con la función `inject` de Angular asignada como propiedad de la clase:
+  `private service = inject(Service);`
+
+## 4. Gestión de Excepciones y Arquitectura
+- Reemplaza los bloques `console.error` planos dentro de los entornos `catch` por el interceptor centralizado del monorrepo:
+  `private errorHandler = inject(ErrorHandlerService);` -> `await this.errorHandler.handle(error);`
+- Sincroniza siempre los ficheros de la API pública (`projects/shared-core/src/public-api.ts`) exportando cualquier servicio (`FcmService`) o modelo (`AppEvent`) que la app consuma de forma externa.
+- Documenta rigurosamente cada clase, variable de estado y método público utilizando bloques de comentarios JSDoc estructurados.
+
+## 5. Instrucción de Ejecución por Confirmación (¡ESTRICTO PARA CUENTA GRATUITA!)
+- Prohibido modificar múltiples archivos de golpe en una sola respuesta.
+- Cuando se te pida refactorizar un directorio, primero enumera en una lista los archivos .ts detectados que necesitan cambios.
+- Espera a que el usuario te dé el visto bueno (VB) para procesar los archivos de uno en uno o en bloques máximos de 2 en 2.

@@ -1,16 +1,13 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {
-  IonContent,
-  IonIcon,
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton
-} from '@ionic/angular/standalone';
-import { doc, deleteDoc, Firestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+// Biblioteca oficial de inyección y control NoSQL de AngularFire
+import { Firestore, collection, query, where, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
+
+// Registro e iconografía standalone oficial de Ionic/Ionicons
 import { addIcons } from 'ionicons';
 import {
   qrCodeOutline,
@@ -26,25 +23,55 @@ import {
   wineOutline,
   sparklesOutline,
   searchOutline,
-  trashOutline
+  trashOutline,
+  arrowForwardOutline,
+  calendarOutline
 } from 'ionicons/icons';
 
 import {
+  IonContent,
+  IonIcon,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton
+} from '@ionic/angular/standalone';
+
+// Modelos, interfaces y utilidades de la librería unificada de la Peña
+import {
   PageHeaderComponent,
   AuthService,
-  FairService,
-  NotificationService,
-  LoadingService,
-  DialogService,
+  EventsService,
   ErrorHandlerService,
-  User,
   FairAccess,
-  AppMessageCode,
-  APP_MESSAGES,
+  AppEvent,
   UserRole,
-  UserStatus
+  FairAccessStatus,
+  DateEsUtils // 🚀 El nuevo motor de fechas estandarizado de España
 } from 'shared-core';
 
+/**
+ * @interface PaseUniversal
+ * @description Estructura transaccional extendida para el mapeo visual de pases feriales con sus gradientes dinámicos.
+ */
+interface PaseUniversal extends FairAccess {
+  eventTitle: string;
+  eventDescription: string;
+  eventImg: string | null;
+  dateStart: string;
+  dateEnd: string;
+  requiresAccessControl: boolean;
+  limiteInvitadosPorSocio: number | null;
+  backgroundStyle: string;
+  validezTexto: string;
+}
+
+/**
+ * @class FairPage
+ * @description Componente controlador maestro encargado de listar los pases digitales del usuario activo,
+ * autogenerar los identificadores criptográficos en formato QR y coordinar los accesos de la Peña.
+ */
 @Component({
   selector: 'app-fair',
   templateUrl: './fair.page.html',
@@ -63,39 +90,51 @@ import {
     PageHeaderComponent
   ]
 })
-export class FairPage implements OnInit {
+export class FairPage implements OnInit, OnDestroy {
+
+  // =========================================================================
+  // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+  // =========================================================================
   private authService = inject(AuthService);
-  private fairService = inject(FairService);
+  private eventsService = inject(EventsService);
   private firestore = inject(Firestore);
-  private notification = inject(NotificationService);
-  private loading = inject(LoadingService);
-  private dialogService = inject(DialogService);
   private errorHandler = inject(ErrorHandlerService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
-  currentUserId: string | null = null;
-  currentUserData: any = null;
-  isInvitado: boolean = false;
-  hoyFormateado: string = '';
-  
-  anioActual: number = new Date().getFullYear();
-  antiguedadAnio: number = this.anioActual;
+  // =========================================================================
+  // 📋 VARIABLES DE CONTROL Y ESTADO DE LA INTERFAZ
+  // =========================================================================
+  /** @description Identificador de la cuenta del usuario activo en la sesión. */
+  public currentUserId: string | null = null;
+  /** @description Documento completo con los metadatos de perfil del socio de la peña. */
+  public currentUserData: any = null;
+  /** @description Flag indicador de rol Invitado. */
+  public isInvitado = false;
+  /** @description Fecha actual estandarizada en formato de España (YYYY-MM-DD). */
+  public hoyFormateado = '';
 
-  miPaseHoy: FairAccess | null = null;
-  invitacionesEnviadasHoy: number = 0;
-  limiteInvitaciones: number = 6;
+  /** @description Año en curso para las de la temporada del abono de la peña. */
+  public anioActual: number = DateEsUtils.obtenerFechaActualEs().getFullYear();
+  /** @description Catálogo final de pases computados activos de la peña para el HTML. */
+  public misPasesHoy: PaseUniversal[] = [];
 
-  misInvitadosHoy: FairAccess[] = [];
-  usuariosActivos: User[] = [];
-  usuariosFiltrados: User[] = [];
-  
-  nombreBusqueda: string = '';
-  invitadoSeleccionadoId: string = '';
-  nombreInvitadoManual: string = '';
-  
-  qrPayload: string | null = null;
-  isQrModalOpen: boolean = false;
+  /** @description Almacén en memoria de los pases cargados desde la agenda NoSQL. */
+  private cacheEventos: AppEvent[] = [];
 
+  // Control de overlays y modales de portería
+  public qrPayload: string | null = null;
+  public isQrModalOpen = false;
+  public paseSeleccionadoModal: PaseUniversal | null = null;
+
+  // Hilos de desuscripción de memoria
+  private eventsSub: Subscription | null = null;
+  private pasesUnsubscribeFn: Unsubscribe | null = null;
+
+  /**
+   * @constructor
+   * @description Inicializa la carga de iconos nativos e interpreta el huso horario local de la peña.
+   */
   constructor() {
     addIcons({
       qrCodeOutline,
@@ -111,166 +150,165 @@ export class FairPage implements OnInit {
       wineOutline,
       sparklesOutline,
       searchOutline,
-      trashOutline
+      trashOutline,
+      arrowForwardOutline,
+      calendarOutline
     });
-    
-    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-    this.hoyFormateado = (new Date(Date.now() - tzoffset)).toISOString().split('T')[0];
+
+    // Estandarizamos el día actual con el huso horario forzado de España
+    this.hoyFormateado = DateEsUtils.formatearFechaCortaEs(DateEsUtils.obtenerFechaActualEs());
   }
 
-  async ngOnInit() {
+  /**
+   * @method ngOnInit
+   * @description Ciclo de vida inicial. Recupera credenciales y dispara las escuchas relacionales.
+   */
+  public async ngOnInit(): Promise<void> {
     await this.authService.waitForUserData();
     this.currentUserId = this.authService.getUid();
     this.isInvitado = this.authService.isInvitado();
     this.currentUserData = this.authService.currentUserData;
 
     if (this.currentUserId) {
-      if (this.currentUserData?.createdAt) {
-        try {
-          if (typeof this.currentUserData.createdAt.toDate === 'function') {
-            this.antiguedadAnio = this.currentUserData.createdAt.toDate().getFullYear();
-          } else if (this.currentUserData.createdAt.seconds) {
-            this.antiguedadAnio = new Date(this.currentUserData.createdAt.seconds * 1000).getFullYear();
-          } else {
-            this.antiguedadAnio = new Date(this.currentUserData.createdAt).getFullYear();
-          }
-        } catch (e) {
-          this.antiguedadAnio = this.anioActual;
-        }
-      }
-
-      await this.cargarDatosFeria();
+      this.escucharEventosYFiltros();
     }
   }
 
-  async cargarDatosFeria() {
+  /**
+   * @method desconectarEscuchaPases
+   * @public
+   * @description Expone la desconexión del Snapshot para que el AuthService pueda invocarlo 
+   * un milisegundo antes de destruir el token de Firebase.
+   */
+  public desconectarEscuchaPases(): void {
+    if (this.pasesUnsubscribeFn) {
+      this.pasesUnsubscribeFn();
+      this.pasesUnsubscribeFn = null;
+      console.log('🧹 [FairPage] Escucha global de pases cerrada bajo petición de Auth.');
+    }
+  }
+
+  public ngOnDestroy(): void {
+    if (this.eventsSub) this.eventsSub.unsubscribe();
+    this.desconectarEscuchaPases();
+  }
+
+  /**
+   * @method generarColorUnicoPorId
+   * @param {string} eventId - ID único de la convocatoria.
+   * @description Algoritmo matemático hash modular para autogenerar un gradiente visual HSL exclusivo por cada ID de convocatoria.
+   */
+  public generarColorUnicoPorId(eventId: string): string {
+    if (!eventId) return 'linear-gradient(135deg, #1e3a8a 0%, #070d19 100%)';
+
+    let hash = 0;
+    for (let i = 0; i < eventId.length; i++) {
+      hash = eventId.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const tonoColor = Math.abs(hash) % 360;
+    return `linear-gradient(135deg, hsl(${tonoColor}, 75%, 35%) 0%, #070d19 100%)`;
+  }
+
+  /**
+   * @method escucharEventosYFiltros
+   * @private
+   * @description Descarga la agenda de convocatorias publicadas de la peña antes de acoplar la sincronización de pases.
+   */
+  private escucharEventosYFiltros(): void {
+    this.eventsSub = this.eventsService.getEvents().subscribe({
+      next: (eventos: AppEvent[]) => {
+        this.cacheEventos = eventos || [];
+        this.cargarPasesUniversales();
+      },
+      error: (err) => this.errorHandler.handle(err)
+    });
+  }
+
+  /**
+   * @method cargarPasesUniversales
+   * @public
+   * @async
+   * @description Se conecta mediante onSnapshot vivo a la colección de la peña, calculando vigencias
+   * de forma limpia y elástica utilizando el motor unificado DateEsUtils.
+   */
+  public async cargarPasesUniversales(): Promise<void> {
+    if (!this.currentUserId) return;
+
+    if (this.pasesUnsubscribeFn) {
+      this.pasesUnsubscribeFn();
+    }
+
     try {
-      const eventoFeriaActivo = await this.fairService.obtenerEventoFeriaActivo();
+      const fairAccessRef = collection(this.firestore, 'fair-access');
+      const q = query(fairAccessRef, where('userId', '==', this.currentUserId));
 
-      if (!this.isInvitado) {
-        if (eventoFeriaActivo?.limiteInvitadosPorSocio) {
-          this.limiteInvitaciones = eventoFeriaActivo.limiteInvitadosPorSocio;
-        }
+      this.pasesUnsubscribeFn = onSnapshot(q, {
+        next: (snapshot) => {
+          const pasesTmp: PaseUniversal[] = [];
 
-        if (eventoFeriaActivo?.startDate) {
-          const anyoFeria = eventoFeriaActivo.startDate.split('-')[0];
-          this.qrPayload = `SOCIO:${this.currentUserId}:FERIA-${anyoFeria}`;
-        } else {
-          this.qrPayload = null;
-        }
+          snapshot.forEach((docSnap) => {
+            const pass = { id: docSnap.id, ...docSnap.data() } as FairAccess;
 
-        this.misInvitadosHoy = await this.fairService.obtenerInvitadosDelSocio(this.currentUserId!, this.hoyFormateado);
-        this.invitacionesEnviadasHoy = this.misInvitadosHoy.length;
-        this.usuariosActivos = await this.fairService.obtenerCandidatosInvitadosDisponibles(this.currentUserId!, this.hoyFormateado);
+            // Verificamos si el pase consta con estado válido
+            if (pass.status === FairAccessStatus.ACTIVE || (pass as any).status === 'active') {
+              const ev = this.cacheEventos.find(e => e.id === pass.eventId);
 
-      } else {
-        this.miPaseHoy = await this.fairService.obtenerPaseDiarioUsuario(this.currentUserId!, this.hoyFormateado);
-        if (this.miPaseHoy) {
-          this.qrPayload = this.miPaseHoy.id;
-        }
-      }
-      this.cdr.detectChanges();
+              // Extraemos los límites de fecha del documento
+              const inicioStr = (pass as any).dateStart || pass.date || '';
+              const finStr = (pass as any).dateEnd || inicioStr;
+
+              // 🚀 CONTROL UNIFICADO DE FECHA ESPAÑA: Evaluamos el rango con el método core estático
+              if (DateEsUtils.estaEnRangoDiarioEs(inicioStr, finStr)) {
+                const eventImg = ev ? (ev.imageUrl || (ev as any).eventImg) : null;
+                const gradienteUnico = this.generarColorUnicoPorId(pass.eventId);
+
+                pasesTmp.push({
+                  ...pass,
+                  eventTitle: ev ? ev.title : 'Convocatoria Oficial de la Peña',
+                  eventDescription: ev ? ev.description : 'Pase Digital de Acceso.',
+                  eventImg: eventImg,
+                  dateStart: inicioStr,
+                  dateEnd: finStr,
+                  requiresAccessControl: ev ? ev.requiresAccessControl : false,
+                  limiteInvitadosPorSocio: ev ? (ev.limiteInvitadosPorSocio ?? null) : null,
+                  backgroundStyle: gradienteUnico,
+                  validezTexto: (DateEsUtils.formatearFechaCortaEs(inicioStr) === DateEsUtils.formatearFechaCortaEs(finStr)) ? 'SOLO HOY' : 'ABONO EVENTO'
+                });
+              }
+            }
+          });
+
+          this.misPasesHoy = pasesTmp;
+          console.log(`🍏 [FairPage] Pases renderizados con éxito bajo huso horario de España: ${this.misPasesHoy.length}`);
+          this.cdr.detectChanges();
+        },
+        error: (err) => this.errorHandler.handle(err)
+      });
+
     } catch (error) {
       this.errorHandler.handle(error);
     }
   }
 
-  filtrarUsuarios(event: any) {
-    const termino = event.target.value.toLowerCase();
-    this.nombreBusqueda = termino;
-    this.invitadoSeleccionadoId = ''; 
-
-    if (!termino.trim()) {
-      this.usuariosFiltrados = [];
-      return;
-    }
-
-    this.usuariosFiltrados = this.usuariosActivos.filter(user => 
-      user.nombre.toLowerCase().includes(termino) || 
-      (user.dni && user.dni.toLowerCase().includes(termino))
-    );
-  }
-
-  seleccionarUsuario(user: User) {
-    this.invitadoSeleccionadoId = user.id;
-    this.nombreBusqueda = user.nombre; 
-    this.usuariosFiltrados = []; 
-  }
-
-  limpiarBusqueda() {
-    this.nombreBusqueda = '';
-    this.invitadoSeleccionadoId = '';
-    this.nombreInvitadoManual = '';
-    this.usuariosFiltrados = [];
-  }
-
-  async enviarInvitacion() {
-    if (!this.invitadoSeleccionadoId && !this.nombreInvitadoManual.trim()) {
-      this.notification.warning(APP_MESSAGES[AppMessageCode.ADC_FAIR_ERR_0006]);
-      return;
-    }
-
-    let usuarioFinal: User | null = null;
-
-    if (this.invitadoSeleccionadoId) {
-      usuarioFinal = this.usuariosActivos.find(u => u.id === this.invitadoSeleccionadoId) || null;
-    } else if (this.nombreInvitadoManual.trim()) {
-      usuarioFinal = {
-        id: 'MANUAL-' + crypto.randomUUID().substring(0, 6).toUpperCase(),
-        nombre: this.nombreInvitadoManual.trim(),
-        tipo: UserRole.INVITADO 
-      } as User;
-    }
-
-    if (!usuarioFinal) return;
-
-    try {
-      await this.loading.wrap(async () => {
-        await this.fairService.crearInvitacion(
-          this.currentUserData!,
-          usuarioFinal!,
-          this.hoyFormateado
-        );
-      }, 'Generando credencial de acceso...');
-
-      this.notification.success(APP_MESSAGES[AppMessageCode.ADC_FAIR_INF_0001]);
-      this.limpiarBusqueda();
-      
-      await this.cargarDatosFeria();
-    } catch (error: any) {
-      this.errorHandler.handle(error);
-    }
-  }
-
-  async eliminarPase(pase: FairAccess) {
-    const confirmado = await this.dialogService.confirm({
-      header: 'Anular Pase Diario',
-      message: `¿Estás seguro de que deseas anular la invitación ferial de "${pase.userName}"?`,
-      confirmText: 'Sí, Anular',
-      cancelText: 'Cancelar'
-    });
-
-    if (!confirmado) return;
-
-    try {
-      await this.loading.wrap(async () => {
-        const paseRef = doc(this.firestore, 'fair-access', pase.id);
-        await deleteDoc(paseRef);
-      }, 'Anulando invitación...');
-
-      this.notification.success(APP_MESSAGES[AppMessageCode.ADC_FAIR_INF_0002]);
-      await this.cargarDatosFeria(); 
-    } catch (error: any) {
-      this.errorHandler.handle(error);
-    }
-  }
-
-  setQrModal(open: boolean) {
-    if (open && !this.qrPayload) {
-      this.notification.warning(APP_MESSAGES[AppMessageCode.ADC_FAIR_ERR_0007]);
-      return;
-    }
-    this.isQrModalOpen = open;
+  public abrirCodigoQR(pase: PaseUniversal): void {
+    this.qrPayload = this.isInvitado ? pase.id : `SOCIO:${this.currentUserId}:EVENTO-${pase.eventId}`;
+    this.paseSeleccionadoModal = pase;
+    this.isQrModalOpen = true;
     this.cdr.detectChanges();
+  }
+
+  public cerrarCodigoQR(): void {
+    this.isQrModalOpen = false;
+    this.paseSeleccionadoModal = null;
+    this.qrPayload = null;
+    this.cdr.detectChanges();
+  }
+
+  public irAGestionInvitados(pase: PaseUniversal): void {
+    if (this.isInvitado) return;
+    if (pase.limiteInvitadosPorSocio && pase.limiteInvitadosPorSocio > 0) {
+      this.router.navigate([`/events/${pase.eventId}/guests`]);
+    }
   }
 }

@@ -67,6 +67,35 @@
         }
     },
     {
+        "uid": "AP8y1keUCnOHk70BJP2SlEWQt001",
+        "email": "socio.inactivo@adcloslocos.com",
+        "nombre": "Socio Test Inactivo",
+        "firestoreData": {
+            "detallesDireccion": "",
+            "direccion": "Calle Azucena 14, 41900 Camas, provincia de Sevilla, España",
+            "dni": "1R",
+            "email": "socio.inactivo@adcloslocos.com",
+            "estado": "inactive",
+            "foto": "https://api.dicebear.com/10.x/big-ears/svg?seed=Aneka",
+            "nombre": "Socio Test Inactivo",
+            "numeroSocio": "10",
+            "profesion": "Estudiante",
+            "publicarEmail": false,
+            "publicarTelefono": false,
+            "telefono": "867765654",
+            "tipo": "socio"
+        },
+        "invitedData": {
+            "id": "AP8y1keUCnOHk70BJP2SlEWQtgsG",
+            "email": "socio.inactivo@adcloslocos.com",
+            "invitadoPor": "Administrador Test",
+            "invitadoPorUid": "8VtiwRA8aQWNd4esrwHEhsFhBO0k",
+            "nombre": "",
+            "telefono": "",
+            "usado": true
+        }
+    },
+    {
         "uid": "CDqv7Xc3y2HAgJng7MMw3KUW7nkT",
         "email": "directiva.fundador@adcloslocos.com",
         "nombre": "Directiva Test",

@@ -1,40 +1,48 @@
 import { UserStatus } from './user-status.enum';
 
 /**
- * Petición estructurada para la actualización del perfil de datos personales.
- * Se utiliza en los flujos de "Complete Profile" y edición de cuenta.
+ * @interface UpdatePersonalDataRequest
+ * @description Petición estructurada (DTO) para la mutación y actualización del perfil de datos personales.
+ * Se utiliza de forma exclusiva en los flujos de "Complete Profile" (onboarding post-registro web) y en la edición civil ordinaria de la cuenta.
+ * Aligera el payload aislando los campos editables de los parámetros inmutables de administración (roles, cuotas, números de socio).
  */
 export interface UpdatePersonalDataRequest {
 
+  /** @description Nombre completo del socio (normalizado en PascalCase por el orquestador de datos). */
   nombre: string;
 
+  /** @description Teléfono móvil o fijo de contacto. */
   telefono: string;
 
+  /** @description Documento Nacional de Identidad (DNI/NIE) para el libro oficial de registro del club. */
   dni: string;
 
+  /** @description Dirección postal principal de residencia. */
   direccion: string;
 
+  /** @description Información habitacional secundaria u opcional (Piso, Puerta, Letra, Bloque). */
   detallesDireccion?: string;
 
+  /** @description Cadena de caracteres con la URL de descarga de Storage o el string binario Base64 de la foto de perfil. */
   foto: string;
 
-  /** Profesión u ocupación del socio (Opcional) */
+  /** @description Profesión, sector u ocupación laboral activa del socio (Opcional). */
   profesion?: string;
 
-  // ============================================
-  // PREFERENCIAS DE PRIVACIDAD MODIFICABLES
-  // ============================================
+  // =========================================================================
+  // 🛡️ MODIFICABLE PRIVACY PREFERENCES (Flags de Visibilidad Directa)
+  // =========================================================================
 
-  /** Permiso del usuario para exponer su teléfono en el directorio de socios */
+  /** @description Permiso explícito del usuario para exponer públicamente su teléfono en el directorio de la peña. */
   publicarTelefono: boolean;
 
-  /** Permiso del usuario para exponer su email en el directorio de socios */
+  /** @description Permiso explícito del usuario para exponer públicamente su email en el directorio de la peña. */
   publicarEmail: boolean;
 
-  // ============================================
-  // CONTROL DE ESTADO
-  // ============================================
+  // =========================================================================
+  // ⚙️ STATE CONTROL (Ciclo de Vida del Onboarding)
+  // =========================================================================
 
+  /** @description Estado operativo del usuario. Se usa para transicionar automáticamente de PENDING_DATA a PENDING_APPROVAL. */
   estado?: UserStatus;
-
 }

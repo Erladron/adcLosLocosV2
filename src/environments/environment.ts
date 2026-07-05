@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  envName: 'DESA',
+  envName: 'EMULA',
   firebase: {
     apiKey: "AIzaSyBAUINgjqjvyPm0mxoF5qsxjauC5DT7STk",
     authDomain: "adcloslocos-desa.firebaseapp.com",
@@ -18,7 +18,7 @@ export const environment = {
 
   },
 
-  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21weThkMWpjMDFtNjJwc2ltdmJ1eDN4bSJ9.DAUYruGDu8KPsoukZuFP5A',
+  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21yODV4ZWpjMGNjNjJ4c2dodXc4enVyNiJ9.VCEHsbqITRtH3p61KzSY8A',
   useEmulators: true
 
 };

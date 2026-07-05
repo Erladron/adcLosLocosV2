@@ -53,6 +53,14 @@
         <h2 data-cy="user-card-name">{{ user.nombre }}</h2>
         <div class="user-subinfo">
           <span class="tipo-badge" data-cy="user-card-role-badge">{{ user.tipo }}</span>
+          
+          <ion-badge *ngIf="!isSocioComun && (user.tipo === 'socio' || user.tipo === 'directiva')" 
+                     [color]="user.cuotaAlCorriente ? 'success' : 'danger'" 
+                     class="cuota-badge"
+                     data-cy="user-card-cuota-badge">
+            {{ user.cuotaAlCorriente ? 'Al corriente' : 'Pendiente' }}
+          </ion-badge>
+
           <span *ngIf="user.profesion" class="meta-item profesion-item">
             <ion-icon name="briefcase-outline"></ion-icon>
             <span class="meta-text">{{ user.profesion }}</span>

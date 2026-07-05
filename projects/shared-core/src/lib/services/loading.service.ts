@@ -1,50 +1,62 @@
-import { Injectable } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { Injectable, inject } from '@angular/core';
+// 🚀 Saneado: Uso estricto del paquete standalone para optimizar el bundle final en producción
+import { LoadingController, ToastController } from '@ionic/angular/standalone';
 
+/**
+ * @class LoadingService
+ * @description Servicio core de UI encargado de gestionar los estados globales de carga e intermitencia.
+ * Abstrae los spinners de bloqueo y provee el envoltorio seguro `wrap()`, el cual aplica una 
+ * estrategia defensiva de carrera de promesas para evitar bloqueos indefinidos por caídas de red NoSQL.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingService {
 
+  /** @description Instancia inyectada del controlador de overlays de carga standalone. @private */
+  private loadingController = inject(LoadingController);
+
+  /** @description Instancia inyectada del controlador de avisos contextuales flotantes. @private */
+  private toastController = inject(ToastController);
+
+  /** @description Almacena la referencia activa del componente overlay en pantalla para evitar duplicidades. @private */
   private loading: HTMLIonLoadingElement | null = null;
 
-  constructor(
-    private loadingController: LoadingController,
-    private toastController: ToastController
-  ) { }
-
-  // ============================================
-  // SHOW
-  // ============================================
+  /**
+   * @constructor
+   * @description Inicializa el servicio controlador de esperas de UI.
+   */
+  constructor() { }
 
   /**
-   * Mostrar loading.
+   * @method show
+   * @description Despliega e instancia de forma imperativa un spinner de bloqueo en primer plano.
+   * Bloquea la interacción del socio con el fondo del lienzo para garantizar la integridad transaccional.
+   * @param {string} [message='Cargando...'] Mensaje textual explicativo de la operación de fondo.
+   * @returns {Promise<HTMLIonLoadingElement>} Elemento overlay instanciado.
    */
-  async show(message = 'Cargando...') {
-    // PREVENT DUPLICATES
+  public async show(message: string = 'Cargando...'): Promise<HTMLIonLoadingElement> {
+    // Patrón de prevención atómica de duplicados
     if (this.loading) {
       return this.loading;
     }
 
-    // CREATE LOADER
     this.loading = await this.loadingController.create({
       message,
       spinner: 'crescent',
-      backdropDismiss: false
+      backdropDismiss: false // Impide que el socio destruya el modal pulsando fuera del carrusel
     });
 
     await this.loading.present();
     return this.loading;
   }
 
-  // ============================================
-  // HIDE
-  // ============================================
-
   /**
-   * Ocultar loading.
+   * @method hide
+   * @description Destruye y desvanece con gracia el spinner de carga que se encuentre activo.
+   * @returns {Promise<void>}
    */
-  async hide() {
+  public async hide(): Promise<void> {
     if (!this.loading) {
       return;
     }
@@ -53,46 +65,52 @@ export class LoadingService {
     this.loading = null;
   }
 
-  // ============================================
-  // WRAP (Ejecutar async con protección Offline)
-  // ============================================
-
   /**
-   * Ejecutar async con loading y protección contra pérdida de red (Timeout).
+   * @method wrap
+   * @description 🛡️ ENVOLTORIO PROTECTOR DE INFRAESTRUCTURA: Ejecuta un callback asíncrono envolviéndolo 
+   * en un spinner visual y aplicando una carrera de promesas (Promise.race) de 10 segundos. 
+   * Si Firestore se congela debido a mala cobertura, intercepta el bloqueo, libera la pantalla y despacha un Toast offline.
+   * @param {() => Promise<T>} callback Función asíncrona o petición NoSQL sujeta al control de bloqueo.
+   * @param {string} [message='Cargando...'] Mensaje para el overlay.
+   * @template T Tipo inferido o explícito devuelto por la función asíncrona encapsulada.
+   * @returns {Promise<T>} Resultado de la ejecución del proceso seguro.
    */
-  async wrap<T>(callback: () => Promise<T>, message = 'Cargando...'): Promise<T> {
+  public async wrap<T>(callback: () => Promise<T>, message: string = 'Cargando...'): Promise<T> {
     try {
       await this.show(message);
 
-      // Creamos un cronómetro de 10 segundos
+      // Cronómetro de control de latencia offline de 10 segundos
       const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => reject(new Error('TIMEOUT_OFFLINE')), 10000);
       });
 
-      // Carrera entre tu petición a Firebase y el cronómetro
+      // Carrera táctica entre la latencia de Firebase y el cronómetro de red
       const result = await Promise.race([callback(), timeoutPromise]);
       return result;
 
     } catch (error: any) {
-      // Si el error es nuestro timeout por mala cobertura
-      if (error.message === 'TIMEOUT_OFFLINE') {
-        this.mostrarAvisoOffline();
-        return null as any; // Devolvemos null para que el flujo no se rompa de golpe
+      // Interceptación de contingencia ante pérdidas físicas de cobertura
+      if (error?.message === 'TIMEOUT_OFFLINE') {
+        await this.mostrarAvisoOffline();
+        return null as any; // Devolución segura para mitigar roturas de hilos reactivos en cascada
       }
 
-      // Si es un error real del backend u otra cosa, lo dejamos pasar al errorHandler
+      // Si es una excepción legítima de base de datos o lógica, la propagamos al ErrorHandler maestro
       throw error;
 
     } finally {
+      // Liberación obligatoria del hilo visual pase lo que pase
       await this.hide();
     }
   }
 
-  // ============================================
-  // AVISO OFFLINE
-  // ============================================
-
-  private async mostrarAvisoOffline() {
+  /**
+   * @method mostrarAvisoOffline
+   * @description Despacha un Toast contextual preventivo informando de inestabilidades en la red ferial.
+   * @private
+   * @returns {Promise<void>}
+   */
+  private async mostrarAvisoOffline(): Promise<void> {
     const toast = await this.toastController.create({
       message: 'Conexión inestable. Los cambios se guardarán automáticamente en segundo plano.',
       duration: 4000,

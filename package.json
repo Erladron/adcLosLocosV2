@@ -5,18 +5,22 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "serve:desa": "ionic serve",
-    "deploy:desa": "firebase use desa && firebase deploy",
-    "deploy:prod": "firebase use prod && firebase deploy",
-    "deploy:web": "ng build shared-core && ng build web-onboarding --configuration=production && firebase deploy --only hosting",
-    "build:android": "ng build shared-core && ng build app && npx cap sync android && npx cap open android",
-    "deploy:all": "ng build shared-core && ng build web-onboarding && ng build app --configuration=production && cd functions && npm run build && cd .. && firebase deploy",
-    "emuladores": "cross-env FIREBASE_AUTH_EMULATOR_HOST=\"localhost:9099\" firebase emulators:start"
+    "watch": "ng build --watch --configuration development",
+    "start": "ionic serve",
+    "start:desa": "ionic serve --configuration=desa",
+    "emuladores": "cross-env FIREBASE_AUTH_EMULATOR_HOST=\"localhost:9099\" firebase emulators:start",
+    "build:core": "ng build shared-core",
+    "build:web:prod": "ng build web-onboarding --configuration=production",
+    "build:app:prod": "ng build app --configuration=production",
+    "build:android": "npm run build:core && ng build app && npx cap sync android && npx cap open android",
+    "deploy:rules:desa": "firebase use desa && firebase deploy --only firestore:rules",
+    "deploy:rules:prod": "firebase use prod && firebase deploy --only firestore:rules",
+    "deploy:web:desa": "firebase use desa && npm run build:core && ng build web-onboarding && firebase deploy --only hosting",
+    "deploy:web:prod": "firebase use prod && npm run build:core && npm run build:web:prod && firebase deploy --only hosting",
+    "deploy:all:desa": "firebase use desa && npm run build:core && ng build web-onboarding && ng build app && cd functions && npm run build && cd .. && firebase deploy",
+    "deploy:all:prod": "firebase use prod && npm run build:core && npm run build:web:prod && npm run build:app:prod && cd functions && npm run build && cd .. && firebase deploy"
   },
   "private": true,
   "dependencies": {
@@ -50,7 +54,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^20.0.0",
+    "@angular-devkit/build-angular": "^20.3.25",
     "@angular-eslint/builder": "^20.0.0",
     "@angular-eslint/eslint-plugin": "^20.0.0",
     "@angular-eslint/eslint-plugin-template": "^20.0.0",
@@ -72,6 +76,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
     "eslint-plugin-prefer-arrow": "1.2.2",
+    "firebase-admin": "^14.0.0",
     "jasmine-core": "~5.1.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",
@@ -79,7 +84,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "ng-packagr": "^20.3.0",
+    "ng-packagr": "^20.3.2",
     "typescript": "^5.8.2"
   },
   "description": "Asociacion Deportiva Cultural Los Locos"

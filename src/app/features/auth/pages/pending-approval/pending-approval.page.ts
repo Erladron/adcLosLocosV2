@@ -1,38 +1,19 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { IonContent, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { checkmarkCircleOutline, logOutOutline } from 'ionicons/icons';
 
-import {
-  CommonModule
-} from '@angular/common';
+// Importaciones unificadas de la librería compartida shared-core
+import { AuthService, FcmService } from 'shared-core';
+import { environment } from '@env/environment';
 
-import {
-  Router
-} from '@angular/router';
-
-import {
-  IonContent,
-  IonButton,
-  IonIcon
-} from '@ionic/angular/standalone';
-
-import {
-  addIcons
-} from 'ionicons';
-
-import {
-  checkmarkCircleOutline,
-  logOutOutline
-} from 'ionicons/icons';
-
-import {
-  AuthService
-} from 'projects/shared-core/src/lib/services/auth.service';
-
-// 🚀 ¡AÑADIDA LA IMPORTACIÓN DE TU SERVICIO CENTRALIZADO!
-import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service'; // Asegúrate de que la ruta de tu librería pública coincide
-
+/**
+ * @class PendingApprovalPage
+ * @description Pantalla de bloqueo informativo para usuarios en estado de aprobación pendiente.
+ * Inicializa los listeners de notificaciones Push para reaccionar al alta en tiempo real.
+ */
 @Component({
   selector: 'app-pending-approval',
   templateUrl: './pending-approval.page.html',
@@ -45,47 +26,51 @@ import { FcmService } from 'projects/shared-core/src/lib/services/fcm.service'; 
     IonIcon
   ]
 })
-export class PendingApprovalPage
-  implements OnInit {
+export class PendingApprovalPage implements OnInit {
 
-  // =================================
-  // USER
-  // =================================
+  // =========================================================================
+  // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+  // =========================================================================
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private fcmService = inject(FcmService);
 
-  nombre = '';
+  // =========================================================================
+  // 📋 ESTADOS DE LA PÁGINA
+  // =========================================================================
+  public nombre = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private fcmService: FcmService // 🚀 ¡INYECTAMOS EL SERVICIO DE NOTIFICACIONES!
-  ) {
+  /**
+   * @constructor
+   * @description Registra los iconos vectoriales de control de estado.
+   */
+  constructor() {
     addIcons({
       checkmarkCircleOutline,
       logOutOutline
     });
   }
 
-  // =================================
-  // INIT
-  // =================================
-
-  ngOnInit(): void {
+  /**
+   * @method ngOnInit
+   * @description Inicializa la vista capturando la identidad del usuario y activando
+   * el puente nativo de notificaciones Push con Capacitor.
+   */
+  public ngOnInit(): void {
     const userData = this.authService.currentUserData;
-
     this.nombre = userData?.nombre || '';
 
-    // 🚀 ¡MÁGIA EN ACCIÓN! Despertamos Capacitor en esta pantalla de bloqueo
+    // 🚀 ¡MAGIA EN ACCIÓN! Despertamos Capacitor en esta pantalla de bloqueo
     // para que registre el token FCM y escuche el push de aprobación del admin.
-    this.fcmService.inicializarFCM();
+    this.fcmService.inicializarFCM(environment);
   }
 
-  // =================================
-  // LOGOUT
-  // =================================
-
-  async logout(): Promise<void> {
+  /**
+   * @method logout
+   * @description Destruye la sesión del operador y redirige a la zona de acceso.
+   */
+  public async logout(): Promise<void> {
     await this.authService.logout();
     await this.router.navigateByUrl('/login');
   }
-
 }

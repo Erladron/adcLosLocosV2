@@ -7,7 +7,8 @@ export const environment = {
     projectId: "adcloslocos",
     storageBucket: "adcloslocos.firebasestorage.app",
     messagingSenderId: "37372255390",
-    appId: "1:37372255390:web:4652c8687037c69d752f8f"
+    appId: "1:37372255390:web:4652c8687037c69d752f8f",
+    vapidKey:"BPydVSnvu6soMtq1hx-mwgbShTyFwtVHZ3HhadRg-Ou4hn2yl7PCRofjQzGxqqETZR4aZ9k2OM0-m7pFK8Hw5gM"
   },
 
   api: {
@@ -18,6 +19,6 @@ export const environment = {
 
   },
    
-  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21weThkMWpjMDFtNjJwc2ltdmJ1eDN4bSJ9.DAUYruGDu8KPsoukZuFP5A'
+  mapboxToken: 'pk.eyJ1IjoiZXJsYWRyb24iLCJhIjoiY21yODV4ZWpjMGNjNjJ4c2dodXc4enVyNiJ9.VCEHsbqITRtH3p61KzSY8A'
   
 };

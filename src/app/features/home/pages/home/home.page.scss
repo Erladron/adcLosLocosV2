@@ -1,582 +1,270 @@
 /* =========================================
    PAGE
 ========================================= */
-
 .home-content {
-
-  --background:
-    linear-gradient(
-      180deg,
-      #123d92 0%,
-      #0d327c 100%
-    );
-
+  --background: linear-gradient(180deg, #123d92 0%, #0d327c 100%);
   position: relative;
-
   overflow: hidden;
-
 }
 
 /* =========================================
-   BACKGROUND LOGO
+   BACKGROUND LOGO ORIGINAL (Fondo tenue)
 ========================================= */
-
 .background-logo {
-
   position: fixed;
-
   inset: 0;
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   pointer-events: none;
-
   opacity: 0.05;
-
   z-index: 0;
 
-}
-
-.background-logo img {
-
-  width: 85%;
-
-  max-width: 500px;
-
+  img {
+    width: 85% !important;
+    max-width: 500px !important;
+    height: auto !important;
+  }
 }
 
 /* =========================================
    CONTAINER
 ========================================= */
-
 .home-container {
-
   position: relative;
-
   z-index: 2;
-
-  padding:
-    20px 16px 100px;
-
+  padding: 20px 16px 100px;
 }
 
 /* =========================================
-   WELCOME
+   WELCOME SECTION
 ========================================= */
-
 .welcome-section {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   margin-bottom: 22px;
 
-}
-
-.welcome-section h1 {
-
-  margin: 0;
-
-  color:
-    #ffffff;
-
-  font-size:
-    28px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    -0.5px;
-
-}
-
-.welcome-section p {
-
-  margin:
-    6px 0 0;
-
-  color:
-    rgba(255,255,255,0.72);
-
-  font-size:
-    14px;
-
-}
-
-.welcome-logo {
-
-  width: 72px;
-
-  height: 72px;
-
-  object-fit: contain;
-
-  opacity: 0.95;
-
+  h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  p {
+    margin: 6px 0 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+  }
 }
 
 /* =========================================
-   GLASS CARD
+   GLASS CARD (Accesos Rápidos)
 ========================================= */
-
 .glass-card {
-
-  background:
-    rgba(255,255,255,0.10);
-
-  border:
-    1px solid rgba(255,255,255,0.10);
-
-  border-radius:
-    28px;
-
-  backdrop-filter:
-    blur(18px);
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.18);
-
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 28px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
-/* =========================================
-   PROFILE CARD
-========================================= */
-
-.profile-card {
-
-  padding:
-    20px;
-
-  margin-bottom:
-    28px;
-
-}
-
-/* =========================================
-   PROFILE HEADER
-========================================= */
-
-.profile-header {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  margin-bottom:
-    20px;
-
-  color:
-    #ffffff;
-
-  font-size:
-    18px;
-
-  font-weight:
-    700;
-
-}
-
-.profile-header ion-icon {
-
-  font-size:
-    22px;
-
-}
-
-/* =========================================
-   PROFILE CONTENT
-========================================= */
-
-.profile-content {
-
-  display: flex;
-
-  gap: 18px;
-
-  align-items: flex-start;
-
-}
-
-/* =========================================
-   PROFILE AVATAR
-========================================= */
-
-.profile-avatar {
-
-  width: 78px;
-
-  height: 78px;
-
-  min-width: 78px;
-
-  border-radius: 50%;
-
+/* =========================================================================
+   💳 CARNET CORPORATIVO ADAPTATIVO CON SEGUIDORES GEOMÉTRICOS (SASS LIMPIO)
+========================================================================= */
+.peña-membership-card {
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 28px;
+  position: relative;
   overflow: hidden;
-
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  border:
-    2px solid rgba(255,255,255,0.10);
-
-}
-
-.profile-avatar img {
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
-}
-
-.profile-avatar ion-icon {
-
-  font-size:
-    34px;
-
-  color:
-    rgba(255,255,255,0.75);
-
-}
-
-/* =========================================
-   PROFILE INFO
-========================================= */
-
-.profile-info {
-
-  flex: 1;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, 1fr);
-
-  gap: 14px;
-
-}
-
-/* =========================================
-   INFO ITEM
-========================================= */
-
-.info-item {
-
-  display: flex;
-
   flex-direction: column;
+  gap: 16px;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  backdrop-filter: blur(10px);
 
-  gap: 6px;
+  // 📐 LÍNEAS GEOMÉTRICAS QUE BAJAN DE IZQUIERDA A DERECHA
+  .card-geometric-line {
+    position: absolute;
+    top: -50px;
+    left: 30%;
+    width: 35px;
+    height: 300px;
+    transform: rotate(45deg);
+    z-index: 1;
+    pointer-events: none;
+    
+    &.line-primary {
+      background: rgba(255, 255, 255, 0.04);
+      left: 35%;
+    }
+    
+    &.line-secondary {
+      background: rgba(255, 255, 255, 0.07);
+      width: 8px;
+      left: 47%;
+    }
+  }
 
-}
+  // 🔵 1. ROL SOCIO: Estilo abono oficial limpio
+  &.socio {
+    background: linear-gradient(135deg, rgba(14, 41, 84, 0.85) 0%, rgba(23, 61, 117, 0.9) 100%);
+    .card-geometric-line.line-secondary { background: rgba(18, 61, 146, 0.3); }
+  }
 
-.label {
+  // 👑 2. ROL DIRECTIVA: Estilo noche presidencial oro
+  &.directiva {
+    background: linear-gradient(135deg, rgba(5, 19, 36, 0.9) 0%, rgba(13, 33, 66, 0.95) 100%);
+    border: 1px solid rgba(255, 202, 40, 0.4);
+    
+    .club-title-text { color: #ffca28; }
+    .seniority-badge-text { background: rgba(255, 202, 40, 0.15); color: #ffca28; border: 1px solid rgba(255, 202, 40, 0.25); }
+    .card-geometric-line.line-secondary { background: rgba(255, 202, 40, 0.15); }
+  }
 
-  color:
-    rgba(255,255,255,0.55);
+  // 👮 3. ROL ADMINISTRADOR / STAFF: Estilo técnico oscuro de consola
+  &.admin, &.administrador {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 
-  font-size:
-    12px;
+    .club-title-text { color: #ffffff; opacity: 0.95; }
+    .admin-badge { background: rgba(255, 255, 255, 0.1); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.15); }
+    .card-geometric-line.line-secondary { background: rgba(255, 255, 255, 0.08); }
+    
+    .status-pill {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      .status-dot { background-color: #ffffff !important; }
+    }
+  }
 
-  text-transform:
-    uppercase;
+  // 🎫 4. ROL INVITADO: Estilo pase limpio neutro
+  &.invitado {
+    background: linear-gradient(135deg, rgba(71, 85, 105, 0.85) 0%, rgba(100, 116, 139, 0.9) 100%);
+    .invitado-badge { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+    .card-geometric-line { display: none; } // Limpio absoluto para invitados
+    
+    .status-pill {
+      background: rgba(56, 189, 248, 0.15) !important;
+      color: #38bdf8 !important;
+      .status-dot { background-color: #38bdf8 !important; }
+    }
+  }
 
-  letter-spacing:
-    0.6px;
+  // CABECERA DEL CARNET
+  .card-header-corporate {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 10px;
+    z-index: 2;
 
-}
+    .header-left { display: flex; flex-direction: column; gap: 2px; }
+    .club-title-text { font-size: 1.15rem; font-weight: 900; letter-spacing: 0.5px; }
+    .card-type-subtitle { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255, 255, 255, 0.6); }
+    .seniority-badge-text { font-size: 0.7rem; font-weight: 700; background: rgba(255, 255, 255, 0.12); padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+  }
 
-.info-item strong {
+  // CUERPO DEL CARNET
+  .card-body-corporate {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
 
-  color:
-    #ffffff;
+    .avatar-block {
+      .photo-render { width: 65px; height: 65px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.4); }
+      .photo-render-placeholder {
+        width: 65px; height: 65px; border-radius: 10px; background: rgba(255, 255, 255, 0.1); border: 1px dashed rgba(255, 255, 255, 0.3);
+        display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.7); ion-icon { font-size: 28px; }
+      }
+    }
 
-  font-size:
-    15px;
+    .details-block { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .data-subgrid { display: flex; gap: 24px; }
+    
+    .data-row-corporate {
+      display: flex; flex-direction: column; gap: 1px;
+      .data-label { font-size: 0.6rem; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); letter-spacing: 0.5px; }
+      .data-value-strong { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.2px; }
+      .data-value { font-size: 0.85rem; font-weight: 600; color: rgba(255, 255, 255, 0.95); }
+    }
 
-  font-weight:
-    700;
+    .shield-block {
+      display: flex; align-items: center; justify-content: center;
+      .integrated-shield-img { width: 52px !important; height: 52px !important; object-fit: contain !important; opacity: 0.9; filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2)); }
+    }
+  }
 
-}
+  // PIE DEL CARNET
+  .card-footer-corporate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    z-index: 2;
 
-/* =========================================
-   ROLE BADGE
-========================================= */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: rgba(74, 222, 128, 0.15);
+      color: #4ade80;
+      padding: 3px 8px;
+      border-radius: 4px;
+      .status-dot { width: 6px; height: 6px; background-color: #4ade80; border-radius: 50%; }
+    }
 
-.role-badge {
-
-  width: fit-content;
-
-  padding:
-    6px 12px;
-
-  border-radius:
-    999px;
-
-  background:
-    rgba(255,255,255,0.10);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
-  color:
-    #ffffff;
-
-  font-size:
-    13px;
-
-  font-weight:
-    600;
-
-}
-
-/* =========================================
-   STATUS BADGE
-========================================= */
-
-.status-badge {
-
-  width: fit-content;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  padding:
-    6px 12px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    13px;
-
-  font-weight:
-    600;
-
-}
-
-.status-badge.active {
-
-  background:
-    rgba(34,197,94,0.16);
-
-  border:
-    1px solid rgba(34,197,94,0.24);
-
-  color:
-    #4ade80;
-
+    .edit-icon-card { font-size: 15px; color: rgba(255, 255, 255, 0.4); }
+  }
 }
 
 /* =========================================
    SECTION TITLE
 ========================================= */
-
-.section-title {
-
-  margin-bottom:
-    14px;
-
-  color:
-    rgba(255,255,255,0.92);
-
-  font-size:
-    18px;
-
-  font-weight:
-    700;
-
-}
+.section-title { margin-bottom: 14px; color: rgba(255, 255, 255, 0.92); font-size: 18px; font-weight: 700; }
 
 /* =========================================
    QUICK GRID
 ========================================= */
-
-.quick-grid {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 14px;
-
-}
+.quick-grid { display: flex; flex-direction: column; gap: 14px; }
 
 /* =========================================
    QUICK CARD
 ========================================= */
-
-.quick-card {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 14px;
-
-  padding:
-    18px;
-
-  transition:
-    all 0.25s ease;
-
-}
-
-.quick-card:active {
-
-  transform:
-    scale(0.98);
-
-}
-
-/* =========================================
-   QUICK ICON
-========================================= */
-
+.quick-card { display: flex; align-items: center; gap: 14px; padding: 18px; transition: all 0.25s ease; }
 .quick-icon {
-
-  width: 52px;
-
-  height: 52px;
-
-  min-width: 52px;
-
-  border-radius:
-    18px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
+  width: 52px; height: 52px; min-width: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.08); ion-icon { font-size: 24px; color: #ffffff; }
 }
-
-.quick-icon ion-icon {
-
-  font-size:
-    24px;
-
-  color:
-    #ffffff;
-
-}
+.quick-info { h3 { margin: 0; color: #ffffff; font-size: 17px; font-weight: 700; } p { margin: 5px 0 0; color: rgba(255, 255, 255, 0.62); font-size: 13px; } }
+.quick-arrow { color: rgba(255, 255, 255, 0.45); font-size: 22px; }
 
 /* =========================================
-   QUICK INFO
+   RESPONSIVE DESIGN
 ========================================= */
-
-.quick-info {
-
-  flex: 1;
-
-}
-
-.quick-info h3 {
-
-  margin: 0;
-
-  color:
-    #ffffff;
-
-  font-size:
-    17px;
-
-  font-weight:
-    700;
-
-}
-
-.quick-info p {
-
-  margin:
-    5px 0 0;
-
-  color:
-    rgba(255,255,255,0.62);
-
-  font-size:
-    13px;
-
-}
-
-/* =========================================
-   QUICK ARROW
-========================================= */
-
-.quick-arrow {
-
-  color:
-    rgba(255,255,255,0.45);
-
-  font-size:
-    22px;
-
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
 @media (max-width: 480px) {
-
-  .welcome-section h1 {
-
-    font-size:
-      24px;
-
+  .welcome-section h1 { font-size: 24px; }
+  .peña-membership-card {
+    padding: 14px; gap: 12px;
+    .card-geometric-line { top: -60px; height: 260px; }
+    .card-header-corporate .club-title-text { font-size: 1rem; }
+    .card-body-corporate {
+      gap: 12px;
+      .avatar-block .photo-render, .avatar-block .photo-render-placeholder { width: 55px; height: 55px; }
+      .shield-block .integrated-shield-img { width: 44px !important; height: 44px !important; }
+      .details-block .data-row-corporate .data-value-strong { font-size: 0.95rem; }
+    }
   }
-
-  .welcome-logo {
-
-    width: 60px;
-
-    height: 60px;
-
-  }
-
-  .profile-content {
-
-    flex-direction: column;
-
-    align-items: center;
-
-  }
-
-  .profile-info {
-
-    width: 100%;
-
-    grid-template-columns:
-      1fr;
-
-  }
-
 }

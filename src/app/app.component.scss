@@ -19,7 +19,7 @@ ion-menu {
   align-items: center !important;
   justify-content: flex-start !important;
   gap: 12px;
-  
+
   // Margen superior dinámico para que el reloj del móvil respire y no se tape
   padding: calc(16px + env(safe-area-inset-top)) 16px 16px 16px;
   background: #0b2d6b;
@@ -84,13 +84,11 @@ ion-item {
 // ============================================================================
 .menu-separator {
   height: 1px;
-  background: linear-gradient(
-    to right, 
-    rgba(255, 255, 255, 0) 0%, 
-    rgba(255, 255, 255, 0.15) 20%, 
-    rgba(255, 255, 255, 0.15) 80%, 
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0) 100%);
   margin: 14px 12px;
 }
 
@@ -114,3 +112,102 @@ ion-item {
     letter-spacing: 0.8px;
   }
 }
+
+// ============================================================================
+// 👥 MAQUETACIÓN PARA EL ACORDEÓN DESPLEGABLE (GESTIÓN DE USUARIOS)
+// ============================================================================
+ion-accordion-group {
+  margin-bottom: 12px;
+  background: transparent !important;
+}
+
+ion-accordion {
+  background: transparent !important;
+
+  // Quitamos líneas internas nativas molestas de Ionic
+  &::part(header) {
+    background: rgba(255, 255, 255, 0.08) !important;
+    --border-radius: 18px;
+    color: white;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  ion-item[slot="header"] {
+    --background: transparent !important;
+    --border-radius: 18px;
+    margin-bottom: 0px !important;
+  }
+}
+
+// Contenedor interno que se abre suavemente hacia abajo
+.sub-menu-container {
+  padding-top: 8px;
+  padding-left: 14px; // Sangrado para dar sensación de jerarquía visual
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  ion-item {
+    // Un tono sutilmente más oscuro para diferenciar que es un hijo del menú
+    --background: rgba(255, 255, 255, 0.04) !important;
+    margin-bottom: 0px !important;
+    font-size: 0.95rem; // Letra un pelín más pequeña para el submenú
+
+    ion-icon {
+      font-size: 1.15rem;
+      opacity: 0.9;
+    }
+  }
+}
+
+// ============================================================================
+// 📱 DISEÑO DEL SUBMENÚ UNIFICADO Y CHEVRON
+// ============================================================================
+
+// Tamaño correcto para la flechita de estado
+.menu-chevron-icon {
+  font-size: 14px !important;
+  opacity: 0.6;
+}
+
+// Caja contenedor del submenú para dar jerarquía sin romper la cuadrícula
+.custom-submenu-box {
+  padding-left: 12px; // Desplazamiento sutil a la derecha
+  margin-top: 2px;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px; // Mismo espacio de separación entre botones
+}
+
+// Forzado estricto para que los sub-ítems sean visualmente idénticos al resto
+ion-item.submenu-item {
+  --background: rgba(255, 255, 255, 0.08) !important;
+  --background-hover: rgba(255, 255, 255, 0.12) !important;
+  --background-activated: rgba(255, 255, 255, 0.12) !important;
+  --background-focused: rgba(255, 255, 255, 0.08) !important;
+  --border-radius: 12px !important;
+  --color: #ffffff !important;
+  --inner-padding-end: 16px !important;
+  --padding-start: 16px !important;
+  margin: 0 !important;
+  min-height: 48px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+  // Forzar icono y label internos
+  ion-icon {
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+
+  ion-label {
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    color: #ffffff !important;
+  }
+}
+
+

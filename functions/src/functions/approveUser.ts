@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import { FcmTemplates } from '../constants/fcm-templates';
+import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
 const db = admin.firestore();
 
@@ -31,17 +32,24 @@ export const approveUser = functions.https.onCall(async (request) => {
 
     try {
       const tokensSnapshot = await db.collection(`users/${uid}/tokens`).get();
-      const tokensUsuario: string[] = [];
+      const listaDispositivos: DispositivoToken[] = [];
+      
       tokensSnapshot.forEach(tokenDoc => {
         const tokenData = tokenDoc.data();
-        if (tokenData.token) tokensUsuario.push(tokenData.token);
+        if (tokenData.token) {
+          listaDispositivos.push({
+            token: tokenData.token,
+            uidUsuario: uid,
+            tokenId: tokenDoc.id
+          });
+        }
       });
 
-      if (tokensUsuario.length > 0) {
-        const messages = tokensUsuario.map(token => 
-          FcmTemplates.getSocioAprobadoTemplate(token, nombreSocio)
+      if (listaDispositivos.length > 0) {
+        const messages = listaDispositivos.map(item => 
+          FcmTemplates.getSocioAprobadoTemplate(item.token, nombreSocio)
         );
-        await admin.messaging().sendEach(messages);
+        await enviarConAutoLimpieza(listaDispositivos, messages);
         console.log(`... Notificación push enviada con éxito al socio aprobado (UID: ${uid})`);
       } else {
         console.log(`ℹ️ El socio ${nombreSocio} no dispone de ningún token móvil en Firestore. Se omite el push.`);

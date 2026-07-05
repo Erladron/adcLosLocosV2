@@ -1,59 +1,103 @@
-import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges, ChangeDetectorRef, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { normalizeName, formatDNI, UserDetail, MapboxService, UserRole } from 'shared-core'; // 🚀 Importado UserRole
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { 
+  IonItem, 
+  IonLabel, 
+  IonInput, 
+  IonButton, 
+  IonIcon, 
+  IonList,
+  IonToggle // 🚀 FIJADO: Importado el componente independiente
+} from '@ionic/angular/standalone';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { addIcons } from 'ionicons';
 import {
   imagesOutline, cameraOutline, checkmarkOutline,
   closeOutline, personOutline, informationCircleOutline,
   createOutline, saveOutline, searchOutline, lockClosedOutline,
-  shieldCheckmarkOutline // 🚀 Añadido icono para la empresa
+  shieldCheckmarkOutline
 } from 'ionicons/icons';
 
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
+// Importaciones unificadas del dominio compartido de shared-core
+import { 
+  normalizeName, 
+  User, 
+  MapboxService, 
+  UserRole, 
+  AppMessageCode, 
+  ErrorHandlerService 
+} from 'shared-core';
 import { environment } from '../../../../../../../environments/environment';
 
+/**
+ * @class PersonalDataFormComponent
+ * @description Componente secundario de presentación encargado del formulario de datos civiles,
+ * geolocalización predictiva mediante la API de Mapbox e integración de flujos multimedia de captura de avatar.
+ */
 @Component({
   selector: 'app-personal-data-form',
   standalone: true,
   templateUrl: './personal-data-form.component.html',
   styleUrls: ['./personal-data-form.component.scss'],
-  imports: [CommonModule, FormsModule, IonicModule, ImageCropperComponent]
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    IonItem, 
+    IonLabel, 
+    IonInput, 
+    IonButton, 
+    IonIcon, 
+    IonList, 
+    IonToggle, // 🚀 FIJADO: Registrado para dar soporte definitivo a los toggles de privacidad
+    ImageCropperComponent
+  ]
 })
 export class PersonalDataFormComponent implements OnChanges, OnInit {
 
-  @Input() user!: any;
-  @Input() imageChangedEvent: any = null;
-  @Input() croppedImage = '';
-  @Input() mostrarCropper = false;
-  @Input() isEditMode = false;
-  @Input() editing = false;
-  @Input() canEdit = false;
-  @Input() simpleMode = false;
-
-  internalImageEvent: any = null;
-  internalImageBase64: string = '';
-
-  latestCroppedEvent: any = null;
-  transform: any = { scale: 1 };
-
-  @Output() selectPhoto = new EventEmitter<void>();
-  @Output() takePhoto = new EventEmitter<void>();
-  @Output() imageCropped = new EventEmitter<any>();
-  @Output() applyCropper = new EventEmitter<void>();
-  @Output() cancelCropper = new EventEmitter<void>();
-  @Output() toggleEdit = new EventEmitter<void>();
-  @Output() cancelEdit = new EventEmitter<void>();
-
+  // =========================================================================
+  // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+  // =========================================================================
+  private cdr = inject(ChangeDetectorRef);
   private mapboxService = inject(MapboxService);
-  direccionSubject = new Subject<string>();
-  sugerencias: any[] = [];
-  mostrarSugerencias = false;
+  private errorHandler = inject(ErrorHandlerService);
 
-  constructor(private cdr: ChangeDetectorRef) {
+  // =========================================================================
+  // 📥 VARIABLES DE ENTRADA (INPUTS)
+  // =========================================================================
+  @Input() public user!: Partial<User>;
+  @Input() public imageChangedEvent: any = null;
+  @Input() public croppedImage = '';
+  @Input() public mostrarCropper = false;
+  @Input() public isEditMode = false;
+  @Input() public editing = false;
+  @Input() public canEdit = false;
+  @Input() public simpleMode = false;
+
+  // =========================================================================
+  // 📦 ESTADOS INTERNOS DEL SUBFORMULARIO
+  // =========================================================================
+  public internalImageEvent: any = null;
+  public internalImageBase64 = '';
+  public latestCroppedEvent: any = null;
+  public transform: any = { scale: 1 };
+
+  @Output() public selectPhoto = new EventEmitter<void>();
+  @Output() public takePhoto = new EventEmitter<void>();
+  @Output() public imageCropped = new EventEmitter<any>();
+  @Output() public applyCropper = new EventEmitter<void>();
+  @Output() public cancelCropper = new EventEmitter<void>();
+  @Output() public toggleEdit = new EventEmitter<void>();
+  @Output() public cancelEdit = new EventEmitter<void>();
+
+  public direccionSubject: Subject<string> = new Subject<string>();
+  public sugerencias: any[] = [];
+  public mostrarSugerencias = false;
+
+  constructor() {
     addIcons({
       imagesOutline, cameraOutline, checkmarkOutline,
       closeOutline, personOutline, informationCircleOutline,
@@ -61,12 +105,11 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     });
   }
 
-  // 🚀 HELPER PARA EL HTML
   get isPortero(): boolean {
     return this.user?.tipo === UserRole.PORTERO;
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.direccionSubject.pipe(
       debounceTime(400),
       distinctUntilChanged(),
@@ -85,33 +128,33 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     });
   }
 
-  onDireccionChange(nuevaDireccion: string) {
+  public onDireccionChange(nuevaDireccion: string): void {
     if (!this.user) return;
     this.user.direccion = nuevaDireccion;
     this.direccionSubject.next(nuevaDireccion);
   }
 
-  seleccionarDireccion(sugerencia: any) {
+  public seleccionarDireccion(sugerencia: any): void {
     this.user.direccion = sugerencia.place_formatted;
     this.mostrarSugerencias = false;
     this.sugerencias = [];
     this.cdr.detectChanges();
   }
 
-  ocultarSugerencias() {
+  public ocultarSugerencias(): void {
     setTimeout(() => {
       this.mostrarSugerencias = false;
       this.cdr.detectChanges();
     }, 200);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes['imageChangedEvent']) {
       this.procesarEventoEntrada(changes['imageChangedEvent'].currentValue);
     }
   }
 
-  procesarEventoEntrada(val: any) {
+  public procesarEventoEntrada(val: any): void {
     if (typeof val === 'string') {
       this.internalImageBase64 = val;
       this.internalImageEvent = null;
@@ -126,16 +169,16 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     this.latestCroppedEvent = null;
   }
 
-  zoomIn() { this.transform = { ...this.transform, scale: (this.transform.scale || 1) + 0.15 }; }
-  zoomOut() { if ((this.transform.scale || 1) > 0.3) this.transform = { ...this.transform, scale: (this.transform.scale || 1) - 0.15 }; }
+  public zoomIn(): void { this.transform = { ...this.transform, scale: (this.transform.scale || 1) + 0.15 }; }
+  public zoomOut(): void { if ((this.transform.scale || 1) > 0.3) this.transform = { ...this.transform, scale: (this.transform.scale || 1) - 0.15 }; }
 
-  onImageCropped(event: any) { this.latestCroppedEvent = event; }
+  public onImageCropped(event: any): void { this.latestCroppedEvent = event; }
 
-  onAceptarRecorte() {
+  public onAceptarRecorte(): void {
     if (!this.latestCroppedEvent) { this.cerrarCropper(); return; }
 
     const aplicarFotoRenderizable = (base64String: string) => {
-      this.user.foto = base64String;
+      if (this.user) this.user.foto = base64String;
       this.latestCroppedEvent.base64 = base64String;
       this.imageCropped.emit(this.latestCroppedEvent);
       this.cerrarCropper();
@@ -148,13 +191,13 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
       reader.readAsDataURL(this.latestCroppedEvent.blob);
       reader.onloadend = () => aplicarFotoRenderizable(reader.result as string);
     } else if (this.latestCroppedEvent.objectUrl) {
-      this.user.foto = this.latestCroppedEvent.objectUrl;
+      if (this.user) this.user.foto = this.latestCroppedEvent.objectUrl;
       this.imageCropped.emit(this.latestCroppedEvent);
       this.cerrarCropper();
     }
   }
 
-  private cerrarCropper() {
+  private cerrarCropper(): void {
     this.applyCropper.emit();
     this.mostrarCropper = false;
     this.transform = { scale: 1 };
@@ -162,7 +205,7 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     this.cdr.detectChanges();
   }
 
-  onCapitalizeName(): void {
+  public onCapitalizeName(): void {
     if (!this.user) return;
     this.user.nombre = normalizeName(this.user?.nombre || '');
   }
@@ -181,16 +224,16 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     return isNaN(Number(char)) ? char : '';
   }
 
-  onDniChange(valor: string): void {
+  public onDniChange(valor: string): void {
     if (!this.user) return;
-    let numeros = valor.replace(/\D/g, '').substring(0, 8);
+    const numeros = valor.replace(/\D/g, '').substring(0, 8);
     if (numeros.length === 0) { this.user.dni = ''; return; }
     const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
     const letra = letras[parseInt(numeros, 10) % 23];
     this.user.dni = numeros + letra;
   }
 
-  async fastProcessImage(file: File): Promise<string> {
+  public async fastProcessImage(file: File): Promise<string> {
     try {
       const bitmap = await createImageBitmap(file, { resizeWidth: 800 });
       const canvas = document.createElement('canvas');
@@ -203,7 +246,7 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     } catch (err) { throw err; }
   }
 
-  fileChangeEvent(event: any): void {
+  public fileChangeEvent(event: any): void {
     if (event && event.target && event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       if (file.type.match('image.*')) {
@@ -213,7 +256,7 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
           this.mostrarCropper = true;
           this.cdr.detectChanges();
         }).catch(err => {
-          console.warn("Fallo en hardware", err);
+          this.errorHandler.handle(err, AppMessageCode.ADC_SYS_ERR_0005);
           this.internalImageEvent = event;
           this.internalImageBase64 = '';
           this.mostrarCropper = true;
@@ -223,7 +266,7 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
     } else this.limpiarCropper();
   }
 
-  limpiarCropper(): void {
+  public limpiarCropper(): void {
     this.imageChangedEvent = null;
     this.internalImageEvent = null;
     this.internalImageBase64 = '';

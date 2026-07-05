@@ -6,6 +6,7 @@
     "composite": true,
     "rootDir": ".",
     "outDir": "../../out-tsc/app",
+    "skipLibCheck": true,
     "types": []
   },
   "include": [

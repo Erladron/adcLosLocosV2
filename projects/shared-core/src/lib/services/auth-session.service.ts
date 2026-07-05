@@ -279,6 +279,18 @@ export class AuthSessionService {
    */
   async logout() {
 
+    if (typeof window !== 'undefined' && navigator.serviceWorker) {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          await registration.unregister();
+          console.log('🧹 [AuthSessionService] Service Worker desregistrado limpiamente en Logout.');
+        }
+      } catch (e) {
+        console.error('Error limpiando Service Workers en logout:', e);
+      }
+    }
+
     // ============================================
     // FIREBASE LOGOUT
     // ============================================

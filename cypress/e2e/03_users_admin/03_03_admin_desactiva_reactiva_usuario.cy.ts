@@ -3,6 +3,7 @@ describe('👮 ROL: Administrador - Desactiva y reactiva usuario', () => {
     const nuevoUsuarioNombre = 'Felipe Novato Test';
     
     beforeEach(() => {
+        // Por defecto inicializamos la sesión de administración para los flujos nativos
         cy.login('admin.fundador@adcloslocos.com', 'PasswordSegura123!');
 
         // Esperamos el asentamiento obligatorio en la Home usando tus marcas de tarjetas
@@ -49,5 +50,31 @@ describe('👮 ROL: Administrador - Desactiva y reactiva usuario', () => {
         cy.clearCookies();
         cy.visit('/login');
         cy.url().should('include', '/login');
+    });
+
+    // =========================================================================
+    // 🔒 CASO B (ESCENARIO 3): INTENTO DE LOGIN CON SOCIO INACTIVE
+    // =========================================================================
+    it('Caso B: Debe denegar el acceso a un socio INACTIVE reteniendo la navegación en el Login', () => {
+        // 1. Limpiamos las sesiones para arrancar completamente desde fuera en la pantalla de Login
+        cy.clearLocalStorage();
+        cy.clearCookies();
+        cy.visit('/login');
+        cy.get('[data-cy="login-page"]').should('be.visible');
+
+        // 2. Rellenamos el formulario de acceso de forma manual con el socio bloqueado
+        cy.get('[data-cy="input-login-email"]').find('input').clear({ force: true }).type('socio.inactivo@adcloslocos.com', { force: true });
+        cy.get('[data-cy="input-login-password"]').find('input').clear({ force: true }).type('PasswordSegura123!', { force: true });
+
+        // 3. Pulsamos el botón de submit para gatillar la protección del Guard
+        cy.get('[data-cy="btn-login-submit"]').should('be.visible').click({ force: true });
+        cy.wait(1000); 
+
+        // 4. VALIDACIÓN DE COHERENCIA DE LA APP:
+        // El navegador se mantiene bloqueado en la URL de Login (Redirección forzosa del Guard exitosa)
+        cy.url().should('include', '/login');
+        
+        // La página de inicio protegida jamás debe cargarse
+        cy.get('[data-cy="home-page-content"]').should('not.exist');
     });
 });

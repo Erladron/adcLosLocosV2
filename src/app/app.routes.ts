@@ -2,47 +2,40 @@ import { Routes } from '@angular/router';
 import { authGuard } from '@auth/guards/auth.guard';
 import { roleGuard } from '@auth/guards/role.guard';
 
-// 🚀 IMPORTAMOS LOS ENUMS CORPORATIVOS PARA EL TIPADO ESTRICTO DE ROLES
+// Importaciones unificadas del dominio compartido de shared-core
 import { UserRole } from 'shared-core';
 
+/**
+ * @description Matriz de enrutamiento maestro del chasis de la aplicación (A.D.C. Los Locos).
+ * Organiza de forma centralizada las directrices de lazy loading, modularización de componentes Standalone
+ * y la restricción perimetral de accesos basada en roles mediante Guards de Angular.
+ */
 export const routes: Routes = [
 
-  // ============================================
-  // ROOT
-  // ============================================
+  // =========================================================================
+  // 🪐 ENRUTAMIENTO RAÍZ
+  // =========================================================================
   {
     path: '',
     pathMatch: 'full',
     redirectTo: 'home'
   },
 
-  // ============================================
-  // LOGIN
-  // ============================================
+  // =========================================================================
+  // 🔐 SECCIÓN: AUTENTICACIÓN Y REGISTRO PERIMETRAL
+  // =========================================================================
   {
     path: 'login',
     loadComponent: () => import('@auth/pages/login/login.page').then(m => m.LoginPage)
   },
-
-  // ============================================
-  // PENDING APPROVAL
-  // ============================================
   {
     path: 'pending-approval',
     loadComponent: () => import('@auth/pages/pending-approval/pending-approval.page').then(m => m.PendingApprovalPage)
   },
-
-  // ============================================
-  // COMPLETE PROFILE
-  // ============================================
   {
     path: 'complete-profile',
     loadComponent: () => import('@auth/pages/complete-profile/complete-profile.page').then(m => m.CompleteProfilePage)
   },
-
-  // ============================================
-  // INVITE
-  // ============================================
   {
     path: 'invite',
     canActivate: [authGuard, roleGuard],
@@ -56,12 +49,11 @@ export const routes: Routes = [
     loadComponent: () => import('@auth/pages/invite/invite.page').then(m => m.InvitePage)
   },
 
-  // ============================================
-  // HOME
-  // ============================================
+  // =========================================================================
+  // 🏛️ SECCIÓN: DASHBOARD CENTRAL
+  // =========================================================================
   {
     path: 'home',
-    // 🚀 AÑADIDO ROLEGUARD: El portero tiene prohibido pisar el Home general
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -74,14 +66,13 @@ export const routes: Routes = [
     loadComponent: () => import('@home/pages/home/home.page').then(m => m.HomePage)
   },
 
-  // ============================================
-  // GESTION USUARIOS
-  // ============================================
+  // =========================================================================
+  // 👥 SECCIÓN: CENSO Y GESTIÓN DE MIEMBROS
+  // =========================================================================
   {
     path: 'gest-user',
     canActivate: [authGuard, roleGuard],
     data: {
-      // 🚀 CORREGIDO: Fuera el rol 'invitado' de aquí, solo entra el núcleo de la peña
       roles: [
         UserRole.SOCIO,
         UserRole.DIRECTIVA,
@@ -90,10 +81,6 @@ export const routes: Routes = [
     },
     loadComponent: () => import('@users/pages/gest-user/gest-user.page').then(m => m.GestUserPage)
   },
-
-  // ============================================
-  // NUEVO USUARIO
-  // ============================================
   {
     path: 'user-detail',
     canActivate: [authGuard, roleGuard],
@@ -106,13 +93,8 @@ export const routes: Routes = [
     },
     loadComponent: () => import('@users/pages/user-detail/user-detail.page').then(m => m.UserDetailPage)
   },
-
-  // ============================================
-  // EDITAR USUARIO
-  // ============================================
   {
     path: 'user-detail/:id',
-    // 🚀 AÑADIDO ROLEGUARD: Evitamos saltos de rol ilegales por ID en la barra de navegación
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -125,12 +107,24 @@ export const routes: Routes = [
     loadComponent: () => import('@users/pages/user-detail/user-detail.page').then(m => m.UserDetailPage)
   },
 
-  // ============================================
-  // EVENTOS (Módulo unificado, blindado y ordenado)
-  // ============================================
+  // 👑 CONTROL FINANCIERO: TESORERÍA Y CUOTAS DE SOCIO
   {
-    path: 'events',
-    // 🚀 AÑADIDO ROLEGUARD: El portero fuera de la agenda comunitaria
+    path: 'mantenimiento-cuotas',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      roles: [
+        UserRole.DIRECTIVA,
+        UserRole.ADMINISTRADOR
+      ]
+    },
+    loadComponent: () => import('./features/users/pages/mantenimiento-cuotas/mantenimiento-cuotas.page').then(m => m.MantenimientoCuotasPage)
+  },
+
+  // =========================================================================
+  // 📆 SECCIÓN: CONVOCATORIAS Y AGENDA DE LA PEÑA
+  // =========================================================================
+  {
+    path: 'events', // 🚀 DEFINITIVO: Entrada directa al listado unificado con calendario integrado
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -155,7 +149,6 @@ export const routes: Routes = [
   },
   {
     path: 'events/:id',
-    // 🚀 AÑADIDO ROLEGUARD
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -167,13 +160,24 @@ export const routes: Routes = [
     },
     loadComponent: () => import('./features/events/pages/event-detail/event-detail.page').then(m => m.EventDetailPage),
   },
-
-  // ============================================
-  // Carnet Feria
-  // ============================================
   {
-    path: 'fair',
-    // 🚀 AÑADIDO ROLEGUARD: El portero viene a trabajar, no a mirar su pase
+    path: 'events/:id/guests',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      roles: [
+        UserRole.SOCIO,
+        UserRole.DIRECTIVA,
+        UserRole.ADMINISTRADOR
+      ]
+    },
+    loadComponent: () => import('./features/events/pages/event-guests/event-guests.page').then(m => m.EventGuestsPage),
+  },
+
+  // =========================================================================
+  // 🎫 SECCIÓN: PASES DIGITALES Y VERIFICACIÓN PERIMETRAL QR
+  // =========================================================================
+  {
+    path: 'user-passes',
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -185,13 +189,8 @@ export const routes: Routes = [
     },
     loadComponent: () => import('./features/events/pages/fair/fair.page').then(m => m.FairPage)
   },
-
-  // ============================================
-  // Portería Caseta
-  // ============================================
   {
-    path: 'fair-scan',
-    // 🚀 AÑADIDO ROLEGUARD: Solo los encargados del acceso entran aquí
+    path: 'event-scan',
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -203,9 +202,23 @@ export const routes: Routes = [
     loadComponent: () => import('./features/events/pages/fair-scan/fair-scan.page').then(m => m.FairScanPage)
   },
 
-  // ============================================
-  // FALLBACK
-  // ============================================
+  // =========================================================================
+  // 🔄 RUTAS HEREDADAS (MANTENIDAS POR COMPATIBILIDAD DE ENLACES ANTERIORES)
+  // =========================================================================
+  {
+    path: 'fair',
+    pathMatch: 'full',
+    redirectTo: 'user-passes'
+  },
+  {
+    path: 'fair-scan',
+    pathMatch: 'full',
+    redirectTo: 'event-scan'
+  },
+
+  // =========================================================================
+  // 🚨 RUTA COMPLEMENTARIA: FALLBACK GLOBLAL COMODÍN
+  // =========================================================================
   {
     path: '**',
     redirectTo: 'home'

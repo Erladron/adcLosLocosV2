@@ -34,7 +34,8 @@
         <ion-select-option value="directiva">Directiva</ion-select-option>
         <ion-select-option value="socio">Socio</ion-select-option>
         <ion-select-option value="invitado">Invitado</ion-select-option>
-        <ion-select-option value="portero">Portero / Seguridad</ion-select-option> </ion-select>
+        <ion-select-option value="portero">Portero / Seguridad</ion-select-option> 
+      </ion-select>
     </ion-item>
 
     <ion-item class="custom-item" *ngIf="user.tipo === 'socio' || user.tipo === 'directiva'">
@@ -45,6 +46,25 @@
         data-cy="input-membership-socio-num">
       </ion-input>
     </ion-item>
+
+    <ion-item class="custom-item cuota-toggle-item" lines="none" *ngIf="user.tipo === 'socio' || user.tipo === 'directiva'">
+      <ion-icon slot="start" name="cash-outline" [style.color]="user.cuotaAlCorriente ? '#10b981' : '#ef4444'" style="margin-top: 22px; font-size: 1.4rem;"></ion-icon>
+      <ion-label>
+        <h4>Estado de la Cuota</h4>
+        <p>{{ user.cuotaAlCorriente ? 'Socio solvente con acceso completo' : 'Pago pendiente / Acceso restringido' }}</p>
+      </ion-label>
+      <ion-toggle slot="end" 
+                  [checked]="user.cuotaAlCorriente"
+                  (ionChange)="user.cuotaAlCorriente = $event.detail.checked" 
+                  [disabled]="isEditMode && !editing" 
+                  color="success"
+                  data-cy="toggle-membership-cuota">
+      </ion-toggle>
+    </ion-item>
+
+    <div class="cuota-audit-info" *ngIf="user.cuotaActualizadaPorNombre && (user.tipo === 'socio' || user.tipo === 'directiva')" style="margin-top: 8px; padding-left: 16px; font-size: 0.8rem; color: rgba(255,255,255,0.4);">
+      Última actualización por: <strong>{{ user.cuotaActualizadaPorNombre }}</strong> • {{ user.cuotaActualizadaAt?.toDate ? (user.cuotaActualizadaAt.toDate() | date:'dd/MM/yyyy · HH:mm') : (user.cuotaActualizadaAt | date:'dd/MM/yyyy · HH:mm') }}
+    </div>
 
   </div>
 

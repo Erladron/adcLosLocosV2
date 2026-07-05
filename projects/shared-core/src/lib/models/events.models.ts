@@ -1,97 +1,159 @@
-// 1. Tipos de Eventos (Para tus pestañas de filtrado)
+/**
+ * @enum EventType
+ * @description Catálogo tipado de las modalidades y tipologías oficiales de convocatoria de la peña.
+ */
 export enum EventType {
   ASAMBLEA = 'asamblea',
   COMIDA = 'comida',
   QUEDADA = 'quedada',
-  FERIA = 'feria' // 🚀 NUEVO: Identificador único para el evento de la caseta
+  FERIA = 'feria' // 🚀 Identificador único estructurado para la lógica de la caseta
 }
 
-// 2. Estados del Evento
+/**
+ * @enum EventStatus
+ * @description Estados operativos del ciclo de vida de una convocatoria en la agenda.
+ */
 export enum EventStatus {
-  DRAFT = 'draft',         // Borrador (solo lo ve la directiva)
-  PUBLISHED = 'published', // Abierto y visible para los socios
-  CANCELLED = 'cancelled', // Evento anulado
-  COMPLETED = 'completed'  // Evento ya pasado/finalizado
+  DRAFT = 'draft',         // Borrador (restringido a la Junta Directiva)
+  PUBLISHED = 'published', // Abierto y visible para la masa social
+  CANCELLED = 'cancelled', // Convocatoria anulada de forma lógica
+  COMPLETED = 'completed'  // Evento histórico finalizado
 }
 
-// 3. Modelo principal del Evento (El que va en la colección 'events')
+/**
+ * @interface AppEvent
+ * @description Modelo estructural maestro para los documentos alojados en la colección principal `/events`.
+ */
 export interface AppEvent {
-  id: string;                    // ID único del documento en Firestore
-  title: string;                 // Título del evento
-  description: string;           // Descripción detallada
-  type: EventType;               // asamblea, comida, quedada o feria
-  status: EventStatus;           // Estado actual
+  /** @description ID único del documento persistido en Firestore. */
+  id: string;
+  /** @description Título comercializador de la convocatoria. */
+  title: string;
+  /** @description Memoria o descripción pormenorizada de las actividades. */
+  description: string;
+  /** @description Tipología vinculada del enum EventType. */
+  type: EventType;
+  /** @description Estado administrativo del enum EventStatus. */
+  status: EventStatus;
 
-  // 🔥 Campos de temporización oficiales
-  startDate: string;             // Fecha y hora de inicio (Formato ISO)
-  endDate: string;               // Fecha y hora de fin (Formato ISO)
-  allDay?: boolean;              // True si la convocatoria dura toda la jornada
+  // 🕒 Atributos de temporización oficiales (Estándar ISO 8601)
+  /** @description Fecha y hora de inicio de la convocatoria. */
+  startDate: string;
+  /** @description Fecha y hora de finalización del evento. */
+  endDate: string;
+  /** @description Flag opcional para delimitar eventos de jornada completa. */
+  allDay?: boolean;
+  /** @description Determina si el evento requiere filtros de visibilidad. */
   isPrivate: boolean;
+  /** @description Flag indicador para el disparo automático de pases QR. */
+  requiresAccessControl: boolean;
 
-  // Parámetros de configuración específicos de negocio
-  limiteInvitadosPorSocio?: number; // 🚀 NUEVO: Límite dinámico de invitaciones por caseta
+  /** @description Límite dinámico regulado de invitaciones feriales externas permitidas por socio. */
+  limiteInvitadosPorSocio?: number;
 
-  // Lugar estructurado para Mapbox
+  /** @description Ubicación geográfica e identidad del emplazamiento estructurado para Mapbox. */
   location: {
-    name: string;                // Ej: Mesón "El Loco Sordomudo"
-    address: string;             // Ej: Calle de la Peña, Nº 12
-    coordinates?: {              // Opcional, para pintar el pin en Mapbox
+    name: string;
+    address: string;
+    coordinates?: {
       lat: number;
       lng: number;
     };
   };
 
-  maxAttendees?: number;         // Aforo máximo (Opcional)
-  attendeeCount: number;         // Contador de plazas ocupadas en tiempo real
+  /** @description Capacidad de aforo máximo configurable por la Junta. */
+  maxAttendees?: number;
+  /** @description Contador transaccional de plazas confirmadas en tiempo real. */
+  attendeeCount: number;
+  /** @description URL de descarga del cartel promocional alojado en Firebase Storage. */
+  imageUrl?: string;
 
-  imageUrl?: string;             // Foto o cartel (URL de Firebase Storage)
-
-  // Auditoría
-  createdBy: string;             // ID del administrador que lo creó
-  createdAt: string;             // Fecha de creación
+  // Campos de auditoría interna
+  /** @description UID del directivo o administrador instanciador. */
+  createdBy: string;
+  /** @description Timestamp ISO de creación del documento. */
+  createdAt: string;
 }
 
-// 4. Modelo de Asistencia (Para la subcolección 'events/{id}/attendance')
-// Esto es lo que se crea cuando un socio pulsa "Asistiré"
+/**
+ * @interface EventAttendance
+ * @description Estructura transaccional de confirmación de asistencia para la subcolección interna `/events/{id}/attendance`.
+ */
 export interface EventAttendance {
-  id: string;                    // Suele ser el mismo ID del usuario para evitar duplicados
-  eventId: string;               // Referencia al evento
-  userId: string;                // Referencia al socio
-  status: 'going' | 'not_going' | 'waitlist'; // ¿Va, no va, o está en reserva?
+  /** @description ID único del registro (coincide con el UID del socio para evitar colisiones). */
+  id: string;
+  /** @description ID de la convocatoria vinculada. */
+  eventId: string;
+  /** @description UID del socio solicitante. */
+  userId: string;
+  /** @description Veredicto transaccional de asistencia. */
+  status: 'going' | 'not_going' | 'waitlist';
 
-  // Datos extra súper útiles para logística
-  companions: number;            // Acompañantes (+1, +2)
-  paymentMethod?: 'bizum' | 'cash'; // Si requiere pago
-
-  registeredAt: string;          // Cuándo le dio al botón
+  // Métricas logísticas complementarias
+  /** @description Número de plazas adicionales añadidas para acompañantes. */
+  companions: number;
+  /** @description Pasarela de pago elegida si la convocatoria requiere desembolso. */
+  paymentMethod?: 'bizum' | 'cash';
+  /** @description Timestamp de confirmación del botón de asistencia. */
+  registeredAt: string;
 }
 
+/**
+ * @enum FairAccessStatus
+ * @description Catálogo unificado de los estados lógicos de un pase o credencial digital de caseta ferial.
+ */
+export enum FairAccessStatus {
+  ACTIVE = 'active',
+  PENDING = 'pending',
+  EXPIRED = 'expired'
+}
+
+/**
+ * @interface FairAccess
+ * @description Credencial digital inmutable y pase QR analizado por las porterías en la colección `/fair-access`.
+ */
 export interface FairAccess {
-  id: string;            // ID único del pase (será el contenido encriptado/leído del QR)
-  userId: string;        // UID del socio o invitado que intenta entrar
-  userName: string;      // Nombre completo para que el portero lo vea en pantalla al escanear
-  userType: string;      // Rol ('socio', 'directiva', 'invitado') para control visual en puerta
-  hostId: string | null; // UID del socio que invita (null si es el carnet del propio socio)
-  invitedByName: string | null; //Nombre de la persona que genera el pase de feria al invitado
-  date: string;          // Fecha del pase o código de temporada única (ej: "FERIA-2026")
-  createdAt: string;     // Timestamp de cuándo se emitió el pase/invitación
-  
-  // Historial de picajes para permitir entradas y salidas ilimitadas en el mismo día
+  /** @description ID único del pase (coincide con el payload encriptado/leído del código QR). */
+  id: string;
+  /** @description UID del socio titular o beneficiario del pase. */
+  userId: string;
+  /** @description Nombre completo visible en la interfaz del terminal de portería al escanear. */
+  userName: string;
+  /** @description Rol de acceso del usuario para control visual rápido en puerta. */
+  userType: string;
+  /** @description UID del socio anfitrión (null si se trata del carnet propio del socio). */
+  hostId: string | null;
+  /** @description Nombre completo del socio que emite e invita al tercero externo. */
+  invitedByName: string | null;
+  /** @description Código identificativo o fecha del pase (ej: "FERIA-2026"). */
+  date: string;
+  /** @description Sello o bandera del estado de la credencial utilizando el enumerado oficial. */
+  status: FairAccessStatus; // 🚀 ¡Saneado y fuertemente tipado!
+  /** @description Timestamp de expedición de la credencial. */
+  createdAt: string;
+  /** @description ID único del evento ferial o convocatoria de adscripción. */
+  eventId: string;
+
+  /** @description Historial de picajes cronológicos para auditoría de aforo dinámico en puerta. */
   scans: {
-    scannedAt: string;     // Hora exacta del escaneo
-    gatekeeperUid: string; // UID del administrador/directiva que estaba en la puerta
+    scannedAt: string;
+    gatekeeperUid: string;
   }[];
 }
 
-// 🇪🇸 Diccionarios de Traducción Oficial para ACD Los Locos
+// =========================================================================
+// 🇪🇸 TRADUCCIONES OFICIALES (Diccionarios Homogéneos de Lenguaje Natural)
+// =========================================================================
 
+/** @description Diccionario oficial para el mapeo visual de tipologías de eventos. */
 export const EVENT_TYPE_ES: Record<EventType, string> = {
-  [EventType.ASAMBLEA]: 'Asamblea',
-  [EventType.COMIDA]: 'Comida / Convivencia',
-  [EventType.QUEDADA]: 'Quedada',
-  [EventType.FERIA]: 'Feria (Caseta)'
+  [EventType.ASAMBLEA]: '🗳️ Asamblea General',
+  [EventType.COMIDA]: '🍽️ Comida / Convivencia',
+  [EventType.QUEDADA]: '🛵 Quedada de la Peña',
+  [EventType.FERIA]: '🎪 Caseta de la Feria'
 };
 
+/** @description Diccionario oficial para la visualización del estado de las convocatorias. */
 export const EVENT_STATUS_ES: Record<EventStatus, string> = {
   [EventStatus.DRAFT]: 'Borrador',
   [EventStatus.PUBLISHED]: 'Abierto / Publicado',
@@ -99,6 +161,7 @@ export const EVENT_STATUS_ES: Record<EventStatus, string> = {
   [EventStatus.COMPLETED]: 'Finalizado'
 };
 
+/** @description Diccionario de traducciones para los estados internos de asistencia. */
 export const ATTENDANCE_STATUS_ES: Record<'going' | 'not_going' | 'waitlist', string> = {
   'going': 'Asistiré',
   'not_going': 'No asistiré',

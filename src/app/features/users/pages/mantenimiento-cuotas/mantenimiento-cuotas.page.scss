@@ -1,0 +1,269 @@
+// ============================================================================
+// 📱 FONDO GRADIENTE CORPORATIVO CONTINUO
+// ============================================================================
+.cuotas-content {
+  --background: linear-gradient(180deg, #0b2d6b 0%, #1d4ea5 100%) !important;
+  font-family: inherit;
+
+  .background-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.03;
+    width: 70%;
+    max-width: 400px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// ============================================================================
+// 🎛️ FILTROS PERIMETRALES DE GESTIÓN (Efecto cristal translúcido)
+// ============================================================================
+.filters-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  z-index: 10;
+  position: relative;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    .search-box { flex: 2; }
+    .select-box { flex: 1; }
+  }
+
+  .custom-searchbar {
+    --background: rgba(255, 255, 255, 0.08) !important;
+    --box-shadow: none;
+    --color: #ffffff;
+    --placeholder-color: rgba(255, 255, 255, 0.5);
+    --icon-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .custom-filter-item {
+    --background: rgba(255, 255, 255, 0.08) !important;
+    --color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    --padding-start: 12px;
+    margin: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    ion-label {
+      color: #38bdf8 !important;
+      font-size: 0.75rem !important;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    ion-select {
+      --placeholder-color: #ffffff;
+      width: 100%;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// ============================================================================
+// 🌟 TARJETAS DE ACCIONAMIENTO (Glassmorphism de alta densidad)
+// ============================================================================
+.cuotas-container {
+  padding: 0 16px 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+  position: relative;
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    transition: all 0.25s ease-in-out; // Transición suave cuando se activa el borde azul
+  }
+
+  .cuota-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .socio-profile-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .socio-num-badge {
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+      }
+
+      .socio-info {
+        h2 {
+          margin: 0 0 4px 0;
+          color: #ffffff;
+          font-size: 1.05rem;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+        }
+        .socio-meta-sub {
+          margin: 0;
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .toggle-control-zone {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2); 
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+
+      .status-indicator-text {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #ff4961; 
+        font-size: 0.85rem;
+        font-weight: 600;
+
+        ion-icon {
+          font-size: 1.1rem;
+        }
+
+        &.solvente {
+          color: #10b981; 
+        }
+      }
+
+      .cuota-switcher {
+        --handle-background: #ffffff;
+        --handle-background-checked: #ffffff;
+        --background: rgba(255, 255, 255, 0.15);
+        margin: 0;
+      }
+    }
+
+    .row-audit-footer {
+      font-size: 0.73rem;
+      color: rgba(255, 255, 255, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+  }
+}
+
+// ============================================================================
+// ☑️ ADAPTACIÓN PARA EL CHECKBOX EN TORNO DE CRISTAL
+// ============================================================================
+ion-checkbox {
+  --border-color: rgba(255, 255, 255, 0.4);
+  --border-radius: 6px;
+  --checkbox-background-checked: var(--ion-color-secondary, #3bc7ff);
+  --border-color-checked: var(--ion-color-secondary, #3bc7ff);
+}
+
+// ============================================================================
+// 🚀 CONTENEDOR FLOTANTE Y BOTONES CON ESTILO PREMIUM
+// ============================================================================
+.floating-actions-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  
+  // Efecto cápsula de cristal translúcida
+  background: rgba(11, 45, 107, 0.6) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px; // Esquinas de cápsula perfectas
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  width: auto;
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  // Botón Cancelar Estilizado
+  .btn-cancelar {
+    --color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    letter-spacing: 0.02em;
+    transition: --color 0.2s ease;
+
+    &:hover {
+      --color: #ffffff;
+    }
+  }
+
+  // Botón Guardar con Degradado Neón Sutil
+  .btn-guardar {
+    --background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    --color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0;
+    --border-radius: 20px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    letter-spacing: 0.01em;
+    text-transform: none;
+    height: 40px;
+
+    ion-icon {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+// Animación de entrada limpia
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 60px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
