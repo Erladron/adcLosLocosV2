@@ -51,7 +51,7 @@ npm install
 
 ---
 
-## 2. Configurar Entornos
+### 2. Configurar Entornos
 Crea manualmente los archivos de entorno locales (ignorados en este repositorio por motivos de seguridad) replicando las variables de configuración de Firebase en las siguientes rutas:
 
 src/environments/environment.ts
@@ -60,7 +60,7 @@ projects/web-onboarding/src/environments/environment.ts
 
 ---
 
-## 3. Levantar los Servidores de Desarrollo
+### 3. Levantar los Servidores de Desarrollo
 App Móvil: npm run start o ionic serve
 
 Web Onboarding: ng serve web-onboarding
