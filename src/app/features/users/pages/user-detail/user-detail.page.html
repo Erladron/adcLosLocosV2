@@ -31,7 +31,7 @@
       [isOwnProfile]="isOwnProfile" [canEditCredentials]="canEditCredentials" [password]="password"
       [repeatPassword]="repeatPassword" (passwordChange)="password = $event"
       (repeatPasswordChange)="repeatPassword = $event" (sendResetLink)="onSendPasswordReset($event)"
-      data-cy="detail-credentials-form">
+      [(repeatEmail)]="repeatEmail" data-cy="detail-credentials-form">
     </app-credentials-form>
 
     <app-user-audit-form *ngIf="isEditMode && canViewAudit && !isVistaPublica" [user]="user"

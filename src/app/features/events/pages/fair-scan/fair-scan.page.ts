@@ -8,6 +8,7 @@ import {
 import { addIcons } from 'ionicons';
 import { scanOutline, checkmarkCircleOutline, closeCircleOutline, keyOutline } from 'ionicons/icons';
 
+import { Haptics, NotificationType } from '@capacitor/haptics';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 // Importaciones nativas de Firebase para validación atómica en Portería General
@@ -126,6 +127,9 @@ export class FairScanPage implements OnInit, OnDestroy {
   }
 
   public async detenerEscaner(): Promise<void> {
+    document.body.classList.remove('scanner-active');
+    await BarcodeScanner.showBackground();
+    await BarcodeScanner.stopScan();
     this.forzarLimpiezaEscaner();
   }
 
@@ -236,9 +240,11 @@ export class FairScanPage implements OnInit, OnDestroy {
       }, 'Verificando credencial universal en el sistema...');
 
       this.scanStatus = 'success';
+      await Haptics.notification({ type: NotificationType.Success });
 
     } catch (error: any) {
       this.scanStatus = 'error';
+      await Haptics.notification({ type: NotificationType.Error });
       if (error && error.message) {
         this.notification.error(error.message);
       } else {

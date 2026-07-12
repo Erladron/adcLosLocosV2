@@ -1,7 +1,24 @@
+/**
+ * @const EmailTemplates
+ * @description Diccionario centralizado de plantillas HTML corporativas para la distribución 
+ * de correspondencia electrónica (Email) oficial de la A.D.C. Los Locos a través de extensiones SMTP.
+ */
 export const EmailTemplates = {
-  // PLANTILLA ÚNICA: RESETEO DE CONTRASEÑA
+  
+  /**
+   * @method getPasswordResetTemplate
+   * @description Renderiza una maqueta HTML adaptiva y estilizada con la identidad corporativa 
+   * del club para los flujos de configuración inicial o restablecimiento seguro de contraseñas.
+   * Incluye un botón de redirección con el token único operacional (oobCode) inyectado.
+   * 
+   * @param {string} email - Dirección de correo electrónico del usuario destinatario de la alerta.
+   * @param {string} resetLink - Enlace personalizado premium de la aplicación web que gestiona el cambio.
+   * 
+   * @returns {string} Bloque de código HTML5 en bruto listo para su procesamiento e inserción en la cola de envío.
+   */
   getPasswordResetTemplate: (email: string, resetLink: string): string => {
-    const urlEscudo = 'https://firebasestorage.googleapis.com/v0/b/adcloslocos-desa.firebasestorage.app/o/escudo.png?alt=media&token=6b0614fc-9d03-4b73-8c8b-be07e8fabbad';
+    /** @description URL estática del imagotipo oficial del club almacenada en Firebase Storage. */
+    const urlEscudo = 'https://firebasestorage.googleapis.com/v0/b/adcloslocos-desa.firebasestorage.app/o/escudo.png?alt=media&token=6b0614fc-9d03-4b73-8c8b-be07e8fabbad'; //
     
     return `
       <div style="background-color: #f4f6f9; padding: 40px 10px; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh;">
@@ -41,6 +58,6 @@ export const EmailTemplates = {
           </tr>
         </table>
       </div>
-    `;
+    `; //
   }
 };

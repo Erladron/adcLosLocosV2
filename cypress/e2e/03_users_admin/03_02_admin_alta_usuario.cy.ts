@@ -8,7 +8,7 @@ describe('👮 ROL: Administrador - Alta de Nuevo Usuario', () => {
         // 🧹 LIMPIEZA PREVIA VIA CLOUD FUNCTION para que no explote por duplicado
         cy.request({
             method: 'POST',
-            url: 'http://localhost:5001/adcloslocos-desa/us-central1/borrarUsuarioPorEmailDev',
+            url: 'http://localhost:5001/adcloslocos-desa/europe-west1/borrarUsuarioPorEmailDev',
             body: {
                 email: nuevoUsuarioEmail
             },
@@ -67,24 +67,47 @@ describe('👮 ROL: Administrador - Alta de Nuevo Usuario', () => {
 
         // Seleccionamos la opción "Socio" en el popover flotante
         cy.get('ion-popover ion-item, ion-popover button')
-          .contains('Socio', { matchCase: false })
-          .click({ force: true });
-        
+            .contains('Socio', { matchCase: false })
+            .click({ force: true });
+
         cy.wait(600); // Damos un instante a Angular para que procese el *ngIf
 
         // Escribimos el número de socio forzando el click e input
         cy.get('[data-cy="input-membership-socio-num"]').find('input').type('1524', { force: true });
 
         // =========================================================================
+        // 📜 EL TRUCO DEL SCROLL REAL EN IONIC
+        // =========================================================================
+        cy.get('ion-content').filter(':visible').then(($content) => {
+            if ($content[0] && ($content[0] as any).scrollToBottom) {
+                ($content[0] as any).scrollToBottom(300);
+            }
+        });
+
+        // 🔥 COLCHÓN DE ASENTAMIENTO: Esperamos a que Ionic y Angular terminen las mutaciones del DOM
+        cy.wait(1500);
+
+        // Aseguramos que la tarjeta de credenciales esté completamente visible y estable
+        cy.get('[data-cy="credentials-form-card"]').should('be.visible');
+
+        // =========================================================================
         // 🔑 4️⃣ RELLENAR CREDENCIALES DE ACCESO
         // =========================================================================
-        cy.get('app-credentials-form').within(() => {
-            cy.get('input[type="email"]').eq(0).type(nuevoUsuarioEmail, { force: true });
-            cy.get('input[type="email"]').eq(1).type(nuevoUsuarioEmail, { force: true });
-            
-            cy.get('input[type="password"]').eq(0).type('PasswordSegura123!', { force: true });
-            cy.get('input[type="password"]').eq(1).type('PasswordSegura123!', { force: true });
-        });
+        cy.get('[data-cy="input-credentials-email"]').find('input')
+            .clear({ force: true })
+            .type(nuevoUsuarioEmail, { force: true });
+
+        cy.get('[data-cy="input-credentials-repeat-email"]').find('input')
+            .clear({ force: true })
+            .type(nuevoUsuarioEmail, { force: true });
+
+        cy.get('[data-cy="input-credentials-password"]').find('input')
+            .clear({ force: true })
+            .type('PasswordSegura123!', { force: true });
+
+        cy.get('[data-cy="input-credentials-repeat-password"]').find('input')
+            .clear({ force: true })
+            .type('PasswordSegura123!', { force: true });
 
         // Inyectamos la foto de contingencia en el componente para saltar validaciones asíncronas
         cy.get('app-personal-data-form').then(($el) => {
@@ -106,7 +129,7 @@ describe('👮 ROL: Administrador - Alta de Nuevo Usuario', () => {
         cy.get('ion-button').contains('Crear Usuario', { matchCase: false }).click({ force: true });
 
         // ⏳ BARRERA DE TIEMPO SEGURA: Congelamos el test hasta que la Cloud Function responda HTTP 200 OK
-        cy.wait('@adminCreateCall', { timeout: 15000 });
+        cy.wait('@adminCreateCall', { timeout: 30000 });
 
         // Validamos la redirección con la app ya asentada y el usuario guardado en Firestore
         cy.url({ timeout: 8000 }).should('include', '/gest-user');

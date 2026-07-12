@@ -39,9 +39,14 @@ describe('Fallo de Red en Storage Onboarding - 02_03_auth_onboarding_fallo_stora
     // =========================================================================
     // 2. INTERCEPTACIÓN DEL ERROR 500
     // =========================================================================
-    cy.intercept('POST', '**/requestUserApproval**', {
+    cy.intercept('POST', '**/europe-west1/requestUserApproval', {
       statusCode: 500,
-      body: { error: 'Error al subir la imagen o procesar el perfil.' }
+      body: { 
+        error: { 
+          status: 'INTERNAL', 
+          message: 'Error al subir la imagen o procesar el perfil.' 
+        } 
+      }
     }).as('saveProfileError');
 
     // =========================================================================

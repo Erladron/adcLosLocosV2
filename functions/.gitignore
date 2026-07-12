@@ -8,3 +8,21 @@ typings/
 # Node.js dependency directory
 node_modules/
 *.local
+
+# ==========================================
+# 🔐 SEGURIDAD Y CREDENCIALES (Claves API)
+# ==========================================
+
+# Configuración y entornos de Angular (Firebase API Keys)
+src/environments/environment.prod.ts
+src/environments/environment.ts
+projects/web-onboarding/src/environments/environment.prod.ts
+projects/web-onboarding/src/environments/environment.ts
+
+# Firebase Admin SDK y claves privadas del Backend
+/functions/keys/
+*.json
+!tsconfig*.json
+!package*.json
+!angular.json
+!firebase.json

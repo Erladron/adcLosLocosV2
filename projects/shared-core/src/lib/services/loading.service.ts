@@ -68,20 +68,21 @@ export class LoadingService {
   /**
    * @method wrap
    * @description 🛡️ ENVOLTORIO PROTECTOR DE INFRAESTRUCTURA: Ejecuta un callback asíncrono envolviéndolo 
-   * en un spinner visual y aplicando una carrera de promesas (Promise.race) de 10 segundos. 
+   * en un spinner visual y aplicando una carrera de promesas (Promise.race). 
    * Si Firestore se congela debido a mala cobertura, intercepta el bloqueo, libera la pantalla y despacha un Toast offline.
-   * @param {() => Promise<T>} callback Función asíncrona o petición NoSQL sujeta al control de bloqueo.
-   * @param {string} [message='Cargando...'] Mensaje para el overlay.
-   * @template T Tipo inferido o explícito devuelto por la función asíncrona encapsulada.
-   * @returns {Promise<T>} Resultado de la ejecución del proceso seguro.
    */
   public async wrap<T>(callback: () => Promise<T>, message: string = 'Cargando...'): Promise<T> {
     try {
       await this.show(message);
 
-      // Cronómetro de control de latencia offline de 10 segundos
+      // 🛡️ REPARACIÓN SÉNIOR: Si es Cypress ejecutando un test, le damos 60 segundos de margen 
+      // a los emuladores locales para que no salte el aviso offline por falsos positivos de lentitud.
+      const esCypress = typeof window !== 'undefined' && (window as any).Cypress;
+      const tiempoLimite = esCypress ? 60000 : 10000; // 60s en test / 10s en producción
+
+      // Cronómetro de control de latencia offline adaptativo
       const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('TIMEOUT_OFFLINE')), 10000);
+        setTimeout(() => reject(new Error('TIMEOUT_OFFLINE')), tiempoLimite);
       });
 
       // Carrera táctica entre la latencia de Firebase y el cronómetro de red

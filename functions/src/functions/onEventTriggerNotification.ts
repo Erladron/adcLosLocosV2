@@ -15,16 +15,19 @@ type TipoNotificacion = 'NUEVO_EVENTO' | 'MODIFICACION_EVENTO' | 'ELIMINACION_EV
 
 /**
  * @function onEventTriggerNotification
- * @description Trigger de Cloud Functions v2 que intercepta cualquier escritura (creación, edición o purga)
- * en la colección raíz de eventos. Realiza una segmentación perimetral estricta basada en roles y 
- * solvencia de tesorería del socio antes de delegar el envío masivo en el motor Firebase Cloud Messaging (FCM).
- * Aplica criterios de optimización industrial omitiendo alertas en incrementos automáticos de aforo.
- * * @param {FirestoreEvent<Change<DocumentSnapshot> | undefined>} event Contexto del evento Firestore v2.
+ * @description Cloud Function v2 (Firestore Trigger) que intercepta cualquier tipo de escritura 
+ * (creación, edición o purga) en la colección raíz de eventos. Realiza una segmentación perimetral 
+ * estricta basada en roles y solvencia de tesorería del socio antes de delegar el envío masivo en 
+ * el motor de Firebase Cloud Messaging (FCM). Aplica criterios de optimización industrial omitiendo 
+ * alertas automáticas ante meros incrementos de asistencia.
+ * Hereda la región global 'europe-west1' configurada en el archivo de índice.
+ * 
+ * @param {FirestoreEvent<Change<DocumentSnapshot> | undefined>} event - Contexto del evento de base de datos Firestore v2.
+ * 
  * @returns {Promise<null>} Retorno síncrono controlado para liberar hilos de ejecución en el entorno cloud.
  */
 export const onEventTriggerNotification = onDocumentWritten({
-  document: 'events/{eventId}',
-  region: 'us-central1'
+  document: 'events/{eventId}'
 }, async (event: FirestoreEvent<Change<DocumentSnapshot> | undefined>): Promise<null> => {
   const eventId = event.params.eventId;
   
@@ -153,7 +156,7 @@ export const onEventTriggerNotification = onDocumentWritten({
           }
         });
 
-        // Envía masivamente limpiando del tirón los tokens obsoletos del servidor
+        // Envía masivamente limpiando los tokens obsoletos del servidor
         await enviarConAutoLimpieza(listaDispositivos, messages);
         console.log(`✅ [MOTORES DE ALERTA] Despachados con éxito ${listaDispositivos.length} pushes segmentados.`);
       }

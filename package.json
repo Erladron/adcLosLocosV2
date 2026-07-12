@@ -12,6 +12,7 @@
     "start:desa": "ionic serve --configuration=desa",
     "emuladores": "cross-env FIREBASE_AUTH_EMULATOR_HOST=\"localhost:9099\" firebase emulators:start",
     "build:core": "ng build shared-core",
+    "docs:global": "typedoc",
     "build:web:prod": "ng build web-onboarding --configuration=production",
     "build:app:prod": "ng build app --configuration=production",
     "build:android": "npm run build:core && ng build app && npx cap sync android && npx cap open android",
@@ -20,7 +21,10 @@
     "deploy:web:desa": "firebase use desa && npm run build:core && ng build web-onboarding && firebase deploy --only hosting",
     "deploy:web:prod": "firebase use prod && npm run build:core && npm run build:web:prod && firebase deploy --only hosting",
     "deploy:all:desa": "firebase use desa && npm run build:core && ng build web-onboarding && ng build app && cd functions && npm run build && cd .. && firebase deploy",
-    "deploy:all:prod": "firebase use prod && npm run build:core && npm run build:web:prod && npm run build:app:prod && cd functions && npm run build && cd .. && firebase deploy"
+    "deploy:all:prod": "firebase use prod && npm run build:core && npm run build:web:prod && npm run build:app:prod && cd functions && npm run build && cd .. && firebase deploy",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "private": true,
   "dependencies": {
@@ -38,7 +42,7 @@
     "@capacitor/app": "8.1.0",
     "@capacitor/camera": "^8.2.0",
     "@capacitor/core": "8.4.0",
-    "@capacitor/haptics": "8.0.2",
+    "@capacitor/haptics": "^8.0.2",
     "@capacitor/keyboard": "8.0.3",
     "@capacitor/push-notifications": "^8.1.1",
     "@capacitor/status-bar": "8.0.2",
@@ -66,6 +70,7 @@
     "@angular/language-service": "^20.0.0",
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "8.4.0",
+    "@compodoc/compodoc": "^2.0.0",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
@@ -85,7 +90,10 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^20.3.2",
-    "typescript": "^5.8.2"
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.12.0",
+    "typescript": "^5.8.2",
+    "vitepress": "^1.6.4"
   },
   "description": "Asociacion Deportiva Cultural Los Locos"
 }

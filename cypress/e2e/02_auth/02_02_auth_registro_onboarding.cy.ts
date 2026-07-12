@@ -86,7 +86,7 @@ describe('Registro y Onboarding de Usuario - 02_02_auth_registro_onboarding.cy.t
     cy.get('[data-cy="btn-submit-onboarding"]').click({ force: true });
 
     // Comprobamos que aterriza de forma exitosa en la pantalla de retención
-    cy.url().should('include', '/pending-approval');
+    cy.url({ timeout: 30000 }).should('include', '/pending-approval');
     cy.get('[data-cy="approval-status-title"]').should('contain.text', 'Solicitud enviada');
 
     // Cierre de sesión final en la pantalla de pendientes

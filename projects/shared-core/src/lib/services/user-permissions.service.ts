@@ -155,12 +155,6 @@ export class UserPermissionsService {
     return this.isAdmin(user) || this.isDirectiva(user);
   }
 
-  /** @description Habilita la visibilidad del módulo de paneles informativos y balances métricos del padrón. */
-  public canAccessStats(user: User | null): boolean {
-    if (!user) return false;
-    return this.isAdmin(user) || this.isDirectiva(user);
-  }
-
   /** @description Otorga privilegios para crear, editar o purgar convocatorias en la agenda de eventos. */
   public canManageEvents(user: User | null): boolean {
     if (!user) return false;

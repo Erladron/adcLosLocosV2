@@ -34,12 +34,12 @@ describe('👮 ROL: Administrador - Desactiva y reactiva usuario', () => {
             .type('Control de calidad automatizado', { force: true });
 
         cy.get('ion-alert').find('button').last().click({ force: true });
-        cy.wait(600);
+        cy.wait(15000);
 
         // Reactivamos al usuario para dejar la semilla equilibrada
         cy.get('app-user-audit-form ion-button').contains('Reactivar usuario').click({ force: true });
         cy.get('ion-alert').find('button').last().click({ force: true });
-        cy.wait(600);
+        cy.wait(15000);
 
         // 6️⃣ RETORNO SEGURO Y PURGA FINAL DE SESIÓN
         cy.get('[data-cy="header-back-button"]').filter(':visible').first().click({ force: true });

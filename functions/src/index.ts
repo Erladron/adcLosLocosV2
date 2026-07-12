@@ -1,5 +1,13 @@
 import * as admin from 'firebase-admin';
 
+// 🚀 1. Importamos el gestor de opciones globales de la v2
+import { setGlobalOptions } from 'firebase-functions/v2';
+
+// 🚀 2. Fijamos la región europea como prioritaria para TODO el backend
+setGlobalOptions({ 
+  region: 'europe-west1' 
+});
+
 // Inicializamos el SDK de administración global una única vez aquí para todo el ecosistema
 admin.initializeApp();
 

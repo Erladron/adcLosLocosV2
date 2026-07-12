@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, writeBatch } from '@angular/fire/firestore';
 import { User } from '../models/users.models';
 import { UserRole } from '../models/user-role.enum';
 
@@ -46,6 +46,24 @@ export class UserFeesService {
       cuotaActualizadaPorNombre: adminNombre,
       cuotaActualizadaAt: new Date() // Criterio unificado: Objeto Date nativo mapeado a Timestamp
     });
+  }
+
+  public async updateCuotasMasivas(
+    cambios: { uid: string, alCorriente: boolean }[],
+    adminUid: string,
+    adminNombre: string
+  ): Promise<void> {
+    const batch = writeBatch(this.firestore);
+    cambios.forEach(c => {
+      const userDocRef = doc(this.firestore, `users/${c.uid}`);
+      batch.update(userDocRef, {
+        cuotaAlCorriente: c.alCorriente,
+        cuotaActualizadaPorUid: adminUid,
+        cuotaActualizadaPorNombre: adminNombre,
+        cuotaActualizadaAt: new Date()
+      });
+    });
+    return await batch.commit();
   }
 
   /**

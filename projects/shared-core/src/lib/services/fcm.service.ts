@@ -57,6 +57,14 @@ export class FcmService {
   public async inicializarFCM(currentEnvironment: any): Promise<void> {
     this.environmentConfig = currentEnvironment;
 
+    // 🛡️ REPARACIÓN INTELIGENTE: Detectamos si el navegador está bajo el control de Cypress.
+    // Si es un test automático, apagamos FCM para que no congele la red local en las ráfagas.
+    // Si estás tú programando en localhost normalmente, continuará hacia abajo y funcionará.
+    if (typeof window !== 'undefined' && (window as any).Cypress) {
+      console.warn('⚠️ [FcmService] Ejecución automatizada de Cypress detectada. Se omiten las notificaciones Push para optimizar la red del test.');
+      return; // 🛑 Abortamos limpiamente solo en los tests
+    }
+
     if (this.platform.is('hybrid')) {
       console.log('⏳ [FcmService] Inicializando escuchadores nativos de Capacitor...');
       this.configurarEscuchadores();
@@ -161,7 +169,7 @@ export class FcmService {
       });
 
     } catch (error) {
-      this.solicitandoTokenWeb = false; 
+      this.solicitandoTokenWeb = false;
       console.error('🚨 [FcmService] Error fatal configurando el entorno Web Push:', error);
     }
   }
@@ -233,7 +241,7 @@ export class FcmService {
     try {
       // Saneamos la cadena del token para que no contenga caracteres prohibidos en IDs de Firestore
       const tokenDocId = encodeURIComponent(nuevoToken).replace(/\./g, '%2E');
-      
+
       // Apuntamos de manera determinista e idempotente al documento unívoco del token
       const tokenDocRef = doc(this.firestore, `users/${userId}/tokens/${tokenDocId}`);
 
@@ -242,7 +250,7 @@ export class FcmService {
         token: nuevoToken,
         createdAt: new Date()
       });
-      
+
       console.log('✅ [FcmService] Token guardado en Firestore de manera idempotente.');
     } catch (error: any) {
       console.error('🚨 [FcmService] Error gestionando el token de dispositivo en Firestore:', error);

@@ -14,7 +14,7 @@ export const environment = {
 
     createUserByAdmin:
 
-      'https://us-central1-adcloslocos-desa.cloudfunctions.net/createUserByAdmin'
+      'https://europe-west1-adcloslocos-desa.cloudfunctions.net/createUserByAdmin'
 
   }
 

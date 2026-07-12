@@ -134,7 +134,9 @@ bootstrapApplication(
       }),
 
       provideFunctions(() => {
-        const functions = getFunctions();
+        // 🎯 OBLIGAMOS AL SDK WEB A APUNTAR A LA REGIÓN EUROPEA CORRECTA
+        const functions = getFunctions(undefined, 'europe-west1'); 
+        
         if (activarEmuladores) {
           connectFunctionsEmulator(functions, 'localhost', 5001);
         }

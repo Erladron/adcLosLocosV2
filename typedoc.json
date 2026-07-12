@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["projects/shared-core/src/public-api.ts", "functions/src/index.ts"],
+  "out": "docs/api-reference",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none"
+}

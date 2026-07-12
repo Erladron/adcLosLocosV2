@@ -267,7 +267,12 @@ export class UserDetailPage implements OnInit {
     const permissions = this.facade.getPermissions(this.user);
     this.isOwnProfile = permissions.isOwnProfile;
 
-    this.isVistaPublica = permissions.isSocio && !this.isOwnProfile;
+    // 🛡️ REPARACIÓN SÉNIOR: Si es un ALTA ADMINISTRATIVA, la vista NUNCA es pública. El admin lo ve todo.
+    if (this.isAdminCreate) {
+      this.isVistaPublica = false;
+    } else {
+      this.isVistaPublica = permissions.isSocio && !this.isOwnProfile;
+    }
 
     if (this.isVistaPublica) {
       this.canEditPersonalData = false;
@@ -459,6 +464,20 @@ export class UserDetailPage implements OnInit {
    */
   public async save(): Promise<void> {
     if (this.isVistaPublica) return;
+
+    // 🔥 EL SALVAVIDAS SÉNIOR: Si estamos en alta, rescatamos los emails directamente del DOM
+    // para evitar que los ciclos de renderizado de Ionic los dejen en undefined.
+    if (!this.isEditMode) {
+      const inputEmail = document.querySelector('[data-cy="input-credentials-email"] input') as HTMLInputElement;
+      const inputRepeatEmail = document.querySelector('[data-cy="input-credentials-repeat-email"] input') as HTMLInputElement;
+
+      if (inputEmail && inputEmail.value) {
+        this.user.email = inputEmail.value.trim();
+      }
+      if (inputRepeatEmail && inputRepeatEmail.value) {
+        this.repeatEmail = inputRepeatEmail.value.trim();
+      }
+    }
 
     if (this.user.tipo === UserRole.PORTERO) {
       if (!this.user.foto && !this.croppedImage) {

@@ -137,6 +137,10 @@ export function validateEmail(email: string, repeatEmail?: string): boolean {
 
   // Si se inyecta el parámetro espejo de confirmación, validamos la simetría absoluta de las cadenas
   if (repeatEmail !== undefined) {
+    console.log("🔍 [DEBUG EMAIL 1]:", JSON.stringify(email));
+    console.log("🔍 [DEBUG EMAIL 2]:", JSON.stringify(repeatEmail));
+    console.log("🔍 [DEBUG RESULTADO]:", email.trim().toLowerCase() === repeatEmail.trim().toLowerCase());
+
     return email.trim().toLowerCase() === repeatEmail.trim().toLowerCase();
   }
 
@@ -243,12 +247,12 @@ export class DateEsUtils {
     const ano = d.getFullYear();
     const hora = String(d.getHours()).padStart(2, '0');
     const minutos = String(d.getMinutes()).padStart(2, '0');
-    
+
     if (incluirSegundos) {
       const segundos = String(d.getSeconds()).padStart(2, '0');
       return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
     }
-    
+
     return `${dia}/${mes}/${ano} ${hora}:${minutos}`;
   }
 

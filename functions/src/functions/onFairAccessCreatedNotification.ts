@@ -3,12 +3,24 @@ import * as admin from 'firebase-admin';
 import { FcmTemplates } from '../constants/fcm-templates';
 import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
+/** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
 const db = admin.firestore();
 
+/**
+ * @function onFairAccessCreatedNotification
+ * @description Cloud Function v2 (Firestore Trigger) que intercepta la creación de nuevos 
+ * accesos o credenciales de feria en la colección 'fair-access'. Resuelve de forma asíncrona en 
+ * caliente los metadatos del evento asociado y despacha una alerta push personalizada a través 
+ * de FCM discriminando el flujo si el receptor es un socio o un invitado externo.
+ * Hereda la región global 'europe-west1' configurada en el archivo de índice.
+ * 
+ * @param {FirestoreEvent<QueryDocumentSnapshot | undefined>} event - Contexto del ciclo de vida de la creación del documento Firestore v2.
+ * 
+ * @returns {Promise<null>} Retorno síncrono controlado para liberar hilos de ejecución en el entorno cloud.
+ */
 export const onFairAccessCreatedNotification = onDocumentCreated({
-  document: 'fair-access/{accessId}',
-  region: 'us-central1'
-}, async (event) => {
+  document: 'fair-access/{accessId}'
+}, async (event): Promise<null> => {
   if (!event.data) return null;
 
   const accessData = event.data.data();
@@ -17,13 +29,16 @@ export const onFairAccessCreatedNotification = onDocumentCreated({
   const nombreSocioAnfitrion = accessData?.invitedByName || 'Un socio';
   const esInvitado = accessData?.userType === 'invitado';
 
+  // =========================================================================
+  // 🛡️ CONTROL PREVENTIVO: VALIDACIÓN DE INTEGRIDAD DE DATOS
+  // =========================================================================
   if (!receptorUid || !eventId) {
     console.log('⚠️ [PASES] El documento no contiene userId o eventId válidos. Cancelando push.');
     return null;
   }
 
   try {
-    // 🚀 OBTENER NOMBRE REAL DEL EVENTO EN CALIENTE
+    // 1️⃣ RESOLUCIÓN EN CALIENTE DEL NOMBRE REAL DEL EVENTO ASOCIADO
     const eventDoc = await db.collection('events').doc(eventId).get();
     if (!eventDoc.exists) {
       console.log(`⚠️ [PASES] No se localizó el evento ${eventId} en Firestore. Se aborta push.`);
@@ -34,7 +49,7 @@ export const onFairAccessCreatedNotification = onDocumentCreated({
 
     console.log(`📡 [PASES] Evaluando credencial para el evento "${nombreEvento}". Destinatario UID: ${receptorUid}`);
 
-    // Buscamos dispositivos activos del usuario receptor
+    // 2️⃣ EXTRACCIÓN Y DIRECCIONAMIENTO DE TOKENS ACTIVOS DEL RECEPTOR
     const tokensSnapshot = await db.collection(`users/${receptorUid}/tokens`).get();
     
     if (tokensSnapshot.empty) {
@@ -54,9 +69,12 @@ export const onFairAccessCreatedNotification = onDocumentCreated({
       }
     });
 
+    // =========================================================================
+    // 🚀 BIFURCACIÓN DE PLANTILLAS Y DISTRIBUCIÓN PUSH EN LA PLATAFORMA FCM
+    // =========================================================================
     if (listaDispositivos.length > 0) {
       const messages = listaDispositivos.map(item => {
-        // 🚀 CRITERIO GLOBALIZADO: Bifurcamos la plantilla según el tipo de acceso
+        // Criterio globalizado: Mapeamos la plantilla idónea según el rol asignado al pase
         if (esInvitado) {
           return FcmTemplates.getInvitacionExternoTemplate(item.token, nombreSocioAnfitrion, nombreEvento);
         } else {
@@ -64,6 +82,7 @@ export const onFairAccessCreatedNotification = onDocumentCreated({
         }
       });
 
+      // Envía masivamente purgando reactivamente tokens inválidos o huérfanos
       await enviarConAutoLimpieza(listaDispositivos, messages);
       console.log(`✅ [PASES] Notificación de credencial distribuida con éxito.`);
     }

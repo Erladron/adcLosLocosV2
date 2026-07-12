@@ -21,12 +21,14 @@ describe('🚀 SEMILLA: Inicialización del Entorno de Pruebas', () => {
         cy.log('💥 Base de datos vaciada al 100%.');
 
         // 2️⃣ LA SIEMBRA REINA
-        cy.request('POST', 'http://127.0.0.1:5001/adcloslocos-desa/us-central1/inicializarTest')
-            .then((resSiembra) => {
-                expect(resSiembra.body.success).to.be.true;
-                cy.log('🌱 Base de datos sembrada con éxito.');
-
-            });
+        cy.request({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/adcloslocos-desa/europe-west1/inicializarTest',
+            timeout: 60000
+        }).then((resSiembra) => {
+            expect(resSiembra.body.success).to.be.true;
+            cy.log('🌱 Base de datos sembrada con éxito.');
+        });
     });
 
 });
