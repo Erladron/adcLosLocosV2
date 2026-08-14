@@ -1,4 +1,4 @@
-describe('👮 ROL: Administrador - Alta de Nueva Convocatoria de Evento', () => {
+describe('TestCase: 04_01_admin_alta_evento', () => {
 
     const tituloEvento = 'Asamblea General Ordinaria 2026';
     const descripcionEvento = 'Convocatoria anual para todos los socios de la Peña para debatir los presupuestos y el calendario de eventos del año.';
@@ -10,7 +10,7 @@ describe('👮 ROL: Administrador - Alta de Nueva Convocatoria de Evento', () =>
         cy.get('[data-cy="home-page-content"]').should('be.visible');
     });
 
-    it('Debe crear una nueva asamblea exclusiva para socios y verificar que se muestra en el listado', () => {
+    it('PASO 1: Debe crear una nueva asamblea exclusiva para socios y verificar que se muestra en el listado', () => {
 
         // 1️⃣ NAVEGAR DIRECTAMENTE DESDE LOS BOTONES DE LA HOME
         cy.get('[data-cy="quick-card-eventos"]').should('be.visible').click();
@@ -27,51 +27,70 @@ describe('👮 ROL: Administrador - Alta de Nueva Convocatoria de Evento', () =>
         cy.get('[data-cy="form-input-title"]').type(tituloEvento, { force: true });
 
         // Tipo de evento
-        cy.get('[data-cy="form-select-type"]').select('asamblea', { force: true });
+
+        // 1. Hacemos click real en el selector de Ionic para que despliegue el Popover
+        cy.get('[data-cy="form-select-type"]').click({ force: true });
+        cy.wait(500); // Pequeño colchón obligatorio para la animación de apertura del popover
+
+        // 2. Buscamos la opción correspondiente dentro del contenedor flotante que dibuja Ionic
+        // Nota: Puedes usar 'ion-select-option' o atacar directamente al texto del item en el popover
+        cy.get('ion-popover ion-item, ion-popover button')
+            .contains('Asamblea', { matchCase: false })
+            .click({ force: true });
+
+        cy.wait(400); // Pausa de asentamiento para que Angular asimile el cambio en el formulario reactivo
 
         // Marcamos el checkbox de que dura todo el día de forma interactiva
         cy.get('[data-cy="form-checkbox-allday"]').click({ force: true });
 
         // =========================================================================
-        // 📆 DISPARO CONTROLADO DEL EVENTO DE FECHA NATIVO
+        // 📆 DISPARO CONTROLADO DEL EVENTO DE FECHA EN FORMATO LOCAL PURO
         // =========================================================================
-        // 1. Abrimos el popover de forma real para simular el flujo humano
         cy.get('[data-cy="form-popover-trigger-start"]').click({ force: true });
         cy.wait(600);
 
-        // 2. Extraemos el componente ion-datetime, le asignamos la fecha ISO de hoy
-        // y disparamos el evento personalizado 'ionChange' que espera tu HTML.
         cy.get('ion-popover #startDatePicker').then(($el) => {
+            
             const datetimeEl = $el[0] as any;
+
+            // 🎯 REPARACIÓN DE PASO DE DATOS: Construimos un formato de texto local (YYYY-MM-DD)
+            // idéntico al que genera tu navegador cuando haces click manual en el componente.
             const hoy = new Date();
-            hoy.setDate(hoy.getDate() + 1);
-            const fechaIni = hoy.toISOString(); 
-            // Forzamos el valor interno del componente de Ionic
+            const ano = hoy.getFullYear();
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoy.getDate()).padStart(2, '0');
+
+            // Le pasamos solo la fecha y una hora plana local sin la "Z" universal de JavaScript
+            const fechaIni = `${ano}-${mes}-${dia}T12:00:00`;
+
             datetimeEl.value = fechaIni;
 
-            // Emitimos el evento nativo 'ionChange' simulando que se ha pulsado Aceptar
             datetimeEl.dispatchEvent(new CustomEvent('ionChange', {
+                
                 detail: { value: fechaIni }
             }));
 
-            // Si el componente expone el método confirm, lo llamamos para que cierre el popover visualmente
             if (datetimeEl.confirm) {
+                
                 datetimeEl.confirm(true);
             }
         });
 
-        cy.wait(600); // Colchón de asentamiento para que el popover desaparezca y Angular procese el estado
+        cy.wait(600); // Colchón de asentamiento para Angular
 
         // Descripción del evento
-        cy.get('[data-cy="form-textarea-description"]').type(descripcionEvento, { force: true });
+        // Buscamos el elemento nativo textarea oculto en el interior del componente de Ionic
+        cy.get('[data-cy="form-textarea-description"]')
+            .find('textarea')
+            .type(descripcionEvento, { force: true });
 
         // Evento exclusivo para socios (Toggle)
         cy.get('[data-cy="form-toggle-private"]').click({ force: true });
 
         // Aforo y plazas
         cy.get('[data-cy="form-input-max-attendees"]')
-          .clear({ force: true })
-          .type('1', { force: true });        
+            .clear({ force: true })
+            .type('1', { force: true });
 
         // 4️⃣ UBICACIÓN POSTAL / SEDE
         cy.get('[data-cy="form-input-location-name"]').type('Sede Peña Los Locos', { force: true });
@@ -104,7 +123,7 @@ describe('👮 ROL: Administrador - Alta de Nueva Convocatoria de Evento', () =>
 
         // 3. Pinchamos de forma interactiva en el primer elemento sugerido de la lista
         cy.get('[data-cy="form-address-predictions"] ion-item').first().click({ force: true });
-        
+
         cy.wait(500); // Pausa de asentamiento para que Angular asimile el objeto de la dirección
 
         // 5️⃣ GUARDAR CONVOCATORIA

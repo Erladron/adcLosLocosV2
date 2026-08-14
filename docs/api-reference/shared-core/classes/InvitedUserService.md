@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / InvitedUserService
+[shared-core](../index.md) / InvitedUserService
 
 # Class: InvitedUserService
 
-Defined in: [services/invited-user.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/invited-user.service.ts#L23)
+Defined in: [services/invited-user.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/invited-user.service.ts#L23)
 
 InvitedUserService
 
@@ -21,7 +21,7 @@ expedición de invitaciones de la Junta y canjes automáticos de tokens durante 
 
 > **new InvitedUserService**(): `InvitedUserService`
 
-Defined in: [services/invited-user.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/invited-user.service.ts#L32)
+Defined in: [services/invited-user.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/invited-user.service.ts#L32)
 
 #### Returns
 
@@ -37,7 +37,7 @@ Inicializa el servicio de gestión de pre-altas.
 
 > **createInvitation**(`invitation`): `Promise`\<`any`\>
 
-Defined in: [services/invited-user.service.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/invited-user.service.ts#L40)
+Defined in: [services/invited-user.service.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/invited-user.service.ts#L40)
 
 #### Parameters
 
@@ -67,7 +67,7 @@ Registra un nuevo token de pre-alta web en la colección del servidor adjudicán
 
 > **getInvitationByEmail**(`email`): `Promise`\<[`InvitedUser`](../interfaces/InvitedUser.md)\>
 
-Defined in: [services/invited-user.service.ts:56](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/invited-user.service.ts#L56)
+Defined in: [services/invited-user.service.ts:56](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/invited-user.service.ts#L56)
 
 #### Parameters
 
@@ -97,7 +97,7 @@ Localiza el documento de siembra de un aspirante mediante su correo electrónico
 
 > **isValidInvitation**(`email`): `Promise`\<`boolean`\>
 
-Defined in: [services/invited-user.service.ts:86](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/invited-user.service.ts#L86)
+Defined in: [services/invited-user.service.ts:86](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/invited-user.service.ts#L86)
 
 #### Parameters
 
@@ -127,7 +127,7 @@ Evaluación perimetral rápida que confirma si un email posee un token apto para
 
 > **markAsUsed**(`invitationId`, `uid`): `Promise`\<`void`\>
 
-Defined in: [services/invited-user.service.ts:103](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/invited-user.service.ts#L103)
+Defined in: [services/invited-user.service.ts:103](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/invited-user.service.ts#L103)
 
 #### Parameters
 

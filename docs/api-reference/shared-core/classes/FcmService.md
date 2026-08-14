@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / FcmService
+[shared-core](../index.md) / FcmService
 
 # Class: FcmService
 
-Defined in: [services/fcm.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fcm.service.ts#L23)
+Defined in: [services/fcm.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/fcm.service.ts#L23)
 
 FcmService
 
@@ -22,7 +22,7 @@ y orquesta de forma asíncrona la inicialización segura del Service Worker en e
 
 > **new FcmService**(): `FcmService`
 
-Defined in: [services/fcm.service.ts:48](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fcm.service.ts#L48)
+Defined in: [services/fcm.service.ts:48](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/fcm.service.ts#L48)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa la estructura base del servicio de mensajería push.
 
 > **guardarTokenEnFirestore**(`userId`, `nuevoToken`): `Promise`\<`void`\>
 
-Defined in: [services/fcm.service.ts:238](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fcm.service.ts#L238)
+Defined in: [services/fcm.service.ts:257](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/fcm.service.ts#L257)
 
 #### Parameters
 
@@ -77,7 +77,7 @@ garantizando que no existan duplicados por concurrencia y optimizando drásticam
 
 > **inicializarFCM**(`currentEnvironment`): `Promise`\<`void`\>
 
-Defined in: [services/fcm.service.ts:57](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fcm.service.ts#L57)
+Defined in: [services/fcm.service.ts:57](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/fcm.service.ts#L57)
 
 #### Parameters
 

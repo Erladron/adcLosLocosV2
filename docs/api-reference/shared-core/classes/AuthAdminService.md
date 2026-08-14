@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthAdminService
+[shared-core](../index.md) / AuthAdminService
 
 # Class: AuthAdminService
 
-Defined in: [services/auth-admin.service.ts:16](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-admin.service.ts#L16)
+Defined in: [services/auth-admin.service.ts:16](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-admin.service.ts#L16)
 
 AuthAdminService
 
@@ -22,7 +22,7 @@ abstrayendo la lógica de tokens e infraestructura tanto en local (emuladores) c
 
 > **new AuthAdminService**(): `AuthAdminService`
 
-Defined in: [services/auth-admin.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-admin.service.ts#L31)
+Defined in: [services/auth-admin.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-admin.service.ts#L31)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el gestor de llamadas privilegiadas de la directiva.
 
 > **createUserAsAdmin**(`user`): `Promise`\<`any`\>
 
-Defined in: [services/auth-admin.service.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-admin.service.ts#L40)
+Defined in: [services/auth-admin.service.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-admin.service.ts#L40)
 
 #### Parameters
 
@@ -69,7 +69,7 @@ saltándose la pre-alta civil web. Refactorizado de Fetch manual a HTTPS Callabl
 
 > **getToken**(): `Promise`\<`string`\>
 
-Defined in: [services/auth-admin.service.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-admin.service.ts#L82)
+Defined in: [services/auth-admin.service.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-admin.service.ts#L82)
 
 #### Returns
 
@@ -91,7 +91,7 @@ Extrae de forma asíncrona la cadena del token Bearer JWT activo del usuario log
 
 > **hasValidAdminSession**(): `Promise`\<`boolean`\>
 
-Defined in: [services/auth-admin.service.ts:62](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-admin.service.ts#L62)
+Defined in: [services/auth-admin.service.ts:62](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-admin.service.ts#L62)
 
 #### Returns
 
@@ -114,7 +114,7 @@ operador administrador siguen vigentes y autorizados frente al servidor de ident
 
 > **sendCustomResetPasswordEmail**(`email`): `Promise`\<`any`\>
 
-Defined in: [services/auth-admin.service.ts:96](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-admin.service.ts#L96)
+Defined in: [services/auth-admin.service.ts:96](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-admin.service.ts#L96)
 
 #### Parameters
 

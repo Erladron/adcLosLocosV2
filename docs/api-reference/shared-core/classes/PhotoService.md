@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / PhotoService
+[shared-core](../index.md) / PhotoService
 
 # Class: PhotoService
 
-Defined in: [services/photo.service.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/photo.service.ts#L24)
+Defined in: [services/photo.service.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/photo.service.ts#L24)
 
 PhotoService
 
@@ -22,7 +22,7 @@ y gestiona las estructuras de directorios aislados para perfiles y cartelería d
 
 > **new PhotoService**(): `PhotoService`
 
-Defined in: [services/photo.service.ts:39](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/photo.service.ts#L39)
+Defined in: [services/photo.service.ts:39](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/photo.service.ts#L39)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el gestor especialista de almacenamiento multimedia.
 
 > **uploadEventPoster**(`eventId`, `base64`): `Promise`\<`string`\>
 
-Defined in: [services/photo.service.ts:76](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/photo.service.ts#L76)
+Defined in: [services/photo.service.ts:76](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/photo.service.ts#L76)
 
 #### Parameters
 
@@ -75,7 +75,7 @@ Mantiene el mismo flujo de conversión binaria eficiente que la foto de perfil p
 
 > **uploadProfilePhoto**(`uid`, `base64`): `Promise`\<`string`\>
 
-Defined in: [services/photo.service.ts:49](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/photo.service.ts#L49)
+Defined in: [services/photo.service.ts:49](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/photo.service.ts#L49)
 
 #### Parameters
 

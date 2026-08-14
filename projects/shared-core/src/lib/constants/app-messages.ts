@@ -85,7 +85,7 @@ export const APP_MESSAGES = {
   /** @description Bloqueo de agenda: Intercepta la confirmación de asistencia bloqueando el botón si el socio adeuda cuotas. */
   [AppMessageCode.ADC_FEES_ERR_0001]: 'Acceso denegado. Es necesario estar al corriente de pago de la cuota para poder apuntarse a este evento.',
 
-  /** @description Bloqueo ferial: Impide generar pases de caseta en `fair-access` si se detecta estado de impago en el perfil. */
+  /** @description Bloqueo ferial: Impide generar pases de caseta en `event-access` si se detecta estado de impago en el perfil. */
   [AppMessageCode.ADC_FEES_ERR_0002]: 'Operación bloqueada. No se permiten emitir o desplegar credenciales feriales si el socio presenta cuotas pendientes.',
 
   /** @description Excepción en consola de cuotas: Error asíncrono al intentar mutar el booleano financiero desde el panel masivo. */
@@ -197,6 +197,12 @@ export const APP_MESSAGES = {
   /** @description Validación estructural: Los formularios exigen definir el cupo dinámico de pases permitidos para eventos tipo feria. */
   [AppMessageCode.ADC_EVENT_ERR_0009]: 'El límite de invitados por socio es obligatorio para los eventos de feria y debe ser igual o superior a 1.',
 
+  /** @description Validación estructural: No se puede gestionar la asistencia de un evento inexistente. */
+  [AppMessageCode.ADC_EVENT_ERR_0010]: 'No se puede gestionar la asistencia de un evento inexistente.',
+
+  /** @description Validación estructural: No se puede eliminar un evento sin un identificador válido. */
+  [AppMessageCode.ADC_EVENT_ERR_0011]: 'No se puede eliminar un evento sin un identificador válido.',
+
   // =========================================================================
   // EVENT INFO (Mensajes Informativos de la Agenda)
   // =========================================================================
@@ -211,46 +217,89 @@ export const APP_MESSAGES = {
   [AppMessageCode.ADC_EVENT_INF_0003]: '¡Asistencia confirmada! Te esperamos.',
 
   // =========================================================================
-  // FAIR ERRORS (Errores del Módulo Ferial y Pases QR)
+  // PASS ERRORS (Errores del Módulo Ferial y Pases QR)
   // =========================================================================
 
   /** @description Restricción de negocio: El socio ha superado el cupo estricto de invitaciones externas reguladas para el día de hoy. */
-  [AppMessageCode.ADC_FAIR_ERR_0001]: 'Límite superado. Solo puedes invitar a un máximo de 6 personas por día.',
+  [AppMessageCode.ADC_PASS_ERR_0001]: 'Límite superado. Solo puedes invitar a un máximo de 6 personas por día.',
 
   /** @description Terminal de portería: El decodificador del plugin de la cámara arroja un payload ilegítimo o fraudulento. */
-  [AppMessageCode.ADC_FAIR_ERR_0002]: 'El código QR escaneado no corresponde a ningún pase de feria válido.',
+  [AppMessageCode.ADC_PASS_ERR_0002]: 'El código QR escaneado no corresponde a ningún pase de feria válido.',
 
   /** @description Validación de acceso en puerta: El escáner rechaza el pase porque la fecha actual no cubre la vigencia del abono. */
-  [AppMessageCode.ADC_FAIR_ERR_0003]: 'Acceso denegado. Este pase no es válido para la fecha de hoy.',
+  [AppMessageCode.ADC_PASS_ERR_0003]: 'Acceso denegado. Este pase no es válido para la fecha de hoy.',
 
-  /** @description Excepción de inserción: Error asíncrono de red al intentar insertar el pase digital en `fair-access`. */
-  [AppMessageCode.ADC_FAIR_ERR_0004]: 'No se pudo emitir la invitación. Verifica tu conexión.',
+  /** @description Excepción de inserción: Error asíncrono de red al intentar insertar el pase digital en `event-access`. */
+  [AppMessageCode.ADC_PASS_ERR_0004]: 'No se pudo emitir la invitación. Verifica tu conexión.',
 
   /** @description Excepción destructiva: Fallo al intentar borrar el documento de la credencial desde el listado del socio. */
-  [AppMessageCode.ADC_FAIR_ERR_0005]: 'No se pudo anular el pase. Inténtalo de nuevo más tarde.',
+  [AppMessageCode.ADC_PASS_ERR_0005]: 'No se pudo anular el pase. Inténtalo de nuevo más tarde.',
 
   /** @description Validación de formulario ferial: Argumento obligatorio nulo al intentar generar un pase sin identidad destino. */
-  [AppMessageCode.ADC_FAIR_ERR_0006]: 'Debes seleccionar un invitado del listado desplegable o escribir un nombre.',
+  [AppMessageCode.ADC_PASS_ERR_0006]: 'Debes seleccionar un invitado del listado desplegable o escribir un nombre.',
 
   /** @description Monitorización reactiva: El snapshot determina que el usuario logueado carece de pases válidos vigentes hoy. */
-  [AppMessageCode.ADC_FAIR_ERR_0007]: 'No tienes ningún pase de feria activo disponible para la jornada de hoy.',
+  [AppMessageCode.ADC_PASS_ERR_0007]: 'No tienes ningún pase de feria activo disponible para la jornada de hoy.',
 
   /** @description Control en puerta: El carnet escaneado pertenece a una cuenta suspendida o bloqueada por la directiva. */
-  [AppMessageCode.ADC_FAIR_ERR_0008]: 'Acceso denegado. El socio no se encuentra en estado activo en el sistema.',
+  [AppMessageCode.ADC_PASS_ERR_0008]: 'Acceso denegado. El socio no se encuentra en estado activo en el sistema.',
 
   /** @description Control de portería: El tipo de rol asignado al usuario carece por completo de permisos de admisión ferial. */
-  [AppMessageCode.ADC_FAIR_ERR_0009]: 'Acceso denegado. El tipo de usuario no dispone de credenciales de acceso de socio.',
+  [AppMessageCode.ADC_PASS_ERR_0009]: 'Acceso denegado. El tipo de usuario no dispone de credenciales de acceso de socio.',
 
   // =========================================================================
-  // FAIR INFO (Mensajes Informativos de Feria)
+  // PASS INFO (Mensajes Informativos de Feria)
   // =========================================================================
 
   /** @description Notificación Toast de éxito: Pase relacional insertado y disponible para el despliegue del código QR del invitado. */
-  [AppMessageCode.ADC_FAIR_INF_0001]: 'Pase de caseta emitido correctamente.',
+  [AppMessageCode.ADC_PASS_INF_0001]: 'Pase de caseta emitido correctamente.',
 
   /** @description Notificación Toast de éxito: Credencial purgada del servidor, quedando inmediatamente desvinculada e invalidada. */
-  [AppMessageCode.ADC_FAIR_INF_0002]: 'El pase ha sido anulado correctamente.',
+  [AppMessageCode.ADC_PASS_INF_0002]: 'El pase ha sido anulado correctamente.',
 
   /** @description Inicialización de billetera: El onSnapshot detecta un abono vigente hoy y activa el acceso lateral de forma automática. */
-  [AppMessageCode.ADC_FAIR_INF_0003]: '¡Pase de Feria disponible! Hemos generado automáticamente tu credencial de acceso para la caseta de feria.',
+  [AppMessageCode.ADC_PASS_INF_0003]: '¡Pase de Feria disponible! Hemos generado automáticamente tu credencial de acceso para la caseta de feria.',
+
+  // =========================================================================
+  // DATE PICKER COMPONENT ERRORS (Errores Específicos del Selector DatePicker)
+  // =========================================================================
+
+  /** @description Error de inicialización interna del DatePicker */
+  [AppMessageCode.ADC_DP_ERR_0001]: 'Error al inicializar el componente selector de fecha.',
+
+  /** @description Error al descartar/cancelar el DatePicker */
+  [AppMessageCode.ADC_DP_ERR_0002]: 'Error al cancelar la selección de fecha.',
+
+  /** @description Error al procesar y confirmar la fecha en el DatePicker */
+  [AppMessageCode.ADC_DP_ERR_0003]: 'Error al procesar la fecha y hora seleccionadas.',
+
+  /** @description Error al presentar el modal del DatePicker desde el cliente */
+  [AppMessageCode.ADC_DP_ERR_0004]: 'No se ha podido abrir el selector de fecha.',
+
+  // =========================================================================
+  // FCM / PUSH NOTIFICATION ERRORS (Notificaciones Push y Service Worker)
+  // =========================================================================
+
+  /** @description Traducción oficial de bloqueo de permisos de notificaciones. */
+  [AppMessageCode.ADC_FCM_ERR_0001]: 'Las notificaciones push han sido bloqueadas. Actívalas en la configuración de tu navegador.',
+
+  /** @description Traducción oficial para fallos en el registro del Service Worker. */
+  [AppMessageCode.ADC_FCM_ERR_0002]: 'Error al activar el servicio de notificaciones en el dispositivo.',
+
+  /** @description Traducción oficial para fallos en la recuperación del token de FCM. */
+  [AppMessageCode.ADC_FCM_ERR_0003]: 'No se ha podido obtener la clave de notificaciones del dispositivo.',
+
+  /** @description Traducción oficial para fallos en la persistencia del token en Firestore. */
+  [AppMessageCode.ADC_FCM_ERR_0004]: 'Error guardando la clave de notificaciones en tu perfil.',
+
+  /** @description Traducción oficial para entornos sin soporte Web Push. */
+  [AppMessageCode.ADC_FCM_ERR_0005]: 'Tu navegador no admite notificaciones push en segundo plano.',
+
+  // =========================================================================
+  // FCM / PUSH NOTIFICATION INFO (Mensajes Informativos de FCM)
+  // =========================================================================
+
+  /** @description Traducción de confirmación de registro de notificaciones. */
+  [AppMessageCode.ADC_FCM_INF_0001]: 'Notificaciones push activadas con éxito.',
+  
 };

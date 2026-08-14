@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserService
+[shared-core](../index.md) / UserService
 
 # Class: UserService
 
-Defined in: [services/user.service.ts:34](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L34)
+Defined in: [services/user.service.ts:34](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L34)
 
 UserService
 
@@ -21,7 +21,7 @@ Gobierna de forma directa las mutaciones NoSQL e interactúa con el satélite de
 
 > **new UserService**(): `UserService`
 
-Defined in: [services/user.service.ts:52](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L52)
+Defined in: [services/user.service.ts:52](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L52)
 
 #### Returns
 
@@ -37,7 +37,7 @@ Constructor limpio y vacío conforme a las reglas modernas de Angular.
 
 > **approveUser**(`uid`): `Promise`\<`any`\>
 
-Defined in: [services/user.service.ts:327](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L327)
+Defined in: [services/user.service.ts:327](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L327)
 
 #### Parameters
 
@@ -67,7 +67,7 @@ Invoca la Cloud Function serverless encargada de aprobar e incorporar oficialmen
 
 > **create**(`uid`, `user`): `Promise`\<`void`\>
 
-Defined in: [services/user.service.ts:100](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L100)
+Defined in: [services/user.service.ts:100](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L100)
 
 #### Parameters
 
@@ -103,7 +103,7 @@ Persiste por primera vez un documento de usuario estructurado dentro de la colec
 
 > **deactivateUser**(`uid`, `adminUid`, `motivo`): `Promise`\<`any`\>
 
-Defined in: [services/user.service.ts:293](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L293)
+Defined in: [services/user.service.ts:293](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L293)
 
 #### Parameters
 
@@ -146,7 +146,7 @@ El backend procesa las marcas administrativas e inhabilita las credenciales de s
 
 > **delete**(`uid`): `Promise`\<`void`\>
 
-Defined in: [services/user.service.ts:316](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L316)
+Defined in: [services/user.service.ts:316](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L316)
 
 #### Parameters
 
@@ -176,7 +176,7 @@ Ejecuta de forma fulminante la destrucción física permanente de un documento d
 
 > **existeNumeroSocio**(`numero`, `excluirUid?`): `Promise`\<`boolean`\>
 
-Defined in: [services/user.service.ts:72](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L72)
+Defined in: [services/user.service.ts:72](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L72)
 
 #### Parameters
 
@@ -213,7 +213,7 @@ Permite inyectar de forma opcional un UID de exclusión para no autocollisionar 
 
 > **existsByEmail**(`email`): `Promise`\<`any`\>
 
-Defined in: [services/user.service.ts:350](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L350)
+Defined in: [services/user.service.ts:350](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L350)
 
 #### Parameters
 
@@ -244,7 +244,7 @@ Retorna un objeto descriptor con el origen de la cuenta y sus datos en caso de c
 
 > **generarUUID**(): `string`
 
-Defined in: [services/user.service.ts:60](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L60)
+Defined in: [services/user.service.ts:60](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L60)
 
 #### Returns
 
@@ -267,7 +267,7 @@ para la asignación estable de IDs de documentos en operaciones del chasis de so
 
 > **getAll**(): `Promise`\<[`User`](../interfaces/User.md)[]\>
 
-Defined in: [services/user.service.ts:111](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L111)
+Defined in: [services/user.service.ts:111](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L111)
 
 #### Returns
 
@@ -290,7 +290,7 @@ Uso exclusivo para tareas críticas administrativas de auditoría.
 
 > **getApprovedUsers**(): `Promise`\<[`User`](../interfaces/User.md)[]\>
 
-Defined in: [services/user.service.ts:125](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L125)
+Defined in: [services/user.service.ts:125](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L125)
 
 #### Returns
 
@@ -312,7 +312,7 @@ Recupera mediante una consulta indexada del servidor a todos los usuarios en est
 
 > **getById**(`uid`): `Promise`\<[`User`](../interfaces/User.md)\>
 
-Defined in: [services/user.service.ts:235](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L235)
+Defined in: [services/user.service.ts:235](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L235)
 
 #### Parameters
 
@@ -342,7 +342,7 @@ Busca de forma unívoca un documento de usuario en la base de datos según su UI
 
 > **getInactiveUsers**(): `Promise`\<[`User`](../interfaces/User.md)[]\>
 
-Defined in: [services/user.service.ts:184](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L184)
+Defined in: [services/user.service.ts:184](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L184)
 
 #### Returns
 
@@ -364,7 +364,7 @@ Recupera mediante consulta indexada del servidor el histórico total de bajas l�
 
 > **getPendingUsers**(): `Promise`\<[`User`](../interfaces/User.md)[]\>
 
-Defined in: [services/user.service.ts:199](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L199)
+Defined in: [services/user.service.ts:199](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L199)
 
 #### Returns
 
@@ -386,7 +386,7 @@ Descarga de forma asíncrona las solicitudes de pre-alta procedentes de invitaci
 
 > **getSociosActivosParaMantenimiento**(): `Promise`\<[`User`](../interfaces/User.md)[]\>
 
-Defined in: [services/user.service.ts:215](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L215)
+Defined in: [services/user.service.ts:215](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L215)
 
 #### Returns
 
@@ -409,7 +409,7 @@ de la masa social activos (Roles socio y directiva) sujetos al abono de cuotas p
 
 > **getUsersForSocioComun**(): `Promise`\<[`User`](../interfaces/User.md)[]\>
 
-Defined in: [services/user.service.ts:143](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L143)
+Defined in: [services/user.service.ts:143](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L143)
 
 #### Returns
 
@@ -434,7 +434,7 @@ impidiendo fugas de información a través del árbol de memoria del cliente.
 
 > **reactivateUser**(`uid`, `adminUid`): `Promise`\<`any`\>
 
-Defined in: [services/user.service.ts:305](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L305)
+Defined in: [services/user.service.ts:305](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L305)
 
 #### Parameters
 
@@ -470,7 +470,7 @@ Despierta de forma reactiva una cuenta desactivada o bloqueada invocando la Clou
 
 > **rejectUser**(`uid`): `Promise`\<`void`\>
 
-Defined in: [services/user.service.ts:338](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L338)
+Defined in: [services/user.service.ts:338](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L338)
 
 #### Parameters
 
@@ -500,7 +500,7 @@ Aplica una actualización directa modificando el estado del usuario a 'rejected'
 
 > **requestUserApproval**(`data?`): `Promise`\<`any`\>
 
-Defined in: [services/user.service.ts:372](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L372)
+Defined in: [services/user.service.ts:372](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L372)
 
 #### Parameters
 
@@ -530,7 +530,7 @@ Despacha una solicitud estructurada de aprobación hacia el trigger en la nube p
 
 > **solicitarBajaVoluntariaCuenta**(`uid`): `Promise`\<`void`\>
 
-Defined in: [services/user.service.ts:385](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L385)
+Defined in: [services/user.service.ts:385](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L385)
 
 #### Parameters
 
@@ -564,7 +564,7 @@ Lanza una excepción controlada si el socio debe la cuota anual.
 
 > **update**(`uid`, `data`): `Promise`\<`void`\>
 
-Defined in: [services/user.service.ts:279](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L279)
+Defined in: [services/user.service.ts:279](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L279)
 
 #### Parameters
 
@@ -600,7 +600,7 @@ Método genérico intermedio para mutaciones abstractas controladas sobre el doc
 
 > **updatePersonalData**(`uid`, `data`): `Promise`\<`void`\>
 
-Defined in: [services/user.service.ts:254](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user.service.ts#L254)
+Defined in: [services/user.service.ts:254](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user.service.ts#L254)
 
 #### Parameters
 

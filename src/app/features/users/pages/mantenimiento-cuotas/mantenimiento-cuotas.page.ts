@@ -31,6 +31,11 @@ import { EmptyStateComponent } from 'shared-core';
 export class MantenimientoCuotasPage implements OnInit {
 
   private userFeesService: UserFeesService = inject(UserFeesService);
+  private authService = inject(AuthService);
+  private loading = inject(LoadingService);
+  private notification = inject(NotificationService);
+  private errorHandler = inject(ErrorHandlerService);
+  private userService = inject(UserService);
 
   public users: User[] = [];
   public filteredUsers: User[] = [];
@@ -42,13 +47,7 @@ export class MantenimientoCuotasPage implements OnInit {
   // Guardamos temporalmente los cambios en caliente: { [socioId]: nuevoEstadoBooleano }
   public sociosModificadosTemporalmente: { [key: string]: boolean } = {};
 
-  constructor(
-    private authService: AuthService,
-    private loading: LoadingService,
-    private notification: NotificationService,
-    private errorHandler: ErrorHandlerService,
-    private userService: UserService
-  ) {
+  constructor() {
     addIcons({ cashOutline, searchOutline, filterOutline, checkmarkCircleOutline, closeCircleOutline, checkboxOutline, saveOutline });
   }
 
@@ -83,9 +82,9 @@ export class MantenimientoCuotasPage implements OnInit {
         const dniSocio = limpiarTexto(user.dni);
 
         return nombre.includes(textoBusqueda) ||
-               nombreSocio.includes(textoBusqueda) ||
-               numSocio.includes(textoBusqueda) ||
-               dniSocio.includes(textoBusqueda);
+          nombreSocio.includes(textoBusqueda) ||
+          numSocio.includes(textoBusqueda) ||
+          dniSocio.includes(textoBusqueda);
       });
     }
 
@@ -166,10 +165,10 @@ export class MantenimientoCuotasPage implements OnInit {
       await this.loading.wrap(async () => {
         const promesas = idsParaModificar.map(async (idSocio) => {
           const nuevoEstado = this.sociosModificadosTemporalmente[idSocio];
-          
+
           // 1. Guardamos de verdad en Firestore mediante tu servicio satélite
           await this.userFeesService.updateCuotaStatus(idSocio, nuevoEstado, adminUid, adminNombre);
-          
+
           // 2. Buscamos el socio en nuestro array local para consolidar sus datos de auditoría
           const socioLocal = this.users.find(u => u.id === idSocio);
           if (socioLocal) {
@@ -183,7 +182,7 @@ export class MantenimientoCuotasPage implements OnInit {
       }, 'Guardando cambios múltiples en Firebase...');
 
       this.notification.success(`Se han actualizado las cuotas de ${idsParaModificar.length} socios.`);
-      
+
       // Limpiamos los estados temporales una vez guardados con éxito
       this.sociosModificadosTemporalmente = {};
       this.modoMasivoActivo = false;

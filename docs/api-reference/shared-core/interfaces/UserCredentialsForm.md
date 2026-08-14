@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserCredentialsForm
+[shared-core](../index.md) / UserCredentialsForm
 
 # Interface: UserCredentialsForm
 
-Defined in: [models/user-detail.model.ts:70](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L70)
+Defined in: [models/user-detail.model.ts:70](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L70)
 
 UserCredentialsForm
 
@@ -20,7 +20,7 @@ Estructura de control utilizada para tipar el subformulario reactivo de cambio d
 
 > **currentPassword**: `string`
 
-Defined in: [models/user-detail.model.ts:72](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L72)
+Defined in: [models/user-detail.model.ts:72](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L72)
 
 #### Description
 
@@ -32,7 +32,7 @@ Contraseña actual del operador, exigida por el servidor para procesos de re-aut
 
 > **newEmail**: `string`
 
-Defined in: [models/user-detail.model.ts:75](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L75)
+Defined in: [models/user-detail.model.ts:75](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L75)
 
 #### Description
 
@@ -44,7 +44,7 @@ Nueva dirección de correo electrónico que se pretende vincular a la cuenta.
 
 > **newPassword**: `string`
 
-Defined in: [models/user-detail.model.ts:78](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L78)
+Defined in: [models/user-detail.model.ts:78](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L78)
 
 #### Description
 
@@ -56,7 +56,7 @@ Nueva contraseña plana de acceso que se desea establecer.
 
 > **repeatPassword**: `string`
 
-Defined in: [models/user-detail.model.ts:81](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L81)
+Defined in: [models/user-detail.model.ts:81](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L81)
 
 #### Description
 

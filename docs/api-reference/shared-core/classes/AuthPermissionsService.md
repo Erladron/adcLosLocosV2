@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthPermissionsService
+[shared-core](../index.md) / AuthPermissionsService
 
 # Class: AuthPermissionsService
 
-Defined in: [services/auth-permissions.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L15)
+Defined in: [services/auth-permissions.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L15)
 
 AuthPermissionsService
 
@@ -22,7 +22,7 @@ Diseñado como un motor de lógica puro libre de efectos secundarios o dependenc
 
 > **new AuthPermissionsService**(): `AuthPermissionsService`
 
-Defined in: [services/auth-permissions.service.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L21)
+Defined in: [services/auth-permissions.service.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L21)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el evaluador analítico de permisos.
 
 > **getRole**(`userData`): `string`
 
-Defined in: [services/auth-permissions.service.ts:57](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L57)
+Defined in: [services/auth-permissions.service.ts:57](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L57)
 
 #### Parameters
 
@@ -68,7 +68,7 @@ Recupera la propiedad tipo que define el rol asignado en el documento.
 
 > **getUid**(`user`): `string`
 
-Defined in: [services/auth-permissions.service.ts:43](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L43)
+Defined in: [services/auth-permissions.service.ts:43](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L43)
 
 #### Parameters
 
@@ -98,7 +98,7 @@ Extrae de forma segura el identificador único alfanumérico (UID) de la sesión
 
 > **hasStatus**(`userData`, `status`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:112](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L112)
+Defined in: [services/auth-permissions.service.ts:112](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L112)
 
 #### Parameters
 
@@ -134,7 +134,7 @@ Compara de forma genérica el estado actual del documento frente a un token User
 
 > **isActivo**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:119](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L119)
+Defined in: [services/auth-permissions.service.ts:119](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L119)
 
 #### Parameters
 
@@ -156,7 +156,7 @@ Retorna true si el socio consta plenamente habilitado y activo en el sistema.
 
 > **isAdmin**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:67](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L67)
+Defined in: [services/auth-permissions.service.ts:67](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L67)
 
 #### Parameters
 
@@ -186,7 +186,7 @@ Valida si el miembro ostenta privilegios totales de Administrador en el ecosiste
 
 > **isDeshabilitado**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:147](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L147)
+Defined in: [services/auth-permissions.service.ts:147](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L147)
 
 #### Parameters
 
@@ -208,7 +208,7 @@ Retorna true si la cuenta presenta una baja lógica del sistema por impago o san
 
 > **isDirectiva**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:77](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L77)
+Defined in: [services/auth-permissions.service.ts:77](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L77)
 
 #### Parameters
 
@@ -238,7 +238,7 @@ Valida si el miembro pertenece formalmente al cuerpo operativo de la Junta Direc
 
 > **isInvitado**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:97](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L97)
+Defined in: [services/auth-permissions.service.ts:97](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L97)
 
 #### Parameters
 
@@ -268,7 +268,7 @@ Valida si el usuario se encuentra tipado como un Invitado externo en fase latent
 
 > **isLogged**(`user`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:33](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L33)
+Defined in: [services/auth-permissions.service.ts:33](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L33)
 
 #### Parameters
 
@@ -298,7 +298,7 @@ Evalúa de forma lógica la presencia o nulidad de la instancia física de Fireb
 
 > **isPendienteAprobacion**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:133](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L133)
+Defined in: [services/auth-permissions.service.ts:133](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L133)
 
 #### Parameters
 
@@ -320,7 +320,7 @@ Retorna true si el alta del perfil está en cola a la espera de la revisión de 
 
 > **isPendienteDatos**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:126](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L126)
+Defined in: [services/auth-permissions.service.ts:126](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L126)
 
 #### Parameters
 
@@ -342,7 +342,7 @@ Retorna true si el aspirante tiene pendiente la cumplimentación civil de sus da
 
 > **isRechazado**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:140](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L140)
+Defined in: [services/auth-permissions.service.ts:140](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L140)
 
 #### Parameters
 
@@ -364,7 +364,7 @@ Retorna true si la solicitud de alta del usuario fue desestimada y denegada.
 
 > **isSocio**(`userData`): `boolean`
 
-Defined in: [services/auth-permissions.service.ts:87](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-permissions.service.ts#L87)
+Defined in: [services/auth-permissions.service.ts:87](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-permissions.service.ts#L87)
 
 #### Parameters
 

@@ -40,7 +40,7 @@ export const roleGuard: CanActivateFn = async (route: ActivatedRouteSnapshot) =>
   console.log('🔄 [ROLE-GUARD] Privilegios insuficientes. Evaluando redirección por rol:', role);
   
   if (role === UserRole.PORTERO) {
-    return router.parseUrl('/fair-scan'); // El portero a trabajar
+    return router.parseUrl('/event-scan'); // El portero a trabajar
   }
 
   return router.parseUrl('/home'); // Los socios a la sección de inicio

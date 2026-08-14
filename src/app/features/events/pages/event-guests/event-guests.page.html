@@ -60,7 +60,7 @@
           </ul>
         </div>
 
-        <button class="peña-action-btn-submit" [disabled]="!invitadoSeleccionadoId" (click)="enviarInvitacion()" data-cy="btn-submit-fair-pass">
+        <button class="peña-action-btn-submit" [disabled]="!invitadoSeleccionadoId" (click)="enviarInvitacion()" data-cy="btn-submit-passe-pass">
           <ion-icon name="send-outline"></ion-icon>
           Emitir Pase Digital de Acceso
         </button>
@@ -68,7 +68,7 @@
 
       <!-- Warning Si se consume el Cupo -->
       <ng-template #cupoLlenoTpl>
-        <div class="warning-card-alert" data-cy="fair-limit-reached-warning">
+        <div class="warning-card-alert" data-cy="passe-limit-reached-warning">
           <ion-icon name="alert-circle-outline"></ion-icon>
           <p>Has completado el cupo máximo de {{ limiteInvitaciones }} pases autorizados para esta convocatoria.</p>
         </div>

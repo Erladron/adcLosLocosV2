@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthService
+[shared-core](../index.md) / AuthService
 
 # Class: AuthService
 
-Defined in: [services/auth.service.ts:20](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L20)
+Defined in: [services/auth.service.ts:20](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L20)
 
 AuthService
 
@@ -23,7 +23,7 @@ subservicios especialistas inyectados para mitigar ficheros monstruo.
 
 > **new AuthService**(`sessionService`, `registerService`, `credentialsService`, `permissionsService`, `adminService`): `AuthService`
 
-Defined in: [services/auth.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L31)
+Defined in: [services/auth.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L31)
 
 #### Parameters
 
@@ -73,7 +73,7 @@ Inicializa la pasarela unificada e invoca el arranque inmediato del listener de 
 
 > **get** **authReady**(): `boolean`
 
-Defined in: [services/auth.service.ts:66](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L66)
+Defined in: [services/auth.service.ts:66](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L66)
 
 ##### Description
 
@@ -91,7 +91,7 @@ Informa si el motor interno de Firebase ha concluido el handshake de inicializac
 
 > **get** **currentUser**(): `User`
 
-Defined in: [services/auth.service.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L50)
+Defined in: [services/auth.service.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L50)
 
 ##### Description
 
@@ -109,7 +109,7 @@ Obtiene la instancia cruda del usuario autenticado en el SDK de Firebase Auth.
 
 > **get** **currentUserData**(): [`User`](../interfaces/User.md)
 
-Defined in: [services/auth.service.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L58)
+Defined in: [services/auth.service.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L58)
 
 ##### Description
 
@@ -125,7 +125,7 @@ Provee la proyección de datos del socio almacenada en la colección principal `
 
 > **createUserAsAdmin**(`user`): `Promise`\<`any`\>
 
-Defined in: [services/auth.service.ts:215](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L215)
+Defined in: [services/auth.service.ts:215](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L215)
 
 #### Parameters
 
@@ -153,7 +153,7 @@ Invoca el alta manual directa de un usuario a través del administrador saltánd
 
 > **getRole**(): `string`
 
-Defined in: [services/auth.service.ts:274](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L274)
+Defined in: [services/auth.service.ts:274](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L274)
 
 #### Returns
 
@@ -169,7 +169,7 @@ Recupera de forma síncrona la cadena del rango de rol asignado al documento.
 
 > **getToken**(): `Promise`\<`string`\>
 
-Defined in: [services/auth.service.ts:233](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L233)
+Defined in: [services/auth.service.ts:233](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L233)
 
 #### Returns
 
@@ -189,7 +189,7 @@ Extrae el JsonWebToken (JWT) de Firebase Auth activo en la sesión del dispositi
 
 > **getUid**(): `string`
 
-Defined in: [services/auth.service.ts:269](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L269)
+Defined in: [services/auth.service.ts:269](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L269)
 
 #### Returns
 
@@ -205,7 +205,7 @@ Recupera de forma síncrona el string del UID del canal de autenticación.
 
 > **hasValidAdminSession**(): `Promise`\<`boolean`\>
 
-Defined in: [services/auth.service.ts:224](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L224)
+Defined in: [services/auth.service.ts:224](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L224)
 
 #### Returns
 
@@ -225,7 +225,7 @@ Verifica si la sesión del administrador posee los tokens vigentes requeridos po
 
 > **isActivo**(): `boolean`
 
-Defined in: [services/auth.service.ts:299](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L299)
+Defined in: [services/auth.service.ts:299](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L299)
 
 #### Returns
 
@@ -241,7 +241,7 @@ Retorna true si el usuario se encuentra plenamente habilitado y activo en la app
 
 > **isAdmin**(): `boolean`
 
-Defined in: [services/auth.service.ts:279](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L279)
+Defined in: [services/auth.service.ts:279](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L279)
 
 #### Returns
 
@@ -257,7 +257,7 @@ Retorna true si el operador ostenta privilegios totales de Administrador.
 
 > **isDirectiva**(): `boolean`
 
-Defined in: [services/auth.service.ts:284](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L284)
+Defined in: [services/auth.service.ts:284](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L284)
 
 #### Returns
 
@@ -273,7 +273,7 @@ Retorna true si el operador pertenece al cuerpo de la Junta Directiva.
 
 > **isInactive**(): `boolean`
 
-Defined in: [services/auth.service.ts:309](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L309)
+Defined in: [services/auth.service.ts:309](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L309)
 
 #### Returns
 
@@ -289,7 +289,7 @@ Retorna true si la cuenta presenta una baja lógica del sistema.
 
 > **isInvitado**(): `boolean`
 
-Defined in: [services/auth.service.ts:294](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L294)
+Defined in: [services/auth.service.ts:294](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L294)
 
 #### Returns
 
@@ -305,7 +305,7 @@ Retorna true si la cuenta es un perfil externo o Invitado web.
 
 > **isLogged**(): `boolean`
 
-Defined in: [services/auth.service.ts:264](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L264)
+Defined in: [services/auth.service.ts:264](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L264)
 
 #### Returns
 
@@ -321,7 +321,7 @@ Retorna true si consta un usuario autenticado activo en el chasis local.
 
 > **isPendienteAprobacion**(): `boolean`
 
-Defined in: [services/auth.service.ts:304](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L304)
+Defined in: [services/auth.service.ts:304](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L304)
 
 #### Returns
 
@@ -337,7 +337,7 @@ Retorna true si el alta civil del aspirante está en cola a la espera del veredi
 
 > **isSocio**(): `boolean`
 
-Defined in: [services/auth.service.ts:289](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L289)
+Defined in: [services/auth.service.ts:289](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L289)
 
 #### Returns
 
@@ -353,7 +353,7 @@ Retorna true si el operador posee la ficha ordinaria sujeta a cuotas de Socio.
 
 > **login**(`email`, `password`): `Promise`\<`any`\>
 
-Defined in: [services/auth.service.ts:119](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L119)
+Defined in: [services/auth.service.ts:119](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L119)
 
 #### Parameters
 
@@ -390,7 +390,7 @@ para denegar el acceso instantáneamente en caso de baja lógica por impago o ex
 
 > **logout**(): `Promise`\<`void`\>
 
-Defined in: [services/auth.service.ts:140](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L140)
+Defined in: [services/auth.service.ts:140](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L140)
 
 #### Returns
 
@@ -410,7 +410,7 @@ Destruye los tokens y cierra la sesión activa en el cliente.
 
 > **refreshUserDataFromServer**(): `Promise`\<`any`\>
 
-Defined in: [services/auth.service.ts:242](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L242)
+Defined in: [services/auth.service.ts:242](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L242)
 
 #### Returns
 
@@ -432,7 +432,7 @@ Fuerza la recarga de datos inyectando el resultado directamente sobre los Guards
 
 > **register**(`user`, `checkPreRegister?`): `Promise`\<`any`\>
 
-Defined in: [services/auth.service.ts:165](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L165)
+Defined in: [services/auth.service.ts:165](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L165)
 
 #### Parameters
 
@@ -466,7 +466,7 @@ Procesa las solicitudes de registro web, validando opcionalmente si el email ha 
 
 > **reloadUserData**(`uid`): `Promise`\<`any`\>
 
-Defined in: [services/auth.service.ts:150](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L150)
+Defined in: [services/auth.service.ts:150](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L150)
 
 #### Parameters
 
@@ -494,7 +494,7 @@ Sincroniza y fuerza la re-lectura del documento del socio desde Firestore hacia 
 
 > **sendCustomResetPasswordEmail**(`email`): `Promise`\<`any`\>
 
-Defined in: [services/auth.service.ts:255](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L255)
+Defined in: [services/auth.service.ts:255](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L255)
 
 #### Parameters
 
@@ -522,7 +522,7 @@ Lanza el envío del enlace de configuración de contraseñas personalizado a tra
 
 > **updateCredentials**(`uid`, `currentEmail`, `currentPassword`, `newEmail`, `newPassword`): `Promise`\<`void`\>
 
-Defined in: [services/auth.service.ts:190](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L190)
+Defined in: [services/auth.service.ts:190](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L190)
 
 #### Parameters
 
@@ -574,7 +574,7 @@ Ejecuta de forma segura cambios en el correo electrónico o contraseñas primari
 
 > **waitForAuthReady**(): `Promise`\<`void`\>
 
-Defined in: [services/auth.service.ts:79](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L79)
+Defined in: [services/auth.service.ts:79](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L79)
 
 #### Returns
 
@@ -594,7 +594,7 @@ Detiene el flujo de ejecución de forma asíncrona hasta que el canal de Auth es
 
 > **waitForUserData**(): `Promise`\<`void`\>
 
-Defined in: [services/auth.service.ts:89](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth.service.ts#L89)
+Defined in: [services/auth.service.ts:89](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth.service.ts#L89)
 
 #### Returns
 

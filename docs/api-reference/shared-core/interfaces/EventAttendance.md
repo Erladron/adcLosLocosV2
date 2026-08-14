@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / EventAttendance
+[shared-core](../index.md) / EventAttendance
 
 # Interface: EventAttendance
 
-Defined in: [models/events.models.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L82)
+Defined in: [models/events.models.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L82)
 
 EventAttendance
 
@@ -20,7 +20,7 @@ Estructura transaccional de confirmación de asistencia para la subcolección in
 
 > **companions**: `number`
 
-Defined in: [models/events.models.ts:94](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L94)
+Defined in: [models/events.models.ts:94](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L94)
 
 #### Description
 
@@ -32,7 +32,7 @@ Número de plazas adicionales añadidas para acompañantes.
 
 > **eventId**: `string`
 
-Defined in: [models/events.models.ts:86](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L86)
+Defined in: [models/events.models.ts:86](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L86)
 
 #### Description
 
@@ -44,7 +44,7 @@ ID de la convocatoria vinculada.
 
 > **id**: `string`
 
-Defined in: [models/events.models.ts:84](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L84)
+Defined in: [models/events.models.ts:84](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L84)
 
 #### Description
 
@@ -56,7 +56,7 @@ ID único del registro (coincide con el UID del socio para evitar colisiones).
 
 > `optional` **paymentMethod?**: `"bizum"` \| `"cash"`
 
-Defined in: [models/events.models.ts:96](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L96)
+Defined in: [models/events.models.ts:96](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L96)
 
 #### Description
 
@@ -68,7 +68,7 @@ Pasarela de pago elegida si la convocatoria requiere desembolso.
 
 > **registeredAt**: `string`
 
-Defined in: [models/events.models.ts:98](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L98)
+Defined in: [models/events.models.ts:98](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L98)
 
 #### Description
 
@@ -80,7 +80,7 @@ Timestamp de confirmación del botón de asistencia.
 
 > **status**: `"going"` \| `"not_going"` \| `"waitlist"`
 
-Defined in: [models/events.models.ts:90](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L90)
+Defined in: [models/events.models.ts:90](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L90)
 
 #### Description
 
@@ -92,7 +92,7 @@ Veredicto transaccional de asistencia.
 
 > **userId**: `string`
 
-Defined in: [models/events.models.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L88)
+Defined in: [models/events.models.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L88)
 
 #### Description
 

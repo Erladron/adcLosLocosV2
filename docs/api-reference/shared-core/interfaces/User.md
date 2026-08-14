@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / User
+[shared-core](../index.md) / User
 
 # Interface: User
 
-Defined in: [models/users.models.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L14)
+Defined in: [models/users.models.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L14)
 
 User
 
@@ -22,7 +22,7 @@ estado financiero transaccional y la traza completa de auditoría multinivel del
 
 > `optional` **approvedAt?**: `string` \| `Date` \| \{ `nanoseconds`: `number`; `seconds`: `number`; \}
 
-Defined in: [models/users.models.ts:127](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L127)
+Defined in: [models/users.models.ts:127](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L127)
 
 #### Description
 
@@ -34,7 +34,7 @@ Fecha y hora exacta de la aprobación e ingreso oficial al club.
 
 > `optional` **aprobadoPorNombre?**: `string`
 
-Defined in: [models/users.models.ts:124](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L124)
+Defined in: [models/users.models.ts:124](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L124)
 
 #### Description
 
@@ -46,7 +46,7 @@ Nombre del miembro de la directiva que aprobó la solicitud de onboarding.
 
 > `optional` **aprobadoPorUid?**: `string`
 
-Defined in: [models/users.models.ts:121](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L121)
+Defined in: [models/users.models.ts:121](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L121)
 
 #### Description
 
@@ -58,7 +58,7 @@ UID del miembro de la directiva que aprobó la solicitud de onboarding.
 
 > `optional` **bajaRealizadaPorNombre?**: `string`
 
-Defined in: [models/users.models.ts:153](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L153)
+Defined in: [models/users.models.ts:153](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L153)
 
 #### Description
 
@@ -70,7 +70,7 @@ Nombre del miembro de la directiva que ejecutó la baja del usuario.
 
 > `optional` **bajaRealizadaPorUid?**: `string`
 
-Defined in: [models/users.models.ts:150](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L150)
+Defined in: [models/users.models.ts:150](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L150)
 
 #### Description
 
@@ -82,7 +82,7 @@ UID del miembro de la directiva que ejecutó la baja del usuario.
 
 > `optional` **creadoPorNombre?**: `string`
 
-Defined in: [models/users.models.ts:101](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L101)
+Defined in: [models/users.models.ts:101](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L101)
 
 #### Description
 
@@ -94,7 +94,7 @@ Nombre del usuario administrador que dio de alta el perfil directamente.
 
 > `optional` **creadoPorUid?**: `string`
 
-Defined in: [models/users.models.ts:98](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L98)
+Defined in: [models/users.models.ts:98](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L98)
 
 #### Description
 
@@ -106,7 +106,7 @@ UID del usuario administrador que dio de alta el perfil directamente.
 
 > `optional` **createdAt?**: `string` \| `Date` \| \{ `nanoseconds`: `number`; `seconds`: `number`; \}
 
-Defined in: [models/users.models.ts:95](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L95)
+Defined in: [models/users.models.ts:95](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L95)
 
 #### Description
 
@@ -118,7 +118,7 @@ Fecha y hora de creación del registro. Soporta Date nativo, String ISO o el map
 
 > `optional` **cuotaActualizadaAt?**: `string` \| `Date` \| \{ `nanoseconds`: `number`; `seconds`: `number`; \}
 
-Defined in: [models/users.models.ts:140](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L140)
+Defined in: [models/users.models.ts:140](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L140)
 
 #### Description
 
@@ -130,7 +130,7 @@ Fecha y hora de la última modificación del estado financiero.
 
 > `optional` **cuotaActualizadaPorNombre?**: `string`
 
-Defined in: [models/users.models.ts:137](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L137)
+Defined in: [models/users.models.ts:137](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L137)
 
 #### Description
 
@@ -142,7 +142,7 @@ Nombre del administrador o directivo que realizó la última actualización sobr
 
 > `optional` **cuotaActualizadaPorUid?**: `string`
 
-Defined in: [models/users.models.ts:134](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L134)
+Defined in: [models/users.models.ts:134](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L134)
 
 #### Description
 
@@ -154,7 +154,7 @@ UID del administrador o directivo que realizó la última actualización sobre l
 
 > `optional` **cuotaAlCorriente?**: `boolean`
 
-Defined in: [models/users.models.ts:65](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L65)
+Defined in: [models/users.models.ts:65](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L65)
 
 #### Description
 
@@ -168,7 +168,7 @@ Modificable exclusivamente por los roles 'administrador' y 'directiva' de forma 
 
 > `optional` **deactivatedAt?**: `string` \| `Date` \| \{ `nanoseconds`: `number`; `seconds`: `number`; \}
 
-Defined in: [models/users.models.ts:147](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L147)
+Defined in: [models/users.models.ts:147](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L147)
 
 #### Description
 
@@ -180,7 +180,7 @@ Fecha y hora en la que el usuario fue suspendido o dado de baja de forma lógica
 
 > `optional` **detallesDireccion?**: `string`
 
-Defined in: [models/users.models.ts:46](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L46)
+Defined in: [models/users.models.ts:46](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L46)
 
 #### Description
 
@@ -192,7 +192,7 @@ Información aclaratoria o complementaria del domicilio (Opcional).
 
 > **direccion**: `string`
 
-Defined in: [models/users.models.ts:43](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L43)
+Defined in: [models/users.models.ts:43](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L43)
 
 #### Description
 
@@ -204,7 +204,7 @@ Dirección postal física del domicilio principal (Validada mediante API Mapbox)
 
 > **dni**: `string`
 
-Defined in: [models/users.models.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L40)
+Defined in: [models/users.models.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L40)
 
 #### Description
 
@@ -216,7 +216,7 @@ Documento Nacional de Identidad (DNI/NIE) validado sintácticamente.
 
 > **email**: `string`
 
-Defined in: [models/users.models.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L37)
+Defined in: [models/users.models.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L37)
 
 #### Description
 
@@ -228,7 +228,7 @@ Correo electrónico unívoco de acceso (Sincronizado con Firebase Auth).
 
 > `optional` **empresa?**: `string`
 
-Defined in: [models/users.models.ts:55](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L55)
+Defined in: [models/users.models.ts:55](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L55)
 
 #### Description
 
@@ -240,7 +240,7 @@ Empresa de seguridad externa a la que pertenece el usuario (Exclusivo para el ro
 
 > `optional` **estado?**: [`UserStatus`](../enumerations/UserStatus.md)
 
-Defined in: [models/users.models.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L88)
+Defined in: [models/users.models.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L88)
 
 #### Description
 
@@ -252,7 +252,7 @@ Estado actual del flujo de vida del usuario en el sistema.
 
 > `optional` **fechaInvitacion?**: `string` \| `Date` \| \{ `nanoseconds`: `number`; `seconds`: `number`; \}
 
-Defined in: [models/users.models.ts:114](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L114)
+Defined in: [models/users.models.ts:114](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L114)
 
 #### Description
 
@@ -264,7 +264,7 @@ Fecha y hora en la que se generó o consumió el token de invitación.
 
 > **foto**: `string`
 
-Defined in: [models/users.models.ts:49](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L49)
+Defined in: [models/users.models.ts:49](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L49)
 
 #### Description
 
@@ -276,7 +276,7 @@ URL de descarga de Storage o representación en Base64 de la fotografía de perf
 
 > `optional` **id?**: `string`
 
-Defined in: [models/users.models.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L21)
+Defined in: [models/users.models.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L21)
 
 #### Description
 
@@ -288,7 +288,7 @@ Identificador único del usuario (UID procedente de Firebase Authentication).
 
 > `optional` **invitadoPorNombre?**: `string`
 
-Defined in: [models/users.models.ts:111](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L111)
+Defined in: [models/users.models.ts:111](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L111)
 
 #### Description
 
@@ -300,7 +300,7 @@ Nombre del socio o administrador anfitrión que emitió la invitación web.
 
 > `optional` **invitadoPorUid?**: `string`
 
-Defined in: [models/users.models.ts:108](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L108)
+Defined in: [models/users.models.ts:108](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L108)
 
 #### Description
 
@@ -312,7 +312,7 @@ UID del socio o administrador anfitrión que emitió la invitación web.
 
 > `optional` **motivoBaja?**: `string`
 
-Defined in: [models/users.models.ts:156](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L156)
+Defined in: [models/users.models.ts:156](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L156)
 
 #### Description
 
@@ -324,7 +324,7 @@ Texto detallado con la justificación o motivo de la baja del socio.
 
 > **nombre**: `string`
 
-Defined in: [models/users.models.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L31)
+Defined in: [models/users.models.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L31)
 
 #### Description
 
@@ -336,7 +336,7 @@ Nombre y apellidos completos del usuario en formato PascalCase.
 
 > `optional` **numeroSocio?**: `string`
 
-Defined in: [models/users.models.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L24)
+Defined in: [models/users.models.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L24)
 
 #### Description
 
@@ -348,7 +348,7 @@ Número identificativo oficial asignado manualmente al socio por la Junta Direct
 
 > `optional` **password?**: `string`
 
-Defined in: [models/users.models.ts:85](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L85)
+Defined in: [models/users.models.ts:85](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L85)
 
 #### Description
 
@@ -360,7 +360,7 @@ Contraseña temporal utilizada únicamente en procesos de pre-alta o reseteo (No
 
 > `optional` **profesion?**: `string`
 
-Defined in: [models/users.models.ts:52](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L52)
+Defined in: [models/users.models.ts:52](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L52)
 
 #### Description
 
@@ -372,7 +372,7 @@ Profesión, oficio u ocupación actual del socio (Opcional).
 
 > **publicarEmail**: `boolean`
 
-Defined in: [models/users.models.ts:75](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L75)
+Defined in: [models/users.models.ts:75](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L75)
 
 #### Description
 
@@ -384,7 +384,7 @@ Define si el socio autoriza a que otros socios comunes visualicen su correo elec
 
 > **publicarTelefono**: `boolean`
 
-Defined in: [models/users.models.ts:72](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L72)
+Defined in: [models/users.models.ts:72](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L72)
 
 #### Description
 
@@ -396,7 +396,7 @@ Define si el socio autoriza a que otros socios comunes visualicen su número de 
 
 > `optional` **reactivadoPorNombre?**: `string`
 
-Defined in: [models/users.models.ts:169](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L169)
+Defined in: [models/users.models.ts:169](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L169)
 
 #### Description
 
@@ -408,7 +408,7 @@ Nombre del administrador que reactivó la cuenta del usuario.
 
 > `optional` **reactivatedAt?**: `string` \| `Date` \| \{ `nanoseconds`: `number`; `seconds`: `number`; \}
 
-Defined in: [models/users.models.ts:163](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L163)
+Defined in: [models/users.models.ts:163](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L163)
 
 #### Description
 
@@ -420,7 +420,7 @@ Fecha y hora de la última reactivación de una cuenta inactiva o rechazada.
 
 > `optional` **reactivóPorUid?**: `string`
 
-Defined in: [models/users.models.ts:166](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L166)
+Defined in: [models/users.models.ts:166](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L166)
 
 #### Description
 
@@ -432,7 +432,7 @@ UID del administrador que reactivó la cuenta del usuario.
 
 > **telefono**: `string`
 
-Defined in: [models/users.models.ts:34](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L34)
+Defined in: [models/users.models.ts:34](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L34)
 
 #### Description
 
@@ -444,7 +444,7 @@ Número de teléfono móvil o fijo de contacto.
 
 > **tipo**: [`UserRole`](../enumerations/UserRole.md)
 
-Defined in: [models/users.models.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/users.models.ts#L82)
+Defined in: [models/users.models.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/users.models.ts#L82)
 
 #### Description
 

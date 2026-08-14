@@ -195,6 +195,12 @@ export enum AppMessageCode {
   /** @description Validación estructural: Los eventos de tipo ferial exigen de forma obligatoria delimitar un cupo restrictivo de pases de externos. */
   ADC_EVENT_ERR_0009 = 'ADC_EVENT_ERR_0009',
 
+  /** @description Inexistencia en transacción: Intento de confirmar/cancelar asistencia en un evento eliminado. */
+  ADC_EVENT_ERR_0010 = 'ADC_EVENT_ERR_0010',
+
+  /** @description Validación estructural: Intento de eliminar un evento con un identificador (ID) nulo o inválido. */
+  ADC_EVENT_ERR_0011 = 'ADC_EVENT_ERR_0011',
+
   // =========================================================================
   // EVENT INFO (Mensajes Informativos de la Agenda)
   // =========================================================================
@@ -209,46 +215,88 @@ export enum AppMessageCode {
   ADC_EVENT_INF_0003 = 'ADC_EVENT_INF_0003',
 
   // =========================================================================
-  // FAIR ERRORS (Errores Específicos del Módulo Ferial y Pases QR)
+  // PASS ERRORS (Errores Específicos del Módulo Ferial y Pases QR)
   // =========================================================================
 
   /** @description Restricción de cupo: El socio ha consumido el límite diario de invitaciones externas reguladas por el evento de feria. */
-  ADC_FAIR_ERR_0001 = 'ADC_FAIR_ERR_0001',
+  ADC_PASS_ERR_0001 = 'ADC_PASS_ERR_0001',
 
   /** @description Terminal de portería: El string decodificado del código QR no responde al payload estricto de seguridad requerido. */
-  ADC_FAIR_ERR_0002 = 'ADC_FAIR_ERR_0002',
+  ADC_PASS_ERR_0002 = 'ADC_PASS_ERR_0002',
 
   /** @description Validación en puerta: Código QR rechazado por el escáner debido a que la fecha actual está fuera del rango de vigencia. */
-  ADC_FAIR_ERR_0003 = 'ADC_FAIR_ERR_0003',
+  ADC_PASS_ERR_0003 = 'ADC_PASS_ERR_0003',
 
   /** @description Excepción de emisión: Error asíncrono al intentar escribir o instanciar la credencial en la colección general. */
-  ADC_FAIR_ERR_0004 = 'ADC_FAIR_ERR_0004',
+  ADC_PASS_ERR_0004 = 'ADC_PASS_ERR_0004',
 
   /** @description Excepción destructiva: Error al intentar anular o dar de baja un pase activo de caseta desde el menú del socio. */
-  ADC_FAIR_ERR_0005 = 'ADC_FAIR_ERR_0005',
+  ADC_PASS_ERR_0005 = 'ADC_PASS_ERR_0005',
 
   /** @description Validación de formulario: Argumento nulo al intentar emitir un pase digital sin especificar una identidad o invitado. */
-  ADC_FAIR_ERR_0006 = 'ADC_FAIR_ERR_0006',
+  ADC_PASS_ERR_0006 = 'ADC_PASS_ERR_0006',
 
   /** @description Restricción ferial: El menú lateral ha monitorizado la colección y determina que el usuario carece de pases válidos hoy. */
-  ADC_FAIR_ERR_0007 = 'ADC_FAIR_ERR_0007',
+  ADC_PASS_ERR_0007 = 'ADC_PASS_ERR_0007',
 
   /** @description Validación en puerta: El pase QR pertenece a un socio que se encuentra suspendido, inactivo o en estado de impago. */
-  ADC_FAIR_ERR_0008 = 'ADC_FAIR_ERR_0008',
+  ADC_PASS_ERR_0008 = 'ADC_PASS_ERR_0008',
 
   /** @description RBAC Ferial: El rol asignado al usuario que pretende cruzar la puerta no posee derecho de admisión de caseta. */
-  ADC_FAIR_ERR_0009 = 'ADC_FAIR_ERR_0009',
+  ADC_PASS_ERR_0009 = 'ADC_PASS_ERR_0009',
 
   // =========================================================================
-  // FAIR INFO (Mensajes Informativos de Feria)
+  // PASS INFO (Mensajes Informativos de Feria)
   // =========================================================================
 
-  /** @description Éxito de flujo: Registro relacional insertado con éxito en `/fair-access`, quedando disponible para el invitado. */
-  ADC_FAIR_INF_0001 = 'ADC_FAIR_INF_0001',
+  /** @description Éxito de flujo: Registro relacional insertado con éxito en `/event-access`, quedando disponible para el invitado. */
+  ADC_PASS_INF_0001 = 'ADC_PASS_INF_0001',
 
   /** @description Éxito de flujo: Destrucción de la credencial en lote ejecutada correctamente, desvinculando el QR en portería. */
-  ADC_FAIR_INF_0002 = 'ADC_FAIR_INF_0002',
+  ADC_PASS_INF_0002 = 'ADC_PASS_INF_0002',
 
   /** @description Éxito automático: Billetera inteligente reactiva activa; credencial de socio inyectada de forma transparente por el snapshot. */
-  ADC_FAIR_INF_0003 = 'ADC_FAIR_INF_0003',
+  ADC_PASS_INF_0003 = 'ADC_PASS_INF_0003',
+
+  // =========================================================================
+  // DATE PICKER COMPONENT ERRORS (Errores Específicos del Selector DatePicker)
+  // =========================================================================
+
+  /** @description Excepción DatePicker: Fallo de renderizado o inicialización de la fecha/hora recibida. */
+  ADC_DP_ERR_0001 = 'ADC_DP_ERR_0001',
+
+  /** @description Excepción DatePicker: Error al intentar cancelar o desvanecer el modal del selector. */
+  ADC_DP_ERR_0002 = 'ADC_DP_ERR_0002',
+
+  /** @description Excepción DatePicker: Error durante la selección, parsing o estructuración del objeto Date a retornar. */
+  ADC_DP_ERR_0003 = 'ADC_DP_ERR_0003',
+
+  /** @description Excepción DatePicker: Error al invocar, instanciar o abrir el modal DatePicker desde un formulario externo. */
+  ADC_DP_ERR_0004 = 'ADC_DP_ERR_0004',
+
+  // =========================================================================
+  // FCM / PUSH NOTIFICATION ERRORS (Notificaciones Push y Service Worker)
+  // =========================================================================
+
+  /** @description Permisos: El usuario ha bloqueado o denegado los permisos de notificación Push en el dispositivo o navegador. */
+  ADC_FCM_ERR_0001 = 'ADC_FCM_ERR_0001',
+
+  /** @description Excepción de registro: Error crítico al intentar registrar o enlazar el Service Worker en el navegador. */
+  ADC_FCM_ERR_0002 = 'ADC_FCM_ERR_0002',
+
+  /** @description Excepción de token: Fallo asíncrono al obtener el token de mensajería (FCM Token) desde los servidores de Google. */
+  ADC_FCM_ERR_0003 = 'ADC_FCM_ERR_0003',
+
+  /** @description Excepción NoSQL: Error de red o permisos al guardar o actualizar el token FCM en la subcolección Firestore del usuario. */
+  ADC_FCM_ERR_0004 = 'ADC_FCM_ERR_0004',
+
+  /** @description Compatibilidad/Hardware: El navegador o entorno de ejecución carece de soporte para Service Workers o Web Push APIs. */
+  ADC_FCM_ERR_0005 = 'ADC_FCM_ERR_0005',
+
+  // =========================================================================
+  // FCM / PUSH NOTIFICATION INFO (Mensajes Informativos de FCM)
+  // =========================================================================
+
+  /** @description Éxito de flujo: Registro nativo o Web Push completado correctamente y token persistido de forma idempotente. */
+  ADC_FCM_INF_0001 = 'ADC_FCM_INF_0001',
 }

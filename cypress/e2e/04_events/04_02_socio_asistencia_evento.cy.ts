@@ -1,4 +1,4 @@
-describe("Asistencia a Evento y Seguridad (Socio) - 04_02_socio_asistencia_evento.cy.ts", () => {
+describe("TestCase: 04_02_socio_asistencia_evento", () => {
   const SOCIO_EMAIL = "felipe.novato@adcloslocos.com";
   const SOCIO_PASSWORD = "PasswordSegura123!";
   const EVENT_NAME = "Asamblea General Ordinaria 2026";
@@ -9,7 +9,7 @@ describe("Asistencia a Evento y Seguridad (Socio) - 04_02_socio_asistencia_event
     cy.get('[data-cy="events-page-content"]').should('be.visible');
   });
 
-  it("Debería asistir a un evento y verificar el contador de asistentes", () => {
+  it("PASO 1: Debería asistir a un evento y verificar el contador de asistentes", () => {
     // Localizamos la tarjeta usando el data-cy real del listado
     cy.contains('[data-cy="event-card"]', EVENT_NAME).should('be.visible').click({ force: true });
     cy.url().should("include", "/events/"); 
@@ -21,7 +21,7 @@ describe("Asistencia a Evento y Seguridad (Socio) - 04_02_socio_asistencia_event
     cy.get("ion-toast", { includeShadowDom: true }).should("exist");
   });
 
-  it("Debería verificar que el socio no tiene acceso al formulario de edición", () => {
+  it("PASO 2: Debería verificar que el socio no tiene acceso al formulario de edición", () => {
     cy.contains('[data-cy="event-card"]', EVENT_NAME).should('be.visible').click({ force: true });
     cy.url().should("include", "/events/");
 

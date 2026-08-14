@@ -17,17 +17,13 @@ import {
 
 import {
   Firestore,
-  collection,
-  query,
-  where,
   getDoc,
-  getDocs,
   doc,
   updateDoc
 } from '@angular/fire/firestore';
 
-import { Router }
-  from '@angular/router';
+import { Platform, NavController, MenuController } from '@ionic/angular/standalone';
+
 
 import { NotificationService }
   from 'projects/shared-core/src/lib/services/notification.service';
@@ -38,334 +34,152 @@ import { AppMessageCode } from '../constants/app-message-code.enum';
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthSessionService {
 
-  // ============================================
-  // INTERNAL SIGNAL STATE
-  // ============================================
+  private _currentUser = signal<User | null>(null);
+  private _currentUserData = signal<any | null>(null);
+  private _authReady = signal<boolean>(false);
 
-  private _currentUser =
-    signal<User | null>(null);
-
-  private _currentUserData =
-    signal<any | null>(null);
-
-  private _authReady =
-    signal<boolean>(false);
-
-  // ============================================
-  // PUBLIC READONLY STATE
-  // ============================================
-
-  readonly currentUser =
-    computed(() =>
-      this._currentUser()
-    );
-
-  readonly currentUserData =
-    computed(() =>
-      this._currentUserData()
-    );
-
-  readonly authReady =
-    computed(() =>
-      this._authReady()
-    );
+  readonly currentUser = computed(() => this._currentUser());
+  readonly currentUserData = computed(() => this._currentUserData());
+  readonly authReady = computed(() => this._authReady());
 
   constructor(
-
     private auth: Auth,
-
     private firestore: Firestore,
-
-    private router: Router,
-
+    private navCtrl: NavController,
     private notification: NotificationService,
-
     private ngZone: NgZone,
-
-    private injector: EnvironmentInjector
-
+    private injector: EnvironmentInjector,
+    private menuCtrl: MenuController,
+    private platform: Platform,
   ) { }
 
-  // ============================================
-  // INIT AUTH LISTENER
-  // ============================================
-
-  /**
-   * Inicializa listener global auth.
-   */
-  initAuthListener() {
-
+  public initAuthListener(): void {
     onAuthStateChanged(
-
       this.auth,
-
       (user) => {
-
-        // 1. INYECTAMOS EL CONTEXTO DE ANGULAR
         runInInjectionContext(this.injector, () => {
-
-          // 2. OBLIGAMOS A ENTRAR EN LA BURBUJA DE ANGULAR
           this.ngZone.run(async () => {
-
-            console.log(
-              'AUTH LISTENER',
-              user
-            );
-
-            // ============================================
-            // RESET READY
-            // ============================================
+            console.log('🔄 [AuthSessionService] AUTH LISTENER EMISSION:', user);
 
             this._authReady.set(false);
 
-            // ============================================
-            // NO USER
-            // ============================================
-
             if (!user) {
-
               this._currentUser.set(null);
-
               this._currentUserData.set(null);
-
               this._authReady.set(true);
-
               return;
-
             }
 
-            // ============================================
-            // USER AUTH
-            // ============================================
-
             this._currentUser.set(user);
-
-            // ============================================
-            // RESET USER DATA
-            // ============================================
-
             this._currentUserData.set(null);
 
-            // ============================================
-            // LOAD FIRESTORE USER
-            // ============================================
-
-            await this.reloadUserData(
-              user.uid
-            );
-
-            // ============================================
-            // READY
-            // ============================================
-
+            await this.reloadUserData(user.uid);
             this._authReady.set(true);
-
           });
-
         });
-
       }
-
     );
-
   }
 
-  // ============================================
-  // WAIT AUTH READY
-  // ============================================
-
-  async waitForAuthReady(): Promise<void> {
-
+  public async waitForAuthReady(): Promise<void> {
     if (this.authReady()) {
-
       return;
-
     }
 
     await new Promise<void>((resolve) => {
-
       const interval = setInterval(() => {
-
         if (this.authReady()) {
-
           clearInterval(interval);
-
           resolve();
-
         }
-
       }, 50);
-
     });
-
   }
 
-  // ============================================
-  // IS LOGGED
-  // ============================================
-
-  isLogged(): boolean {
-
+  public isLogged(): boolean {
     return !!this.currentUser();
-
   }
 
-  // ============================================
-  // LOGIN
-  // ============================================
-
-  /**
-   * Login Firebase.
-   */
-  async login(
-
-    email: string,
-
-    password: string
-
-  ) {
-
-    // ============================================
-    // RESET READY
-    // ============================================
-
+  public async login(email: string, password: string): Promise<any> {
     this._authReady.set(false);
 
-    // ============================================
-    // VALIDATION
-    // ============================================
-
-    if (
-
-      !email ||
-
-      !password
-
-    ) {
-
-      throw new Error(
-
-        AppMessageCode.ADC_AUTH_ERR_0007
-
-      );
-
+    if (!email || !password) {
+      throw new Error(AppMessageCode.ADC_AUTH_ERR_0007);
     }
 
-    // ============================================
-    // FIREBASE LOGIN
-    // ============================================
-
-    return await signInWithEmailAndPassword(
-
-      this.auth,
-
-      email,
-
-      password
-
-    );
-
+    return await signInWithEmailAndPassword(this.auth, email, password);
   }
 
   // ============================================
-  // LOGOUT
+  // LOGOUT (CON ENVOLTORIO DE ZONA SEGURO)
   // ============================================
+  public async logout(): Promise<void> {
+  console.log('🚪 [AuthSessionService] Iniciando secuencia de cierre de sesión...');
 
-  /**
-   * Logout usuario.
-   */
-  async logout() {
+  try {
+    // 1. Cierre preventivo de elementos de interfaz de Ionic (menús/modales)
+    await this.menuCtrl.close();
+    console.log('🧹 [AuthSessionService] Elementos de UI globales replegados.');
+  } catch (uiError) {
+    console.warn('⚠️ [AuthSessionService] Aviso no crítico cerrando menús:', uiError);
+  }
 
-    if (typeof window !== 'undefined' && navigator.serviceWorker) {
-      try {
-        const registrations = await navigator.serviceWorker.getRegistrations();
-        for (const registration of registrations) {
-          await registration.unregister();
-          console.log('🧹 [AuthSessionService] Service Worker desregistrado limpiamente en Logout.');
-        }
-      } catch (e) {
-        console.error('Error limpiando Service Workers en logout:', e);
-      }
-    }
-
-    // ============================================
-    // FIREBASE LOGOUT
-    // ============================================
-
+  try {
+    // 2. signOut en Firebase Auth PRIMERO (para invalidar el token remoto)
     await signOut(this.auth);
-
-    // ============================================
-    // RESET STATE
-    // ============================================
-
-    this._currentUser.set(null);
-
-    this._currentUserData.set(null);
-
-    this._authReady.set(true);
-
+    console.log('✅ [AuthSessionService] Cierre de sesión en Firebase completado.');
+  } catch (error) {
+    console.error('🚨 [AuthSessionService] Error en signOut remoto:', error);
   }
 
-  // ============================================
-  // RELOAD USER DATA (ENFOQUE PURISTA OPTIMIZADO)
-  // ============================================
+  // 3. Limpieza de los Signals locales
+  this._currentUser.set(null);
+  this._currentUserData.set(null);
 
-  /**
-   * Recarga datos Firestore usuario.
-   */
-  async reloadUserData(uid: string): Promise<any> {
+  // 4. Redirección limpia garantizada dentro de NgZone (Sin reloads de ventana)
+  this.ngZone.run(async () => {
+    console.log('🚀 [AuthSessionService] Navegando a /login de forma segura...');
 
-    // 1. Apuntamos DIRECTAMENTE al documento usando el UID
+    // Usamos NavController para resetear el árbol de vistas en ambas plataformas
+    await this.navCtrl.navigateRoot('/login', {
+      animated: true,
+      animationDirection: 'back'
+    });
+
+    // Marcamos el estado de Auth como listo tras asentar la pantalla de Login
+    this._authReady.set(true);
+  });
+}
+
+  public async reloadUserData(uid: string): Promise<any> {
     const userRef = doc(this.firestore, 'users', uid);
 
-    // 2. Leemos ese documento inyectando el contexto
     const userResult = await runInInjectionContext(
       this.injector,
       () => getDoc(userRef)
     );
 
-    // ============================================
-    // USER FOUND
-    // ============================================
-
     if (userResult.exists()) {
-
       const userData: any = {
         id: userResult.id,
         ...userResult.data()
       };
 
-      // ============================================
-      // SYNC AUTH EMAIL -> FIRESTORE
-      // ============================================
-
       if (
         this.auth.currentUser?.email &&
         userData.email !== this.auth.currentUser.email
       ) {
-
         await runInInjectionContext(this.injector, () =>
           updateDoc(userRef, {
             email: this.auth.currentUser!.email
           })
         );
-
         userData.email = this.auth.currentUser.email;
-
       }
 
-      // ============================================
-      // SAVE USER DATA
-      // ============================================
-
       this._currentUserData.set(userData);
-
-      // ============================================
-      // USER REJECTED
-      // ============================================
 
       if (userData.estado === UserStatus.REJECTED) {
         await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
@@ -374,16 +188,9 @@ export class AuthSessionService {
       }
 
       return userData;
-
     }
-
-    // ============================================
-    // USER NOT FOUND
-    // ============================================
 
     this._currentUserData.set(null);
     return null;
-
   }
-
 }

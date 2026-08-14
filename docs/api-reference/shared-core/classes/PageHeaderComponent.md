@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / PageHeaderComponent
+[shared-core](../index.md) / PageHeaderComponent
 
 # Class: PageHeaderComponent
 
-Defined in: [components/page-header/page-header.component.ts:33](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L33)
+Defined in: [components/page-header/page-header.component.ts:33](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L33)
 
 PageHeaderComponent
 
@@ -22,7 +22,7 @@ del botón de retroceso nativo de Ionic y las compuertas de activación del men�
 
 > **new PageHeaderComponent**(): `PageHeaderComponent`
 
-Defined in: [components/page-header/page-header.component.ts:67](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L67)
+Defined in: [components/page-header/page-header.component.ts:67](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L67)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa la estructura base del componente de cabecera común.
 
 > **backUrl**: `string` = `'/home'`
 
-Defined in: [components/page-header/page-header.component.ts:54](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L54)
+Defined in: [components/page-header/page-header.component.ts:54](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L54)
 
 #### Description
 
@@ -56,7 +56,7 @@ Ruta o path de fallback por defecto hacia la que navegará el stack si no hay hi
 
 > **showBack**: `boolean` = `false`
 
-Defined in: [components/page-header/page-header.component.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L47)
+Defined in: [components/page-header/page-header.component.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L47)
 
 #### Description
 
@@ -74,7 +74,7 @@ false
 
 > **showMenu**: `boolean` = `false`
 
-Defined in: [components/page-header/page-header.component.ts:61](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L61)
+Defined in: [components/page-header/page-header.component.ts:61](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L61)
 
 #### Description
 
@@ -92,7 +92,7 @@ false
 
 > **title**: `string` = `''`
 
-Defined in: [components/page-header/page-header.component.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L40)
+Defined in: [components/page-header/page-header.component.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/page-header/page-header.component.ts#L40)
 
 #### Description
 

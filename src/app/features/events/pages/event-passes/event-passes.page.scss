@@ -1,0 +1,467 @@
+// ==========================================
+// ESTILOS PÁGINA "MIS PASES DIGITALES"
+// ==========================================
+
+.home-container {
+  padding: 12px 16px;
+}
+
+.small-escudo-bg {
+  position: absolute;
+  width: 90px !important;
+  opacity: 0.01;
+  top: 5%;
+  right: 5px;
+  pointer-events: none;
+}
+
+.passe-theme-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 0 16px 0;
+  color: #ffb703;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.card-spacer {
+  margin-bottom: 20px !important;
+
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+// ==========================================
+// TARJETA DE PASE / TICKET
+// ==========================================
+.stadium-membership-card {
+  position: relative;
+  display: flex;
+  flex-direction: row; // Disposición en horizontal limpia
+  align-items: stretch;
+  min-height: 190px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+  /* Troquel recortado exactamente en la unión */
+  -webkit-mask-image: radial-gradient(circle 10px at calc(100% - 110px) 0, transparent 99%, #000 100%),
+    radial-gradient(circle 10px at calc(100% - 110px) 100%, transparent 99%, #000 100%);
+  mask-image: radial-gradient(circle 10px at calc(100% - 110px) 0, transparent 99%, #000 100%),
+    radial-gradient(circle 10px at calc(100% - 110px) 100%, transparent 99%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* 📍 1. SECCIÓN PRINCIPAL (IZQUIERDA CON IMAGEN DE FONDO) */
+.ticket-main-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* La imagen del evento queda estrictamente encuadrada aquí */
+  background-image: var(--custom-img);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+}
+
+.card-contrast-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  z-index: 1;
+}
+
+.stadium-lines-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(45deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 10px,
+      transparent 10px,
+      transparent 20px);
+  z-index: 1;
+}
+
+.card-left-identity-panel {
+  position: relative;
+  z-index: 2;
+  padding: 12px 10px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+
+  .card-official-header {
+    .club-branding {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+
+      .club-badge {
+        width: 26px;
+        height: auto;
+        margin-top: 2px;
+      }
+
+      .club-titles {
+        display: flex;
+        flex-direction: column;
+
+        .event-main-title {
+          margin: 0;
+          font-size: 13px;
+          font-weight: 800;
+          text-transform: uppercase;
+          color: #ffffff;
+          letter-spacing: 0.5px;
+          line-height: 1.2;
+        }
+
+        /* 🗓️ FECHA DE VALIDEZ EN DOS LÍNEAS */
+        .event-validity-subtitle {
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
+          margin-top: 3px;
+
+          .validity-line {
+            font-size: 8.5px;
+            font-weight: 600;
+            color: #4ade80; // Verde ferial para destacar sobre fondo oscuro
+            line-height: 1.15;
+            letter-spacing: 0.2px;
+
+            strong {
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 800;
+              margin-right: 2px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .card-official-body {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+
+    .passe-frame {
+      width: 46px;
+      height: 46px;
+      min-width: 46px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .player-identity {
+      display: flex;
+      flex-direction: column;
+
+      .card-role-badge-pillar {
+        font-size: 8px;
+        font-weight: 800;
+        color: #ffb703;
+        letter-spacing: 1px;
+      }
+
+      .player-name {
+        margin: 1px 0;
+        font-size: 12.5px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #ffffff;
+      }
+
+      .player-docs-row {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 9.5px;
+
+        .player-document {
+          color: #94a3b8;
+        }
+
+        .player-divider {
+          color: rgba(255, 255, 255, 0.3);
+        }
+
+        .player-socio-num {
+          color: #38bdf8;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+// 🦶 FOOTER (SÓLO DENTRO DEL BLOQUE IZQUIERDO)
+.card-official-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  .stadium-stat-box {
+    display: flex;
+    flex-direction: column;
+
+    .stat-label {
+      font-size: 7.5px;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+  }
+
+  .empty-guest-spacer {
+    flex: 1;
+  }
+
+  // 🚀 NUEVO BOTÓN PROTAGONISTA DE INVITACIONES
+  .guests-box {
+    .btn-invite-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(14, 165, 233, 0.15));
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+      ion-icon {
+        font-size: 13px;
+        color: #38bdf8;
+      }
+
+      .invite-badge {
+        background: #38bdf8;
+        color: #0f172a;
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 9.5px;
+        font-weight: 900;
+        margin-left: 2px;
+      }
+
+      &:active {
+        transform: scale(0.96);
+        background: rgba(56, 189, 248, 0.35);
+      }
+    }
+  }
+
+  .stat-acceso {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .acceso-validado {
+      color: #ffb703;
+      font-weight: 800;
+      font-size: 10px;
+    }
+  }
+}
+
+/* 📍 LÍNEA PUNTEADA VERTICAL DE TROQUEL */
+.ticket-perforation-line {
+  position: absolute;
+  right: 110px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 2px dashed rgba(15, 23, 42, 0.35);
+  z-index: 5;
+}
+
+/* 🎫 2. TALÓN DERECHO UNIFICADO Y BLANCO */
+.ticket-stub-white {
+  position: relative;
+  width: 110px;
+  min-width: 110px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #ffffff; // Blanco entero en toda la pieza derecha
+  z-index: 4;
+  cursor: pointer;
+
+  .qr-embedded-box {
+    background: transparent;
+    padding: 0;
+
+    img {
+      width: 82px;
+      height: 82px;
+      display: block;
+    }
+  }
+
+  .qr-tap-hint {
+    font-size: 8.5px;
+    font-weight: 900;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    letter-spacing: 0.5px;
+
+    ion-icon {
+      font-size: 11px;
+      color: #0284c7;
+    }
+  }
+}
+
+// ==========================================
+// MODAL QR Y ESTADOS VACÍOS
+// ==========================================
+.empty-warning-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  margin-top: 16px;
+  text-align: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+
+  .empty-icon {
+    font-size: 42px;
+    color: rgba(255, 255, 255, 0.15);
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  .empty-p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    max-width: 240px;
+    margin: 4px auto 0;
+  }
+}
+
+.modal-contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  height: 100%;
+  color: white;
+
+  h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffb703;
+    text-transform: uppercase;
+  }
+
+  .modal-event-title {
+    margin: 6px 0 24px 0;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    color: #38bdf8;
+  }
+
+  .qr-fullscreen-box {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+
+    img {
+      width: 260px;
+      height: 260px;
+      display: block;
+    }
+  }
+
+  .manual-code-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin-bottom: 26px;
+    width: 100%;
+    max-width: 310px;
+
+    .manual-code-label {
+      display: block;
+      font-size: 9px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .manual-code-value {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 1px;
+    }
+  }
+
+  .badge-modal-date {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 8px 16px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+  }
+}

@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserDetailFormService
+[shared-core](../index.md) / UserDetailFormService
 
 # Class: UserDetailFormService
 
-Defined in: [services/user-detail-form.service.ts:13](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L13)
+Defined in: [services/user-detail-form.service.ts:13](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L13)
 
 UserDetailFormService
 
@@ -21,7 +21,7 @@ control de equivalencias de dobles checks (emails/passwords) y detección de mut
 
 > **new UserDetailFormService**(): `UserDetailFormService`
 
-Defined in: [services/user-detail-form.service.ts:19](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L19)
+Defined in: [services/user-detail-form.service.ts:19](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L19)
 
 #### Returns
 
@@ -37,7 +37,7 @@ Inicializa el validador de lógica de formularios del detalle.
 
 > **emailChanged**(`currentEmail`, `originalEmail`): `boolean`
 
-Defined in: [services/user-detail-form.service.ts:83](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L83)
+Defined in: [services/user-detail-form.service.ts:83](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L83)
 
 #### Parameters
 
@@ -73,7 +73,7 @@ Compara el correo electrónico activo en el input frente al valor inmutable orig
 
 > **passwordChanged**(`password`, `repeatPassword`): `boolean`
 
-Defined in: [services/user-detail-form.service.ts:66](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L66)
+Defined in: [services/user-detail-form.service.ts:66](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L66)
 
 #### Parameters
 
@@ -109,7 +109,7 @@ Detección síncrona preliminar para verificar si el operador ha introducido car
 
 > **validateCredentialsForm**(`params`): `object`
 
-Defined in: [services/user-detail-form.service.ts:101](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L101)
+Defined in: [services/user-detail-form.service.ts:101](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L101)
 
 #### Parameters
 
@@ -166,7 +166,7 @@ Realiza el cortocircuito inmediato evaluando cambios en emails y contraseñas.
 
 > **validateEmails**(`email`, `repeatEmail`): `object`
 
-Defined in: [services/user-detail-form.service.ts:28](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L28)
+Defined in: [services/user-detail-form.service.ts:28](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L28)
 
 #### Parameters
 
@@ -210,7 +210,7 @@ Evalúa la coherencia y concordancia exacta de los correos primarios y espejos u
 
 > **validatePasswords**(`password`, `repeatPassword`): `object`
 
-Defined in: [services/user-detail-form.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-form.service.ts#L47)
+Defined in: [services/user-detail-form.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-form.service.ts#L47)
 
 #### Parameters
 

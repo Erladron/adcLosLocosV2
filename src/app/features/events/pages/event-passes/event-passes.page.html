@@ -1,0 +1,187 @@
+<app-page-header title="Mis Pases Digitales" [showMenu]="true" [showBack]="true"
+  data-cy="page-header"></app-page-header>
+
+<ion-content fullscreen="true" class="home-content" data-cy="passe-page-content">
+
+  <div class="background-logo">
+    <img src="assets/img/escudo.png" alt="Escudo" class="small-escudo-bg">
+  </div>
+
+  <div class="home-container">
+
+    <div class="passe-theme-title" data-cy="passe-theme-title">
+      <ion-icon name="sparkles-outline"></ion-icon>
+      <span>PASES VÁLIDOS</span>
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </div>
+
+    <div class="events-list-container" *ngIf="misPasesHoy.length > 0; else sinPasesTpl">
+
+      <div *ngFor="let pase of misPasesHoy" class="stadium-membership-card passe-style-card card-spacer"
+        [ngClass]="{'is-guest-card': isInvitado}" data-cy="passe-pass-card">
+
+        <!-- 🎟️ 1. CUERPO IZQUIERDO DEL TICKET (TIENE LA IMAGEN DE FONDO) -->
+        <div class="ticket-main-body" [style.--custom-img]="pase.eventImg ? 'url(' + pase.eventImg + ')' : 'none'">
+
+          <!-- Capas decorativas de fondo -->
+          <div class="card-contrast-overlay"></div>
+          <div class="stadium-lines-pattern passe-stripes"></div>
+
+          <!-- PANEL IZQUIERDO: DATOS Y CABECERA -->
+          <div class="card-left-identity-panel">
+
+            <!-- CABECERA: TÍTULO DEL EVENTO Y VALIDEZ -->
+            <div class="card-official-header">
+              <div class="club-branding">
+                <img src="assets/img/escudo.png" alt="Logo Peña" class="club-badge">
+                <div class="club-titles">
+                  <h1 class="event-main-title">
+                    {{ pase.eventTitle }}
+                  </h1>
+
+                  <div class="event-validity-subtitle" data-cy="passe-validity">
+                    <ng-container *ngIf="pase.validezInicio && pase.validezFin; else validezTextoTpl">
+                      <span class="validity-line">{{ pase.validezInicio }}</span>
+                      <span class="validity-line">{{ pase.validezFin }}</span>
+                    </ng-container>
+                    <ng-template #validezTextoTpl>
+                      <span class="validity-line"><strong>VALIDEZ:</strong> {{ pase.validezTexto || 'HOY' }}</span>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CUERPO DE DATOS: FOTO, ROL, NOMBRE, DNI Y Nº SOCIO EN LÍNEA -->
+            <div class="card-official-body">
+              <div class="passe-frame">
+                <img [src]="currentUserData?.foto || 'assets/icons/icon-128.webp'" alt="Foto Usuario">
+              </div>
+
+              <div class="player-identity">
+                <span class="card-role-badge-pillar">
+                  {{ (currentUserData?.tipo || 'Socio').toUpperCase() }}
+                </span>
+                <h2 class="player-name" data-cy="pass-card-user-name">
+                  {{ currentUserData?.nombre }}
+                </h2>
+
+                <div class="player-docs-row">
+                  <span class="player-document" *ngIf="currentUserData?.dni">DNI: {{ currentUserData?.dni }}</span>
+                  <span class="player-divider"
+                    *ngIf="currentUserData?.dni && !isInvitado && currentUserData?.numeroSocio">•</span>
+                  <span class="player-socio-num" *ngIf="!isInvitado && currentUserData?.numeroSocio"
+                    data-cy="pass-card-socio-num">
+                    Nº SOC: #{{ currentUserData?.numeroSocio }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER INFERIOR DE LA SECCIÓN IZQUIERDA -->
+          <div class="card-official-footer passe-footer-bg">
+            <ng-container *ngIf="!isInvitado">
+              <!-- BOTÓN ÚNICO E INTEGRADO DE INVITAR -->
+              <div class="guests-box" *ngIf="pase.limiteInvitadosPorSocio && pase.limiteInvitadosPorSocio > 0">
+                <button type="button" class="btn-invite-action"
+                  (click)="irAGestionInvitados(pase); $event.stopPropagation()" data-cy="btn-manage-guests">
+                  <ion-icon name="person-add-outline"></ion-icon>
+                  <span>INVITAR</span>
+                  <span class="invite-badge" data-cy="guests-count">
+                    {{ pase.invitadosUsados || 0 }}/{{ pase.limiteInvitadosPorSocio }}
+                  </span>
+                </button>
+              </div>
+              <div *ngIf="!pase.limiteInvitadosPorSocio || pase.limiteInvitadosPorSocio === 0"
+                class="empty-guest-spacer"></div>
+            </ng-container>
+
+            <ng-container *ngIf="isInvitado">
+              <div class="stadium-stat-box">
+                <span class="stat-label">ANFITRIÓN</span>
+                <span class="stat-value guest-highlight">{{ pase.invitedByName || 'Peña Oficial' }}</span>
+              </div>
+            </ng-container>
+
+            <div class="stadium-stat-box stat-acceso">
+              <span class="stat-label">ACCESO</span>
+              <span class="stat-value acceso-validado">VALIDADO</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 📍 LÍNEA PUNTEADA VERTICAL DE TROQUEL -->
+        <div class="ticket-perforation-line"></div>
+
+        <!-- 🎫 2. TALÓN DERECHO UNIFICADO Y BLANCO EN UNA SOLA PIEZA -->
+        <div class="ticket-stub-white" (click)="abrirCodigoQR(pase); $event.stopPropagation()"
+          data-cy="btn-open-qr-modal">
+          <div class="qr-embedded-box">
+            <img
+              [src]="'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + (isInvitado ? pase.id : 'SOCIO:' + currentUserId + ':EVENTO-' + pase.eventId)"
+              alt="QR Mini">
+          </div>
+          <span class="qr-tap-hint">
+            VER QR <ion-icon name="qr-code-outline"></ion-icon>
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <ng-template #sinPasesTpl>
+      <div class="glass-card empty-warning-card" data-cy="passe-no-pass-assigned">
+        <ion-icon name="ticket-outline" class="empty-icon"></ion-icon>
+        <h2>No tienes pases activos para hoy</h2>
+        <p class="empty-p">
+          Confirma tu asistencia en la sección de Eventos para que el sistema genere tus credenciales digitales de
+          acceso.
+          {{ isInvitado ? 'O solicita a un socio autorizado que emita una invitación a tu nombre.' : '' }}
+        </p>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="cerrarCodigoQR()" data-cy="passe-qr-modal"
+    class="qr-modal-container">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar class="qr-modal-toolbar">
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarCodigoQR()" data-cy="btn-close-qr-modal">
+              <ion-icon name="close-outline" class="qr-modal-close-icon"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="qr-modal-content">
+        <div class="modal-contents" *ngIf="paseSeleccionadoModal">
+          <h3>Control de Accesos</h3>
+          <p class="modal-event-title">
+            {{ paseSeleccionadoModal.eventTitle }}
+          </p>
+
+          <div class="qr-fullscreen-box" data-cy="qr-fullscreen-container">
+            <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + qrPayload"
+              alt="QR Control Acceso">
+          </div>
+
+          <div class="manual-code-container">
+            <span class="manual-code-label">CÓDIGO DE VERIFICACIÓN ALFANUMÉRICO</span>
+            <div class="manual-code-value" data-cy="qr-manual-code-text">{{ qrPayload }}</div>
+          </div>
+
+          <span class="badge-modal-date">
+            {{ isInvitado ? 'INVITACIÓN DIGITAL DE ACCESO' : 'PASE EXCLUSIVO DE ASISTENTE - TEMPORADA ' + anioActual }}
+          </span>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Auth, user } from '@angular/fire/auth';
+import { Capacitor } from '@capacitor/core';
 import {
   IonApp,
   IonRouterOutlet,
@@ -12,8 +13,7 @@ import {
   IonItem,
   IonIcon,
   IonLabel,
-  MenuController,
-  NavController
+  MenuController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -44,15 +44,15 @@ import {
   EventsService,
   ErrorHandlerService,
   AppEvent,
-  FairAccessStatus
+  PasseAccessStatus
 } from 'shared-core';
 import { environment } from '@env/environment';
 
 /**
  * @class AppComponent
  * @description Componente raíz de la aplicación de la Peña A.D.C. Los Locos.
- * Se encarga de la orquestación del menú lateral dinámico, la gestión de sesiones en tiempo real
- * y el cálculo reactivo del estado de los pases digitales según las convocatorias de la caseta.
+ * Se encarga de la orquestación del menú lateral dinámico, la gestión de sesiones en tiempo real,
+ * el cálculo reactivo del estado de los pases digitales y la inicialización de notificaciones nativas mediante Capacitor.
  */
 @Component({
   selector: 'app-root',
@@ -84,9 +84,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private menuCtrl = inject(MenuController);
   private auth = inject(Auth);
-  private firestore = inject(Firestore); 
+  private firestore = inject(Firestore);
   private zone = inject(NgZone);
-  private navCtrl = inject(NavController);
 
   /** @description Instancia de acceso directo al SDK de Cloud Firestore. */
   private dbNativa: any;
@@ -110,6 +109,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public tienePasesActivos = false;
   /** @description Determina si existen eventos activos que requieran control de aforo por portería. */
   public hayEventosConControlActivos = false;
+  /** @description Determina si ya existe un FCM inicializado para evitar multiples inicializaciones de FCM. */
+  private fcmInicializado = false;
 
   // =========================================================================
   // 📦 ALMACENAMIENTO DE DATOS EN MEMORIA LOCAL
@@ -130,15 +131,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /**
    * @method ngOnInit
-   * @description Ciclo de vida inicial. Arranca el motor de escucha reactiva de credenciales.
+   * @description Ciclo de vida inicial. Limpia Service Workers residuales en entornos nativos y arranca la escucha de credenciales.
    */
   public ngOnInit(): void {
+    this.desregistrarServiceWorkersEnNativo();
+
+    // Detección e intersección de navegación directa en frío (ej. lanzada por deep-link / notificación nativa)
+    const initialUrl = window.location.pathname + window.location.search;
+    if (initialUrl && initialUrl !== '/' && initialUrl !== '/login') {
+      console.log('🚀 [APP] Arranque detectado desde deep-link/notificación nativa a:', initialUrl);
+      this.zone.run(() => {
+        this.router.navigateByUrl(initialUrl);
+      });
+    }
+
     this.escucharEstadoAutenticacion();
   }
 
   /**
    * @method ngOnDestroy
-   * @description Ciclo de vida de destrucción. Purga y mata los hilos abiertos para evitar fugas de memoria.
+   * @description Ciclo de vida de destrucción. Purga y destruye las suscripciones abiertas para evitar fugas de memoria.
    */
   public ngOnDestroy(): void {
     if (this.authSubscription) this.authSubscription.unsubscribe();
@@ -146,6 +158,29 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.pasesUnsubscribeFn) {
       this.pasesUnsubscribeFn();
       this.pasesUnsubscribeFn = null;
+    }
+  }
+
+  /**
+   * @method desregistrarServiceWorkersEnNativo
+   * @private
+   * @description Purga y desregistra cualquier Service Worker previamente guardado en el WebView
+   * al ejecutarse dentro del entorno nativo de Android/iOS (Capacitor), garantizando que no interfiera con
+   * la captura de notificaciones push y deep-links.
+   */
+  private desregistrarServiceWorkersEnNativo(): void {
+    if (Capacitor.isNativePlatform() && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          registration.unregister().then((exito) => {
+            if (exito) {
+              console.log('🧹 [APP] Service Worker desregistrado correctamente en plataforma nativa.');
+            }
+          });
+        }
+      }).catch((error) => {
+        console.warn('⚠️ [APP] Error al intentar desregistrar los Service Workers:', error);
+      });
     }
   }
 
@@ -186,13 +221,17 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * @method escucharEstadoAutenticacion
    * @private
-   * @description Escucha activa sobre el estado del Auth. Si detecta sesión, orquesta el arranque de datos feriales.
+   * @description Escucha activa sobre el estado de autenticación. Si detecta sesión, orquesta la inicialización de FCM y sincronización de datos.
    */
   private escucharEstadoAutenticacion(): void {
     this.authSubscription = user(this.auth).subscribe(async (userFirebase) => {
       if (userFirebase) {
         console.log('📡 [APP] Sincronizando datos de usuario logueado en la Peña...');
-        this.fcmService.inicializarFCM(environment);
+
+        if (!this.fcmInicializado) {
+          this.fcmInicializado = true;
+          await this.fcmService.inicializarFCM(environment);
+        }
 
         this.escucharEventosActivos();
         await this.escucharPasesExistentesTiempoReal();
@@ -235,7 +274,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @public
    * @async
    * @returns {Promise<void>} Cobertura asíncrona de inicialización.
-   * @description Abre la pasarela en tiempo real sobre la colección `/fair-access`. Calcula en caliente si
+   * @description Abre la pasarela en tiempo real sobre la colección `/event-access`. Calcula en caliente si
    * el pase está pendiente, activo o expirado cruzando cronologías con los eventos publicados de la Peña.
    */
   public async escucharPasesExistentesTiempoReal(): Promise<void> {
@@ -264,10 +303,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     try {
-      console.log(`📌 [DEBUG PASES] Identidad válida. Registrando onSnapshot de fair-access para UID: ${userUid}`);
+      console.log(`📌 [DEBUG PASES] Identidad válida. Registrando onSnapshot de event-access para UID: ${userUid}`);
 
-      const fairAccessRef = collection(this.dbNativa, 'fair-access');
-      const q = query(fairAccessRef, where('userId', '==', userUid));
+      const passeAccessRef = collection(this.dbNativa, 'event-access');
+      const q = query(passeAccessRef, where('userId', '==', userUid));
 
       this.pasesUnsubscribeFn = onSnapshot(q,
         (snapshot) => {
@@ -297,9 +336,9 @@ export class AppComponent implements OnInit, OnDestroy {
               if (ev.allDay) fechaFin.setHours(23, 59, 59, 999);
 
               if (ev.status === 'cancelled' || ev.status === 'completed' || ahora > fechaFin) {
-                estadoCalculado = FairAccessStatus.EXPIRED;
+                estadoCalculado = PasseAccessStatus.EXPIRED;
               } else if (ev.status === 'published') {
-                estadoCalculado = FairAccessStatus.ACTIVE;
+                estadoCalculado = PasseAccessStatus.ACTIVE;
               }
             }
 
@@ -311,7 +350,7 @@ export class AppComponent implements OnInit, OnDestroy {
           });
 
           this.pasesUsuario = pasesProcesados;
-          this.tienePasesActivos = pasesProcesados.some(pass => pass.statusCalculado === FairAccessStatus.ACTIVE);
+          this.tienePasesActivos = pasesProcesados.some(pass => pass.statusCalculado === PasseAccessStatus.ACTIVE);
 
           this.cdr.detectChanges();
         },
@@ -323,7 +362,7 @@ export class AppComponent implements OnInit, OnDestroy {
       );
 
     } catch (error) {
-      console.error('❌ [DEBUG PASES] Captura de excepción en asignación:', error);
+      await this.errorHandler.handle(error);
       this.tienePasesActivos = false;
       this.cdr.detectChanges();
     }
@@ -343,6 +382,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cacheEvents = [];
     this.tienePasesActivos = false;
     this.hayEventosConControlActivos = false;
+    this.fcmInicializado = false;
     this.cdr.detectChanges();
   }
 
@@ -424,28 +464,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /**
    * @method logout
-   * @description 🛡️ VULNERABILIDAD RESUELTA: Cierra explícitamente el socket activo (onSnapshot) 
-   * antes de revocar las credenciales. Esto previene excepciones repetidas de falta de permisos 
-   * en la pantalla de login debido a tokens nulos.
+   * @description Cierra explícitamente el socket activo (onSnapshot) y delega el cierre de sesión en AuthService.
    * @returns {Promise<void>} Promesa asíncrona de desvinculación completa.
    */
   public async logout(): Promise<void> {
     try {
-      this.menuCtrl.close();
-      
-      // 💥 MATAMOS EL SOCKET PRIMERO: Bloqueo proactivo ante ráfagas asíncronas
+      // 1. Plega el menú lateral de Ionic
+      await this.menuCtrl.close();
+
+      // 2. Cierra canal Firestore activo si existe
       if (this.pasesUnsubscribeFn) {
         this.pasesUnsubscribeFn();
         this.pasesUnsubscribeFn = null;
-        console.log('🧹 [APP] Canal onSnapshot de fair-access cerrado preventivamente con éxito.');
+        console.log('🧹 [APP] Canal onSnapshot de event-access cerrado preventivamente con éxito.');
       }
 
+      // 3. Purga estado local del componente
       this.limpiarEstadoComponente();
+
+      // 4. Delegación ÚNICA en el AuthService facade (él se encarga de signOut y redirigir a /login)
       await this.authService.logout();
 
-      this.zone.run(async () => {
-        await this.router.navigateByUrl('/login');
-      });
     } catch (error) {
       await this.errorHandler.handle(error);
     }

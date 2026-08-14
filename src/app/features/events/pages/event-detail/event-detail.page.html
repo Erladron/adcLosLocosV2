@@ -14,9 +14,10 @@
     <div class="glass-card read-card" *ngIf="!isEditing && event" style="padding: 0; overflow: hidden;"
       data-cy="event-read-card">
 
-      <div class="event-detail-poster" *ngIf="event.imageUrl"
+      <div class="event-detail-poster"
         style="width: 100%; height: 180px; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.1);">
-        <img [src]="event.imageUrl" alt="Póster del Evento" style="width: 100%; height: 100%; object-fit: cover;">
+        <img [src]="getEventBgImage(event)" alt="Póster del Evento"
+          style="width: 100%; height: 100%; object-fit: cover;">
       </div>
 
       <div style="padding: 20px;">
@@ -48,7 +49,7 @@
             modificaciones de asistencia.</span>
         </div>
 
-        <!-- 🚀 REPARADO: BOTONERA EXCLUYENTE SEGÚN LAS CAPTURAS DE PANTALLA -->
+        <!-- BOTONERA DE ASISTENCIA -->
         <div class="detail-attendance-actions" style="margin-bottom: 20px;" *ngIf="!esEventoCaducado()">
           <span
             style="font-size: 10px; font-weight: 700; color: #64748b; letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-bottom: 8px;">Tu
@@ -63,7 +64,7 @@
                 'opacity': userStatusAsistencia === 'going' || (event.maxAttendees && (event.attendeeCount || 0) >= event.maxAttendees) ? '0.9' : (puedeApuntarse() ? '1' : '0.4'),
                 'cursor': userStatusAsistencia === 'going' || !puedeApuntarse() ? 'default' : 'pointer'
               }" [disabled]="userStatusAsistencia === 'going' || !puedeApuntarse()"
-              (click)="toggleAsistenciaSocio(true)">
+              (click)="toggleAsistenciaSocio(true)" data-cy="btn-confirm-attendance">
 
               <ion-icon name="checkmark-circle-outline" *ngIf="userStatusAsistencia === 'going'"></ion-icon>
               <ion-icon name="close-circle-outline"
@@ -221,46 +222,31 @@
             el día</ion-checkbox>
         </div>
 
+        <!-- 🗓️ SELECTORES DE FECHA Y HORA (MODAL CON CONTENT INTEGRADO) -->
         <div class="peña-form-row">
-          <div class="peña-form-group">
-            <label class="peña-label">Fecha y Hora de Inicio *</label>
-            <div class="ionic-date-btn-wrapper" id="open-start-popover" data-cy="form-popover-trigger-start">
-              <span class="custom-date-label">
-                {{ (eventForm.get('startDate')?.value | date:(eventForm.get('isAllDay')?.value ? 'dd/MM/yyyy' :
-                'dd/MM/yyyy HH:mm')) || 'Seleccionar...' }}
+          <!-- Fecha de Inicio -->
+          <div class="date-field-card" (click)="openDatePickerModal('startDate')">
+            <div class="field-info">
+              <span class="field-label">Fecha y hora de inicio</span>
+              <span class="field-value">
+                {{ eventForm.get('startDate')?.value | date:'dd/MM/yyyy HH:mm' }}
               </span>
             </div>
-            <ion-popover #popoverStart trigger="open-start-popover" triggerAction="click" class="peña-date-popover">
-              <ng-template>
-                <ion-datetime id="startDatePicker"
-                  [presentation]="eventForm.get('isAllDay')?.value ? 'date' : 'date-time'" locale="es-ES" size="cover"
-                  [value]="eventForm.get('startDate')?.value" showDefaultButtons="true" doneText="Aceptar"
-                  cancelText="Cancelar" (ionChange)="onDateConfirmNative('startDate', $event)"></ion-datetime>
-              </ng-template>
-            </ion-popover>
+            <ion-icon name="calendar-outline" class="field-icon"></ion-icon>
           </div>
 
-          <div class="peña-form-group" [style.opacity]="eventForm.get('isAllDay')?.value ? '0.3' : '1'">
-            <label class="peña-label">Fecha y Hora de Fin *</label>
-            <div class="ionic-date-btn-wrapper" [id]="eventForm.get('isAllDay')?.value ? '' : 'open-end-popover'"
-              data-cy="form-popover-trigger-end">
-              <span class="custom-date-label">
-                <ng-container *ngIf="eventForm.get('isAllDay')?.value">No requerida</ng-container>
-                <ng-container *ngIf="!eventForm.get('isAllDay')?.value">
-                  {{ (eventForm.get('endDate')?.value | date:'dd/MM/yyyy HH:mm') || 'Seleccionar...' }}
-                </ng-container>
+          <!-- Fecha de Fin -->
+          <div class="date-field-card" (click)="openDatePickerModal('endDate')">
+            <div class="field-info">
+              <span class="field-label">Fecha y hora de fin</span>
+              <span class="field-value">
+                {{ eventForm.get('endDate')?.value | date:'dd/MM/yyyy HH:mm' }}
               </span>
             </div>
-            <ion-popover *ngIf="!eventForm.get('isAllDay')?.value" #popoverEnd trigger="open-end-popover"
-              triggerAction="click" class="peña-date-popover">
-              <ng-template>
-                <ion-datetime id="endDatePicker" presentation="date-time" locale="es-ES" size="cover"
-                  [value]="eventForm.get('endDate')?.value" showDefaultButtons="true" doneText="Aceptar"
-                  cancelText="Cancelar" (ionChange)="onDateConfirmNative('endDate', $event)"></ion-datetime>
-              </ng-template>
-            </ion-popover>
+            <ion-icon name="calendar-outline" class="field-icon"></ion-icon>
           </div>
         </div>
+
 
         <div class="peña-form-group">
           <label class="peña-label">Descripción *</label>

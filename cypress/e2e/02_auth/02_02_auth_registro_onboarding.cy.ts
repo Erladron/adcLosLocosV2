@@ -1,4 +1,4 @@
-describe('Registro y Onboarding de Usuario - 02_02_auth_registro_onboarding.cy.ts', () => {
+describe('TestCase: 02_02_auth_registro_onboarding', () => {
   const ADMIN_EMAIL = 'admin.fundador@adcloslocos.com';
   const ADMIN_PASSWORD = 'PasswordSegura123!';
   const NEW_USER_NAME = 'Felipe Novato Solís 2';
@@ -18,7 +18,7 @@ describe('Registro y Onboarding de Usuario - 02_02_auth_registro_onboarding.cy.t
     cy.clearCookies();
   });
 
-  it('Paso 1: Administrador envía invitación a nuevo miembro', () => {
+  it('PASO 1: Administrador envía invitación a nuevo miembro', () => {
     // 1. Usamos nuestro Login unívoco
     cy.visit('/login');
     cy.get('[data-cy="input-login-email"]').find('input').type(ADMIN_EMAIL);
@@ -51,7 +51,7 @@ describe('Registro y Onboarding de Usuario - 02_02_auth_registro_onboarding.cy.t
     cy.get('[data-cy="menu-item-logout"]').click({ force: true });
   });
 
-  it('Paso 2: Nuevo usuario completa perfil y es redirigido a /pending-approval', () => {
+  it('PASO 2: Nuevo usuario completa perfil y es redirigido a /pending-approval', () => {
     cy.visit('/login');
 
     // Logueamos al nuevo usuario invitado

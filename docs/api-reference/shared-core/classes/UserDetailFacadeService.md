@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserDetailFacadeService
+[shared-core](../index.md) / UserDetailFacadeService
 
 # Class: UserDetailFacadeService
 
-Defined in: [services/user-detail-facade.service.ts:16](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L16)
+Defined in: [services/user-detail-facade.service.ts:16](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L16)
 
 UserDetailFacadeService
 
@@ -22,7 +22,7 @@ especialistas de permisos, mutaciones de datos y hardware multimedia de fotograf
 
 > **new UserDetailFacadeService**(): `UserDetailFacadeService`
 
-Defined in: [services/user-detail-facade.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L31)
+Defined in: [services/user-detail-facade.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L31)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa la fachada unificada del detalle de usuarios.
 
 > **createUser**(`data`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-facade.service.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L88)
+Defined in: [services/user-detail-facade.service.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L88)
 
 #### Parameters
 
@@ -86,7 +86,7 @@ Canaliza hacia el DataService el flujo operativo completo de validación y alta 
 
 > **getPermissions**(`user`): `any`
 
-Defined in: [services/user-detail-facade.service.ts:39](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L39)
+Defined in: [services/user-detail-facade.service.ts:39](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L39)
 
 #### Parameters
 
@@ -116,7 +116,7 @@ Obtiene de forma síncrona la matriz indexada de capacidades, flags y derechos d
 
 > **processCroppedImage**(`event`): `string`
 
-Defined in: [services/user-detail-facade.service.ts:122](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L122)
+Defined in: [services/user-detail-facade.service.ts:122](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L122)
 
 #### Parameters
 
@@ -146,7 +146,7 @@ Delega en el PhotoService el saneamiento y la extracción del string binario Bas
 
 > **selectPhoto**(): `Promise`\<`any`\>
 
-Defined in: [services/user-detail-facade.service.ts:103](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L103)
+Defined in: [services/user-detail-facade.service.ts:103](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L103)
 
 #### Returns
 
@@ -168,7 +168,7 @@ Dispara a través del PhotoService la apertura dinámica del explorador nativo d
 
 > **takePhoto**(): `Promise`\<`any`\>
 
-Defined in: [services/user-detail-facade.service.ts:112](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L112)
+Defined in: [services/user-detail-facade.service.ts:112](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L112)
 
 #### Returns
 
@@ -190,7 +190,7 @@ Invoca a través del PhotoService la inicialización y captura de los sensores d
 
 > **updateCredentials**(`data`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-facade.service.ts:69](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L69)
+Defined in: [services/user-detail-facade.service.ts:69](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L69)
 
 #### Parameters
 
@@ -250,7 +250,7 @@ Distribuye hacia el DataService la solicitud de validación y cambio de correos 
 
 > **updateMembership**(`data`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-facade.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L59)
+Defined in: [services/user-detail-facade.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L59)
 
 #### Parameters
 
@@ -286,7 +286,7 @@ Transmite hacia el DataService la orden de actualización de roles corporativos 
 
 > **updatePersonalData**(`data`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-facade.service.ts:49](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L49)
+Defined in: [services/user-detail-facade.service.ts:49](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-facade.service.ts#L49)
 
 #### Parameters
 

@@ -1,58 +1,93 @@
-describe('Flujo de Acceso para Invitados (Feria) - 05_03_flujo_pases_invitados.cy.ts', () => {
+describe('TestCase: 05_03_flujo_pases_invitados', () => {
+  // Datos del socio Felipe Novato
+  const SOCIO_EMAIL = 'felipe.novato@adcloslocos.com';
+  const SOCIO_PASSWORD = 'PasswordSegura123!';
+
+  // Datos del invitado para comprobar la recepción del pase
   const INVITADO_EMAIL = 'invitado.fundador@adcloslocos.com';
   const INVITADO_PASSWORD = 'PasswordSegura123!';
 
-  it('Debe logarse como invitado, acceder a su invitación por el menú y desplegar el QR en grande', () => {
-    
-    // 1️⃣ LOGARSE CON EL ROL DE INVITADO
+  it('PASO 1: Debe emitir un pase como Socio, logarse como Invitado y verificar la correcta recepción del pase', () => {
+
+    // ==========================================
+    // PARTE 1: SOCIO EMITE EL PASE
+    // ==========================================
+
+    // 1️⃣ LOGARSE CON EL ROL DE SOCIO (FELIPE)
+    cy.login(SOCIO_EMAIL, SOCIO_PASSWORD);
+    cy.visit('/home');
+    cy.get('[data-cy="home-page-content"]').should('be.visible');
+
+    // 2️⃣ DESPLEGAR EL MENÚ LATERAL E IR A "MIS PASES DIGITALES"
+    cy.get('[data-cy="header-menu-button"]').should('be.visible').click();
+    cy.wait(400); // Pausa obligatoria para la animación de la barra lateral de Ionic
+
+    cy.get('[data-cy="menu-item-pases"]')
+      .should('be.visible')
+      .and('contain', 'Mis Pases Digitales')
+      .click({ force: true });
+
+    // 3️⃣ VERIFICAR LA EXISTENCIA Y HACER CLIC EN EL PASE "FERIA DE CAMAS 2026"
+    cy.url().should('include', '/user-passes');
+    cy.contains('[data-cy="passe-pass-card"]', 'Feria de Camas 2026')
+      .should('be.visible')
+      .click({ force: true });
+
+    // 4️⃣ BUSCAR INVITADO Y EMITIR PASE DIGITAL
+    cy.url().should('match', /\/events\/.*\/guests/);
+    cy.get('[data-cy="event-guests-content"]').should('be.visible');
+
+    // Escribimos en el input de búsqueda el criterio de nuestro invitado
+    cy.get('[data-cy="input-search-invitado"]')
+      .should('be.visible')
+      .clear({ force: true })
+      .type('Invitado Test', { force: true });
+
+    // Esperamos el desplegable y seleccionamos al usuario
+    cy.get('[data-cy="search-results-dropdown"]').should('be.visible');
+    cy.get('[data-cy="search-result-item"]').first().click({ force: true });
+
+    // Pulsamos el botón de emitir y esperamos que procese la petición en Firebase
+    cy.get('[data-cy="btn-submit-passe-pass"]').should('not.be.disabled').click({ force: true });
+    cy.wait(6000); // Pausa prudencial para la escritura en base de datos y Toast de éxito
+
+    // Comprobamos que el cupo ya está lleno
+    cy.get('[data-cy="passe-limit-reached-warning"]')
+      .should('be.visible')
+      .and('contain', 'Has completado el cupo máximo');
+
+    // 5️⃣ REGRESAR ATRÁS PARA VOLVER A TENER EL MENÚ HAMBURGUESA Y HACER LOGOUT
+    // Hacemos clic en el botón de atrás que provee app-page-header
+    cy.get('[data-cy="page-header"]')
+      .find('ion-back-button').filter(':visible').first().click({ force: true });
+
+    // Validamos que regresamos correctamente a la pantalla de pases
+    cy.url().should('include', '/user-passes');
+
+    // Ahora sí realizamos el logout controlado del Socio
+    cy.logout();
+
+    // ==========================================
+    // PARTE 2: INVITADO VERIFICA SU PASE
+    // ==========================================
+
+    // 6️⃣ LOGARSE CON LAS CREDENCIALES DEL INVITADO
     cy.login(INVITADO_EMAIL, INVITADO_PASSWORD);
     cy.visit('/home');
     cy.get('[data-cy="home-page-content"]').should('be.visible');
 
-    // 2️⃣ DESPLEGAR EL MENÚ LATERAL Y BUSCAR EL ACCESO DE INVITADO
-    // Abrimos el menú lateral desde el botón de la cabecera
+    // 7️⃣ IR A "MIS PASES DIGITALES" DESDE EL MENÚ DEL INVITADO
     cy.get('[data-cy="header-menu-button"]').should('be.visible').click();
-    cy.wait(400); // Pausa obligatoria para la animación de Ionic
+    cy.wait(400);
 
-    // Verificamos y pinchamos en el ítem unívoco de Invitación de Feria
-    cy.get('[data-cy="menu-item-fair-guest"]')
+    cy.get('[data-cy="menu-item-pases"]')
       .should('be.visible')
-      .and('contain', 'Invitación de Feria')
+      .and('contain', 'Mis Pases Digitales')
       .click({ force: true });
 
-    // 3️⃣ VERIFICAR QUE ENTRA A LA PANTALLA Y RENDERIZA EL CARNET DE INVITADO
-    // Validamos la redirección a la ruta correspondiente de la feria
-    cy.url().should('include', '/fair');
-    cy.get('[data-cy="fair-page-content"]').should('be.visible');
-
-    // Certificamos que los títulos cambian al modo invitación individual
-    cy.get('[data-cy="fair-theme-title"]').should('contain', 'INVITACIÓN INDIVIDUAL DE ACCESO');
-
-    // Inspeccionamos la tarjeta asegurando que tiene la clase reactiva de invitado
-    cy.get('[data-cy="fair-pass-card"]')
-      .should('be.visible')
-      .and('have.class', 'is-guest-card'); // Confirma el tipado visual
-
-    // 4️⃣ CLIC EN EL QR MINI Y COMPROBACIÓN DEL MODAL EN GRANDE
-    // Pulsamos en el panel interactivo del código QR de la derecha
-    cy.get('[data-cy="btn-open-qr-modal"]').should('be.visible').click({ force: true });
-    cy.wait(500); // Esperamos a que el ion-modal termine de subir a la pantalla
-
-    // Validamos que el cuadro de diálogo flotante se muestra correctamente
-    cy.get('[data-cy="fair-qr-modal"]').should('be.visible');
-
-    // Certificamos que el contenedor del código QR en pantalla completa es perfectamente visible
-    cy.get('[data-cy="qr-fullscreen-container"]').should('be.visible');
-
-    // Comprobamos que el texto de validación manual o de pie de modal está en su sitio
-    cy.get('[data-cy="qr-manual-code-text"]').should('be.visible');
-
-    // 5️⃣ CIERRE CONTROLADO DEL VISOR
-    // Pulsamos el aspa superior para cerrar el modal y no bloquear futuros tests
-    cy.get('[data-cy="btn-close-qr-modal"]').should('be.visible').click({ force: true });
-    cy.wait(400); // Esperamos a que se desvanezca
-
-    // Aseguramos que la pantalla vuelve a quedar despejada
-    cy.get('[data-cy="fair-qr-modal"]').should('not.be.visible');
+    // 8️⃣ ASERCIÓN FINAL: COMPROBAR QUE EL PASE DE LA FERIA EXISTE PARA ÉL
+    cy.url().should('include', '/user-passes');
+    cy.contains('[data-cy="passe-pass-card"]', 'Feria de Camas 2026')
+      .should('be.visible');
   });
 });

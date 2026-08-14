@@ -1,14 +1,14 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / FIREBASE\_ERROR\_MAP
+[shared-core](../index.md) / FIREBASE\_ERROR\_MAP
 
 # Variable: FIREBASE\_ERROR\_MAP
 
 > `const` **FIREBASE\_ERROR\_MAP**: `Record`\<`string`, [`AppMessageCode`](../enumerations/AppMessageCode.md)\>
 
-Defined in: [constants/firebase-error-map.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/constants/firebase-error-map.ts#L9)
+Defined in: [constants/firebase-error-map.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/constants/firebase-error-map.ts#L9)
 
 ## Description
 

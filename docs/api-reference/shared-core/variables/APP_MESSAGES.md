@@ -1,14 +1,14 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / APP\_MESSAGES
+[shared-core](../index.md) / APP\_MESSAGES
 
 # Variable: APP\_MESSAGES
 
 > `const` **APP\_MESSAGES**: `object`
 
-Defined in: [constants/app-messages.ts:8](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/constants/app-messages.ts#L8)
+Defined in: [constants/app-messages.ts:8](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/constants/app-messages.ts#L8)
 
 ## Type Declaration
 
@@ -244,102 +244,6 @@ Notificación Toast de éxito: Modificaciones consolidadas y enviadas de forma l
 
 Notificación Toast de éxito: Transacción atómica completada con éxito y plaza en el evento asegurada.
 
-### ADC\_FAIR\_ERR\_0001
-
-> **ADC\_FAIR\_ERR\_0001**: `string` = `'Límite superado. Solo puedes invitar a un máximo de 6 personas por día.'`
-
-#### Description
-
-Restricción de negocio: El socio ha superado el cupo estricto de invitaciones externas reguladas para el día de hoy.
-
-### ADC\_FAIR\_ERR\_0002
-
-> **ADC\_FAIR\_ERR\_0002**: `string` = `'El código QR escaneado no corresponde a ningún pase de feria válido.'`
-
-#### Description
-
-Terminal de portería: El decodificador del plugin de la cámara arroja un payload ilegítimo o fraudulento.
-
-### ADC\_FAIR\_ERR\_0003
-
-> **ADC\_FAIR\_ERR\_0003**: `string` = `'Acceso denegado. Este pase no es válido para la fecha de hoy.'`
-
-#### Description
-
-Validación de acceso en puerta: El escáner rechaza el pase porque la fecha actual no cubre la vigencia del abono.
-
-### ADC\_FAIR\_ERR\_0004
-
-> **ADC\_FAIR\_ERR\_0004**: `string` = `'No se pudo emitir la invitación. Verifica tu conexión.'`
-
-#### Description
-
-Excepción de inserción: Error asíncrono de red al intentar insertar el pase digital en `fair-access`.
-
-### ADC\_FAIR\_ERR\_0005
-
-> **ADC\_FAIR\_ERR\_0005**: `string` = `'No se pudo anular el pase. Inténtalo de nuevo más tarde.'`
-
-#### Description
-
-Excepción destructiva: Fallo al intentar borrar el documento de la credencial desde el listado del socio.
-
-### ADC\_FAIR\_ERR\_0006
-
-> **ADC\_FAIR\_ERR\_0006**: `string` = `'Debes seleccionar un invitado del listado desplegable o escribir un nombre.'`
-
-#### Description
-
-Validación de formulario ferial: Argumento obligatorio nulo al intentar generar un pase sin identidad destino.
-
-### ADC\_FAIR\_ERR\_0007
-
-> **ADC\_FAIR\_ERR\_0007**: `string` = `'No tienes ningún pase de feria activo disponible para la jornada de hoy.'`
-
-#### Description
-
-Monitorización reactiva: El snapshot determina que el usuario logueado carece de pases válidos vigentes hoy.
-
-### ADC\_FAIR\_ERR\_0008
-
-> **ADC\_FAIR\_ERR\_0008**: `string` = `'Acceso denegado. El socio no se encuentra en estado activo en el sistema.'`
-
-#### Description
-
-Control en puerta: El carnet escaneado pertenece a una cuenta suspendida o bloqueada por la directiva.
-
-### ADC\_FAIR\_ERR\_0009
-
-> **ADC\_FAIR\_ERR\_0009**: `string` = `'Acceso denegado. El tipo de usuario no dispone de credenciales de acceso de socio.'`
-
-#### Description
-
-Control de portería: El tipo de rol asignado al usuario carece por completo de permisos de admisión ferial.
-
-### ADC\_FAIR\_INF\_0001
-
-> **ADC\_FAIR\_INF\_0001**: `string` = `'Pase de caseta emitido correctamente.'`
-
-#### Description
-
-Notificación Toast de éxito: Pase relacional insertado y disponible para el despliegue del código QR del invitado.
-
-### ADC\_FAIR\_INF\_0002
-
-> **ADC\_FAIR\_INF\_0002**: `string` = `'El pase ha sido anulado correctamente.'`
-
-#### Description
-
-Notificación Toast de éxito: Credencial purgada del servidor, quedando inmediatamente desvinculada e invalidada.
-
-### ADC\_FAIR\_INF\_0003
-
-> **ADC\_FAIR\_INF\_0003**: `string` = `'¡Pase de Feria disponible! Hemos generado automáticamente tu credencial de acceso para la caseta de feria.'`
-
-#### Description
-
-Inicialización de billetera: El onSnapshot detecta un abono vigente hoy y activa el acceso lateral de forma automática.
-
 ### ADC\_FEES\_ERR\_0001
 
 > **ADC\_FEES\_ERR\_0001**: `string` = `'Acceso denegado. Es necesario estar al corriente de pago de la cuota para poder apuntarse a este evento.'`
@@ -354,7 +258,7 @@ Bloqueo de agenda: Intercepta la confirmación de asistencia bloqueando el botó
 
 #### Description
 
-Bloqueo ferial: Impide generar pases de caseta en `fair-access` si se detecta estado de impago en el perfil.
+Bloqueo ferial: Impide generar pases de caseta en `event-access` si se detecta estado de impago en el perfil.
 
 ### ADC\_FEES\_ERR\_0003
 
@@ -419,6 +323,102 @@ Validación de token web: El enlace pulsado por el usuario no se corresponde con
 #### Description
 
 Notificación Toast de éxito: Documento cerrojo lógico creado en Firestore y correo electrónico despachado.
+
+### ADC\_PASS\_ERR\_0001
+
+> **ADC\_PASS\_ERR\_0001**: `string` = `'Límite superado. Solo puedes invitar a un máximo de 6 personas por día.'`
+
+#### Description
+
+Restricción de negocio: El socio ha superado el cupo estricto de invitaciones externas reguladas para el día de hoy.
+
+### ADC\_PASS\_ERR\_0002
+
+> **ADC\_PASS\_ERR\_0002**: `string` = `'El código QR escaneado no corresponde a ningún pase de feria válido.'`
+
+#### Description
+
+Terminal de portería: El decodificador del plugin de la cámara arroja un payload ilegítimo o fraudulento.
+
+### ADC\_PASS\_ERR\_0003
+
+> **ADC\_PASS\_ERR\_0003**: `string` = `'Acceso denegado. Este pase no es válido para la fecha de hoy.'`
+
+#### Description
+
+Validación de acceso en puerta: El escáner rechaza el pase porque la fecha actual no cubre la vigencia del abono.
+
+### ADC\_PASS\_ERR\_0004
+
+> **ADC\_PASS\_ERR\_0004**: `string` = `'No se pudo emitir la invitación. Verifica tu conexión.'`
+
+#### Description
+
+Excepción de inserción: Error asíncrono de red al intentar insertar el pase digital en `event-access`.
+
+### ADC\_PASS\_ERR\_0005
+
+> **ADC\_PASS\_ERR\_0005**: `string` = `'No se pudo anular el pase. Inténtalo de nuevo más tarde.'`
+
+#### Description
+
+Excepción destructiva: Fallo al intentar borrar el documento de la credencial desde el listado del socio.
+
+### ADC\_PASS\_ERR\_0006
+
+> **ADC\_PASS\_ERR\_0006**: `string` = `'Debes seleccionar un invitado del listado desplegable o escribir un nombre.'`
+
+#### Description
+
+Validación de formulario ferial: Argumento obligatorio nulo al intentar generar un pase sin identidad destino.
+
+### ADC\_PASS\_ERR\_0007
+
+> **ADC\_PASS\_ERR\_0007**: `string` = `'No tienes ningún pase de feria activo disponible para la jornada de hoy.'`
+
+#### Description
+
+Monitorización reactiva: El snapshot determina que el usuario logueado carece de pases válidos vigentes hoy.
+
+### ADC\_PASS\_ERR\_0008
+
+> **ADC\_PASS\_ERR\_0008**: `string` = `'Acceso denegado. El socio no se encuentra en estado activo en el sistema.'`
+
+#### Description
+
+Control en puerta: El carnet escaneado pertenece a una cuenta suspendida o bloqueada por la directiva.
+
+### ADC\_PASS\_ERR\_0009
+
+> **ADC\_PASS\_ERR\_0009**: `string` = `'Acceso denegado. El tipo de usuario no dispone de credenciales de acceso de socio.'`
+
+#### Description
+
+Control de portería: El tipo de rol asignado al usuario carece por completo de permisos de admisión ferial.
+
+### ADC\_PASS\_INF\_0001
+
+> **ADC\_PASS\_INF\_0001**: `string` = `'Pase de caseta emitido correctamente.'`
+
+#### Description
+
+Notificación Toast de éxito: Pase relacional insertado y disponible para el despliegue del código QR del invitado.
+
+### ADC\_PASS\_INF\_0002
+
+> **ADC\_PASS\_INF\_0002**: `string` = `'El pase ha sido anulado correctamente.'`
+
+#### Description
+
+Notificación Toast de éxito: Credencial purgada del servidor, quedando inmediatamente desvinculada e invalidada.
+
+### ADC\_PASS\_INF\_0003
+
+> **ADC\_PASS\_INF\_0003**: `string` = `'¡Pase de Feria disponible! Hemos generado automáticamente tu credencial de acceso para la caseta de feria.'`
+
+#### Description
+
+Inicialización de billetera: El onSnapshot detecta un abono vigente hoy y activa el acceso lateral de forma automática.
 
 ### ADC\_SYS\_ERR\_0001
 

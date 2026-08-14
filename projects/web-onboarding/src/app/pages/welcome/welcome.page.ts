@@ -1,13 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { 
-  IonContent, 
-  IonButton, 
-  IonIcon, 
-  IonText, 
-  IonSpinner 
-} from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
 import { 
   arrowForwardOutline, 
@@ -16,6 +10,7 @@ import {
 } from 'ionicons/icons';
 
 import { TokenService } from '../../core/services/token.service';
+import { environment } from '../../../environments/environment'
 
 /**
  * @class WelcomeComponent
@@ -28,11 +23,6 @@ import { TokenService } from '../../core/services/token.service';
   standalone: true,
   imports: [
     CommonModule,
-    IonContent,
-    IonButton,
-    IonIcon,
-    IonText,
-    IonSpinner
   ],
   templateUrl: './welcome.page.html',
   styleUrls: ['./welcome.page.scss']
@@ -45,6 +35,12 @@ export class WelcomeComponent implements OnInit {
   private router = inject(Router);
   /** @description Instancia inyectada del servicio verificador de pases e invitaciones NoSQL. @private */
   private tokenService = inject(TokenService);
+
+  /**
+   * @description Dirección URL base de la aplicación principal recuperada del entorno activo.
+   * @type {string}
+   */
+  public mainAppUrl: string = environment.mainAppUrl;
 
   // =========================================================================
   // ⚙️ ESTADOS DE LA INTERFAZ DE USUARIO (UI)

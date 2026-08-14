@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / NotificationService
+[shared-core](../index.md) / NotificationService
 
 # Class: NotificationService
 
-Defined in: [services/notification.service.ts:25](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/notification.service.ts#L25)
+Defined in: [services/notification.service.ts:25](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/notification.service.ts#L25)
 
 NotificationService
 
@@ -22,7 +22,7 @@ Centraliza el diccionario de traducción de códigos de error y el registro ató
 
 > **new NotificationService**(): `NotificationService`
 
-Defined in: [services/notification.service.ts:34](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/notification.service.ts#L34)
+Defined in: [services/notification.service.ts:34](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/notification.service.ts#L34)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Registra de forma inmediata la matriz de iconos vectoriales requeridos por los T
 
 > **error**(`message`): `Promise`\<`void`\>
 
-Defined in: [services/notification.service.ts:64](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/notification.service.ts#L64)
+Defined in: [services/notification.service.ts:64](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/notification.service.ts#L64)
 
 #### Parameters
 
@@ -66,7 +66,7 @@ Despacha una notificación flotante de error crítico con temática rojiza e ico
 
 > **info**(`message`): `Promise`\<`void`\>
 
-Defined in: [services/notification.service.ts:92](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/notification.service.ts#L92)
+Defined in: [services/notification.service.ts:92](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/notification.service.ts#L92)
 
 #### Parameters
 
@@ -94,7 +94,7 @@ Despacha una notificación flotante informativa o neutral con temática azulada.
 
 > **success**(`message`): `Promise`\<`void`\>
 
-Defined in: [services/notification.service.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/notification.service.ts#L50)
+Defined in: [services/notification.service.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/notification.service.ts#L50)
 
 #### Parameters
 
@@ -122,7 +122,7 @@ Despacha una notificación flotante de éxito con temática verdosa e icono de v
 
 > **warning**(`message`): `Promise`\<`void`\>
 
-Defined in: [services/notification.service.ts:78](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/notification.service.ts#L78)
+Defined in: [services/notification.service.ts:78](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/notification.service.ts#L78)
 
 #### Parameters
 

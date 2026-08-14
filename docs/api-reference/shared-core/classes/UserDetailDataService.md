@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserDetailDataService
+[shared-core](../index.md) / UserDetailDataService
 
 # Class: UserDetailDataService
 
-Defined in: [services/user-detail-data.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-data.service.ts#L23)
+Defined in: [services/user-detail-data.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-data.service.ts#L23)
 
 UserDetailDataService
 
@@ -22,7 +22,7 @@ Saneado por completo para centralizar las mutaciones y auditorías de cuotas en 
 
 > **new UserDetailDataService**(): `UserDetailDataService`
 
-Defined in: [services/user-detail-data.service.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-data.service.ts#L50)
+Defined in: [services/user-detail-data.service.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-data.service.ts#L50)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el servicio de procesamiento de datos de usuario.
 
 > **createUser**(`params`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-data.service.ts:232](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-data.service.ts#L232)
+Defined in: [services/user-detail-data.service.ts:232](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-data.service.ts#L232)
 
 #### Parameters
 
@@ -87,7 +87,7 @@ Setea los valores por defecto de privacidad, fuerza la inicialización de la cuo
 
 > **updateCredentials**(`params`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-data.service.ts:167](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-data.service.ts#L167)
+Defined in: [services/user-detail-data.service.ts:167](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-data.service.ts#L167)
 
 #### Parameters
 
@@ -147,7 +147,7 @@ Valida la equivalencia sintáctica e invoca la actualización asíncrona de corr
 
 > **updateMembership**(`params`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-data.service.ts:127](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-data.service.ts#L127)
+Defined in: [services/user-detail-data.service.ts:127](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-data.service.ts#L127)
 
 #### Parameters
 
@@ -186,7 +186,7 @@ e inyecta las marcas inmutables de auditoría financiera exigidas en el servidor
 
 > **updatePersonalData**(`params`): `Promise`\<`boolean`\>
 
-Defined in: [services/user-detail-data.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-data.service.ts#L59)
+Defined in: [services/user-detail-data.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-data.service.ts#L59)
 
 #### Parameters
 

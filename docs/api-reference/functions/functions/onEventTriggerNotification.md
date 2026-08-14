@@ -1,14 +1,14 @@
-[**functions**](../README.md)
+[**functions**](../index.md)
 
 ***
 
-[functions](../README.md) / onEventTriggerNotification
+[functions](../index.md) / onEventTriggerNotification
 
 # Function: onEventTriggerNotification()
 
 > **onEventTriggerNotification**(`raw`): `any`
 
-Defined in: [src/functions/onEventTriggerNotification.ts:29](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/functions/src/functions/onEventTriggerNotification.ts#L29)
+Defined in: [src/functions/onEventTriggerNotification.ts:29](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/functions/src/functions/onEventTriggerNotification.ts#L29)
 
 onEventTriggerNotification
 

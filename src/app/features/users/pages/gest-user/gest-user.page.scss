@@ -1,750 +1,349 @@
 /* =========================================
-   PAGE
+   CONTENEDOR DE PÁGINA Y FONDO
 ========================================= */
-
 .users-content {
-
-  --background:
-    linear-gradient(180deg,
-      #123d92 0%,
-      #0d327c 100%);
-
+  --background: linear-gradient(180deg, #123d92 0%, #0d327c 100%);
   position: relative;
-
-  overflow: hidden;
-
 }
 
-/* =========================================
-   BACKGROUND LOGO
-========================================= */
-
+/* Logo Marca de Agua */
 .background-logo {
-
   position: fixed;
-
   inset: 0;
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   pointer-events: none;
-
-  opacity: 0.08;
-
+  opacity: 0.06;
   z-index: 0;
 
-}
-
-.background-logo img {
-
-  width: 80%;
-
-  max-width: 500px;
-
+  img {
+    width: 75%;
+    max-width: 450px;
+  }
 }
 
 /* =========================================
-   SEARCH
+   BUSCADOR (SEARCHBAR)
 ========================================= */
-
 .search-container {
+  margin-bottom: 8px;
 
-  position: relative;
-
-  z-index: 2;
-
-  padding:
-    18px 16px 8px;
-
-}
-
-.custom-searchbar {
-
-  --background:
-    rgba(255, 255, 255, 0.12); // Un pelín más opaco el fondo para asentar el texto
-
-  --border-radius:
-    22px;
-
-  --box-shadow:
-    none;
-
-  // 🔍 ADAPTACIÓN DE ALTO CONTRASTE HUMANO:
-  --placeholder-color:
-    rgba(255, 255, 255, 0.70); // El texto de "Buscar usuario..." se lee mucho más claro
-
-  --color:
-    #ffffff; // Las letras que escribe el usuario pasan a ser blanco puro e intenso
-
-  --icon-color:
-    #ffffff; // 💡 NUEVO: Fuerza a que la lupa (y el botón de borrar) brillen en blanco puro
-
-  backdrop-filter:
-    blur(10px);
-
-}
-/* =========================================
-   SEGMENT
-========================================= */
-
-.users-segment {
-
-  width: 100%;
-
-  margin:
-    10px 0 18px;
-
-  border-radius:
-    22px;
-
-  background:
-    rgba(255, 255, 255, 0.08);
-
-  backdrop-filter:
-    blur(12px);
-
-  border:
-    1px solid rgba(255, 255, 255, 0.06);
-
-  overflow-x: auto;
-
-  overflow-y: hidden;
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
-
-}
-
-.users-segment::-webkit-scrollbar {
-
-  display: none;
-
-}
-
-.users-segment ion-segment-button {
-
-  --color:
-    rgba(255, 255, 255, 0.7);
-
-  --color-checked:
-    #4da3ff;
-
-  --indicator-color:
-    #1f7cff;
-
-  min-height:
-    54px;
-
-  min-width:
-    150px;
-
-  font-weight:
-    600;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    0.5px;
-
-  white-space: nowrap;
-
-  flex-shrink: 0;
-
+  .custom-searchbar {
+    --background: rgba(255, 255, 255, 0.12);
+    --border-radius: 16px;
+    --box-shadow: none;
+    --placeholder-color: rgba(255, 255, 255, 0.65);
+    --color: #ffffff;
+    --icon-color: #ffffff;
+    --clear-button-color: #ffffff;
+    backdrop-filter: blur(10px);
+    padding: 0;
+  }
 }
 
 /* =========================================
-   USERS CONTAINER
+   SEGMENTOS (PESTAÑAS)
 ========================================= */
+.users-segment-wrapper {
+  margin-bottom: 16px;
 
+  .users-segment {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+
+    ion-segment-button {
+      --color: rgba(255, 255, 255, 0.6);
+      --color-checked: #ffffff;
+      --indicator-color: #1f7cff;
+      min-height: 42px;
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.3px;
+    }
+  }
+}
+
+/* =========================================
+   CONTENEDOR Y TARJETAS DE USUARIO
+========================================= */
 .users-container {
-
-  position: relative;
-
-  z-index: 2;
-
   display: flex;
-
   flex-direction: column;
-
-  gap: 14px;
-
-  padding:
-    0 16px 100px;
-
+  gap: 10px;
+  padding-bottom: 80px;
 }
-
-/* =========================================
-   USER CARD
-========================================= */
 
 .user-card {
-
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 12px;
   display: flex;
-
   align-items: center;
+  gap: 12px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 
-  gap: 14px;
+  &:active {
+    transform: scale(0.99);
+    background: rgba(255, 255, 255, 0.16);
+  }
 
-  width: 100%;
-
-  padding:
-    14px;
-
-  border-radius:
-    24px;
-
-  background:
-    rgba(255, 255, 255, 0.14);
-
-  border:
-    1px solid rgba(255, 255, 255, 0.12);
-
-  backdrop-filter:
-    blur(18px);
-
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.16);
-
-  transition:
-    all 0.25s ease;
-
+  &.pending-card {
+    border-left: 4px solid #f59e0b;
+  }
 }
 
-.user-card:active {
-
-  transform:
-    scale(0.99);
-
-}
-
-/* =========================================
-   PENDING CARD
-========================================= */
-
-.pending-card {
-
-  border:
-    1px solid rgba(255, 208, 0, 0.28);
-
-}
-
-/* =========================================
-   AVATAR
-========================================= */
-
+/* Avatar */
 .user-avatar-container {
-
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
 
-}
+  .user-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
 
-.user-avatar,
-.default-avatar {
+  .default-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 
-  width: 64px;
-
-  height: 64px;
-
-  border-radius: 50%;
-
-  object-fit: cover;
-
-}
-
-.user-avatar {
-
-  border:
-    2px solid rgba(255, 255, 255, 0.25);
-
-}
-
-.default-avatar {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background:
-    rgba(255, 255, 255, 0.12);
-
-  color:
-    rgba(255, 255, 255, 0.85);
-
-  font-size:
-    28px;
-
+    ion-icon {
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
 }
 
 /* =========================================
-   USER INFO
+   PILLS DE ROL (JERARQUÍA VISUAL REMARCADA)
 ========================================= */
+.role-pill {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  line-height: 1 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  margin-left: 6px;
 
+  /* 1. ADMINISTRADOR: Rojo Carmesí */
+  &.rol-adm {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border: 1px solid #f87171 !important;
+  }
+
+  /* 2. DIRECTIVA: Naranja / Dorado Potente */
+  &.rol-dir {
+    background-color: #d97706 !important;
+    color: #ffffff !important;
+    border: 1px solid #fbbf24 !important;
+  }
+
+  /* 3. SOCIO: Azul Cyan Eléctrico */
+  &.rol-soc {
+    background-color: #0284c7 !important;
+    color: #ffffff !important;
+    border: 1px solid #38bdf8 !important;
+  }
+
+  /* 4. INVITADO: Verde Esmeralda */
+  &.rol-inv {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+    border: 1px solid #34d399 !important;
+  }
+
+  /* 5. PORTERO: Gris Pizarra */
+  &.rol-por {
+    background-color: #475569 !important;
+    color: #e2e8f0 !important;
+    border: 1px solid #94a3b8 !important;
+  }
+}
+
+/* =========================================
+   COLUMNA IZQUIERDA: INFORMACIÓN
+========================================= */
 .user-info-mini {
-
   flex: 1;
-
   min-width: 0;
 
+  .user-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    h2 {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .user-subinfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.73rem;
+      color: rgba(255, 255, 255, 0.75);
+
+      ion-icon {
+        font-size: 0.8rem;
+        color: #64b5f6;
+      }
+
+      .sub-italic {
+        font-style: italic;
+        opacity: 0.7;
+      }
+    }
+  }
+
+  .invite-meta {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 3px;
+
+    strong {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
 }
 
-.user-info-mini h2 {
-
-  margin: 0;
-
-  color:
-    #ffffff;
-
-  font-size:
-    22px;
-
-  font-weight:
-    700;
-
-}
-
-// ⚙️ OPTIMIZACIÓN MÓVIL HORIZONTAL: Layout elástico e inline para evitar tarjetas estiradas
-.user-subinfo {
-
+/* =========================================
+   COLUMNA DERECHA: ESTADOS Y ACCIONES
+========================================= */
+.user-status-col {
   display: flex;
-
   align-items: center;
-
-  gap: 10px; // Espacio uniforme entre los elementos informativos
-
-  margin-top: 6px;
-
-  flex-wrap: wrap; // Rompe de línea seguro solo si el dispositivo es extremadamente pequeño
-
-}
-
-/* ==========================================================================
-   🔥 NUEVO MOTOR DE ESTILOS HORIZONTALES DE ALTO CONTRASTE CONTRA FONDO AZUL
-   ========================================================================== */
-
-.meta-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px; // Separación interna muy ajustada entre el icono y su texto
-  font-size: 13px;
-  
-  ion-icon {
-    font-size: 13px;
-    flex-shrink: 0; // Evita que Ionic encoja el icono si el texto es largo
-  }
-}
-
-// 💼 PROFESIÓN: Subida a celeste brillante de alta visibilidad
-.profesion-item {
-  color: #64b5f6;
-  font-weight: 600;
-  
-  ion-icon {
-    color: #64b5f6;
-  }
-}
-
-// 📞 TELÉFONO: Subido a blanco translúcido puro para contraste impecable
-.telefono-item {
-  color: rgba(255, 255, 255, 0.88);
-  font-weight: 500;
-  
-  ion-icon {
-    color: rgba(255, 255, 255, 0.85);
-  }
-}
-
-// 🔒 PRIVADO: Tono grisáceo atenuado pero legible para el estado oculto
-.privado-item {
-  color: rgba(255, 255, 255, 0.45);
-  
-  .sub-italic {
-    font-style: italic;
-  }
-}
-
-.meta-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-// Clase heredada antigua de compatibilidad
-.telefono-text {
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 14px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* =========================================
-   BADGES
-========================================= */
-
-.tipo-badge,
-.status-badge {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding:
-    6px 12px;
-
-  border-radius:
-    999px;
-
-  font-size:
-    13px;
-
-  font-weight:
-    700;
-
-}
-
-.tipo-badge {
-
-  background:
-    rgba(255, 255, 255, 0.12);
-
-  color:
-    #ffffff;
-
-}
-
-.tipo-badge.pending {
-
-  background:
-    rgba(255, 196, 0, 0.16);
-
-  border:
-    1px solid rgba(255, 196, 0, 0.25);
-
-  color:
-    #ffd24d;
-
-}
-
-.status-badge.approved {
-
-  background:
-    rgba(34, 197, 94, 0.16);
-
-  border:
-    1px solid rgba(34, 197, 94, 0.28);
-
-  color:
-    #4ade80;
-
-}
-
-.dot {
-
-  color:
-    rgba(255, 255, 255, 0.45);
-
-}
-
-/* =========================================
-   STATUS CONTAINER
-========================================= */
-
-.status-container {
-
-  margin-left: auto;
-
-}
-
-/* =========================================
-   ARROW
-========================================= */
-
-.arrow-icon {
-
-  color:
-    rgba(255, 255, 255, 0.55);
-
-  font-size:
-    20px;
-
-}
-
-/* =========================================
-   APPROVAL ACTIONS
-========================================= */
-
-.approval-actions {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-end;
-
   gap: 8px;
-
-  margin-left: auto;
-
   flex-shrink: 0;
 
+  .status-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  .account-badge {
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+
+    &.active {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    &.inactive {
+      background: rgba(239, 68, 68, 0.18);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+  }
+
+  .fee-substatus {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.62rem;
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    &.paid {
+      color: rgba(255, 255, 255, 0.6);
+
+      .status-dot {
+        background-color: #10b981;
+      }
+    }
+
+    &.pending {
+      color: #fb7185;
+      font-weight: 600;
+
+      .status-dot {
+        background-color: #f43f5e;
+        box-shadow: 0 0 4px rgba(244, 63, 94, 0.6);
+      }
+    }
+  }
+
+  .approval-actions {
+    display: flex;
+    gap: 6px;
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      ion-icon {
+        font-size: 1rem;
+        color: #ffffff;
+      }
+
+      &.approve-btn {
+        background: #10b981;
+      }
+
+      &.reject-btn {
+        background: #ef4444;
+      }
+    }
+  }
+
+  .action-chevron {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1.05rem;
+  }
 }
 
-/* =========================================
-   ACTION BUTTON
-========================================= */
-
-.action-btn {
-
-  width: 34px;
-
-  height: 34px;
-
-  min-width: 34px;
-
-  min-height: 34px;
-
-  border-radius: 50%;
-
-  border: none;
-
-  padding: 0;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  cursor: pointer;
-
-  transition:
-    all 0.25s ease;
-
-  backdrop-filter:
-    blur(12px);
-
-  box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.18);
-
-}
-
-.action-btn ion-icon {
-
-  font-size: 16px;
-
-}
-
-/* =========================================
-   APPROVE
-========================================= */
-
-.approve-btn {
-
-  background:
-    rgba(34, 197, 94, 0.18);
-
-  border:
-    1px solid rgba(34, 197, 94, 0.35);
-
-  color:
-    #4ade80;
-
-}
-
-.approve-btn:hover {
-
-  transform:
-    scale(1.05);
-
-  box-shadow:
-    0 0 18px rgba(34, 197, 94, 0.35);
-
-}
-
-/* =========================================
-   REJECT
-========================================= */
-
-.reject-btn {
-
-  background:
-    rgba(239, 68, 68, 0.14);
-
-  border:
-    1px solid rgba(239, 68, 68, 0.28);
-
-  color:
-    #f87171;
-
-}
-
-.reject-btn:hover {
-
-  transform:
-    scale(1.05);
-
-  box-shadow:
-    0 0 18px rgba(239, 68, 68, 0.30);
-
-}
-
-/* =========================================
-   FAB
-========================================= */
-
-.fab-safe-area {
-
-  margin-bottom:
-    env(safe-area-inset-bottom);
-
-}
-
+/* FAB */
 ion-fab-button {
-
-  --background:
-    linear-gradient(135deg,
-      #2f7cff,
-      #1f5edb);
-
-  --box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.25);
-
-}
-
-/* =========================================
-   MOBILE RESPONSIVE RESPALDO
-========================================= */
-
-@media (max-width: 480px) {
-
-  .user-card {
-
-    padding:
-      12px;
-
-    gap:
-      12px;
-
-  }
-
-  .user-avatar,
-  .default-avatar {
-
-    width: 56px;
-
-    height: 56px;
-
-  }
-
-  .user-info-mini h2 {
-
-    font-size:
-      18px;
-
-  }
-
-  .meta-text {
-    max-width: 110px; // Recorte elástico para que quepa todo de forma nativa en pantallas pequeñas
-  }
-
-  .telefono-text {
-
-    max-width:
-      120px;
-
-  }
-
-}
-
-/* =========================================
-   INVITE META
-========================================= */
-
-.invite-meta {
-
-  margin-top: 6px;
-
-  font-size: 12px;
-
-  color:
-    rgba(255, 255, 255, 0.55);
-
-  line-height: 1.4;
-
-}
-
-.invite-meta strong {
-
-  color:
-    rgba(255, 255, 255, 0.82);
-
-  font-weight:
-    600;
-
-}
-
-/* =========================================
-   SEGMENT WRAPPER
-========================================= */
-
-.users-segment-wrapper {
-
-  padding:
-    0 16px;
-
-}
-
-// ========================================
-// MOBILE SEGMENT SCROLL FIX
-// ========================================
-
-.user-segment {
-
-  overflow-x: auto;
-
-  overflow-y: hidden;
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
-
-  padding-bottom: 4px;
-
-}
-
-.user-segment::-webkit-scrollbar {
-
-  display: none;
-
-}
-
-.user-segment ion-segment {
-
-  display: flex;
-
-  width: max-content;
-
-  min-width: 100%;
-
-}
-
-.user-segment ion-segment-button {
-
-  min-width: max-content;
-
-  padding-left: 20px;
-
-  padding-right: 20px;
-
-  flex: 0 0 auto;
+  --background: linear-gradient(135deg, #2f7cff, #1f5edb);
+  --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }

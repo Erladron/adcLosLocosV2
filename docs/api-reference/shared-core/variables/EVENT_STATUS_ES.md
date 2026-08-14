@@ -1,14 +1,14 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / EVENT\_STATUS\_ES
+[shared-core](../index.md) / EVENT\_STATUS\_ES
 
 # Variable: EVENT\_STATUS\_ES
 
 > `const` **EVENT\_STATUS\_ES**: `Record`\<[`EventStatus`](../enumerations/EventStatus.md), `string`\>
 
-Defined in: [models/events.models.ts:157](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L157)
+Defined in: [models/events.models.ts:156](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L156)
 
 ## Description
 

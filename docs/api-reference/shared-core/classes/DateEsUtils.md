@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / DateEsUtils
+[shared-core](../index.md) / DateEsUtils
 
 # Class: DateEsUtils
 
-Defined in: [utils/string.utils.ts:195](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L195)
+Defined in: [utils/string.utils.ts:195](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L195)
 
 DateEsUtils
 
@@ -32,7 +32,7 @@ Sanea desfases UTC en entornos distribuidos, emuladores y consultas NoSQL de la 
 
 > `static` **estaEnRangoDiarioEs**(`fechaInicio`, `fechaFin`): `boolean`
 
-Defined in: [utils/string.utils.ts:266](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L266)
+Defined in: [utils/string.utils.ts:266](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L266)
 
 #### Parameters
 
@@ -68,7 +68,7 @@ Regla de negocio ferial de la peña. Evalúa si el día de hoy cae dentro de la 
 
 > `static` **formatearFechaCortaEs**(`valor`): `string`
 
-Defined in: [utils/string.utils.ts:228](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L228)
+Defined in: [utils/string.utils.ts:228](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L228)
 
 #### Parameters
 
@@ -98,7 +98,7 @@ Convierte una fecha al estándar corto de almacenamiento e indexación NoSQL (YY
 
 > `static` **formatearFechaLargaEs**(`valor`, `incluirSegundos?`): `string`
 
-Defined in: [utils/string.utils.ts:243](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L243)
+Defined in: [utils/string.utils.ts:243](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L243)
 
 #### Parameters
 
@@ -134,7 +134,7 @@ Convierte una fecha al estándar de visualización civil con granularidad de hor
 
 > `static` **normalizarADate**(`valor`): `Date`
 
-Defined in: [utils/string.utils.ts:214](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L214)
+Defined in: [utils/string.utils.ts:214](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L214)
 
 #### Parameters
 
@@ -164,7 +164,7 @@ Helper defensivo que asimila Timestamps de Firebase, cadenas ISO o Date nativos,
 
 > `static` **obtenerFechaActualEs**(): `Date`
 
-Defined in: [utils/string.utils.ts:202](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L202)
+Defined in: [utils/string.utils.ts:202](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L202)
 
 #### Returns
 

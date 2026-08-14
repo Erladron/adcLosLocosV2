@@ -4,7 +4,9 @@
   </div>
 
   <div class="login-container">
-    <div class="form-card">
+
+    <!-- 🔄 SECCIÓN PRINCIPAL: Formulario limpio desde cero -->
+    <div class="form-card" *ngIf="!cargando">
 
       <div class="header-section">
         <div class="logo-circle">
@@ -14,16 +16,19 @@
         <p>Accede a tu cuenta de socio</p>
       </div>
 
-      <div class="form-section">
+      <form class="form-section" (ngSubmit)="ingresar()">
+
         <ion-item lines="none">
-          <ion-input label="Email" labelPlacement="floating" type="email" [(ngModel)]="email"
+          <!-- AÑADIDO: name="email" -->
+          <ion-input label="Email" labelPlacement="floating" type="email" [(ngModel)]="email" name="email"
             placeholder="ejemplo@correo.com" data-cy="input-login-email">
           </ion-input>
         </ion-item>
 
         <ion-item lines="none">
+          <!-- AÑADIDO: name="password" -->
           <ion-input [type]="showPassword ? 'text' : 'password'" label="Contraseña" labelPlacement="floating"
-            [(ngModel)]="password" data-cy="input-login-password">
+            [(ngModel)]="password" name="password" data-cy="input-login-password">
           </ion-input>
           <ion-button slot="end" fill="clear" (click)="showPassword = !showPassword" class="eye-button"
             data-cy="btn-login-toggle-password">
@@ -32,18 +37,24 @@
         </ion-item>
 
         <div class="button-section">
-          <ion-button expand="block" (click)="ingresar()" [disabled]="cargando" class="main-button"
-            data-cy="btn-login-submit">
-            <span *ngIf="!cargando" data-cy="btn-login-text">Entrar</span>
-            <ion-spinner *ngIf="cargando" name="crescent" data-cy="login-spinner"></ion-spinner>
+          <!-- AÑADIDO: type="submit" para vincularlo al comportamiento del formulario -->
+          <ion-button type="submit" expand="block" [disabled]="cargando" class="main-button" data-cy="btn-login-submit">
+            <span data-cy="btn-login-text">Entrar</span>
           </ion-button>
         </div>
-      </div>
+
+      </form>
 
     </div>
 
+    <!-- ⏳ SECCIÓN DE ESPERA: Controlada 100% por clases SCSS -->
+    <div class="form-card loading-card" *ngIf="cargando">
+      <ion-spinner name="crescent" data-cy="login-spinner" class="loading-spinner"></ion-spinner>
+      <p class="loading-text">Conectando...</p>
+    </div>
+
     <footer class="app-footer-fixed">
-      <p>© 2026 ADC Los Locos. Gestión Digital Oficial.</p>
+      <p>© 2026 ACD Los Locos. Gestión Digital Oficial.</p>
     </footer>
   </div>
 </ion-content>

@@ -58,8 +58,13 @@ import { SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/compat/firestore';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 
+import { provideCalendar, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 // 📱 IMPORTACIÓN NATIVA DE CAPACITOR PARA DETECTAR LA PLATAFORMA
 import { Capacitor } from '@capacitor/core';
+import { isDevMode } from '@angular/core';
+import { provideServiceWorker } from '@angular/service-worker';
 
 /**
  * Interceptor de Logs y Advertencias de la Consola
@@ -94,6 +99,12 @@ bootstrapApplication(
   AppComponent,
   {
     providers: [
+
+      provideCalendar({
+        provide: DateAdapter,
+        useFactory: adapterFactory,
+      }),
+
       provideHttpClient(),
 
       provideIonicAngular({
@@ -135,16 +146,19 @@ bootstrapApplication(
 
       provideFunctions(() => {
         // 🎯 OBLIGAMOS AL SDK WEB A APUNTAR A LA REGIÓN EUROPEA CORRECTA
-        const functions = getFunctions(undefined, 'europe-west1'); 
-        
+        const functions = getFunctions(undefined, 'europe-west1');
+
         if (activarEmuladores) {
           connectFunctionsEmulator(functions, 'localhost', 5001);
         }
         return functions;
       }),
 
-      // 🍏 INYECCIÓN AÑADIDA: Habilita el canal de mensajería en la nube para la web de la Peña
+      // Solo inicializar Messaging de Web si NO estamos dentro de la APK nativa
       provideMessaging(() => {
+        if (Capacitor.isNativePlatform()) {
+          return null as any; // Omite el SDK Web en el móvil
+        }
         return getMessaging();
       }),
 
@@ -184,7 +198,10 @@ bootstrapApplication(
           provide: FIRESTORE_SETTINGS,
           useValue: { host: 'localhost:8080', ssl: false }
         }
-      ] : []
+      ] : [], provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+      })
     ]
   }
 ).catch(

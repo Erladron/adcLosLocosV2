@@ -26,4 +26,4 @@ export { approveUser } from './functions/approveUser';
 export { sendCustomPasswordReset } from './functions/sendCustomPasswordReset';
 export { requestUserApproval } from './functions/requestUserApproval';
 export { onEventTriggerNotification } from './functions/onEventTriggerNotification';
-export { onFairAccessCreatedNotification } from './functions/onFairAccessCreatedNotification';
+export { onPasseAccessCreatedNotification } from './functions/onPasseAccessCreatedNotification';

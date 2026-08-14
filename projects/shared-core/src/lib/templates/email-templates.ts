@@ -14,10 +14,10 @@ export const EmailTemplates = {
    * @description Genera el código HTML adaptativo para el correo de bienvenida y onboarding de nuevos socios.
    * 🚀 REFACTORIZADO: Inyecta de manera dinámica la URL base de la aplicación para mitigar cruces de entornos entre desarrollo y producción.
    * @param {string} tokenGenerado Hash único universal del token de siembra/invitación web.
-   * @param {string} [baseUrl='https://adcloslocos-desa.web.app'] URL base del ecosistema web (inyectada según environment).
+   * @param {string} [baseUrl='https://acdloslocos-onboarding-desa.web.app'] URL base del ecosistema web (inyectada según environment).
    * @returns {string} Código HTML enriquecido listo para ser inyectado en el transporte de mensajería (Nodemailer / Cloud Functions).
    */
-  getInvitationTemplate: (tokenGenerado: string, baseUrl: string = 'https://adcloslocos-desa.web.app'): string => {
+  getInvitationTemplate: (tokenGenerado: string, baseUrl: string = 'https://acdloslocos-onboarding-desa.web.app'): string => {
     
     /** @description URL pública del asset del escudo oficial alojado en las pasarelas estables de Firebase Storage. */
     const urlEscudo = 'https://firebasestorage.googleapis.com/v0/b/adcloslocos-desa.firebasestorage.app/o/escudo.png?alt=media&token=6b0614fc-9d03-4b73-8c8b-be07e8fabbad';

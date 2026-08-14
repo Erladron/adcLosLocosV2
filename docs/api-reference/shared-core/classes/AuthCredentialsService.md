@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthCredentialsService
+[shared-core](../index.md) / AuthCredentialsService
 
 # Class: AuthCredentialsService
 
-Defined in: [services/auth-credentials.service.ts:20](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-credentials.service.ts#L20)
+Defined in: [services/auth-credentials.service.ts:20](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-credentials.service.ts#L20)
 
 AuthCredentialsService
 
@@ -22,7 +22,7 @@ re-autenticación en caliente exigidos por el proveedor Firebase Auth.
 
 > **new AuthCredentialsService**(): `AuthCredentialsService`
 
-Defined in: [services/auth-credentials.service.ts:29](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-credentials.service.ts#L29)
+Defined in: [services/auth-credentials.service.ts:29](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-credentials.service.ts#L29)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el gestor especialista de credenciales de acceso.
 
 > **reauthenticate**(`currentEmail`, `currentPassword`): `Promise`\<`void`\>
 
-Defined in: [services/auth-credentials.service.ts:39](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-credentials.service.ts#L39)
+Defined in: [services/auth-credentials.service.ts:39](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-credentials.service.ts#L39)
 
 #### Parameters
 
@@ -73,7 +73,7 @@ Requisito de seguridad obligatorio antes de aplicar cambios en correos o claves 
 
 > **updateCredentials**(`currentEmail`, `currentPassword`, `newEmail`, `newPassword`): `Promise`\<`void`\>
 
-Defined in: [services/auth-credentials.service.ts:114](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-credentials.service.ts#L114)
+Defined in: [services/auth-credentials.service.ts:114](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-credentials.service.ts#L114)
 
 #### Parameters
 
@@ -120,7 +120,7 @@ Ejecuta una única re-autenticación inicial compartida para blindar el flujo co
 
 > **updateEmail**(`currentEmail`, `currentPassword`, `newEmail`, `bypassReauth?`): `Promise`\<`void`\>
 
-Defined in: [services/auth-credentials.service.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-credentials.service.ts#L58)
+Defined in: [services/auth-credentials.service.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-credentials.service.ts#L58)
 
 #### Parameters
 
@@ -167,7 +167,7 @@ Envía un enlace de confirmación al nuevo email sin alterar el acceso original 
 
 > **updateUserPassword**(`currentEmail`, `currentPassword`, `newPassword`, `bypassReauth?`): `Promise`\<`void`\>
 
-Defined in: [services/auth-credentials.service.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-credentials.service.ts#L88)
+Defined in: [services/auth-credentials.service.ts:88](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-credentials.service.ts#L88)
 
 #### Parameters
 

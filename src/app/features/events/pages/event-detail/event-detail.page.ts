@@ -6,7 +6,6 @@ import {
   IonContent,
   IonIcon,
   IonPopover,
-  IonDatetime,
   IonCheckbox,
   IonToggle,
   IonList,
@@ -15,7 +14,8 @@ import {
   IonSelect,
   IonSelectOption,
   IonTextarea,
-  AlertController 
+  AlertController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -41,8 +41,9 @@ import {
   NotificationService,
   ErrorHandlerService,
   AppMessageCode,
-  APP_MESSAGES,
-  AuthService
+  AuthService,
+  DatePickerComponent,
+  DatePickerResult,
 } from 'shared-core';
 
 import { environment } from '@env/environment';
@@ -70,8 +71,6 @@ export const EVENT_TYPE_ES: Record<EventType, string> = {
     ReactiveFormsModule,
     IonContent,
     IonIcon,
-    IonPopover,
-    IonDatetime,
     IonCheckbox,
     IonToggle,
     IonList,
@@ -98,8 +97,9 @@ export class EventDetailPage implements OnInit, OnDestroy {
   private loading = inject(LoadingService);
   private notification = inject(NotificationService);
   private errorHandler = inject(ErrorHandlerService);
-  public authService = inject(AuthService); 
-  private alertCtrl = inject(AlertController); 
+  public authService = inject(AuthService);
+  private alertCtrl = inject(AlertController);
+  private modalCtrl = inject(ModalController);
 
   @ViewChild('popoverStart') popoverStart!: IonPopover;
   @ViewChild('popoverEnd') popoverEnd!: IonPopover;
@@ -123,9 +123,9 @@ export class EventDetailPage implements OnInit, OnDestroy {
   public direccionSubject = new Subject<string>();
   public sugerencias: any[] = [];
   public mostrarSugerencias = false;
-  
+
   public userStatusAsistencia: 'going' | 'not_going' | 'unconfirmed' = 'unconfirmed';
-  
+
   private attendanceSub!: Subscription;
   private mapboxSub!: Subscription;
   private eventLiveSub?: Subscription;
@@ -211,7 +211,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
       type: [EventType.COMIDA, [Validators.required]],
       isPrivate: [false],
       isAllDay: [false],
-      requiresAccessControl: [false], 
+      requiresAccessControl: [false],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
       maxAttendees: [null, [Validators.min(1)]],
@@ -242,20 +242,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
     });
   }
 
-  private evaluarRequisitosControlAcceso(requiereControl: boolean): void {
-    const limiteControl = this.eventForm.get('limiteInvitadosPorSocio');
 
-    if (requiereControl) {
-      limiteControl?.setValidators([Validators.required, Validators.min(0)]); 
-      if (this.isEditing) limiteControl?.enable();
-    } else {
-      limiteControl?.setValue(null);
-      limiteControl?.clearValidators();
-      limiteControl?.disable();
-    }
-    limiteControl?.updateValueAndValidity();
-    this.cdr.detectChanges();
-  }
 
   /**
    * @method loadEvent
@@ -283,7 +270,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
             type: eventData.type,
             isPrivate: eventData.isPrivate ?? false,
             isAllDay: eventData.allDay || false,
-            requiresAccessControl: (eventData as any).requiresAccessControl ?? false, 
+            requiresAccessControl: (eventData as any).requiresAccessControl ?? false,
             startDate: eventData.startDate,
             endDate: eventData.endDate || '',
             maxAttendees: eventData.maxAttendees,
@@ -328,22 +315,22 @@ export class EventDetailPage implements OnInit, OnDestroy {
     try {
       await this.loading.wrap(async () => {
         await this.eventsService.registerAttendance(this.event!.id!, authUid, confirmarAsistencia);
-        
+
         this.userStatusAsistencia = confirmarAsistencia ? 'going' : 'not_going';
-        
+
         if (this.event) {
           const actual = this.event.attendeeCount || 0;
           this.event.attendeeCount = confirmarAsistencia ? actual + 1 : Math.max(0, actual - 1);
         }
 
-        const msgExito = confirmarAsistencia 
+        const msgExito = confirmarAsistencia
           ? AppMessageCode.ADC_EVENT_INF_0003
           : 'Asistencia cancelada. Tu plaza e invitaciones feriales han sido liberadas.';
-        
+
         this.notification.success(msgExito);
         this.cdr.detectChanges();
       }, confirmarAsistencia ? 'Asegurando tu plaza...' : 'Cancelando tu reserva...');
-      
+
     } catch (error: any) {
       await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0002);
     }
@@ -365,7 +352,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
     const ahora = new Date();
     const fechaLimiteStr = this.event.endDate || this.event.startDate;
     if (!fechaLimiteStr) return false;
-    
+
     const fechaLimite = new Date(fechaLimiteStr);
     if (this.event.allDay) {
       fechaLimite.setHours(23, 59, 59, 999);
@@ -423,6 +410,10 @@ export class EventDetailPage implements OnInit, OnDestroy {
     const isAllDay = this.eventForm.get('isAllDay')?.value;
     const now = new Date();
 
+    // Accedemos directamente a la propiedad .value del control
+    console.log('[EVENT-DETAIL] - Fecha inicio...: ', startDateControl?.value);
+    console.log('[EVENT-DETAIL] - Fecha fin......: ', endDateControl?.value);
+
     if (controlName === 'startDate') {
       const selectedStart = new Date(value);
 
@@ -466,7 +457,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
 
         const safetyEnd = new Date(currentStart);
         safetyEnd.setHours(safetyEnd.getHours() + 1);
-        safetyEnd.setSeconds(0); 
+        safetyEnd.setSeconds(0);
         endDateControl?.setValue(safetyEnd.toISOString());
         this.closePopoverRef(controlName);
         return;
@@ -544,11 +535,65 @@ export class EventDetailPage implements OnInit, OnDestroy {
   public toggleEdit(): void {
     if (!this.isAdmin) return;
     this.isEditing = true;
+
+    // 1. Habilitar todo el formulario reactivo
     this.eventForm.enable();
-    this.evaluarRequisitosControlAcceso(this.eventForm.get('requiresAccessControl')?.value);
+
+    const requiereControl = this.eventForm.get('requiresAccessControl')?.value ?? false;
+    const limiteControl = this.eventForm.get('limiteInvitadosPorSocio');
+
+    // 2. Si requiere control de acceso, asignamos valor por defecto si estaba en null para no bloquear el required
+    if (requiereControl) {
+      if (limiteControl?.value === null || limiteControl?.value === undefined) {
+        limiteControl?.setValue(0); // Valor neutro por defecto (0 invitados)
+      }
+      limiteControl?.setValidators([Validators.required, Validators.min(0)]);
+      limiteControl?.enable();
+    } else {
+      limiteControl?.setValue(null);
+      limiteControl?.clearValidators();
+      limiteControl?.disable();
+    }
+    limiteControl?.updateValueAndValidity();
+
+    // 3. Ajustar el control endDate según si es todo el día
     if (this.eventForm.get('isAllDay')?.value) {
       this.eventForm.get('endDate')?.disable();
     }
+
+    // 4. Recalcular la validez total y refrescar la vista
+    this.eventForm.updateValueAndValidity();
+    this.cdr.markForCheck();
+
+    Object.keys(this.eventForm.controls).forEach(key => {
+      const controlErrors = this.eventForm.get(key)?.errors;
+      if (controlErrors != null) {
+        console.log('❌ Campo invalido:', key, controlErrors);
+      }
+    });
+  }
+
+  private evaluarRequisitosControlAcceso(requiereControl: boolean): void {
+    const limiteControl = this.eventForm.get('limiteInvitadosPorSocio');
+
+    if (requiereControl) {
+      // Asignar 0 si está vacío para satisfacer el Validators.required inmediatamente
+      if (limiteControl?.value === null || limiteControl?.value === undefined) {
+        limiteControl?.setValue(0);
+      }
+      limiteControl?.setValidators([Validators.required, Validators.min(0)]);
+      if (this.isEditing) {
+        limiteControl?.enable();
+      }
+    } else {
+      limiteControl?.setValue(null);
+      limiteControl?.clearValidators();
+      limiteControl?.disable();
+    }
+
+    limiteControl?.updateValueAndValidity();
+    this.eventForm.updateValueAndValidity();
+    this.cdr.markForCheck();
   }
 
   public cancelEdit(): void {
@@ -608,7 +653,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
       title: values.title,
       type: values.type as EventType,
       isPrivate: values.isPrivate ?? false,
-      requiresAccessControl: values.requiresAccessControl ?? false, 
+      requiresAccessControl: values.requiresAccessControl ?? false,
       startDate: values.startDate,
       endDate: values.isAllDay ? '' : values.endDate,
       allDay: values.isAllDay ?? false,
@@ -649,5 +694,112 @@ export class EventDetailPage implements OnInit, OnDestroy {
       this.router.navigate(['/events']);
 
     } catch (error) { this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0001); }
+  }
+
+  // 1. Añade el diccionario apuntando a la carpeta de assets/img de tu proyecto
+  private readonly EVENT_FALLBACK_IMAGES: Record<string, string> = {
+    asamblea: 'assets/img/evento-asamblea.jpg',
+    comida: 'assets/img/evento-comida.jpg',
+    feria: 'assets/img/evento-feria.jpg',
+    quedada: 'assets/img/evento-quedada.jpg'
+  };
+
+  /**
+   * @method getEventBgImage
+   * @description Devuelve la imagen de portada personalizada o el fallback correspondiente.
+   * @public
+   */
+  public getEventBgImage(event: any): string {
+    if (event?.imageUrl && event.imageUrl.trim() !== '') {
+      return event.imageUrl;
+    }
+
+    const tipo = event?.type?.toLowerCase();
+    return this.EVENT_FALLBACK_IMAGES[tipo] || 'assets/img/escudo.png';
+  }
+
+  /**
+   * @method openDatePickerModal
+   * @async
+   * @description Despliega el modal `DatePickerComponent` para seleccionar la fecha/hora del evento.
+   * Actualiza dinámicamente los campos de inicio o fin del formulario reactivo `eventForm`.
+   * 
+   * @param {'startDate' | 'endDate'} field Nombre del control dentro del formulario a editar.
+   * @returns {Promise<void>}
+   */
+  public async openDatePickerModal(field: 'startDate' | 'endDate'): Promise<void> {
+    try {
+      const isAllDay = this.eventForm.get('isAllDay')?.value ?? false;
+      const currentValue = this.eventForm.get(field)?.value;
+
+      // Asegurar siempre un string ISO válido para pasar al DatePickerComponent
+      let initialIsoString = new Date().toISOString();
+      if (currentValue) {
+        const parsed = new Date(currentValue);
+        if (!isNaN(parsed.getTime())) {
+          initialIsoString = parsed.toISOString();
+        }
+      }
+
+      const modal = await this.modalCtrl.create({
+        component: DatePickerComponent,
+        componentProps: {
+          title: field === 'startDate' ? 'Inicio del Evento' : 'Fin del Evento',
+          initialDate: initialIsoString,
+          includeTime: !isAllDay
+        },
+        initialBreakpoint: 0.85,
+        breakpoints: [0, 0.85, 1],
+        handle: true,
+        cssClass: 'date-picker-sheet-modal'
+      });
+
+      await modal.present();
+
+      const { data, role } = await modal.onWillDismiss<DatePickerResult>();
+
+      if (role === 'confirm' && data?.date) {
+        const selectedIso = data.date;
+
+        // 1. Asignar el valor al campo correspondiente (startDate o endDate)
+        const control = this.eventForm.get(field);
+        control?.setValue(selectedIso);
+        control?.markAsDirty();
+        control?.markAsTouched();
+
+        // 2. Si se cambia la FECHA DE INICIO: ajustar dinámicamente la de FIN
+        if (field === 'startDate' && !isAllDay) {
+          const currentEndValue = this.eventForm.get('endDate')?.value;
+          const startMs = new Date(selectedIso).getTime();
+          const endMs = currentEndValue ? new Date(currentEndValue).getTime() : 0;
+
+          // Si no hay fecha de fin o la fecha de inicio supera/iguala a la de fin -> Fin = Inicio + 2h
+          if (!currentEndValue || startMs >= endMs) {
+            const autoEndDate = new Date(startMs + 2 * 60 * 60 * 1000).toISOString();
+            const endControl = this.eventForm.get('endDate');
+            endControl?.setValue(autoEndDate);
+            endControl?.markAsDirty();
+            endControl?.markAsTouched();
+          }
+        }
+
+        // 3. Si se cambia la FECHA DE FIN: validar que no sea inferior a la de inicio
+        if (field === 'endDate' && !isAllDay) {
+          const currentStartValue = this.eventForm.get('startDate')?.value;
+          if (currentStartValue && new Date(selectedIso) <= new Date(currentStartValue)) {
+            this.notification.warning('La fecha de fin debe ser posterior a la fecha de inicio.');
+            // Reajustamos a Inicio + 2h
+            const fallbackEnd = new Date(new Date(currentStartValue).getTime() + 2 * 60 * 60 * 1000).toISOString();
+            this.eventForm.get('endDate')?.setValue(fallbackEnd);
+          }
+        }
+
+        // 4. Forzar reevaluación del formulario y refrescar la vista
+        this.eventForm.updateValueAndValidity();
+        this.cdr.markForCheck();
+      }
+    } catch (error) {
+      this.errorHandler.handle(error, AppMessageCode.ADC_DP_ERR_0004);
+    }
   }
 }

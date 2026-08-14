@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / EventsService
+[shared-core](../index.md) / EventsService
 
 # Class: EventsService
 
-Defined in: [services/events.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L31)
+Defined in: [services/events.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L32)
 
 EventsService
 
@@ -31,7 +31,7 @@ control de aforos de la agenda de eventos y orquestación de subcolecciones de a
 
 > **createEvent**(`eventData`): `Promise`\<`string`\>
 
-Defined in: [services/events.service.ts:240](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L240)
+Defined in: [services/events.service.ts:241](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L241)
 
 #### Parameters
 
@@ -57,7 +57,7 @@ Persiste un nuevo documento estructural de evento en la colección principal `/e
 
 > **deleteEvent**(`event`): `Promise`\<`void`\>
 
-Defined in: [services/events.service.ts:278](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L278)
+Defined in: [services/events.service.ts:279](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L279)
 
 #### Parameters
 
@@ -83,7 +83,7 @@ Elimina físicamente en cascada el evento, sus sub-asistencias y credenciales fe
 
 > **getEventById**(`eventId`): `Observable`\<[`AppEvent`](../interfaces/AppEvent.md)\>
 
-Defined in: [services/events.service.ts:104](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L104)
+Defined in: [services/events.service.ts:105](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L105)
 
 #### Parameters
 
@@ -109,7 +109,7 @@ Recupera los datos de una convocatoria específica mediante Snapshot estático (
 
 > **getEventLive**(`eventId`): `Observable`\<[`AppEvent`](../interfaces/AppEvent.md)\>
 
-Defined in: [services/events.service.ts:303](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L303)
+Defined in: [services/events.service.ts:304](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L304)
 
 #### Parameters
 
@@ -135,7 +135,7 @@ Inicializa un socket onSnapshot en tiempo real para sincronizar variaciones así
 
 > **getEvents**(): `Observable`\<[`AppEvent`](../interfaces/AppEvent.md)[]\>
 
-Defined in: [services/events.service.ts:80](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L80)
+Defined in: [services/events.service.ts:81](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L81)
 
 #### Returns
 
@@ -153,15 +153,21 @@ Descarga mediante snapshot directo a un solo golpe la colección completa de eve
 
 ### getEventsStream()
 
-> **getEventsStream**(): `Observable`\<`any`[]\>
+> **getEventsStream**(`fechaSeleccionada`): `Observable`\<`any`[]\>
 
-Defined in: [services/events.service.ts:329](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L329)
+Defined in: [services/events.service.ts:329](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L329)
+
+#### Parameters
+
+##### fechaSeleccionada
+
+`Date`
+
+Fecha del calendario elegida por el usuario.
 
 #### Returns
 
 `Observable`\<`any`[]\>
-
-Flujo reactivo con el array de eventos actualizado.
 
 #### Method
 
@@ -169,8 +175,7 @@ getEventsStream
 
 #### Description
 
-Crea un canal de escucha en tiempo real (onSnapshot) sobre la colección de eventos.
-Cualquier cambio en los aforos se transmitirá instantáneamente a todos los dispositivos activos.
+Escucha en tiempo real los eventos que caen dentro del rango del día seleccionado.
 
 ***
 
@@ -178,7 +183,7 @@ Cualquier cambio en los aforos se transmitirá instantáneamente a todos los dis
 
 > **getUserAttendanceForEvent**(`eventId`, `userId`): `Observable`\<[`EventAttendance`](../interfaces/EventAttendance.md)\>
 
-Defined in: [services/events.service.ts:128](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L128)
+Defined in: [services/events.service.ts:129](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L129)
 
 #### Parameters
 
@@ -208,7 +213,7 @@ Recupera el documento de confirmación individual de asistencia de un socio medi
 
 > **obtenerPasesActivosLive**(`userUid`): `Observable`\<`any`[]\>
 
-Defined in: [services/events.service.ts:68](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L68)
+Defined in: [services/events.service.ts:69](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L69)
 
 #### Parameters
 
@@ -234,7 +239,7 @@ Escucha en tiempo real la subcolección de pases emitidos vinculados a un usuari
 
 > **registerAttendance**(`eventId`, `userId`, `confirmarAsistencia`): `Promise`\<`void`\>
 
-Defined in: [services/events.service.ts:152](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L152)
+Defined in: [services/events.service.ts:153](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L153)
 
 #### Parameters
 
@@ -267,7 +272,7 @@ registerAttendance
 #### Description
 
 🚀 OPTIMIZACIÓN DE INTEGRIDAD DE NO-REDUNDANCIA: Registra la asistencia del socio de forma transaccional.
-Al emitir el pase digital en `fair-access`, se eliminan por completo los campos duplicados 'eventTitle' y 'locationName'.
+Al emitir el pase digital en `event-access`, se eliminan por completo los campos duplicados 'eventTitle' y 'locationName'.
 Esto garantiza de forma absoluta que si la junta edita los datos de la convocatoria, las credenciales QR del socio 
 no queden desactualizadas, resolviéndose en caliente en las vistas gracias al ID relacional.
 
@@ -277,7 +282,7 @@ no queden desactualizadas, resolviéndose en caliente en las vistas gracias al I
 
 > **updateEvent**(`eventId`, `eventData`): `Promise`\<`void`\>
 
-Defined in: [services/events.service.ts:263](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/events.service.ts#L263)
+Defined in: [services/events.service.ts:264](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/events.service.ts#L264)
 
 #### Parameters
 

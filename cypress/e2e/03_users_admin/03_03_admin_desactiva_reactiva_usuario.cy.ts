@@ -1,4 +1,4 @@
-describe('👮 ROL: Administrador - Desactiva y reactiva usuario', () => {
+describe('TestCase: 03_03_admin_desactiva_reactiva_usuario', () => {
 
     const nuevoUsuarioNombre = 'Felipe Novato Test';
     
@@ -11,7 +11,7 @@ describe('👮 ROL: Administrador - Desactiva y reactiva usuario', () => {
         cy.get('[data-cy="home-page-content"]').should('be.visible');
     });
 
-    it('Debe gestionar la baja y volver a reactivar al usuario', () => {
+    it('PASO 1: Debe gestionar la baja y volver a reactivar al usuario', () => {
 
          // NAVEGAR AL LISTADO DESDE LA TARJETA EXCLUSIVA DE LA HOME
         cy.get('[data-cy="quick-card-usuarios"]').should('be.visible').click();
@@ -55,7 +55,7 @@ describe('👮 ROL: Administrador - Desactiva y reactiva usuario', () => {
     // =========================================================================
     // 🔒 CASO B (ESCENARIO 3): INTENTO DE LOGIN CON SOCIO INACTIVE
     // =========================================================================
-    it('Caso B: Debe denegar el acceso a un socio INACTIVE reteniendo la navegación en el Login', () => {
+    it('PASO 2: Debe denegar el acceso a un socio INACTIVE reteniendo la navegación en el Login', () => {
         // 1. Limpiamos las sesiones para arrancar completamente desde fuera en la pantalla de Login
         cy.clearLocalStorage();
         cy.clearCookies();

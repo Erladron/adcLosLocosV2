@@ -99,20 +99,19 @@ export interface EventAttendance {
 }
 
 /**
- * @enum FairAccessStatus
+ * @enum PasseAccessStatus
  * @description Catálogo unificado de los estados lógicos de un pase o credencial digital de caseta ferial.
  */
-export enum FairAccessStatus {
+export enum PasseAccessStatus {
   ACTIVE = 'active',
-  PENDING = 'pending',
   EXPIRED = 'expired'
 }
 
 /**
- * @interface FairAccess
- * @description Credencial digital inmutable y pase QR analizado por las porterías en la colección `/fair-access`.
+ * @interface PasseAccess
+ * @description Credencial digital inmutable y pase QR analizado por las porterías en la colección `/event-access`.
  */
-export interface FairAccess {
+export interface PasseAccess {
   /** @description ID único del pase (coincide con el payload encriptado/leído del código QR). */
   id: string;
   /** @description UID del socio titular o beneficiario del pase. */
@@ -128,7 +127,7 @@ export interface FairAccess {
   /** @description Código identificativo o fecha del pase (ej: "FERIA-2026"). */
   date: string;
   /** @description Sello o bandera del estado de la credencial utilizando el enumerado oficial. */
-  status: FairAccessStatus; // 🚀 ¡Saneado y fuertemente tipado!
+  status: PasseAccessStatus; // 🚀 ¡Saneado y fuertemente tipado!
   /** @description Timestamp de expedición de la credencial. */
   createdAt: string;
   /** @description ID único del evento ferial o convocatoria de adscripción. */

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -46,7 +46,7 @@ import {
     PageHeaderComponent
   ]
 })
-export class InvitePage implements OnInit {
+export class InvitePage {
 
   // =========================================================================
   // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
@@ -71,8 +71,6 @@ export class InvitePage implements OnInit {
   constructor() {
     addIcons({ mailOpenOutline });
   }
-
-  public ngOnInit(): void { }
 
   /**
    * @method invitar

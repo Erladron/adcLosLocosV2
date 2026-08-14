@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / DialogService
+[shared-core](../index.md) / DialogService
 
 # Class: DialogService
 
-Defined in: [services/dialog.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/dialog.service.ts#L14)
+Defined in: [services/dialog.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/dialog.service.ts#L14)
 
 DialogService
 
@@ -22,7 +22,7 @@ Centraliza la inyección y simplifica el consumo mediante el uso de Promesas nat
 
 > **new DialogService**(): `DialogService`
 
-Defined in: [services/dialog.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/dialog.service.ts#L23)
+Defined in: [services/dialog.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/dialog.service.ts#L23)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el servicio de diálogos comunes.
 
 > **alert**(`params`): `Promise`\<`void`\>
 
-Defined in: [services/dialog.service.ts:83](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/dialog.service.ts#L83)
+Defined in: [services/dialog.service.ts:83](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/dialog.service.ts#L83)
 
 #### Parameters
 
@@ -82,7 +82,7 @@ Renderiza un modal informativo unidireccional con un único botón de aceptació
 
 > **confirm**(`params`): `Promise`\<`boolean`\>
 
-Defined in: [services/dialog.service.ts:36](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/dialog.service.ts#L36)
+Defined in: [services/dialog.service.ts:36](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/dialog.service.ts#L36)
 
 #### Parameters
 
@@ -133,7 +133,7 @@ Retorna una promesa que se resuelve con true si el operador presiona el botón a
 
 > **prompt**(`params`): `Promise`\<`string`\>
 
-Defined in: [services/dialog.service.ts:118](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/dialog.service.ts#L118)
+Defined in: [services/dialog.service.ts:118](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/dialog.service.ts#L118)
 
 #### Parameters
 

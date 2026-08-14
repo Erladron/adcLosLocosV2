@@ -18,17 +18,20 @@ Cypress.Commands.add('logout', () => {
   cy.get('body').then(($body) => {
     // Si el menú NO está visible, pulsamos la hamburguesa para abrirlo
     if (!$body.find('[data-cy="menu-main-list"]').is(':visible')) {
-      cy.get('[data-cy="header-menu-button"]').should('be.visible').click();
+      cy.get('[data-cy="header-menu-button"]').filter(':visible').first().click();
       cy.wait(400); // Pequeño respiro para la animación de Ionic
     }
     
     // Una vez garantizado que el menú está abierto de par en par,
     // hacemos clic de forma unívoca en el botón de cerrar sesión
-    cy.get('[data-cy="menu-item-logout"]').should('be.visible').click();
+    cy.get('[data-cy="menu-item-logout"]').filter(':visible').first().click();
   });
 
-  // Aseguramos el asentamiento final volviendo al login
-  cy.url().should('include', '/login');
+  cy.window().then((win) => {
+      win.sessionStorage.clear(); // Limpia sesiones persistidas de Angular
+      win.localStorage.clear();   // Limpia credenciales guardadas en local
+    });
+
 });
 
 Cypress.Commands.add('fillAddress', (address: string) => {

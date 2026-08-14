@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / MapboxSuggestion
+[shared-core](../index.md) / MapboxSuggestion
 
 # Interface: MapboxSuggestion
 
-Defined in: [services/mapbox/mapbox.service.ts:11](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/mapbox/mapbox.service.ts#L11)
+Defined in: [services/mapbox/mapbox.service.ts:11](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/mapbox/mapbox.service.ts#L11)
 
 MapboxSuggestion
 
@@ -21,7 +21,7 @@ devueltas por el servicio de geocodificación para el consumo de los componentes
 
 > **name**: `string`
 
-Defined in: [services/mapbox/mapbox.service.ts:13](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/mapbox/mapbox.service.ts#L13)
+Defined in: [services/mapbox/mapbox.service.ts:13](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/mapbox/mapbox.service.ts#L13)
 
 #### Description
 
@@ -33,7 +33,7 @@ Nombre corto o principal de la localización o vía (ej: "Calle Serrano").
 
 > **place\_formatted**: `string`
 
-Defined in: [services/mapbox/mapbox.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/mapbox/mapbox.service.ts#L15)
+Defined in: [services/mapbox/mapbox.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/mapbox/mapbox.service.ts#L15)
 
 #### Description
 

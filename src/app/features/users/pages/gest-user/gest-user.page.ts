@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
@@ -13,8 +13,7 @@ import {
   IonSegmentButton,
   IonLabel,
   IonInfiniteScroll,
-  IonInfiniteScrollContent,
-  IonBadge
+  IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
@@ -27,19 +26,26 @@ import {
   closeOutline,
   briefcaseOutline,
   callOutline,
-  eyeOffOutline
+  eyeOffOutline,
+  checkmarkCircle, 
+  alertCircle,
+  cardOutline
 } from 'ionicons/icons';
 
-import { UserService } from 'projects/shared-core/src/lib/services/user.service';
-import { User } from 'shared-core';
-import { NotificationService } from 'projects/shared-core/src/lib/services/notification.service';
-import { DialogService } from 'projects/shared-core/src/lib/services/dialog.service';
-import { LoadingService } from 'projects/shared-core/src/lib/services/loading.service';
-import { ErrorHandlerService } from 'projects/shared-core/src/lib/services/error-handler.service';
-import { AuthPoliciesService } from 'projects/shared-core/src/lib/services/auth-policies.service';
-import { AppMessageCode } from 'shared-core';
-import { EmptyStateComponent } from 'shared-core';
-import { PageHeaderComponent } from 'shared-core';
+
+import {
+  UserService,
+  User,
+  UserRole,
+  EmptyStateComponent,
+  PageHeaderComponent,
+  AppMessageCode,
+  NotificationService,
+  DialogService,
+  LoadingService,
+  ErrorHandlerService,
+  AuthPoliciesService
+} from 'shared-core';
 
 /**
  * @class GestUserPage
@@ -66,12 +72,20 @@ import { PageHeaderComponent } from 'shared-core';
     IonLabel,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    IonBadge,
     EmptyStateComponent,
     PageHeaderComponent
   ]
 })
 export class GestUserPage implements OnInit {
+
+    private userService = inject(UserService);
+    private notification = inject(NotificationService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private policies = inject(AuthPoliciesService);
+    private dialog = inject(DialogService);
+    private loading = inject(LoadingService);
+    private errorHandler = inject(ErrorHandlerService);
 
   /**
    * @description Listado maestro global de usuarios activos recuperados del servicio.
@@ -181,20 +195,12 @@ export class GestUserPage implements OnInit {
    * @param {LoadingService} loading Controlador para superponer velos de carga asíncronos en la UI.
    * @param {ErrorHandlerService} errorHandler Servicio interceptor para el aislamiento y tipado de excepciones críticas del sistema.
    */
-  constructor(
-    private userService: UserService,
-    private notification: NotificationService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private policies: AuthPoliciesService,
-    private dialog: DialogService,
-    private loading: LoadingService,
-    private errorHandler: ErrorHandlerService
-  ) {
+  constructor() {
     addIcons({
       addOutline, personOutline, chevronForwardOutline,
       checkmarkOutline, closeOutline, briefcaseOutline,
-      callOutline, eyeOffOutline
+      callOutline, eyeOffOutline, 'checkmark-circle': checkmarkCircle,
+      'alert-circle': alertCircle, cardOutline
     });
   }
 
@@ -279,6 +285,7 @@ export class GestUserPage implements OnInit {
    * @method filterUsers
    * @description Motor de búsqueda local por coincidencia de caracteres. Filtra en minúsculas los arrays en caliente.
    * Incluye el mapeo predictivo del estado financiero convirtiendo el booleano en cadenas textuales en español.
+   * Transforma a String los campos numéricos para prevenir errores si vienen como number desde Firestore.
    * @returns {void}
    */
   public filterUsers(): void {
@@ -286,33 +293,25 @@ export class GestUserPage implements OnInit {
 
     this.filteredUsers = this.users.filter(user => {
       const textoCuota = user.cuotaAlCorriente ? 'al corriente' : 'pendiente';
-      
+
       return user.nombre?.toLowerCase().includes(texto) ||
-        user.numeroSocio?.toLowerCase().includes(texto) ||
-        user.telefono?.toLowerCase().includes(texto) ||
-        user.email?.toLowerCase().includes(texto) ||
-        user.dni?.toLowerCase().includes(texto) ||
-        user.profesion?.toLowerCase().includes(texto) ||
+        String(user.numeroSocio ?? '').toLowerCase().includes(texto) ||
+        String(user.telefono ?? '').toLowerCase().includes(texto) ||        
         user.tipo?.toLowerCase().includes(texto) ||
         (!this.isSocioComun && textoCuota.includes(texto));
     });
 
     this.filteredPendingUsers = this.pendingUsers.filter(user =>
       user.nombre?.toLowerCase().includes(texto) ||
-      user.telefono?.toLowerCase().includes(texto) ||
-      user.email?.toLowerCase().includes(texto) ||
-      user.profesion?.toLowerCase().includes(texto) ||
-      user.dni?.toLowerCase().includes(texto)
-    );
+      String(user.telefono ?? '').toLowerCase().includes(texto) ||
+      user.email?.toLowerCase().includes(texto));
 
     this.filteredInactiveUsers = this.inactiveUsers.filter(user => {
       const textoCuota = user.cuotaAlCorriente ? 'al corriente' : 'pendiente';
+
       return user.nombre?.toLowerCase().includes(texto) ||
-        user.telefono?.toLowerCase().includes(texto) ||
-        user.email?.toLowerCase().includes(texto) ||
-        user.dni?.toLowerCase().includes(texto) ||
-        user.numeroSocio?.toLowerCase().includes(texto) ||
-        user.profesion?.toLowerCase().includes(texto) ||
+        String(user.telefono ?? '').toLowerCase().includes(texto) ||
+        String(user.numeroSocio ?? '').toLowerCase().includes(texto) ||
         user.tipo?.toLowerCase().includes(texto) ||
         (!this.isSocioComun && textoCuota.includes(texto));
     });
@@ -418,6 +417,31 @@ export class GestUserPage implements OnInit {
       }, 'Rechazando usuario...');
     } catch (error) {
       await this.errorHandler.handle(error, AppMessageCode.ADC_ADMIN_ERR_0002);
+    }
+  }
+
+  /**
+   * @method getRolAbreviado
+   * @description Retorna la etiqueta corta de 3 letras según el enum de rol asignado al usuario.
+   * @param {UserRole | string} tipo Rol del usuario definido en UserRole
+   * @returns {string} Abreviatura estandarizada ('ADM', 'DIR', 'SOC', 'INV', 'POR')
+   */
+  public getRolAbreviado(tipo?: UserRole | string): string {
+    if (!tipo) return 'SOC';
+
+    switch (tipo) {
+      case UserRole.ADMINISTRADOR:
+        return 'ADM';
+      case UserRole.DIRECTIVA:
+        return 'DIR';
+      case UserRole.SOCIO:
+        return 'SOC';
+      case UserRole.INVITADO:
+        return 'INV';
+      case UserRole.PORTERO:
+        return 'POR';
+      default:
+        return 'SOC';
     }
   }
 }

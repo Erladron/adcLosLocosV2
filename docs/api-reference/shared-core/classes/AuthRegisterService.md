@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthRegisterService
+[shared-core](../index.md) / AuthRegisterService
 
 # Class: AuthRegisterService
 
-Defined in: [services/auth-register.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-register.service.ts#L47)
+Defined in: [services/auth-register.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-register.service.ts#L47)
 
 AuthRegisterService
 
@@ -22,7 +22,7 @@ un patrón rollback estricto en caso de fallo parcial para evitar registros hué
 
 > **new AuthRegisterService**(): `AuthRegisterService`
 
-Defined in: [services/auth-register.service.ts:65](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-register.service.ts#L65)
+Defined in: [services/auth-register.service.ts:65](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-register.service.ts#L65)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el motor transaccional de registro.
 
 > **register**(`user`, `checkInvitation?`): `Promise`\<[`User`](../interfaces/User.md)\>
 
-Defined in: [services/auth-register.service.ts:76](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-register.service.ts#L76)
+Defined in: [services/auth-register.service.ts:76](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-register.service.ts#L76)
 
 #### Parameters
 

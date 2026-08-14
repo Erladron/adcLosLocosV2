@@ -1,4 +1,4 @@
-describe('👮 ROL: Administrador - Alta de Nuevo Usuario', () => {
+describe('TestCase: 03_02_admin_alta_usuario', () => {
 
     const nuevoUsuarioEmail = 'felipe.novato@adcloslocos.com';
     const nuevoUsuarioNombre = 'Felipe Novato Test';
@@ -25,7 +25,7 @@ describe('👮 ROL: Administrador - Alta de Nuevo Usuario', () => {
         cy.get('[data-cy="home-page-content"]').should('be.visible');
     });
 
-    it('Debe gestionar el ciclo completo: dar de alta, buscar, dar de baja y volver a reactivar al usuario', () => {
+    it('PASO 1: Debe gestionar el ciclo completo: dar de alta, buscar, dar de baja y volver a reactivar al usuario', () => {
 
         // 1️⃣ NAVEGAR AL LISTADO DESDE LA TARJETA EXCLUSIVA DE LA HOME
         cy.get('[data-cy="quick-card-usuarios"]').should('be.visible').click();

@@ -1,4 +1,4 @@
-describe('Control de Acceso (Guards) - 02_01_auth_login_roles.cy.ts', () => {
+describe('TestCase: 02_01_auth_login_roles', () => {
   const PASSWORD = 'PasswordSegura123!'; // Contraseña real de la base de datos de pruebas
 
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe('Control de Acceso (Guards) - 02_01_auth_login_roles.cy.ts', () => {
     cy.visit('/login');
   });
 
-  it('Caso A: Login con rol Socio - Redirección a /home y menú de navegación correcto', () => {
+  it('PASO 1: Login con rol Socio - Redirección a /home y menú de navegación correcto', () => {
     cy.login('socio.fundador@adcloslocos.com', PASSWORD); //
     cy.url().should('include', '/home'); //
     
@@ -31,7 +31,7 @@ describe('Control de Acceso (Guards) - 02_01_auth_login_roles.cy.ts', () => {
     cy.url().should('include', '/login');
   });
 
-  it('Caso B: Login con rol Invitado/Pendiente - Retenido en /pending-approval', () => {
+  it('PASO 2: Login con rol Invitado/Pendiente - Retenido en /pending-approval', () => {
     cy.login('invitado.pending_approval@adcloslocos.com', PASSWORD); //
     cy.url().should('include', '/pending-approval'); //
     

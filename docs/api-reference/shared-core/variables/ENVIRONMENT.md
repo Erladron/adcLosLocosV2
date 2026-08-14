@@ -1,11 +1,11 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / ENVIRONMENT
+[shared-core](../index.md) / ENVIRONMENT
 
 # Variable: ENVIRONMENT
 
 > `const` **ENVIRONMENT**: `InjectionToken`\<`any`\>
 
-Defined in: [env.token.ts:4](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/env.token.ts#L4)
+Defined in: [env.token.ts:4](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/env.token.ts#L4)

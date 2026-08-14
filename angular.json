@@ -34,9 +34,13 @@
                 "input": "src/assets",
                 "output": "assets"
               },
-              "src/firebase-messaging-sw.js"
+              "src/firebase-messaging-sw.js",
+              "src/manifest.webmanifest"
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": [],
             "browser": "src/main.ts"
           },
@@ -60,7 +64,8 @@
                   "with": "./src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": false
             },
             "development": {
               "optimization": false,
@@ -78,7 +83,9 @@
                   "with": "./src/environments/environment.desa.ts"
                 }
               ],
-              "optimization": false,
+              "serviceWorker": false,
+              "optimization": true,
+              "outputHashing": "all",
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -125,7 +132,10 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -138,7 +148,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
@@ -152,7 +165,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/shared-core/ng-package.json" 
+            "project": "projects/shared-core/ng-package.json"
           },
           "configurations": {
             "production": {
@@ -274,7 +287,9 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ]
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

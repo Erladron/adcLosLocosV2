@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthPoliciesService
+[shared-core](../index.md) / AuthPoliciesService
 
 # Class: AuthPoliciesService
 
-Defined in: [services/auth-policies.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L15)
+Defined in: [services/auth-policies.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L15)
 
 AuthPoliciesService
 
@@ -22,7 +22,7 @@ de la vista para determinar si un socio puede alterar el estado de un componente
 
 > **new AuthPoliciesService**(): `AuthPoliciesService`
 
-Defined in: [services/auth-policies.service.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L24)
+Defined in: [services/auth-policies.service.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L24)
 
 #### Returns
 
@@ -40,7 +40,7 @@ Inicializa el motor de evaluación de políticas y capacidades.
 
 > **get** **currentUser**(): [`User`](../interfaces/User.md)
 
-Defined in: [services/auth-policies.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L47)
+Defined in: [services/auth-policies.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L47)
 
 ##### Description
 
@@ -58,7 +58,7 @@ Provee el documento completo de Firestore con los metadatos de auditoría del so
 
 > **get** **role**(): `string`
 
-Defined in: [services/auth-policies.service.ts:55](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L55)
+Defined in: [services/auth-policies.service.ts:55](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L55)
 
 ##### Description
 
@@ -74,7 +74,7 @@ Devuelve la cadena del rango jerárquico que ostenta el usuario logueado.
 
 > **canAccessAdminArea**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:121](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L121)
+Defined in: [services/auth-policies.service.ts:121](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L121)
 
 #### Returns
 
@@ -96,7 +96,7 @@ Regla de negocio que concede o deniega el acceso perimetral a las vistas de admi
 
 > **canManageUsers**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:130](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L130)
+Defined in: [services/auth-policies.service.ts:130](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L130)
 
 #### Returns
 
@@ -118,7 +118,7 @@ Regla de negocio que otorga privilegios de modificación de altas, bajas y estad
 
 > **hasStatus**(`status`): `boolean`
 
-Defined in: [services/auth-policies.service.ts:93](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L93)
+Defined in: [services/auth-policies.service.ts:93](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L93)
 
 #### Parameters
 
@@ -146,7 +146,7 @@ Contrasta si el estado del chasis del perfil coincide con la directiva solicitad
 
 > **isActive**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:98](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L98)
+Defined in: [services/auth-policies.service.ts:98](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L98)
 
 #### Returns
 
@@ -162,7 +162,7 @@ Retorna true si el socio se encuentra en estado plenamente verificado y activo.
 
 > **isAdmin**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:64](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L64)
+Defined in: [services/auth-policies.service.ts:64](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L64)
 
 #### Returns
 
@@ -178,7 +178,7 @@ Informa si el usuario posee privilegios de Administrador Supremo.
 
 > **isDirectiva**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:69](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L69)
+Defined in: [services/auth-policies.service.ts:69](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L69)
 
 #### Returns
 
@@ -194,7 +194,7 @@ Informa si el usuario pertenece formalmente a la Junta Directiva de la peña.
 
 > **isInvitado**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:79](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L79)
+Defined in: [services/auth-policies.service.ts:79](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L79)
 
 #### Returns
 
@@ -210,7 +210,7 @@ Informa si la cuenta se encuentra tipada como un Invitado externo latente.
 
 > **isLogged**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:35](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L35)
+Defined in: [services/auth-policies.service.ts:35](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L35)
 
 #### Returns
 
@@ -230,7 +230,7 @@ Informa si consta un canal de autenticación autenticado en la sesión local.
 
 > **isPendingApproval**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:108](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L108)
+Defined in: [services/auth-policies.service.ts:108](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L108)
 
 #### Returns
 
@@ -246,7 +246,7 @@ Retorna true si el alta civil está en la cola a la espera de aprobación formal
 
 > **isPendingData**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:103](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L103)
+Defined in: [services/auth-policies.service.ts:103](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L103)
 
 #### Returns
 
@@ -262,7 +262,7 @@ Retorna true si el aspirante tiene pendiente la cumplimentación de sus datos de
 
 > **isSocio**(): `boolean`
 
-Defined in: [services/auth-policies.service.ts:74](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-policies.service.ts#L74)
+Defined in: [services/auth-policies.service.ts:74](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-policies.service.ts#L74)
 
 #### Returns
 

@@ -1,3 +1,6 @@
+@use 'angular-calendar/scss/angular-calendar.scss';
+
+// 📱 CONTENEDOR PRINCIPAL PENSADO PARA MÓVILES
 .unified-events-container {
   display: flex;
   flex-direction: column;
@@ -7,7 +10,7 @@
   box-sizing: border-box;
 }
 
-// 🎛️ FILTROS ARRIBA DEL TODO
+// 🎛️ FILTROS DE SCROLL HORIZONTAL (ARRIBA DEL TODO)
 .custom-scroll-segment {
   width: 100%;
   background: rgba(13, 27, 62, 0.45) !important;
@@ -24,20 +27,45 @@
   }
 }
 
-// 📆 CALENDARIO FULL WIDTH
+.calendar-inline-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 6px;
+  color: #38bdf8;
+
+  ion-icon {
+    font-size: 20px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+  }
+}
+
+// 📆 CONTENEDOR Y CABECERA DEL CALENDARIO
+// 📆 TARJETA CONTENEDORA DEL CALENDARIO (GLASSMORPHISM)
 .calendar-dashboard-card {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px 12px;
   background: linear-gradient(135deg, rgba(14, 30, 76, 0.72) 0%, rgba(8, 17, 38, 0.9) 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  width: 100%; // Ocupa todo el ancho de pantalla sin restricciones
+  width: 100%;
 }
 
+// MARCA DE AGUA DEL ESCUDO
 .calendar-watermark-logo {
   position: absolute;
   top: 55%;
@@ -51,67 +79,223 @@
   z-index: 0;
 }
 
-.calendar-inline-header {
+.calendar-container {
+  width: 100%;
   position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding-bottom: 6px;
-  color: #38bdf8;
-  ion-icon { font-size: 20px; }
-  h2 { margin: 0; font-size: 15px; font-weight: 700; color: #fff; }
+  z-index: 1; // Coloca los elementos interactivos por encima del escudo
 }
 
-.peña-integrated-datetime {
+/* Cabecera Estilo Peña (Fuera de mwl-calendar-month-view) */
+.calendar-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 6px 10px;
+  margin-bottom: 12px;
+
+  .month-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+
+    ion-icon {
+      font-size: 1.2rem;
+      color: #38bdf8;
+    }
+  }
+
+  .nav-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover,
+    &:active {
+      background: rgba(56, 189, 248, 0.25);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    ion-icon {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+// ESTILOS INTERNOS DE ANGULAR CALENDAR
+mwl-calendar-month-view {
+  display: block;
   position: relative;
   z-index: 1;
   width: 100%;
-  background: transparent !important;
-  --background: transparent !important;
-  color: #ffffff !important;
-  --color: #cbd5e1;
-  --color-checked: #070f24;
 
-  // 🚀 REPARADO: Capitalizado estricto del nombre del mes / año
-  &::part(calendar-month-year) {
-    color: #ffffff;
-    font-weight: 700;
-    text-transform: capitalize !important;
-  }
+  ::ng-deep {
+    .cal-month-view {
+      background: transparent !important;
+      border: none !important;
 
-  &::part(calendar-weekday) { 
-    color: #64748b; 
-    font-weight: 600; 
-    text-transform: capitalize !important;
-  }
-  
-  &::part(calendar-day-active) { 
-    background: #38bdf8 !important; 
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.5); 
-    border-radius: 8px; 
+      // 1. OCULTAR NATIVOS
+      .cal-event-title,
+      .cal-open-day-events,
+      .cal-day-badge {
+        display: none !important;
+      }
+
+      // 2. CABECERAS DE DÍAS (L M X J V S D) SIN HOVER
+      .cal-day-headers {
+        border: none !important;
+        margin-bottom: 6px;
+
+        .cal-header {
+          border: none !important;
+          background: transparent !important;
+          color: rgba(255, 255, 255, 0.7) !important;
+          font-weight: 600;
+          font-size: 0.85rem;
+
+          &:hover,
+          &:focus,
+          &:active {
+            background: transparent !important;
+            color: rgba(255, 255, 255, 0.7) !important;
+          }
+        }
+      }
+
+      // 3. ESTRUCTURA DE CELDAS
+      .cal-days,
+      .cal-cell-row {
+        border: none !important;
+        background: transparent !important;
+      }
+
+      .cal-cell-row:hover,
+      .cal-cell:hover,
+      .cal-day-cell:hover {
+        background-color: transparent !important;
+      }
+
+      .cal-day-cell {
+        position: relative !important;
+        height: 50px !important;
+        min-height: 50px !important;
+        border: none !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+        cursor: pointer !important;
+
+        .cal-cell-top {
+          min-height: 30px !important;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 2px;
+          pointer-events: none; // Permite que el clic baje directo a la celda
+        }
+
+        // EL NÚMERO
+        .cal-day-number {
+          float: none !important;
+          margin: 0 !important;
+          opacity: 1 !important;
+          width: 28px !important;
+          height: 28px !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          font-size: 0.85rem;
+          color: #ffffff;
+          transition: all 0.2s ease;
+        }
+
+        &:hover .cal-day-number {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        // DÍA DE HOY (Siempre marcado con Círculo Verde)
+        &.cal-today .cal-day-number {
+          border: 2px solid #10b981 !important;
+          color: #10b981 !important;
+          font-weight: bold !important;
+        }
+
+        // DÍA SELECCIONADO (Círculo Relleno Azul Celeste)
+        &.cal-day-selected .cal-day-number {
+          background-color: #38bdf8 !important;
+          color: #0f172a !important;
+          font-weight: bold !important;
+          box-shadow: 0 0 10px rgba(56, 189, 248, 0.7) !important;
+          border: none !important; // Prevalece el azul relleno si coincide hoy con el seleccionado
+        }
+
+        &.cal-out-month .cal-day-number {
+          opacity: 0.25 !important;
+        }
+
+        // PUNTITOS INDICADORES DE EVENTOS
+        .cal-events {
+          position: absolute !important;
+          bottom: 3px !important;
+          left: 0 !important;
+          right: 0 !important;
+          display: flex !important;
+          justify-content: center !important;
+          gap: 3px !important;
+          margin: 0 !important;
+          pointer-events: none !important;
+        }
+
+        .cal-event {
+          width: 5px !important;
+          height: 5px !important;
+          border-radius: 50% !important;
+          margin: 0 !important;
+          display: block !important;
+        }
+      }
+    }
   }
 }
 
-// 📋 TARJETA MINIMALISTA INTERACTIVA
+// 📋 TARJETA DE EVENTO DESPLEGADA (OPTIMIZADA PARA MULTITOUCH)
 .event-minimal-card {
   width: 100%;
   border-radius: 12px;
+
+  /* Degradado oscuro + Fondo inyectado dinámicamente desde Angular */
+  background-image:
+    linear-gradient(rgba(7, 15, 36, 0.70), rgba(7, 15, 36, 0.85)),
+    var(--custom-img, none);
+
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   margin-bottom: 8px;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease;
 
-  &:active { transform: scale(0.99); }
+  &:active {
+    transform: scale(0.98); // Efecto pulsación táctil
+    border-color: rgba(56, 189, 248, 0.4);
+  }
 }
 
 .minimal-card-body {
-  padding: 16px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -124,16 +308,22 @@
   border-radius: 8px;
   color: #38bdf8;
   display: flex;
-  ion-icon { font-size: 18px; }
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 18px;
+  }
 }
 
 .event-minimal-title {
   margin: 0;
   flex: 1;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
 }
 
 .arrow-link-icon {
@@ -141,40 +331,31 @@
   font-size: 18px;
 }
 
+/* MENSAJE DE ESTADO VACÍO */
 .empty-warning-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px;
+  padding: 24px 16px;
   text-align: center;
-  gap: 10px;
+  gap: 8px;
   background: rgba(13, 27, 62, 0.4);
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #94a3b8;
-  ion-icon { font-size: 30px; }
-}
-
-// Garantiza el posicionamiento flotante del FAB por encima del layout unificado
-.peña-fab-btn-native {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  background: #38bdf8;
-  color: #070f24;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
-  z-index: 9999 !important; // 🚀 FIJADO: Rompe cualquier jerarquía de Shadow DOM residual
-  border: none;
-  cursor: pointer;
 
   ion-icon {
     font-size: 28px;
-    font-weight: bold;
   }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+  }
+}
+
+/* BOTÓN FAB FLOTANTE PARA ADMINISTRADORES */
+ion-fab-button {
+  --background: linear-gradient(135deg, #2f7cff, #1f5edb);
+  --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }

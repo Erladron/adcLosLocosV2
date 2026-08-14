@@ -1,13 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
-  IonHeader, 
-  IonToolbar, 
-  IonTitle, 
-  IonContent, 
-  IonButtons, 
-  IonBackButton 
-} from '@ionic/angular/standalone';
 
 /**
  * @class PoliticaPrivacidadComponent
@@ -20,13 +12,7 @@ import {
   styleUrls: ['./politica-privacidad.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButtons,
-    IonBackButton
+    CommonModule
   ]
 })
 export class PoliticaPrivacidadComponent {

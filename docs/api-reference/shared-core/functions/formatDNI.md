@@ -1,14 +1,14 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / formatDNI
+[shared-core](../index.md) / formatDNI
 
 # Function: formatDNI()
 
 > **formatDNI**(`dni`): `string`
 
-Defined in: [utils/string.utils.ts:74](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L74)
+Defined in: [utils/string.utils.ts:74](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L74)
 
 **`Function`**
 

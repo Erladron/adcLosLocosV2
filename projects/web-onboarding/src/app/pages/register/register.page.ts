@@ -2,15 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { 
-  IonContent, 
-  IonItem, 
-  IonInput, 
-  IonButton, 
-  IonIcon, 
-  IonSpinner,
-  IonText
-} from '@ionic/angular/standalone';
+
 
 // Importaciones de tu librería shared-core
 import { 
@@ -38,14 +30,7 @@ import { TokenService } from '../../core/services/token.service';
   standalone: true,
   imports: [
     CommonModule, 
-    ReactiveFormsModule,
-    IonContent,
-    IonItem,
-    IonInput,
-    IonButton,
-    IonIcon,
-    IonSpinner,
-    IonText
+    ReactiveFormsModule
   ],
   templateUrl: './register.page.html',
   styleUrl: './register.page.scss'

@@ -1,8 +1,8 @@
-import { Component, inject, EnvironmentInjector, runInInjectionContext } from '@angular/core';
+import { Component, inject, EnvironmentInjector, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import {
+  NavController,
   IonContent,
   IonButton,
   IonInput,
@@ -10,15 +10,12 @@ import {
   IonSpinner,
   IonIcon
 } from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
 import { eyeOutline, eyeOffOutline, lockClosedOutline, mailOutline } from 'ionicons/icons';
 
-// 🔥 CORRECCIÓN: Importamos el módulo de inyección Auth oficial en lugar de la función suelta getAuth
-import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { AppMessageCode, AuthService, LoadingService, NotificationService, ErrorHandlerService } from 'shared-core';
 
-import { NotificationService } from 'projects/shared-core/src/lib/services/notification.service';
-import { ErrorHandlerService } from 'projects/shared-core/src/lib/services/error-handler.service';
-import { AppMessageCode } from 'shared-core';
 
 @Component({
   selector: 'app-login',
@@ -37,12 +34,17 @@ import { AppMessageCode } from 'shared-core';
   ]
 })
 export class LoginPage {
-  // 🔥 INYECCIONES DE SINTAXIS MODERNA (Evitan fugas de contexto asíncronas)
-  private auth = inject(Auth);
+  // INYECCIONES DE SINTAXIS MODERNA[cite: 1]
+  private authService = inject(AuthService);;
   private injector = inject(EnvironmentInjector);
   private notification = inject(NotificationService);
-  private router = inject(Router);
+  private navCtrl = inject(NavController);
   private errorHandler = inject(ErrorHandlerService);
+  private ngZone = inject(NgZone);
+  private loadingService = inject(LoadingService);
+  private cdRef = inject(ChangeDetectorRef);
+  private zone = inject(NgZone);
+
 
   email = '';
   password = '';
@@ -59,82 +61,81 @@ export class LoginPage {
   }
 
   /**
-   * @method ionViewDidEnter
-   * @description Ciclo de vida nativo de Ionic. Se ejecuta SIEMPRE que la pantalla 
-   * de login aparece en primer plano, solucionando el bloqueo de caché tras un logout.
+   * @method ionViewWillEnter
+   * @description Ciclo de vida nativo de Ionic. Se ejecuta JUSTO ANTES de que la pantalla 
+   * aparezca en primer plano. Forzamos el desbloqueo del botón dentro de la NgZone de Angular
+   * para evitar que se quede congelado tras un logout asíncrono.
    */
-  public ionViewDidEnter(): void {
-    console.log('🔄 [LoginPage] Reiniciando estado y limpiando bloqueos de la vista.');
+  public ionViewWillEnter(): void {
+    // 1. Forzamos a que todo se ejecute en la zona correcta de Angular
+    this.zone.run(() => {
+      console.log('[LoginPage] Forzando desbloqueo e inicialización limpia.');
 
-    // 1. Forzamos el desbloqueo del botón por si se quedó colgado en true
-    this.cargando = false;
+      // 2. Limpiamos las variables de sesión anteriores de forma explícita
+      this.email = '';
+      this.password = '';
+      this.cargando = false;
 
-    // 2. Reseteamos los campos del formulario para limpiar la memoria del DOM
-    this.email = '';
-    this.password = '';
-
-    // 3. Pequeño hack profesional: Forzamos un evento de scroll mínimo e invisible 
-    // en el contenedor nativo para obligar a Chrome/WebView a recalcular los PointerEvents del ratón.
-    const content = document.querySelector('ion-content');
-    if (content) {
-      (content as any).getScrollElement().then((scrollEl: HTMLElement) => {
-        if (scrollEl) {
-          scrollEl.style.pointerEvents = 'auto';
-        }
-      });
-    }
+      // 3. Dejamos un microsegundo para que el DOM respire y forzamos la detección de cambios
+      setTimeout(() => {
+        this.cdRef.detectChanges();
+        console.log('[LoginPage] Interfaz re-evaluada y desbloqueada con éxito.');
+      }, 50);
+    });
   }
 
   async ingresar() {
-    if (!this.email || !this.password) {
-      await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
-      return;
-    }
-
-    // Envolvemos la ejecución asíncrona dentro de la cápsula de inyección del entorno
-    return runInInjectionContext(this.injector, async () => {
-      try {
-        this.cargando = true;
-        console.log('⏳ [BYPASS-LOGIN] Conectando directamente con Google Firebase Auth...');
-
-        // 🔥 CORRECCIÓN: Usamos la instancia 'this.auth' inyectada en la clase de forma nativa
-        const userCredential = await signInWithEmailAndPassword(this.auth, this.email.trim(), this.password);
-        console.log('✅ [BYPASS-LOGIN] Autenticación exitosa en Firebase. User UID:', userCredential.user.uid);
-
-        this.cargando = false;
-
-        console.log('🔄 [BYPASS-LOGIN] Redirigiendo a la pantalla principal...');
-        await this.router.navigateByUrl('/home');
-
-      } catch (error: any) {
-        console.error('❌ [BYPASS-LOGIN] Error capturado en el SDK:', error);
-        this.cargando = false;
-
-        // CONTROL DE CREDENCIALES INCORRECTAS DETECTADO EN TU CAPTURA
-        if (
-          error?.code === 'auth/invalid-credential' ||
-          error?.message?.includes('auth/invalid-credential') ||
-          error?.code === 'auth/user-not-found' ||
-          error?.code === 'auth/wrong-password'
-        ) {
-          await this.notification.error(
-            'El correo electrónico o la contraseña no son correctos. Por favor, compruébalos.'
-          );
-          return;
-        }
-
-        // CONTROL DE CUENTA DESACTIVADA
-        if (error?.code === 'auth/user-disabled') {
-          await this.notification.error(
-            'Tu cuenta ha sido desactivada. Contacta con la directiva para más información.'
-          );
-          return;
-        }
-
-        await this.errorHandler.handle(error, AppMessageCode.ADC_AUTH_ERR_0002);
-      } finally {
-        this.cargando = false;
-      }
-    });
+  if (!this.email || !this.password) {
+    await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
+    return;
   }
+
+  await this.loadingService.wrap(async () => {
+    try {
+      this.cargando = true;
+      console.log('⏳ [LOGIN] Autenticando mediante AuthService Facade...');
+
+      // 1. Usar AuthService garantiza la carga de Firestore y validación de INACTIVE
+      await this.authService.login(this.email.trim(), this.password);
+
+      // 2. Esperar a que Firestore descargue los datos de perfil antes de navegar
+      await this.authService.waitForUserData();
+
+      console.log('✅ [LOGIN] Autenticación y datos cargados. Redirigiendo a Home...');
+
+      // 3. Navegar en la NgZone rompiendo la pila de navegación previa
+      this.ngZone.run(async () => {
+        this.cargando = false;
+        await this.navCtrl.navigateRoot('/home', { animated: false });
+      });
+
+    } catch (error: any) {
+      console.error('❌ [LOGIN] Error capturado:', error);
+      this.cargando = false;
+
+      if (
+        error?.code === 'auth/invalid-credential' ||
+        error?.message?.includes('auth/invalid-credential') ||
+        error?.code === 'auth/user-not-found' ||
+        error?.code === 'auth/wrong-password'
+      ) {
+        await this.notification.error(
+          'El correo electrónico o la contraseña no son correctos. Por favor, compruébalos.'
+        );
+        return;
+      }
+
+      if (error?.code === 'auth/user-disabled' || error?.message?.includes('bloqueado')) {
+        await this.notification.error(
+          error?.message || 'Tu cuenta ha sido desactivada. Contacta con la directiva.'
+        );
+        return;
+      }
+
+      await this.errorHandler.handle(error, AppMessageCode.ADC_AUTH_ERR_0002);
+    } finally {
+      this.cargando = false;
+    }
+  }, 'Iniciando sesión...');
+}
 }

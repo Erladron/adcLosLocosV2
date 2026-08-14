@@ -1,14 +1,14 @@
-[**functions**](../README.md)
+[**functions**](../index.md)
 
 ***
 
-[functions](../README.md) / inicializarTest
+[functions](../index.md) / inicializarTest
 
 # Function: inicializarTest()
 
 > **inicializarTest**(`req`, `res`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/functions/testing-helpers.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/functions/src/functions/testing-helpers.ts#L58)
+Defined in: [src/functions/testing-helpers.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/functions/src/functions/testing-helpers.ts#L58)
 
 inicializarTest
 

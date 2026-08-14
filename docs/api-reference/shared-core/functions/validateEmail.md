@@ -1,14 +1,14 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / validateEmail
+[shared-core](../index.md) / validateEmail
 
 # Function: validateEmail()
 
 > **validateEmail**(`email`, `repeatEmail?`): `boolean`
 
-Defined in: [utils/string.utils.ts:126](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/utils/string.utils.ts#L126)
+Defined in: [utils/string.utils.ts:126](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/utils/string.utils.ts#L126)
 
 **`Function`**
 

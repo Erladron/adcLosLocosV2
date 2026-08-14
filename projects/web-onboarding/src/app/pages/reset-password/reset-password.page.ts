@@ -3,15 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Auth, confirmPasswordReset } from '@angular/fire/auth';
-import { 
-  IonContent, 
-  IonItem, 
-  IonInput, 
-  IonButton, 
-  IonIcon, 
-  IonSpinner, 
-  IonText 
-} from '@ionic/angular/standalone';
+
 
 // Importaciones de tu librería shared-core
 import { 
@@ -32,13 +24,6 @@ import {
   imports: [
     CommonModule, 
     FormsModule,
-    IonContent,
-    IonItem,
-    IonInput,
-    IonButton,
-    IonIcon,
-    IonSpinner,
-    IonText
   ],
   templateUrl: './reset-password.page.html',
   styleUrls: ['./reset-password.page.scss']

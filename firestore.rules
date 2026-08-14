@@ -107,7 +107,7 @@ service cloud.firestore {
      * @function isOwnUser
      * @description Valida la correspondencia de identidad biunívoca e inmutable en el extremo de la petición de datos.
      * @param {string} userId - Identificador único (UID) del documento que se pretende leer o actualizar.
-     * @returns {bool} True si el UID del documento coincide estrictamente con el UID de la sesión activa en Firebase Auth.
+     * @returns {bool} True si el UID del documento coincide strictly con el UID de la sesión activa en Firebase Auth.
      */
     function isOwnUser(userId) { 
       return request.auth != null && request.auth.uid == userId; 
@@ -237,17 +237,15 @@ service cloud.firestore {
     }
 
     // =========================================================================
-    // COLECCIÓN: CREDENCIALES DIGITALES Y ACCESOS (FAIR ACCESS)
+    // COLECCIÓN: CREDENCIALES DIGITALES Y ACCESOS (EVENT ACCESS)
     // =========================================================================
     
-    /** * @collection fair-access
-     * @description Matriz de seguridad encargada de controlar la emisión, vigencia, validación y lectura de pases digitales QR para las casetas y recintos feriales.
+    /** * @collection event-access
+     * @description Matriz de seguridad encargada de controlar la emisión, vigencia, validación y lectura de pases digitales QR para los eventos.
      */
-    match /fair-access/{accessId} {
+    match /event-access/{accessId} {
       
-      /** * @rule get
-       * @description El proceso de lectura individual valida de forma atómica que el pase pertenezca al beneficiario, al anfitrión emisor, a la junta o al portero en el escáner.
-       */
+      /** @rule get */
       allow get: if isLogged() && (
         resource.data.userId == request.auth.uid || 
         resource.data.hostId == request.auth.uid || 
@@ -255,28 +253,20 @@ service cloud.firestore {
         isPortero()
       );
       
-      /** * @rule list
-       * @description Habilita consultas masivas en tiempo real para cualquier usuario autenticado, evitando cortes de visualización del SDK en listados locales.
-       */
+      /** @rule list - Permite listar pases a usuarios autenticados */
       allow list: if isLogged();
 
-      /** * @rule create
-       * @description Autoriza la creación del pase si quien lo emite es el propio titular, su anfitrión legítimo en la asociación, o un operador de la directiva.
-       */
+      /** @rule create */
       allow create: if isLogged() && (
         (request.resource.data.hostId == request.auth.uid) || 
         (request.resource.data.userId == request.auth.uid) || 
         canManageUsers()
       );
 
-      /** * @rule update
-       * @description Permite visar, cambiar de estado o picar el código QR en portería si el actor posee el rol de control de accesos, o si el propio usuario modifica metadatos de su pase.
-       */
+      /** @rule update */
       allow update: if canScan() || (isLogged() && request.resource.data.userId == request.auth.uid);
 
-      /** * @rule delete
-       * @description Otorga permisos de revocación o eliminación del pase digital exclusivamente al anfitrión, al titular o a la junta de administración.
-       */
+      /** @rule delete */
       allow delete: if isLogged() && (
         resource.data.hostId == request.auth.uid || 
         resource.data.userId == request.auth.uid || 

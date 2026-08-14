@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / CropperState
+[shared-core](../index.md) / CropperState
 
 # Interface: CropperState
 
-Defined in: [models/user-detail.model.ts:92](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L92)
+Defined in: [models/user-detail.model.ts:92](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L92)
 
 CropperState
 
@@ -20,7 +20,7 @@ Estructura reguladora para gobernar el estado reactivo del modal ngx-image-cropp
 
 > **croppedImage**: `string`
 
-Defined in: [models/user-detail.model.ts:97](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L97)
+Defined in: [models/user-detail.model.ts:97](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L97)
 
 #### Description
 
@@ -32,7 +32,7 @@ String Base64 resultante del procesamiento optimizado de recortes.
 
 > **imageChangedEvent**: `any`
 
-Defined in: [models/user-detail.model.ts:94](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L94)
+Defined in: [models/user-detail.model.ts:94](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L94)
 
 #### Description
 
@@ -44,7 +44,7 @@ Evento nativo del DOM de cambio de fichero disparado por el input file.
 
 > **mostrarCropper**: `boolean`
 
-Defined in: [models/user-detail.model.ts:100](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-detail.model.ts#L100)
+Defined in: [models/user-detail.model.ts:100](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-detail.model.ts#L100)
 
 #### Description
 

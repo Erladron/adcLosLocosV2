@@ -8,46 +8,59 @@
     <ion-segment [scrollable]="true" [value]="currentFilter" (ionChange)="setFilter($event.detail.value)" mode="md"
       class="custom-scroll-segment" data-cy="events-filter-segment">
       <ion-segment-button value="todos" data-cy="filter-btn-todos"><ion-label>Todos</ion-label></ion-segment-button>
-      <ion-segment-button value="asamblea" data-cy="filter-btn-asambleas"><ion-label>Asambleas</ion-label></ion-segment-button>
-      <ion-segment-button value="comida" data-cy="filter-btn-comidas"><ion-label>Comidas</ion-label></ion-segment-button>
-      <ion-segment-button value="quedada" data-cy="filter-btn-quedadas"><ion-label>Quedadas</ion-label></ion-segment-button>
+      <ion-segment-button value="asamblea"
+        data-cy="filter-btn-asambleas"><ion-label>Asambleas</ion-label></ion-segment-button>
+      <ion-segment-button value="comida"
+        data-cy="filter-btn-comidas"><ion-label>Comidas</ion-label></ion-segment-button>
+      <ion-segment-button value="quedada"
+        data-cy="filter-btn-quedadas"><ion-label>Quedadas</ion-label></ion-segment-button>
       <ion-segment-button value="feria" data-cy="filter-btn-feria"><ion-label>Feria</ion-label></ion-segment-button>
     </ion-segment>
 
-    <!-- 📆 BLOQUE CALENDARIO: OCUPANDO TODO EL ANCHO CON SEMANA EN LUNES (first-day-of-week="1") -->
-    <div class="glass-card calendar-dashboard-card full-width-card">
-      <img src="assets/img/escudo.png" alt="Escudo Peña" class="calendar-watermark-logo">
+    <!-- CALENDARIO DASHBOARD CARD -->
+    <div class="calendar-dashboard-card">
 
-      <div class="calendar-inline-header">
-        <ion-icon name="calendar-outline"></ion-icon>
-        <h2>Agenda de la Peña</h2>
+      <!-- Escudo en Marca de Agua -->
+      <img src="assets/img/escudo.png" alt="Marca de agua Peña" class="calendar-watermark-logo" />
+      <div class="calendar-container">
+        <!-- Cabecera Elegante, Distribuida y Centrada -->
+        <div class="calendar-header">
+          <button type="button" class="nav-btn" (click)="changeMonth(-1)" aria-label="Mes anterior">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </button>
+
+          <div class="month-title">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>{{ viewDate | date:'MMMM yyyy':'':locale | titlecase }}</span>
+          </div>
+
+          <button type="button" class="nav-btn" (click)="changeMonth(1)" aria-label="Mes siguiente">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </button>
+        </div>
+
+        <!-- Vista del Mes -->
+        <mwl-calendar-month-view [viewDate]="viewDate" [events]="calendarEvents" [refresh]="refresh"
+          [activeDayIsOpen]="false" [weekStartsOn]="weekStartsOn" [locale]="locale"
+          (beforeViewRender)="beforeMonthViewRender($event)" (dayClicked)="onDayClicked($event.day)">
+        </mwl-calendar-month-view>
       </div>
-
-      <ion-datetime 
-        presentation="date" 
-        locale="es-ES" 
-        size="cover"
-        first-day-of-week="1"
-        [value]="selectedDate"
-        [highlightedDates]="highlightedDates"
-        (ionChange)="onDateChanged($event)"
-        class="peña-integrated-datetime">
-      </ion-datetime>
     </div>
 
-    <!-- 📋 LISTADO MINIMALISTA DE EVENTOS (SÓLO TÍTULO SOBRE FONDO) -->
-    <div class="events-list-container" *ngIf="filteredEvents$ | async as events; else loadingTpl" data-cy="events-list-wrapper">
 
-      <div class="glass-card empty-warning-card" *ngIf="events.length === 0" data-cy="events-empty-warning">
+    <!-- 📋 LISTADO MINIMALISTA DE EVENTOS DESPLEGADOS PARA EL DÍA SELECCIONADO -->
+    <div class="events-list-container" data-cy="events-list-wrapper">
+
+      <!-- Alerta si no hay convocatorias para ese día/filtro -->
+      <div class="glass-card empty-warning-card" *ngIf="eventosDelDia.length === 0" data-cy="events-empty-warning">
         <ion-icon name="alert-circle-outline"></ion-icon>
         <p>No hay convocatorias para esta fecha o categoría.</p>
       </div>
 
       <!-- Tarjeta interactiva estilizada (Al hacer clic redirige al detalle) -->
-      <div *ngFor="let event of events" [routerLink]="['/events', event.id]" class="glass-card event-minimal-card" data-cy="event-card"
-        [ngStyle]="{
-          'background-image': 'linear-gradient(rgba(13, 27, 62, 0.65), rgba(10, 20, 45, 0.85)), url(' + (event.imageUrl || 'assets/img/events-construction.png') + ')'
-        }">
+      <div class="event-minimal-card" *ngFor="let event of eventosDelDia"
+        [style.--custom-img]="'url(' + getEventBgImage(event) + ')'" [routerLink]="['/events', event.id]"
+        data-cy="event-card">
         <div class="minimal-card-body">
           <div class="event-type-icon-wrapper-mini">
             <ion-icon [name]="getIconForType(event.type)"></ion-icon>
@@ -59,15 +72,12 @@
 
     </div>
 
-    <ng-template #loadingTpl>
-      <div class="glass-card loading-card-placeholder">
-        <p>Sincronizando agenda...</p>
-      </div>
-    </ng-template>
-
-    <button routerLink="/events/new" class="peña-fab-btn-native" *ngIf="isAdmin" data-cy="btn-create-event-fab">
-      <ion-icon name="add"></ion-icon>
-    </button>
+    <!-- FAB: BOTÓN FLOTANTE PARA CREAR EVENTOS (SOLO ADMINS) -->
+    <ion-fab *ngIf="isAdmin" vertical="bottom" horizontal="end" slot="fixed" class="peña-fab-btn-native">
+      <ion-fab-button (click)="nuevoEvento()" color="secondary" data-cy="btn-create-event-fab">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 
   </div>
 </ion-content>

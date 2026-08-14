@@ -4,6 +4,20 @@
     "desa": "adcloslocos-desa",
     "default": "adcloslocos-desa"
   },
-  "targets": {},
+  "targets": {
+    "adcloslocos-desa": {
+      "hosting": {
+        "docs": [
+          "acdloslocos-docs"
+        ],
+        "app-desa": [
+          "acdloslocos-app-desa"
+        ],
+        "onboarding": [
+          "acdloslocos-onboarding-desa"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

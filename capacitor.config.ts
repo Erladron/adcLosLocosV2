@@ -7,11 +7,14 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: 'https'
   },
-  // 🚀 AÑADE ESTE BLOQUE DE PLUGINS SI NO LO TIENES:
+  
   plugins: {
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
     },
+    StatusBar: {
+      overlaysWebView: true
+    }
   },
 };
 

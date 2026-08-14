@@ -1,6 +1,6 @@
-describe('🚀 SEMILLA: Inicialización del Entorno de Pruebas', () => {
+describe('TestCase: 01_01_inicializar_bd', () => {
 
-    it('Debe limpiar por completo la BD, sembrar los usuarios, loguear al Admin y mostrar la lista', () => {
+    it('PASO 1: Debe limpiar por completo la BD, sembrar los usuarios, loguear al Admin y mostrar la lista', () => {
 
         const projectId = 'adcloslocos-desa';
 

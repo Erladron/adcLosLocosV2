@@ -16,6 +16,7 @@ build/
 .next/
 .nuxt/
 out/
+docs/
 
 # Entornos virtuales (Python)
 venv/
@@ -41,3 +42,4 @@ Thumbs.db
 
 # Otros ficheros a ignorar
 .clinerules
+.csv

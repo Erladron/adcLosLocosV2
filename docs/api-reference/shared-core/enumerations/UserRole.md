@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserRole
+[shared-core](../index.md) / UserRole
 
 # Enumeration: UserRole
 
-Defined in: [models/user-role.enum.ts:7](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-role.enum.ts#L7)
+Defined in: [models/user-role.enum.ts:7](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-role.enum.ts#L7)
 
 UserRole
 
@@ -22,7 +22,7 @@ y los privilegios de escaneo en los accesos de la peña.
 
 > **ADMINISTRADOR**: `"administrador"`
 
-Defined in: [models/user-role.enum.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-role.enum.ts#L9)
+Defined in: [models/user-role.enum.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-role.enum.ts#L9)
 
 #### Description
 
@@ -34,7 +34,7 @@ Privilegios totales sobre el sistema, bases de datos, pasarelas de autenticació
 
 > **DIRECTIVA**: `"directiva"`
 
-Defined in: [models/user-role.enum.ts:12](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-role.enum.ts#L12)
+Defined in: [models/user-role.enum.ts:12](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-role.enum.ts#L12)
 
 #### Description
 
@@ -46,7 +46,7 @@ Miembro de la Junta Directiva con facultades de alta manual, aprobación de soci
 
 > **INVITADO**: `"invitado"`
 
-Defined in: [models/user-role.enum.ts:18](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-role.enum.ts#L18)
+Defined in: [models/user-role.enum.ts:18](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-role.enum.ts#L18)
 
 #### Description
 
@@ -58,7 +58,7 @@ Usuario externo pre-autenticado en fase de onboarding o completado de perfil.
 
 > **PORTERO**: `"portero"`
 
-Defined in: [models/user-role.enum.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-role.enum.ts#L21)
+Defined in: [models/user-role.enum.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-role.enum.ts#L21)
 
 #### Description
 
@@ -70,7 +70,7 @@ Personal de control de acceso contratado con permisos exclusivos de escaneo de c
 
 > **SOCIO**: `"socio"`
 
-Defined in: [models/user-role.enum.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-role.enum.ts#L15)
+Defined in: [models/user-role.enum.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-role.enum.ts#L15)
 
 #### Description
 

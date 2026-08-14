@@ -1,20 +1,20 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / AuthSessionService
+[shared-core](../index.md) / AuthSessionService
 
 # Class: AuthSessionService
 
-Defined in: [services/auth-session.service.ts:42](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L42)
+Defined in: [services/auth-session.service.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L37)
 
 ## Constructors
 
 ### Constructor
 
-> **new AuthSessionService**(`auth`, `firestore`, `router`, `notification`, `ngZone`, `injector`): `AuthSessionService`
+> **new AuthSessionService**(`auth`, `firestore`, `navCtrl`, `notification`, `ngZone`, `injector`, `menuCtrl`, `platform`): `AuthSessionService`
 
-Defined in: [services/auth-session.service.ts:76](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L76)
+Defined in: [services/auth-session.service.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L47)
 
 #### Parameters
 
@@ -26,9 +26,9 @@ Defined in: [services/auth-session.service.ts:76](https://github.com/Erladron/ad
 
 `Firestore`
 
-##### router
+##### navCtrl
 
-`Router`
+`NavController`
 
 ##### notification
 
@@ -42,6 +42,14 @@ Defined in: [services/auth-session.service.ts:76](https://github.com/Erladron/ad
 
 `EnvironmentInjector`
 
+##### menuCtrl
+
+`MenuController`
+
+##### platform
+
+`Platform`
+
 #### Returns
 
 `AuthSessionService`
@@ -52,7 +60,7 @@ Defined in: [services/auth-session.service.ts:76](https://github.com/Erladron/ad
 
 > `readonly` **authReady**: `Signal`\<`boolean`\>
 
-Defined in: [services/auth-session.service.ts:71](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L71)
+Defined in: [services/auth-session.service.ts:45](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L45)
 
 ***
 
@@ -60,7 +68,7 @@ Defined in: [services/auth-session.service.ts:71](https://github.com/Erladron/ad
 
 > `readonly` **currentUser**: `Signal`\<`User`\>
 
-Defined in: [services/auth-session.service.ts:61](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L61)
+Defined in: [services/auth-session.service.ts:43](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L43)
 
 ***
 
@@ -68,7 +76,7 @@ Defined in: [services/auth-session.service.ts:61](https://github.com/Erladron/ad
 
 > `readonly` **currentUserData**: `Signal`\<`any`\>
 
-Defined in: [services/auth-session.service.ts:66](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L66)
+Defined in: [services/auth-session.service.ts:44](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L44)
 
 ## Methods
 
@@ -76,9 +84,7 @@ Defined in: [services/auth-session.service.ts:66](https://github.com/Erladron/ad
 
 > **initAuthListener**(): `void`
 
-Defined in: [services/auth-session.service.ts:99](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L99)
-
-Inicializa listener global auth.
+Defined in: [services/auth-session.service.ts:58](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L58)
 
 #### Returns
 
@@ -90,7 +96,7 @@ Inicializa listener global auth.
 
 > **isLogged**(): `boolean`
 
-Defined in: [services/auth-session.service.ts:210](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L210)
+Defined in: [services/auth-session.service.ts:101](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L101)
 
 #### Returns
 
@@ -100,11 +106,9 @@ Defined in: [services/auth-session.service.ts:210](https://github.com/Erladron/a
 
 ### login()
 
-> **login**(`email`, `password`): `Promise`\<`UserCredential`\>
+> **login**(`email`, `password`): `Promise`\<`any`\>
 
-Defined in: [services/auth-session.service.ts:223](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L223)
-
-Login Firebase.
+Defined in: [services/auth-session.service.ts:105](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L105)
 
 #### Parameters
 
@@ -118,7 +122,7 @@ Login Firebase.
 
 #### Returns
 
-`Promise`\<`UserCredential`\>
+`Promise`\<`any`\>
 
 ***
 
@@ -126,9 +130,7 @@ Login Firebase.
 
 > **logout**(): `Promise`\<`void`\>
 
-Defined in: [services/auth-session.service.ts:280](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L280)
-
-Logout usuario.
+Defined in: [services/auth-session.service.ts:118](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L118)
 
 #### Returns
 
@@ -140,9 +142,7 @@ Logout usuario.
 
 > **reloadUserData**(`uid`): `Promise`\<`any`\>
 
-Defined in: [services/auth-session.service.ts:319](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L319)
-
-Recarga datos Firestore usuario.
+Defined in: [services/auth-session.service.ts:171](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L171)
 
 #### Parameters
 
@@ -160,7 +160,7 @@ Recarga datos Firestore usuario.
 
 > **waitForAuthReady**(): `Promise`\<`void`\>
 
-Defined in: [services/auth-session.service.ts:180](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/auth-session.service.ts#L180)
+Defined in: [services/auth-session.service.ts:86](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/auth-session.service.ts#L86)
 
 #### Returns
 

@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserStatus
+[shared-core](../index.md) / UserStatus
 
 # Enumeration: UserStatus
 
-Defined in: [models/user-status.enum.ts:6](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-status.enum.ts#L6)
+Defined in: [models/user-status.enum.ts:6](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-status.enum.ts#L6)
 
 UserStatus
 
@@ -21,7 +21,7 @@ Controla de forma secuencial las fases del onboarding, desde el registro inicial
 
 > **ACTIVE**: `"active"`
 
-Defined in: [models/user-status.enum.ts:20](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-status.enum.ts#L20)
+Defined in: [models/user-status.enum.ts:20](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-status.enum.ts#L20)
 
 #### Description
 
@@ -33,7 +33,7 @@ Usuario plenamente verificado, activo y con plenos derechos de acceso a la plata
 
 > **INACTIVE**: `"inactive"`
 
-Defined in: [models/user-status.enum.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-status.enum.ts#L30)
+Defined in: [models/user-status.enum.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-status.enum.ts#L30)
 
 #### Description
 
@@ -45,7 +45,7 @@ Usuario dado de baja lógica por un administrador o suspendido temporalmente por
 
 > **PENDING\_APPROVAL**: `"pending_approval"`
 
-Defined in: [models/user-status.enum.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-status.enum.ts#L15)
+Defined in: [models/user-status.enum.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-status.enum.ts#L15)
 
 *
 
@@ -59,7 +59,7 @@ Datos completados por el aspirante. La solicitud está en cola de revisión para
 
 > **PENDING\_DATA**: `"pending_data"`
 
-Defined in: [models/user-status.enum.ts:10](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-status.enum.ts#L10)
+Defined in: [models/user-status.enum.ts:10](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-status.enum.ts#L10)
 
 #### Description
 
@@ -71,7 +71,7 @@ Fase de pre-alta web. El aspirante ha sido invitado pero aún no ha completado s
 
 > **REJECTED**: `"rejected"`
 
-Defined in: [models/user-status.enum.ts:25](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/user-status.enum.ts#L25)
+Defined in: [models/user-status.enum.ts:25](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/user-status.enum.ts#L25)
 
 #### Description
 

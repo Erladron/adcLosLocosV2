@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserDetailPermissionsService
+[shared-core](../index.md) / UserDetailPermissionsService
 
 # Class: UserDetailPermissionsService
 
-Defined in: [services/user-detail-permissions.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L14)
+Defined in: [services/user-detail-permissions.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L14)
 
 UserDetailPermissionsService
 
@@ -21,7 +21,7 @@ y permisos visuales de los subformularios del detalle cruzando las variables de 
 
 > **new UserDetailPermissionsService**(): `UserDetailPermissionsService`
 
-Defined in: [services/user-detail-permissions.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L23)
+Defined in: [services/user-detail-permissions.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L23)
 
 #### Returns
 
@@ -37,7 +37,7 @@ Inicializa el evaluador de privilegios del detalle de usuarios.
 
 > **canEditCredentials**(`user`): `boolean`
 
-Defined in: [services/user-detail-permissions.service.ts:118](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L118)
+Defined in: [services/user-detail-permissions.service.ts:118](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L118)
 
 #### Parameters
 
@@ -67,7 +67,7 @@ Compuerta de seguridad para habilitar la edición de correos electrónicos de ac
 
 > **canEditMembership**(`user`): `boolean`
 
-Defined in: [services/user-detail-permissions.service.ts:95](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L95)
+Defined in: [services/user-detail-permissions.service.ts:95](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L95)
 
 #### Parameters
 
@@ -97,7 +97,7 @@ Delimita la capacidad operativa jerárquica para alterar roles o números de soc
 
 > **canEditPassword**(`user`): `boolean`
 
-Defined in: [services/user-detail-permissions.service.ts:128](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L128)
+Defined in: [services/user-detail-permissions.service.ts:128](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L128)
 
 #### Parameters
 
@@ -127,7 +127,7 @@ Compuerta de permisos para autorizar flujos de re-ajuste de claves de inicio de 
 
 > **canEditPersonalData**(`user`): `boolean`
 
-Defined in: [services/user-detail-permissions.service.ts:85](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L85)
+Defined in: [services/user-detail-permissions.service.ts:85](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L85)
 
 #### Parameters
 
@@ -157,7 +157,7 @@ Evalúa la capacidad del operador para abrir a flujos de escritura el bloque civ
 
 > **getPermissions**(`user`): `any`
 
-Defined in: [services/user-detail-permissions.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L32)
+Defined in: [services/user-detail-permissions.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L32)
 
 #### Parameters
 
@@ -188,7 +188,7 @@ Determina de forma automática el estado de roles y si el operador está consult
 
 > **isOwnProfile**(`user`): `boolean`
 
-Defined in: [services/user-detail-permissions.service.ts:75](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L75)
+Defined in: [services/user-detail-permissions.service.ts:75](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-permissions.service.ts#L75)
 
 #### Parameters
 

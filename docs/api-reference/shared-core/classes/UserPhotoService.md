@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserPhotoService
+[shared-core](../index.md) / UserPhotoService
 
 # Class: UserPhotoService
 
-Defined in: [services/user-photo.service.ts:18](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L18)
+Defined in: [services/user-photo.service.ts:18](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L18)
 
 UserPhotoService
 
@@ -22,7 +22,7 @@ procesar lienzos de recorte (ngx-image-cropper) y formatear estructuras binarias
 
 > **new UserPhotoService**(): `UserPhotoService`
 
-Defined in: [services/user-photo.service.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L30)
+Defined in: [services/user-photo.service.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L30)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el gestor periférico multimedia.
 
 > **processCroppedImage**(`event`): `Promise`\<`string`\>
 
-Defined in: [services/user-photo.service.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L82)
+Defined in: [services/user-photo.service.ts:82](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L82)
 
 #### Parameters
 
@@ -69,7 +69,7 @@ Extrae el Blob resultante y lo conmutará a una cadena Base64 apta para el hilo 
 
 > **resetCropper**(): [`CropperState`](../interfaces/CropperState.md)
 
-Defined in: [services/user-photo.service.ts:131](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L131)
+Defined in: [services/user-photo.service.ts:131](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L131)
 
 #### Returns
 
@@ -91,7 +91,7 @@ resetCropper
 
 > **selectFromGallery**(): `Promise`\<`string`\>
 
-Defined in: [services/user-photo.service.ts:38](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L38)
+Defined in: [services/user-photo.service.ts:38](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L38)
 
 #### Returns
 
@@ -114,7 +114,7 @@ Captura la imagen seleccionada y la extrae optimizada en una cadena con formato 
 
 > **takePhoto**(): `Promise`\<`string`\>
 
-Defined in: [services/user-photo.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L59)
+Defined in: [services/user-photo.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L59)
 
 #### Returns
 
@@ -136,7 +136,7 @@ Invoca el disparador de la cámara fotográfica nativa del hardware del terminal
 
 > **uploadUserPhoto**(`uid`, `imageBase64`): `Promise`\<`string`\>
 
-Defined in: [services/user-photo.service.ts:102](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-photo.service.ts#L102)
+Defined in: [services/user-photo.service.ts:102](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-photo.service.ts#L102)
 
 #### Parameters
 

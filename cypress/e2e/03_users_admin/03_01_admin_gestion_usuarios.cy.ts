@@ -1,4 +1,4 @@
-describe('👮 ROL: Administrador - Integridad de Menús y Navegación', () => {
+describe('TestCase: 03_01_admin_gestion_usuarios', () => {
 
   beforeEach(() => {
     cy.visit('/login');
@@ -12,7 +12,7 @@ describe('👮 ROL: Administrador - Integridad de Menús y Navegación', () => {
     cy.get('[data-cy="home-page-content"]').should('be.visible');
   });
 
-  it('Debe validar la Home, navegar por tarjetas y auditar la ficha de un usuario', () => {
+  it('PASO 1: Debe validar la Home, navegar por tarjetas y auditar la ficha de un usuario', () => {
 
     // 1️⃣ VALIDACIÓN DE LA HOME (Usando tus data-cy reales del HTML)
     cy.get('[data-cy="welcome-user-title"]').should('be.visible');

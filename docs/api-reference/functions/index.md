@@ -12,7 +12,7 @@
 - [deactivateUser](functions/deactivateUser.md)
 - [inicializarTest](functions/inicializarTest.md)
 - [onEventTriggerNotification](functions/onEventTriggerNotification.md)
-- [onFairAccessCreatedNotification](functions/onFairAccessCreatedNotification.md)
+- [onPasseAccessCreatedNotification](functions/onPasseAccessCreatedNotification.md)
 - [reactivateUser](functions/reactivateUser.md)
 - [requestUserApproval](functions/requestUserApproval.md)
 - [sendCustomPasswordReset](functions/sendCustomPasswordReset.md)

@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserDetailPhotoService
+[shared-core](../index.md) / UserDetailPhotoService
 
 # Class: UserDetailPhotoService
 
-Defined in: [services/user-detail-photo.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L14)
+Defined in: [services/user-detail-photo.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L14)
 
 UserDetailPhotoService
 
@@ -22,7 +22,7 @@ delegando la inserción final en el PhotoService de infraestructura.
 
 > **new UserDetailPhotoService**(): `UserDetailPhotoService`
 
-Defined in: [services/user-detail-photo.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L23)
+Defined in: [services/user-detail-photo.service.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L23)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el gestor de capturas multimedia del detalle de usuarios.
 
 > **dataURLtoFile**(`dataurl`, `filename`): `File`
 
-Defined in: [services/user-detail-photo.service.ts:79](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L79)
+Defined in: [services/user-detail-photo.service.ts:79](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L79)
 
 #### Parameters
 
@@ -74,7 +74,7 @@ Algoritmo de desestructuración que convierte una cadena DataURL en Base64 hacia
 
 > **processCroppedImage**(`event`): `string`
 
-Defined in: [services/user-detail-photo.service.ts:99](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L99)
+Defined in: [services/user-detail-photo.service.ts:99](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L99)
 
 #### Parameters
 
@@ -104,7 +104,7 @@ Sanea e independiza la porción de bits Base64 puros procedentes de los cortes d
 
 > **selectPhoto**(): `Promise`\<`any`\>
 
-Defined in: [services/user-detail-photo.service.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L30)
+Defined in: [services/user-detail-photo.service.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L30)
 
 #### Returns
 
@@ -126,7 +126,7 @@ Genera dinámicamente un elemento input de tipo archivo en el DOM del navegador 
 
 > **takePhoto**(): `Promise`\<`any`\>
 
-Defined in: [services/user-detail-photo.service.ts:48](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L48)
+Defined in: [services/user-detail-photo.service.ts:48](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L48)
 
 #### Returns
 
@@ -149,7 +149,7 @@ Pre-escala la resolución física por hardware a un ratio idóneo de 800x800px p
 
 > **uploadProfilePhoto**(`id`, `imageBase64`): `Promise`\<`string`\>
 
-Defined in: [services/user-detail-photo.service.ts:113](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L113)
+Defined in: [services/user-detail-photo.service.ts:113](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-detail-photo.service.ts#L113)
 
 #### Parameters
 

@@ -1,93 +1,144 @@
 # 📱 Aplicación Móvil - Manual Técnico
 
 ## 🛠️ Arquitectura y Tecnologías
-La aplicación móvil de **A.C.D. Los Locos** está desarrollada bajo la versión 2 de la plataforma del club[cite: 1], empleando un stack moderno y reactivo orientado a la persistencia en la nube y el rendimiento nativo en dispositivos móviles:
-- **Framework Web:** Angular v20 (Arquitectura basada en componentes Standalone y Reactividad nativa).
-- **Diseño de Interfaz:** Ionic Framework v8 (Componentes web móviles nativos avanzados).
-- **Capa Nativa:** Capacitor (Compilación nativa cross-platform para iOS y Android).
-- **Base de Datos y Sesiones:** Firebase SDK (Firestore Database, Firebase Auth y Firebase Cloud Messaging para notificaciones automáticas).
+
+La aplicación móvil de la A.C.D. Los Locos está desarrollada bajo la versión 2 del ecosistema de la peña, empleando un stack híbrido avanzado orientado a la modularidad, reactividad asíncrona viva y rendimiento nativo en hardware móvil:
+
+* Framework Web: Angular v20, adoptando una arquitectura basada estrictamente en componentes Standalone y reactividad nativa.
+
+
+* Diseño de Interfaz: Ionic Framework v8, explotando componentes web optimizados para interfaces móviles de alta densidad.
+
+
+* Capa Nativa: Capacitor, actuando como el puente de abstracción cross-platform para el empaquetado y acceso a APIs de iOS y Android.
+
+
+* Base de Datos y Sesiones: SDK Modular de Firebase, integrando Cloud Firestore para sincronización offline/online, Firebase Auth para pasarelas de inicio de sesión y Firebase Cloud Messaging (FCM) para la distribución de alertas push.
+
+
 
 ---
 
 ## 📂 Estructura de Páginas y Enrutado
-El sistema implementa un enrutamiento modular a través de `src/app/app.routes.ts`. Se divide principalmente en flujos de Autenticación/Gestión y flujos Operativos del Socio:
 
----
+El sistema implementa una arquitectura de enrutamiento modular desacoplada a través del archivo maestro src/app/app.routes.ts. Las vistas se encuentran agrupadas por dominios lógicos y características funcionales de la siguiente manera:
+
 src/app/features/
-├── auth/
-│   ├── pages/
-│   │   ├── login/               # Autenticación de usuarios y roles
-│   │   ├── complete-profile/    # Carga de datos de perfil post-registro
-│   │   ├── invite/              # Generación de invitaciones para la feria
-│   │   └── pending-approval/    # Pantalla de bloqueo reactivo para usuarios pendientes
-├── events/
-│   ├── pages/
-│   │   ├── events/              # Tablero principal de eventos del club
-│   │   ├── event-detail/        # Detalle del evento e inscripciones de aforo
-│   │   ├── event-guests/        # Listado de invitados de un socio a un evento
-│   │   ├── fair/                # Visualización del pase QR de Feria del socio
-│   │   └── fair-scan/           # Consola física de escaneo para portería
-├── home/
-│   └── pages/home/              # Dashboard principal contextual
-└── users/
-├── pages/
-│   ├── gest-user/           # Panel de administración e histórico
-│   ├── mantenimiento-cuotas/ # Panel en lote de control de cuotas financieras
-│   └── user-detail/         # Gestión atómica del perfil (Datos, Rol, Estado)
+
+* auth/pages/login/: Pantalla controladora para la autenticación de credenciales primarias de acceso.
+
+
+* auth/pages/complete-profile/: Formulario civil de onboarding obligatorio para los nuevos miembros.
+
+
+* auth/pages/invite/: Vista administrativa para la expedición de correos electrónicos de invitación a nuevos aspirantes.
+
+
+* auth/pages/pending-approval/: Pantalla de retención y bloqueo para cuentas a la espera de validación por la directiva.
+
+
+* events/pages/events/: Listado general de convocatorias publicadas por la peña.
+
+
+* events/pages/event-detail/: Ficha de detalle, control de aforo reactivo e inscripción a asambleas.
+
+
+* events/pages/event-guests/: Módulo operativo de gestión de pases y acompañantes para socios solventes.
+
+
+* events/pages/event-passes/: Tablero principal de visualización de abonos y pases válidos para hoy de la peña.
+
+
+* events/pages/event-scan/: Terminal operativo de validación física de códigos QR para el personal en puerta.
+
+
+* home/pages/home/: Dashboard unificado con accesos directos contextuales según el rol.
+
+
+* users/pages/gest-user/: Catálogo administrativo para la auditoría de perfiles y censo general.
+
+
+* users/pages/mantenimiento-cuotas/: Panel de tesorería para la visualización y edición de estados financieros por lote.
+
+
+* users/pages/user-detail/: Ficha atómica y encapsulada del usuario dividida en pestañas de auditoría.
+
+
 
 ---
 
-## 🔐 Guardianes de Acceso (`Guards`)
-Para blindar la navegación web y nativa frente a accesos no autorizados o estados de perfil inconsistentes, se emplean dos guardianes clave en la raíz de rutas `src/app/features/auth/guards/`:
+## 🔐 Guardianes de Acceso (Guards)
 
-### 1. `auth.guard.ts`
-Garantiza el estado activo de la sesión del usuario a nivel de Firebase Auth. Si no existe una sesión válida, redirige automáticamente al flujo `/login`. Adicionalmente, verifica reactivamente si el estado del usuario en Firestore es `PENDING_APPROVAL` para retenerlo en la página de espera bloqueante, o si está `DEACTIVATED` para denegar por completo el entorno interno.
+Para blindar el perímetro de navegación y las vistas internas ante solicitudes ilegítimas o estados inconsistentes, se emplean guardianes reactivos bajo la ruta src/app/features/auth/guards/:
 
-### 2. `role.guard.ts`
-Implementa control de acceso basado en roles (`RBAC`). Utiliza los metadatos integrados del token de autenticación (Custom Claims) o el documento del usuario en la colección `/users`.
-- **Campos Evaluados:** `UserRole` (`ADMIN`, `SOCIO`, `PORTERO`).
-- **Comportamiento:** Si un usuario intenta acceder a rutas administrativas (ej. `/mantenimiento-cuotas` o `/gest-user`) sin el rol `ADMIN`, el guardián aborta la navegación y lo redirige a la ruta base de socios `/home`.
+### 1. auth.guard.ts
+
+Garantiza que exista una sesión activa en Firebase Auth. Adicionalmente, se conecta en vivo a Firestore para evaluar el ciclo de vida real del perfil: retiene obligatoriamente a los usuarios en /pending-approval si su estado es PENDING_APPROVAL, y bloquea el acceso redirigiendo al Login si la cuenta pasa a estar INACTIVE, cerrando de forma proactiva las escuchas de datos abiertas.
+
+### 2. role.guard.ts
+
+Implementa el Control de Acceso Basado en Roles (RBAC). Utiliza el documento hidratado del usuario para verificar las jerarquías de UserRole y restringir de forma estricta las rutas de administración general (/gest-user) o tesorería (/mantenimiento-cuotas) exclusivamente a los perfiles ADMINISTRADOR o DIRECTIVA, abortando y redirigiendo a la Home ante intentos de intrusión.
 
 ---
 
 ## 🛠️ Componentes Operativos Clave y Flujos de UI
 
-### 1. Panel de Control de Cuotas en Lote (`mantenimiento-cuotas.page.ts`)
-Este componente permite a los administradores gestionar de forma masiva y atómica el estado financiero de las cuotas de los socios[cite: 1].
-- **Lógica de UI Reactiva:** Se inicializa activando una fila de selección múltiple mediante un elemento `ion-checkbox`[cite: 1]. Las modificaciones se encolan localmente en memoria sin persistirse inmediatamente en caliente[cite: 1].
-- **Acción del Lote:** Al detectar variaciones pendientes en el listado de socios, emerge de forma reactiva la barra flotante inferior `.floating-actions-bar` con el botón de guardado masivo "Actualizar cuota"[cite: 1].
-- **Persistencia:** Al pulsar el accionamiento, se despacha un `writeBatch` atómico de Firestore hacia la ruta de red de la API REST / SDK de Firebase de la colección `/users`[cite: 1]. Tras finalizar con éxito, se destruye la barra del DOM y se renderiza un mensaje nativo mediante `ion-toast` rompiendo el Shadow DOM de Ionic[cite: 1].
+### 1. Panel de Control de Cuotas en Lote (MantenimientoCuotasPage)
 
-### 2. Terminal de Validación en Portería (`fair-scan.page.ts`)
-Diseñado de manera prioritaria para el rol de `PORTERO`, permite procesar los pases QR de los invitados de forma automatizada mediante cámara o a través de su consola de contingencia alternativa de entrada manual[cite: 1].
-- **Consola de Entrada Manual:** Representada por la clase `.manual-entry-console`[cite: 1]. Cuenta con un campo de texto nativo validado en tiempo real que desbloquea reactivamente el botón `.btn-validate` al introducir caracteres alfanuméricos (DNI o código de pase)[cite: 1].
-- **Lógica de Feedback Radical:** Ante pases inválidos, duplicados o no autorizados, la consola bloquea el flujo del terminal inyectando a pantalla completa el layout de alerta `.feedback-fullscreen` con la clase de peligro `.error-bg` (fondo rojo brillante)[cite: 1]. Esto provee una respuesta visual instantánea para el personal de seguridad de la entrada, mostrando el detalle específico de la denegación en la subcapa `.feedback-content`[cite: 1].
+Componente de alta densidad diseñado para simplificar las tareas de tesorería del club sin sobrecargar la red.
+
+* Lógica de UI Reactiva: Se inicializa permitiendo activar la selección múltiple por lote a través de un ion-checkbox. Al alterar los toggles individuales de los socios, los cambios no se envían directamente a Firestore; se encolan en caliente en el objeto de memoria local sociosModificadosTemporalmente, alterando dinámicamente el borde de las tarjetas afectadas a color azul para indicar edición.
+
+
+* Acción del Lote: Cuando el componente detecta que existen movimientos pendientes en la caché local, emerge reactivamente desde la base de la pantalla la barra flotante de diseño translúcido .floating-actions-bar mostrando el botón "Actualizar cuota".
+
+
+* Persistencia: Al pulsar el botón, el componente invoca el método procesarActualizacionMasiva(), ejecutando ráfagas asíncronas controladas mediante el satélite UserFeesService. Una vez consolidada la escritura de los documentos modificados, se limpia la memoria temporal, se destruye la barra flotante y se rompe el Shadow DOM de Ionic para inyectar un ion-toast con confirmación de éxito.
+
+
+
+### 2. Terminal de Validación en Portería (PasseScanPage)
+
+Controlador de hardware prioritario para el personal en puerta, encargado de escanear y quemar las credenciales QR de los socios e invitados mediante la cámara nativa con Capacitor o su consola de contingencia manual.
+
+* Consola de Entrada Manual: Representada por la directiva .manual-entry-console. Integra una caja de texto reactiva vinculada mediante ngModel que mantiene bloqueado el botón de validación hasta introducir un código alfanumérico legible, proporcionando una alternativa fluida ante fallas en los sensores ópticos del dispositivo.
+
+
+* Lógica de Feedback Radical: Para optimizar la toma de decisiones del portero en entornos ruidosos, el método procesarAcceso() implementa respuestas extremas que alteran por completo la pantalla mediante la bandera scanStatus. Ante un pase caducado, inexistente o que ya cruzó la puerta, el terminal oculta la interfaz ordinaria y despliega a pantalla completa un layout masivo con fondo rojo (.error-bg) y un icono gigante de alerta de acceso denegado en .feedback-content. Este bloqueo visual se sincroniza por hardware disparando los motores de haptic vibration del terminal mediante Capacitor Haptics (NotificationType.Error), volviendo al estado de espera tras un retardo controlado de 2.5 segundos.
+
+
 
 ---
 
-## ⚙️ Configuración y Compilación Nativa (`Capacitor`)
-El nexo con las capacidades nativas del hardware del dispositivo móvil se centraliza en el archivo `capacitor.config.ts`.
+## ⚙️ Configuración y Compilación Nativa (Capacitor)
+
+El nexo con las capacidades y empaquetados para tiendas móviles se centraliza en la raíz del monorrepo a través de archivos JSON de configuración estructurados.
 
 ### Ficheros de Configuración Críticos
-- **`capacitor.config.ts`**: Fija el identificador único del paquete (`appId: 'com.adcloslocos.app'`), el nombre de la app nativa y el directorio de distribución web final (`webDir: 'www'`).
-- **`ionic.config.json`**: Administra las integraciones globales del CLI de Ionic, declarando que es un proyecto de tipo `angular`.
+
+* capacitor.config.ts: Fija de forma inmutable el identificador de paquete oficial de la peña (appId: 'com.adcloslocos.app'), el nombre descriptivo de la app nativa y el directorio de salida web de compilación (webDir: 'www').
+
+
+* ionic.config.json: Administra las tareas de integración global del CLI de Ionic, declarando el tipo de proyecto como angular-standalone.
+
+
 
 ### Comandos de Despliegue y Sincronización
-Para trasladar los cambios realizados en Angular hacia los entornos nativos de desarrollo, se ejecutan las siguientes instrucciones en la raíz del monorrepo:
 
-1. **Compilar los artefactos web optimizados en producción:**
-   ng build --configuration=production
+Para trasladar de manera correcta las mutaciones aplicadas sobre los componentes web en Angular hacia los contenedores de desarrollo de Apple Xcode o Android Studio, se ejecutan las siguientes instrucciones secuenciales desde la consola del proyecto:
 
----
+1. Compilar los artefactos web optimizados aplicando árboles de sacudida y compresión en producción:
+ng build --configuration=production
 
-2. **Sincronizar el código fuente empaquetado y los plugins nativos hacia iOS / Android:**
+
+2. Sincronizar el directorio compilado, variables de entorno y plugins nativos del hardware móvil hacia los SDKs de iOS y Android:
 npx cap sync
 
----
 
-
-3. **Abrir el entorno nativo integrado (Xcode para iOS o Android Studio para Android):**
+3. Inicializar las herramientas de compilación nativa de la plataforma correspondiente para la firma del binario o pruebas en emulador físico:
 npx cap open android
 npx cap open ios
+
+
 
 ---

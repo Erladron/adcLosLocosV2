@@ -1,14 +1,14 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / EmailTemplates
+[shared-core](../index.md) / EmailTemplates
 
 # Variable: EmailTemplates
 
 > `const` **EmailTemplates**: `object`
 
-Defined in: [templates/email-templates.ts:6](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/templates/email-templates.ts#L6)
+Defined in: [templates/email-templates.ts:6](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/templates/email-templates.ts#L6)
 
 ## Type Declaration
 
@@ -26,7 +26,7 @@ Hash único universal del token de siembra/invitación web.
 
 ##### baseUrl?
 
-`string` = `'https://adcloslocos-desa.web.app'`
+`string` = `'https://adcloslocos-onboarding-desa.web.app'`
 
 URL base del ecosistema web (inyectada según environment).
 

@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UpdatePersonalDataRequest
+[shared-core](../index.md) / UpdatePersonalDataRequest
 
 # Interface: UpdatePersonalDataRequest
 
-Defined in: [models/update-personal-data-request.model.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L9)
+Defined in: [models/update-personal-data-request.model.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L9)
 
 UpdatePersonalDataRequest
 
@@ -22,7 +22,7 @@ Aligera el payload aislando los campos editables de los parámetros inmutables d
 
 > `optional` **detallesDireccion?**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L24)
+Defined in: [models/update-personal-data-request.model.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L24)
 
 #### Description
 
@@ -34,7 +34,7 @@ Información habitacional secundaria u opcional (Piso, Puerta, Letra, Bloque).
 
 > **direccion**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L21)
+Defined in: [models/update-personal-data-request.model.ts:21](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L21)
 
 #### Description
 
@@ -46,7 +46,7 @@ Dirección postal principal de residencia.
 
 > **dni**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:18](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L18)
+Defined in: [models/update-personal-data-request.model.ts:18](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L18)
 
 #### Description
 
@@ -58,7 +58,7 @@ Documento Nacional de Identidad (DNI/NIE) para el libro oficial de registro del 
 
 > `optional` **estado?**: [`UserStatus`](../enumerations/UserStatus.md)
 
-Defined in: [models/update-personal-data-request.model.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L47)
+Defined in: [models/update-personal-data-request.model.ts:47](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L47)
 
 #### Description
 
@@ -70,7 +70,7 @@ Estado operativo del usuario. Se usa para transicionar automáticamente de PENDI
 
 > **foto**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:27](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L27)
+Defined in: [models/update-personal-data-request.model.ts:27](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L27)
 
 #### Description
 
@@ -82,7 +82,7 @@ Cadena de caracteres con la URL de descarga de Storage o el string binario Base6
 
 > **nombre**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:12](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L12)
+Defined in: [models/update-personal-data-request.model.ts:12](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L12)
 
 #### Description
 
@@ -94,7 +94,7 @@ Nombre completo del socio (normalizado en PascalCase por el orquestador de datos
 
 > `optional` **profesion?**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L30)
+Defined in: [models/update-personal-data-request.model.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L30)
 
 #### Description
 
@@ -106,7 +106,7 @@ Profesión, sector u ocupación laboral activa del socio (Opcional).
 
 > **publicarEmail**: `boolean`
 
-Defined in: [models/update-personal-data-request.model.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L40)
+Defined in: [models/update-personal-data-request.model.ts:40](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L40)
 
 #### Description
 
@@ -118,7 +118,7 @@ Permiso explícito del usuario para exponer públicamente su email en el directo
 
 > **publicarTelefono**: `boolean`
 
-Defined in: [models/update-personal-data-request.model.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L37)
+Defined in: [models/update-personal-data-request.model.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L37)
 
 #### Description
 
@@ -130,7 +130,7 @@ Permiso explícito del usuario para exponer públicamente su teléfono en el dir
 
 > **telefono**: `string`
 
-Defined in: [models/update-personal-data-request.model.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L15)
+Defined in: [models/update-personal-data-request.model.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/update-personal-data-request.model.ts#L15)
 
 #### Description
 

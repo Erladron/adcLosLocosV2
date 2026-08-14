@@ -1,0 +1,74 @@
+<!-- 📌 CONTENEDOR PRINCIPAL DEL MODAL EN ESTILO PEÑA -->
+<ion-header class="peña-modal-header ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="cancel()">
+                <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title class="peña-modal-title">{{ title }}</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="confirm()" class="confirm-btn">
+                <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="peña-modal-content">
+
+    <div class="picker-body">
+        <!-- 📅 VISTA DE CALENDARIO -->
+        <div class="calendar-card">
+            <div class="watermark-background"></div>
+            <div class="calendar-header">
+                <ion-button fill="clear" (click)="changeMonth(-1)" class="month-nav-btn">
+                    <ion-icon name="chevron-back-outline"></ion-icon>
+                </ion-button>
+
+                <span class="month-title">{{ currentMonthLabel }}</span>
+
+                <ion-button fill="clear" (click)="changeMonth(1)" class="month-nav-btn">
+                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                </ion-button>
+            </div>
+
+            <!-- Días de la semana -->
+            <div class="weekdays-grid">
+                <span *ngFor="let day of weekDays">{{ day }}</span>
+            </div>
+
+            <!-- Matriz de días del mes -->
+            <div class="days-grid">
+                <div *ngFor="let dayObj of daysGrid" class="day-cell" [class.outside-month]="!dayObj.isCurrentMonth"
+                    [class.selected-day]="dayObj.isSelected" [class.today]="dayObj.isToday" (click)="selectDay(dayObj)">
+                    <span>{{ dayObj.dayNumber }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🕒 SELECTOR DE HORA INTEGRADO (SIN POPOVERS NI CUADROS GRISES) -->
+        <div class="time-picker-card" *ngIf="includeTime">
+            <div class="time-label-group">
+                <ion-icon name="time-outline" class="time-icon"></ion-icon>
+                <span>Hora del evento</span>
+            </div>
+
+            <div class="time-select-group">
+                <!-- Selector de Horas -->
+                <select [(ngModel)]="selectedHour" (change)="onTimeChange()" class="peña-time-select">
+                    <option *ngFor="let h of hoursList" [value]="h">{{ h }}</option>
+                </select>
+
+                <span class="time-colon">:</span>
+
+                <!-- Selector de Minutos -->
+                <select [(ngModel)]="selectedMinute" (change)="onTimeChange()" class="peña-time-select">
+                    <option *ngFor="let m of minutesList" [value]="m">{{ m }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</ion-content>

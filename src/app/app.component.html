@@ -71,14 +71,14 @@
 
         <ion-list lines="none">
           @if (puedeVerPasesEventos()) {
-          <ion-item button (click)="navegar('/user-passes')" style="cursor: pointer;">
+          <ion-item button (click)="navegar('/user-passes')" style="cursor: pointer;" data-cy="menu-item-pases">
             <ion-icon slot="start" name="ticket-outline"></ion-icon>
             <ion-label>Mis Pases Digitales</ion-label>
           </ion-item>
           }
 
           @if (puedeEscanearEventos()) {
-          <ion-item button (click)="navegar('/event-scan')" style="cursor: pointer;">
+          <ion-item button (click)="navegar('/event-scan')" style="cursor: pointer;" data-cy="menu-item-scan">
             <ion-icon slot="start" name="scan-outline"></ion-icon>
             <ion-label>Portería / Control</ion-label>
           </ion-item>

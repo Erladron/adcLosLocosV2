@@ -1,23 +1,23 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / PaseUniversal
+[shared-core](../index.md) / PaseUniversal
 
 # Interface: PaseUniversal
 
-Defined in: [services/fair.service.ts:31](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fair.service.ts#L31)
+Defined in: services/event-passes.service.ts:31
 
 PaseUniversal
 
 ## Description
 
-Extensión profesional del contrato base FairAccess para dar soporte estricto 
+Extensión profesional del contrato base PasseAccess para dar soporte estricto 
 a la validez temporal multi-día de los pases en la caseta ferial.
 
 ## Extends
 
-- [`FairAccess`](FairAccess.md)
+- [`PasseAccess`](PasseAccess.md)
 
 ## Properties
 
@@ -25,7 +25,7 @@ a la validez temporal multi-día de los pases en la caseta ferial.
 
 > **createdAt**: `string`
 
-Defined in: [models/events.models.ts:133](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L133)
+Defined in: [models/events.models.ts:132](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L132)
 
 #### Description
 
@@ -33,7 +33,7 @@ Timestamp de expedición de la credencial.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`createdAt`](FairAccess.md#createdat)
+[`PasseAccess`](PasseAccess.md).[`createdAt`](PasseAccess.md#createdat)
 
 ***
 
@@ -41,7 +41,7 @@ Timestamp de expedición de la credencial.
 
 > **date**: `string`
 
-Defined in: [models/events.models.ts:129](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L129)
+Defined in: [models/events.models.ts:128](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L128)
 
 #### Description
 
@@ -49,7 +49,7 @@ Código identificativo o fecha del pase (ej: "FERIA-2026").
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`date`](FairAccess.md#date)
+[`PasseAccess`](PasseAccess.md).[`date`](PasseAccess.md#date)
 
 ***
 
@@ -57,7 +57,7 @@ Código identificativo o fecha del pase (ej: "FERIA-2026").
 
 > **dateEnd**: `string`
 
-Defined in: [services/fair.service.ts:33](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fair.service.ts#L33)
+Defined in: services/event-passes.service.ts:33
 
 ***
 
@@ -65,7 +65,7 @@ Defined in: [services/fair.service.ts:33](https://github.com/Erladron/adcLosLoco
 
 > **dateStart**: `string`
 
-Defined in: [services/fair.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/fair.service.ts#L32)
+Defined in: services/event-passes.service.ts:32
 
 ***
 
@@ -73,7 +73,7 @@ Defined in: [services/fair.service.ts:32](https://github.com/Erladron/adcLosLoco
 
 > **eventId**: `string`
 
-Defined in: [models/events.models.ts:135](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L135)
+Defined in: [models/events.models.ts:134](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L134)
 
 #### Description
 
@@ -81,7 +81,7 @@ ID único del evento ferial o convocatoria de adscripción.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`eventId`](FairAccess.md#eventid)
+[`PasseAccess`](PasseAccess.md).[`eventId`](PasseAccess.md#eventid)
 
 ***
 
@@ -89,7 +89,7 @@ ID único del evento ferial o convocatoria de adscripción.
 
 > **hostId**: `string`
 
-Defined in: [models/events.models.ts:125](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L125)
+Defined in: [models/events.models.ts:124](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L124)
 
 #### Description
 
@@ -97,7 +97,7 @@ UID del socio anfitrión (null si se trata del carnet propio del socio).
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`hostId`](FairAccess.md#hostid)
+[`PasseAccess`](PasseAccess.md).[`hostId`](PasseAccess.md#hostid)
 
 ***
 
@@ -105,7 +105,7 @@ UID del socio anfitrión (null si se trata del carnet propio del socio).
 
 > **id**: `string`
 
-Defined in: [models/events.models.ts:117](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L117)
+Defined in: [models/events.models.ts:116](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L116)
 
 #### Description
 
@@ -113,7 +113,7 @@ ID único del pase (coincide con el payload encriptado/leído del código QR).
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`id`](FairAccess.md#id)
+[`PasseAccess`](PasseAccess.md).[`id`](PasseAccess.md#id)
 
 ***
 
@@ -121,7 +121,7 @@ ID único del pase (coincide con el payload encriptado/leído del código QR).
 
 > **invitedByName**: `string`
 
-Defined in: [models/events.models.ts:127](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L127)
+Defined in: [models/events.models.ts:126](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L126)
 
 #### Description
 
@@ -129,7 +129,7 @@ Nombre completo del socio que emite e invita al tercero externo.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`invitedByName`](FairAccess.md#invitedbyname)
+[`PasseAccess`](PasseAccess.md).[`invitedByName`](PasseAccess.md#invitedbyname)
 
 ***
 
@@ -137,7 +137,7 @@ Nombre completo del socio que emite e invita al tercero externo.
 
 > **scans**: `object`[]
 
-Defined in: [models/events.models.ts:138](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L138)
+Defined in: [models/events.models.ts:137](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L137)
 
 #### gatekeeperUid
 
@@ -153,15 +153,15 @@ Historial de picajes cronológicos para auditoría de aforo dinámico en puerta.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`scans`](FairAccess.md#scans)
+[`PasseAccess`](PasseAccess.md).[`scans`](PasseAccess.md#scans)
 
 ***
 
 ### status
 
-> **status**: [`FairAccessStatus`](../enumerations/FairAccessStatus.md)
+> **status**: [`PasseAccessStatus`](../enumerations/PasseAccessStatus.md)
 
-Defined in: [models/events.models.ts:131](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L131)
+Defined in: [models/events.models.ts:130](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L130)
 
 #### Description
 
@@ -169,7 +169,7 @@ Sello o bandera del estado de la credencial utilizando el enumerado oficial.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`status`](FairAccess.md#status)
+[`PasseAccess`](PasseAccess.md).[`status`](PasseAccess.md#status)
 
 ***
 
@@ -177,7 +177,7 @@ Sello o bandera del estado de la credencial utilizando el enumerado oficial.
 
 > **userId**: `string`
 
-Defined in: [models/events.models.ts:119](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L119)
+Defined in: [models/events.models.ts:118](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L118)
 
 #### Description
 
@@ -185,7 +185,7 @@ UID del socio titular o beneficiario del pase.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`userId`](FairAccess.md#userid)
+[`PasseAccess`](PasseAccess.md).[`userId`](PasseAccess.md#userid)
 
 ***
 
@@ -193,7 +193,7 @@ UID del socio titular o beneficiario del pase.
 
 > **userName**: `string`
 
-Defined in: [models/events.models.ts:121](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L121)
+Defined in: [models/events.models.ts:120](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L120)
 
 #### Description
 
@@ -201,7 +201,7 @@ Nombre completo visible en la interfaz del terminal de portería al escanear.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`userName`](FairAccess.md#username)
+[`PasseAccess`](PasseAccess.md).[`userName`](PasseAccess.md#username)
 
 ***
 
@@ -209,7 +209,7 @@ Nombre completo visible en la interfaz del terminal de portería al escanear.
 
 > **userType**: `string`
 
-Defined in: [models/events.models.ts:123](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L123)
+Defined in: [models/events.models.ts:122](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L122)
 
 #### Description
 
@@ -217,4 +217,4 @@ Rol de acceso del usuario para control visual rápido en puerta.
 
 #### Inherited from
 
-[`FairAccess`](FairAccess.md).[`userType`](FairAccess.md#usertype)
+[`PasseAccess`](PasseAccess.md).[`userType`](PasseAccess.md#usertype)

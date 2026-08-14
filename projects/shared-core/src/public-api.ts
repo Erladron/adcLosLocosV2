@@ -7,13 +7,14 @@ export * from './lib/models/user-detail.model';
 export * from './lib/models/user-role.enum';
 export * from './lib/models/user-status.enum';
 export * from './lib/models/users.models';
-export * from './lib/models/events.models'; // 🔄 Nota: Aquí ya se exporta tu interfaz 'Event' o similares de agenda
+export * from './lib/models/events.models';
 
 // =========================================================================
 // 📺 COMPONENTS (Componentes de Presentación Reutilizables)
 // =========================================================================
 export * from './lib/components/empty-state/empty-state.component';
 export * from './lib/components/page-header/page-header.component';
+export * from './lib/components/date-picker/date-picker.component';
 
 // =========================================================================
 // 📝 CONSTANTS, DICTIONARIES & UTILS (Traducciones y Validaciones)
@@ -58,9 +59,9 @@ export * from './lib/services/user-detail-photo.service';
 export * from './lib/services/events.service';
 
 // =========================================================================
-// 🎪 SERVICES: FAIR MODULE & QR (Módulo Ferial de la Caseta)
+// 🎪 SERVICES: PASS MODULE & QR (Módulo Ferial de la Caseta)
 // =========================================================================
-export * from './lib/services/fair.service';
+export * from './lib/services/event-passes.service';
 
 // =========================================================================
 // ⚙️ SERVICES: SYSTEM, INFRASTRUCTURE & UI (Utilidades de Soporte)
@@ -71,6 +72,6 @@ export * from './lib/services/error-handler.service';
 export * from './lib/services/loading.service';
 export * from './lib/services/photo.service';
 export * from './lib/services/mapbox/mapbox.service';
-export * from './lib/services/fcm.service';            // 🚀 NUEVO: Exportación pública del servicio de notificaciones Push masivas
+export * from './lib/services/fcm.service';          
 export * from './lib/env.token';
 export * from './lib/templates/email-templates';

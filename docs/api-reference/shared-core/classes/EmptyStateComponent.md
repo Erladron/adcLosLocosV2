@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / EmptyStateComponent
+[shared-core](../index.md) / EmptyStateComponent
 
 # Class: EmptyStateComponent
 
-Defined in: [components/empty-state/empty-state.component.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L23)
+Defined in: [components/empty-state/empty-state.component.ts:23](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L23)
 
 EmptyStateComponent
 
@@ -26,7 +26,7 @@ Refactorizado con ciclo de vida reactivo para asegurar el registro dinámico de 
 
 > **new EmptyStateComponent**(): `EmptyStateComponent`
 
-Defined in: [components/empty-state/empty-state.component.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L50)
+Defined in: [components/empty-state/empty-state.component.ts:50](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L50)
 
 #### Returns
 
@@ -42,7 +42,7 @@ Inicializa el componente registrando el icono de contingencia por defecto.
 
 > **icon**: `string` = `'alert-circle-outline'`
 
-Defined in: [components/empty-state/empty-state.component.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L30)
+Defined in: [components/empty-state/empty-state.component.ts:30](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L30)
 
 #### Description
 
@@ -60,7 +60,7 @@ Identificador alfanumérico en formato kebab-case del icono de Ionicons que se p
 
 > **message**: `string` = `'No hay información disponible'`
 
-Defined in: [components/empty-state/empty-state.component.ts:44](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L44)
+Defined in: [components/empty-state/empty-state.component.ts:44](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L44)
 
 #### Description
 
@@ -78,7 +78,7 @@ Mensaje aclaratorio o de soporte descriptivo extendido en lenguaje natural.
 
 > **title**: `string` = `'Sin datos'`
 
-Defined in: [components/empty-state/empty-state.component.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L37)
+Defined in: [components/empty-state/empty-state.component.ts:37](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L37)
 
 #### Description
 
@@ -96,7 +96,7 @@ Título principal de la advertencia o estado vacío que se imprimirá en la cabe
 
 > **ngOnChanges**(`changes`): `void`
 
-Defined in: [components/empty-state/empty-state.component.ts:62](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L62)
+Defined in: [components/empty-state/empty-state.component.ts:62](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/components/empty-state/empty-state.component.ts#L62)
 
 #### Parameters
 

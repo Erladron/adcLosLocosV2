@@ -1,4 +1,4 @@
-describe("Eliminación de Eventos (Admin) - 04_03_admin_eliminacion_eventos.cy.ts", () => {
+describe("TestCase: 04_03_admin_eliminacion_eventos", () => {
   const ADMIN_EMAIL = "admin.fundador@adcloslocos.com";
   const ADMIN_PASSWORD = "PasswordSegura123!";
   
@@ -11,7 +11,7 @@ describe("Eliminación de Eventos (Admin) - 04_03_admin_eliminacion_eventos.cy.t
     cy.get('[data-cy="events-page-content"]').should('be.visible');
   });
 
-  it("Debería eliminar un evento y verificar su desaparición del listado", () => {
+  it("PASO 1: Debería eliminar un evento y verificar su desaparición del listado", () => {
     // Localizar el evento real en las tarjetas dinámicas del HTML
     cy.contains('[data-cy="event-card"]', EVENT_TO_DELETE_NAME).should('be.visible').click({ force: true });
     cy.url().should("include", "/events/");

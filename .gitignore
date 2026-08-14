@@ -12,13 +12,11 @@ $RECYCLE.BIN/
 *.log
 log.txt
 
-
 /.sourcemaps
 /.versions
 /coverage
-/android
 
-# Ionic
+# Ionic & Capacitor
 /.ionic
 /www
 /platforms
@@ -53,19 +51,32 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Cypress & Testing (Evita rutas largas y archivos binarios pesados)
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+cypress/resultados_tests.csv
 
-# Miscellaneous
+# Firebase & Deployment Cache
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Angular & Build Tooling
 /.angular
 /.angular/cache
 .sass-cache/
 /.nx
 /.nx/cache
 /connect.lock
-/coverage
 /libpeerconnection.log
 testem.log
 /typings
+repomix-output.xml
 
-# System files
+# System & OS
 .DS_Store
 Thumbs.db
+*.pdf
+/firebase-key.json

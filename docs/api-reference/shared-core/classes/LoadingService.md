@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / LoadingService
+[shared-core](../index.md) / LoadingService
 
 # Class: LoadingService
 
-Defined in: [services/loading.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/loading.service.ts#L14)
+Defined in: [services/loading.service.ts:14](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/loading.service.ts#L14)
 
 LoadingService
 
@@ -22,7 +22,7 @@ estrategia defensiva de carrera de promesas para evitar bloqueos indefinidos por
 
 > **new LoadingService**(): `LoadingService`
 
-Defined in: [services/loading.service.ts:29](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/loading.service.ts#L29)
+Defined in: [services/loading.service.ts:29](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/loading.service.ts#L29)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el servicio controlador de esperas de UI.
 
 > **hide**(): `Promise`\<`void`\>
 
-Defined in: [services/loading.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/loading.service.ts#L59)
+Defined in: [services/loading.service.ts:59](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/loading.service.ts#L59)
 
 #### Returns
 
@@ -58,7 +58,7 @@ Destruye y desvanece con gracia el spinner de carga que se encuentre activo.
 
 > **show**(`message?`): `Promise`\<`HTMLIonLoadingElement`\>
 
-Defined in: [services/loading.service.ts:38](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/loading.service.ts#L38)
+Defined in: [services/loading.service.ts:38](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/loading.service.ts#L38)
 
 #### Parameters
 
@@ -89,7 +89,7 @@ Bloquea la interacción del socio con el fondo del lienzo para garantizar la int
 
 > **wrap**\<`T`\>(`callback`, `message?`): `Promise`\<`T`\>
 
-Defined in: [services/loading.service.ts:74](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/loading.service.ts#L74)
+Defined in: [services/loading.service.ts:74](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/loading.service.ts#L74)
 
 #### Type Parameters
 

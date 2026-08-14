@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserFeesService
+[shared-core](../index.md) / UserFeesService
 
 # Class: UserFeesService
 
-Defined in: [services/user-fees.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-fees.service.ts#L15)
+Defined in: [services/user-fees.service.ts:15](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-fees.service.ts#L15)
 
 UserFeesService
 
@@ -22,7 +22,7 @@ Aisla la lógica de tesorería para evitar la proliferación de ficheros monstru
 
 > **new UserFeesService**(): `UserFeesService`
 
-Defined in: [services/user-fees.service.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-fees.service.ts#L24)
+Defined in: [services/user-fees.service.ts:24](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-fees.service.ts#L24)
 
 #### Returns
 
@@ -38,7 +38,7 @@ Inicializa el motor de control financiero de tesorería.
 
 > **esSocioSolvente**(`user`): `boolean`
 
-Defined in: [services/user-fees.service.ts:77](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-fees.service.ts#L77)
+Defined in: [services/user-fees.service.ts:77](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-fees.service.ts#L77)
 
 #### Parameters
 
@@ -70,7 +70,7 @@ de forma transparente por bypass de esquema. Si es socio o directiva, valida est
 
 > **updateCuotasMasivas**(`cambios`, `adminUid`, `adminNombre`): `Promise`\<`void`\>
 
-Defined in: [services/user-fees.service.ts:51](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-fees.service.ts#L51)
+Defined in: [services/user-fees.service.ts:51](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-fees.service.ts#L51)
 
 #### Parameters
 
@@ -96,7 +96,7 @@ Defined in: [services/user-fees.service.ts:51](https://github.com/Erladron/adcLo
 
 > **updateCuotaStatus**(`uid`, `alCorriente`, `adminUid`, `adminNombre`): `Promise`\<`void`\>
 
-Defined in: [services/user-fees.service.ts:36](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-fees.service.ts#L36)
+Defined in: [services/user-fees.service.ts:36](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-fees.service.ts#L36)
 
 #### Parameters
 

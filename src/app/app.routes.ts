@@ -187,7 +187,7 @@ export const routes: Routes = [
         UserRole.INVITADO
       ]
     },
-    loadComponent: () => import('./features/events/pages/fair/fair.page').then(m => m.FairPage)
+    loadComponent: () => import('./features/events/pages/event-passes/event-passes.page').then(m => m.PassePage)
   },
   {
     path: 'event-scan',
@@ -199,19 +199,19 @@ export const routes: Routes = [
         UserRole.PORTERO
       ]
     },
-    loadComponent: () => import('./features/events/pages/fair-scan/fair-scan.page').then(m => m.FairScanPage)
+    loadComponent: () => import('./features/events/pages/event-scan/event-scan.page').then(m => m.PasseScanPage)
   },
 
   // =========================================================================
   // 🔄 RUTAS HEREDADAS (MANTENIDAS POR COMPATIBILIDAD DE ENLACES ANTERIORES)
   // =========================================================================
   {
-    path: 'fair',
+    path: 'passe',
     pathMatch: 'full',
     redirectTo: 'user-passes'
   },
   {
-    path: 'fair-scan',
+    path: 'event-scan',
     pathMatch: 'full',
     redirectTo: 'event-scan'
   },

@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { MenuController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   peopleOutline,
@@ -14,19 +15,18 @@ import {
 } from 'ionicons/icons';
 
 // Importaciones unificadas de la API Pública e infraestructura de shared-core
-import { 
-  PageHeaderComponent, 
-  FairService, 
-  AuthService, 
+import {
+  PageHeaderComponent,
+  AuthService,
   FcmService,
-  User
+  User,
+  PasseService
 } from 'shared-core';
 import { environment } from '@env/environment';
 
 /**
  * @class HomePage
  * @description Componente controlador de la pantalla de bienvenida principal de la aplicación.
- * Inicializa los servicios push con Capacitor e inyecta proactivamente las credenciales feriales del socio.
  */
 @Component({
   selector: 'app-home',
@@ -43,26 +43,25 @@ import { environment } from '@env/environment';
 export class HomePage implements OnInit {
 
   // =========================================================================
-  // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
+  // 📥 INFRAESTRUCTURA INYECTADA
   // =========================================================================
   private authService = inject(AuthService);
   private fcmService = inject(FcmService);
-  private fairService = inject(FairService);
+  private paseService = inject(PasseService);
   private router = inject(Router);
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+  private menuCtrl = inject(MenuController);
 
   // =========================================================================
-  // 📋 PROPIEDADES Y MÉTODOS DE ACCESO
+  // 📋 PROPIEDADES REACTIVAS
   // =========================================================================
-  
-  /** @description Vinculación directa con los datos del perfil hidratados desde Firestore. */
-  public get currentUser(): User | null {
-    return this.authService.currentUserData;
-  }
 
-  /**
-   * @constructor
-   * @description Registra de forma atómica e independiente la colección de iconos vectoriales.
+  /** 
+   * @description Variable local donde almacenaremos el usuario de forma estricta para forzar el repintado
    */
+  public currentUser: User | null = null;
+
   constructor() {
     addIcons({
       peopleOutline,
@@ -75,38 +74,90 @@ export class HomePage implements OnInit {
     });
   }
 
-  /**
-   * @method ngOnInit
-   * @description Inicializa el sistema de notificaciones masivas y valida el circuito de acceso automático.
-   */
   public async ngOnInit(): Promise<void> {
-    console.log('🏠 [HOME] Inicializando flujos de la pantalla principal.'); 
-    
-    // 1. Ecosistema de notificaciones push asíncrono
+    console.log('🏠 [HOME] Inicializando flujos de la pantalla principal.');
+
     try {
-      await this.fcmService.inicializarFCM(environment); 
+      await this.fcmService.inicializarFCM(environment);
     } catch (error) {
-      console.error('🚨 [HOME] Error al inicializar el ecosistema de notificaciones push:', error); 
+      console.error('🚨 [HOME] Error al inicializar el ecosistema de notificaciones push:', error);
     }
 
-    // 2. Circuito de entrada automática de Feria
+    await this.actualizarDatosPantalla();
+  }
+
+  /**
+   * @method ionViewWillEnter
+   * @description Se ejecuta cada vez que la página vuelve a estar en primer plano (crucial tras el login)
+   */
+  public async ionViewWillEnter(): Promise<void> {
+    console.log('🛡️ [HOME] Ejecutando salvaguarda estructural de interfaz.');
     try {
-      // Esperamos a que el AuthService termine de hidratar al usuario de Firestore
-      await this.authService.waitForUserData();
-
-      if (this.currentUser) {
-        // El servicio decide de forma interna si genera el pase o no.
-        await this.fairService.verificarYGenerarPaseSocioLogueado(this.currentUser);
-      }
-    } catch (feriaError) {
-      console.error('🚨 [HOME] Error en la verificación del pase automático de feria:', feriaError);
+      this.menuCtrl.enable(true);
+      this.menuCtrl.close();
+    } catch (uiError) {
+      console.warn('⚠️ [HOME] No se pudo restaurar el estado del MenuController:', uiError);
     }
+
+    // 🛠️ ACCIÓN RADICAL ANTI-CONGELACIÓN: Vaciamos el usuario actual e informamos al árbol de Angular.
+    // Esto obliga al *NgIf del HTML a limpiar instantáneamente los restos de la sesión anterior.
+    this.currentUser = null;
+    this.cdr.detectChanges();
+
+    // Volvemos a sincronizar los datos frescos del usuario entrante
+    await this.actualizarDatosPantalla();
+  }
+
+  /**
+   * @method actualizarDatosPantalla
+   * @private
+   * @description Sincroniza y fuerza el ciclo de renderizado de Angular en el hilo principal
+   */
+  private async actualizarDatosPantalla(): Promise<void> {
+    this.ngZone.run(async () => {
+      try {
+        console.log('⏳ [HOME] Esperando datos de usuario con salvaguarda de tiempo...');
+
+        // Creamos un timeout de 1.5 segundos para que la app NUNCA se quede congelada
+        const timeoutSec = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout de autenticación superado')), 1500)
+        );
+
+        try {
+          // Ponemos a competir la carga de datos contra el reloj
+          await Promise.race([
+            this.authService.waitForUserData(),
+            timeoutSec
+          ]);
+          console.log('✅ [HOME] waitForUserData resolvió a tiempo.');
+        } catch (timeoutError) {
+          console.warn('⚠️ [HOME] La promesa de Auth se atascó, liberando hilo principal:', timeoutError.message);
+          // Al saltar aquí, liberamos el hilo principal y evitamos la congelación
+        }
+
+        // Intentamos recuperar lo que haya en el almacenamiento síncrono del servicio
+        this.currentUser = this.authService.currentUserData;
+        console.log('🍏 [HOME] Datos asignados tras salvaguarda:', this.currentUser?.id);
+
+        if (this.currentUser) {
+          await this.paseService.verificarYGenerarPaseSocioLogueado(this.currentUser);
+        } else {
+          console.warn('🚨 [HOME] Ojo: Se liberó la UI pero currentUser sigue siendo NULL. Revisa el AuthSessionService.');
+        }
+
+        // Forzar el redibujado inmediato de la interfaz
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
+
+      } catch (feriaError) {
+        console.error('🚨 [HOME] Error crítico en el flujo de actualización:', feriaError);
+      }
+    });
   }
 
   // =========================================================================
-  // 🔀 NAVEGACIÓN MANUAL (Previene warnings de foco/activeElement)
+  // 🔀 NAVEGACIÓN MANUAL
   // =========================================================================
-
   public irAEventos(): void {
     (document.activeElement as HTMLElement)?.blur();
     this.router.navigate(['/events']);

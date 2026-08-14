@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / UserPermissionsService
+[shared-core](../index.md) / UserPermissionsService
 
 # Class: UserPermissionsService
 
-Defined in: [services/user-permissions.service.ts:13](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L13)
+Defined in: [services/user-permissions.service.ts:13](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L13)
 
 UserPermissionsService
 
@@ -21,7 +21,7 @@ edición cruzada de fichas, borrado y gobernanza perimetral de usuarios en base 
 
 > **new UserPermissionsService**(): `UserPermissionsService`
 
-Defined in: [services/user-permissions.service.ts:19](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L19)
+Defined in: [services/user-permissions.service.ts:19](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L19)
 
 #### Returns
 
@@ -37,7 +37,7 @@ Inicializa el motor de evaluación de permisos sobre usuarios.
 
 > **canAccessManagement**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:153](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L153)
+Defined in: [services/user-permissions.service.ts:153](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L153)
 
 #### Parameters
 
@@ -59,7 +59,7 @@ Concede o deniega la entrada al panel corporativo de control de gestión de soci
 
 > **canApproveUsers**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:96](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L96)
+Defined in: [services/user-permissions.service.ts:96](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L96)
 
 #### Parameters
 
@@ -81,7 +81,7 @@ Determina si el operador puede visar u homologar solicitudes de onboarding pendi
 
 > **canChangeRole**(`currentUser`, `targetUser`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:138](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L138)
+Defined in: [services/user-permissions.service.ts:138](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L138)
 
 #### Parameters
 
@@ -107,7 +107,7 @@ Evalúa si el operador tiene la facultad jerárquica de conmutar los roles de un
 
 > **canCreateUsers**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:102](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L102)
+Defined in: [services/user-permissions.service.ts:102](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L102)
 
 #### Parameters
 
@@ -129,7 +129,7 @@ Determina si el operador posee permisos de invocación sobre altas manuales.
 
 > **canDeleteUser**(`currentUser`, `targetUser`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:89](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L89)
+Defined in: [services/user-permissions.service.ts:89](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L89)
 
 #### Parameters
 
@@ -160,7 +160,7 @@ Se prohíbe de forma taxativa el borrado de la propia cuenta activa.
 
 > **canEditCredentials**(`currentUser`, `targetUser`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:171](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L171)
+Defined in: [services/user-permissions.service.ts:171](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L171)
 
 #### Parameters
 
@@ -186,7 +186,7 @@ Regla de seguridad perimetral: Ningún usuario o directivo puede alterar las cre
 
 > **canEditMembership**(`currentUser`, `targetUser`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:70](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L70)
+Defined in: [services/user-permissions.service.ts:70](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L70)
 
 #### Parameters
 
@@ -217,7 +217,7 @@ Los directivos pueden alterar los metadatos organizativos de socios y otros dire
 
 > **canEditPersonalData**(`currentUser`, `targetUser`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:60](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L60)
+Defined in: [services/user-permissions.service.ts:60](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L60)
 
 #### Parameters
 
@@ -251,7 +251,7 @@ Regla perimetral: Todos los perfiles civiles pueden modificar únicamente sus pr
 
 > **canInviteUsers**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:165](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L165)
+Defined in: [services/user-permissions.service.ts:165](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L165)
 
 #### Parameters
 
@@ -273,7 +273,7 @@ Evalúa si la cuenta dispone de permisos para expedir invitaciones web de pre-al
 
 > **canManageEvents**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:159](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L159)
+Defined in: [services/user-permissions.service.ts:159](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L159)
 
 #### Parameters
 
@@ -295,7 +295,7 @@ Otorga privilegios para crear, editar o purgar convocatorias en la agenda de eve
 
 > **getAvailableRoles**(`user`): [`UserRole`](../enumerations/UserRole.md)[]
 
-Defined in: [services/user-permissions.service.ts:114](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L114)
+Defined in: [services/user-permissions.service.ts:114](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L114)
 
 #### Parameters
 
@@ -326,7 +326,7 @@ Incorpora el rol PORTERO al catálogo visible de la administración.
 
 > **isAdmin**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:26](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L26)
+Defined in: [services/user-permissions.service.ts:26](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L26)
 
 #### Parameters
 
@@ -348,7 +348,7 @@ Informa si el usuario ostenta el rango supremo de Administrador.
 
 > **isDirectiva**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L32)
+Defined in: [services/user-permissions.service.ts:32](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L32)
 
 #### Parameters
 
@@ -370,7 +370,7 @@ Informa si el usuario pertenece al cuerpo operativo de la Junta Directiva.
 
 > **isInvitado**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:44](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L44)
+Defined in: [services/user-permissions.service.ts:44](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L44)
 
 #### Parameters
 
@@ -392,7 +392,7 @@ Informa si el usuario está catalogado como un Invitado externo latente.
 
 > **isSocio**(`user`): `boolean`
 
-Defined in: [services/user-permissions.service.ts:38](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/services/user-permissions.service.ts#L38)
+Defined in: [services/user-permissions.service.ts:38](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/services/user-permissions.service.ts#L38)
 
 #### Parameters
 

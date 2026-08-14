@@ -9,7 +9,10 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
-/* Core CSS required for Ionic components to work properly */
+// Importar estilos base de angular-calendar
+@use 'angular-calendar/scss/angular-calendar.scss';
+
+ /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
@@ -25,6 +28,8 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+
+
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
@@ -35,35 +40,43 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 
+/* =========================================
+   CABECERAS COMPACTAS PARA MÓVIL
+========================================= */
+ion-header {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+
+  ion-toolbar {
+    --background: #0b2d6b;
+    --color: white;
+    --border-width: 0;
+    --min-height: 44px; // 🔹 Alto estándar ultracompacto para móvil (antes 56px+)
+    padding: 0 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  ion-title {
+    font-size: 1.05rem; // 🔹 Reducido de 1.9rem (30px) a un tamaño equilibrado (~16px)
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: white;
+    text-transform: uppercase;
+  }
+
+  ion-menu-button,
+  ion-back-button,
+  ion-button,
+  ion-icon {
+    color: white;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    font-size: 18px; // 🔹 Iconos ajustados a la nueva altura
+  }
+}
 
 ion-content.home-bg {
   --background: linear-gradient(#0a2a5e, #1e4fa3) !important;
-}
-
-ion-header ion-toolbar {
-  --background: #0b2d6b;
-  --color: white;
-  --border-width: 0;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-
-ion-header ion-title {
-  font-size: 1.9rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: white;
-}
-
-ion-header ion-menu-button,
-ion-header ion-back-button,
-ion-header ion-button,
-ion-header ion-icon {
-  color: white;
-}
-
-ion-header {
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  z-index: 999;
 }
 
 /* ANIMACION GLOBAL PAGINAS */
@@ -252,4 +265,50 @@ body.scanner-active {
     background-color: transparent !important;
     --background: transparent !important;
   }
+}
+
+
+/* Modal de tipo Sheet para el DatePicker */
+ion-modal.date-picker-sheet-modal {
+  --border-radius: 20px 20px 0 0; // Bordes redondeados en la parte superior
+  --background: var(--ion-background-color, #121212);
+
+  &::part(content) {
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Estilizado del tirador/handle superior para arrastrar */
+  &::part(handle) {
+    background: var(--ion-color-medium, #666);
+    width: 45px;
+    height: 5px;
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+}
+
+/* 🎨 FIX: DESPLEGABLE NATIVO DE INPUT TIME ESTILO PEÑA */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(65%) sepia(80%) saturate(400%) hue-rotate(160deg);
+}
+
+/* Forzar tema oscuro y estilos en los selectores del navegador */
+::-webkit-datetime-edit-fields-wrapper {
+  background: transparent;
+}
+
+::-webkit-datetime-edit-text,
+::-webkit-datetime-edit-hour-field,
+::-webkit-datetime-edit-minute-field,
+::-webkit-datetime-edit-ampm-field {
+  color: #38bdf8 !important;
+  font-weight: bold;
+}
+
+/* Eliminar el cuadro gris del popup emergente en navegadores web/mobile */
+input[type="time"] {
+  color-scheme: dark !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }

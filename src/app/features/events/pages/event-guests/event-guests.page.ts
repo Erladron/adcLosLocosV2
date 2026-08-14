@@ -19,13 +19,13 @@ import {
   PageHeaderComponent,
   AuthService,
   EventsService,
-  FairService, // 🚀 INYECTADO: Servicio unificado de shared-core para pases de feria
+  PasseService, 
   NotificationService,
   LoadingService,
   DialogService,
   ErrorHandlerService,
   User,
-  FairAccess,
+  PasseAccess,
   AppEvent,
   AppMessageCode
 } from 'shared-core';
@@ -56,7 +56,7 @@ export class EventGuestsPage implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   private eventsService = inject(EventsService);
-  private fairService = inject(FairService); // 🚀 Consumo delegado de base de datos
+  private paseService = inject(PasseService); // 🚀 Consumo delegado de base de datos
   private notification = inject(NotificationService);
   private loading = inject(LoadingService);
   private dialogService = inject(DialogService);
@@ -80,7 +80,7 @@ export class EventGuestsPage implements OnInit {
   public invitacionesEnviadasHoy = 0;
 
   /** @description Listado de pases emitidos bajo la responsabilidad del socio para esta convocatoria. */
-  public misInvitadosEvento: FairAccess[] = [];
+  public misInvitadosEvento: PasseAccess[] = [];
   /** @description Bolsa general de usuarios candidatos con rol invitado activos en el censo. */
   public usuariosActivos: User[] = [];
   /** @description Colección filtrada en caliente según los inputs del buscador de la UI. */
@@ -124,7 +124,7 @@ export class EventGuestsPage implements OnInit {
     if (this.currentUserId && this.eventId) {
       await this.cargarConfiguracionYInvitados();
     } else {
-      this.router.navigate(['/fair']);
+      this.router.navigate(['/pase']);
     }
   }
 
@@ -166,13 +166,13 @@ export class EventGuestsPage implements OnInit {
     if (!this.currentUserId || !this.eventId || !this.eventoData) return;
 
     try {
-      // 🚀 DELEGADO: Obtenemos pases emitidos hoy desde FairService en shared-core
-      this.misInvitadosEvento = await this.fairService.obtenerInvitadosDelSocio(this.currentUserId, this.hoyFormateado);
+      // 🚀 DELEGADO: Obtenemos pases emitidos hoy desde PasseService en shared-core
+      this.misInvitadosEvento = await this.paseService.obtenerInvitadosDelSocio(this.currentUserId, this.hoyFormateado);
       this.misInvitadosEvento = this.misInvitadosEvento.filter(p => p.eventId === this.eventId);
       this.invitacionesEnviadasHoy = this.misInvitadosEvento.length;
 
-      // 🚀 DELEGADO: Obtenemos candidatos idóneos libres de pases hoy desde FairService
-      const candidatosBrutos = await this.fairService.obtenerCandidatosInvitadosDisponibles(this.currentUserId, this.hoyFormateado);
+      // 🚀 DELEGADO: Obtenemos candidatos idóneos libres de pases hoy desde PasseService
+      const candidatosBrutos = await this.paseService.obtenerCandidatosInvitadosDisponibles(this.currentUserId, this.hoyFormateado);
 
       // Filtro defensivo local adicional por si ya estuviera invitado en esta sub-convocatoria específica
       const usuariosTmp = candidatosBrutos.filter(u => !this.misInvitadosEvento.some(inv => inv.userId === u.id));
@@ -224,7 +224,7 @@ export class EventGuestsPage implements OnInit {
 
   /**
    * @method enviarInvitacion
-   * @description Invoca el método transaccional de FairService en shared-core, el cual evalúa 
+   * @description Invoca el método transaccional de PasseService en shared-core, el cual evalúa 
    * el aforo en caliente en el servidor blindando la app de condiciones de carrera.
    */
   public async enviarInvitacion(): Promise<void> {
@@ -236,7 +236,7 @@ export class EventGuestsPage implements OnInit {
     try {
       await this.loading.wrap(async () => {
         // 🚀 INVOCACIÓN DE CAPA DE SERVICIO CENTRALIZADA: Cero lógica de BD local
-        await this.fairService.crearInvitacionTransaccional(
+        await this.paseService.crearInvitacionTransaccional(
           this.currentUserData,
           usuarioFinal,
           this.hoyFormateado,
@@ -261,9 +261,9 @@ export class EventGuestsPage implements OnInit {
    * @description Solicita confirmación imperativa al usuario y delega la anulación del pase digital 
    * individual en la capa de servicios de shared-core. Centraliza el reporte de fallos en el interceptor 
    * maestro del monorrepo.
-   * @param {FairAccess} pase Instancia del pase que se desea revocar.
+   * @param {PasseAccess} pase Instancia del pase que se desea revocar.
    */
-  public async eliminarPase(pase: FairAccess): Promise<void> {
+  public async eliminarPase(pase: PasseAccess): Promise<void> {
     (document.activeElement as HTMLElement)?.blur();
 
     if (!this.eventId || !this.eventoData || !pase.id) return;
@@ -279,7 +279,7 @@ export class EventGuestsPage implements OnInit {
 
     try {
       await this.loading.wrap(async () => {
-        await this.fairService.eliminarInvitacionTransaccional(pase.id!, this.eventId!);
+        await this.paseService.eliminarInvitacionTransaccional(pase.id!, this.eventId!);
 
         // 🚀 ALINEACIÓN EN CALIENTE DE LA CACHÉ VISUAL:
         if (this.eventoData) {
@@ -288,12 +288,12 @@ export class EventGuestsPage implements OnInit {
         }
       }, 'Revocando pase y liberando aforo...');
 
-      this.notification.success(AppMessageCode.ADC_FAIR_INF_0002);
+      this.notification.success(AppMessageCode.ADC_PASS_INF_0002);
       await this.cargarTablaInvitados();
     } catch (error) {
       // 🚀 DELEGACIÓN EN ERROR-HANDLER: Procesa el error traduciéndolo automáticamente 
       // o aplicando el fallback corporativo de fallo de anulación de pase
-      await this.errorHandler.handle(error, AppMessageCode.ADC_FAIR_ERR_0005);
+      await this.errorHandler.handle(error, AppMessageCode.ADC_PASS_ERR_0005);
     }
   }
 }

@@ -1,12 +1,12 @@
-[**shared-core**](../README.md)
+[**shared-core**](../index.md)
 
 ***
 
-[shared-core](../README.md) / EventType
+[shared-core](../index.md) / EventType
 
 # Enumeration: EventType
 
-Defined in: [models/events.models.ts:5](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L5)
+Defined in: [models/events.models.ts:5](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L5)
 
 EventType
 
@@ -20,7 +20,7 @@ Catálogo tipado de las modalidades y tipologías oficiales de convocatoria de l
 
 > **ASAMBLEA**: `"asamblea"`
 
-Defined in: [models/events.models.ts:6](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L6)
+Defined in: [models/events.models.ts:6](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L6)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [models/events.models.ts:6](https://github.com/Erladron/adcLosLocosV
 
 > **COMIDA**: `"comida"`
 
-Defined in: [models/events.models.ts:7](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L7)
+Defined in: [models/events.models.ts:7](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L7)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [models/events.models.ts:7](https://github.com/Erladron/adcLosLocosV
 
 > **FERIA**: `"feria"`
 
-Defined in: [models/events.models.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L9)
+Defined in: [models/events.models.ts:9](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L9)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [models/events.models.ts:9](https://github.com/Erladron/adcLosLocosV
 
 > **QUEDADA**: `"quedada"`
 
-Defined in: [models/events.models.ts:8](https://github.com/Erladron/adcLosLocosV2/blob/3b076a2fc2049a5e6c312b758d85eea11fd2bfcc/projects/shared-core/src/lib/models/events.models.ts#L8)
+Defined in: [models/events.models.ts:8](https://github.com/Erladron/adcLosLocosV2/blob/ef8b35066458446779d596c924480fd02bae169f/projects/shared-core/src/lib/models/events.models.ts#L8)
