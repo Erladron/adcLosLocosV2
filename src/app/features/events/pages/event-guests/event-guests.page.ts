@@ -56,7 +56,7 @@ export class EventGuestsPage implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   private eventsService = inject(EventsService);
-  private paseService = inject(PasseService); // 🚀 Consumo delegado de base de datos
+  private paseService = inject(PasseService);
   private notification = inject(NotificationService);
   private loading = inject(LoadingService);
   private dialogService = inject(DialogService);
@@ -78,6 +78,8 @@ export class EventGuestsPage implements OnInit {
   public limiteInvitaciones = 0;
   /** @description Contador reactivo del número de pases ya expedidos hoy por el socio. */
   public invitacionesEnviadasHoy = 0;
+  /** @description 🚀 NUEVO: Contador en caliente del aforo total consumido hoy por socios e invitados. */
+  public asistentesTotalesHoy = 0;
 
   /** @description Listado de pases emitidos bajo la responsabilidad del socio para esta convocatoria. */
   public misInvitadosEvento: PasseAccess[] = [];
@@ -124,7 +126,7 @@ export class EventGuestsPage implements OnInit {
     if (this.currentUserId && this.eventId) {
       await this.cargarConfiguracionYInvitados();
     } else {
-      this.router.navigate(['/pase']);
+      this.router.navigate(['/user-passes']);
     }
   }
 
@@ -159,6 +161,15 @@ export class EventGuestsPage implements OnInit {
   }
 
   /**
+   * @method recalcularAforoTotales
+   * @description 🚀 CÁLCULO DINÁMICO: Consulta el aforo consumido en caliente para la fecha de hoy.
+   */
+  public async recalcularAforoTotales(): Promise<void> {
+    if (!this.eventId) return;
+    this.asistentesTotalesHoy = await this.eventsService.obtenerAforoConsumidoHoy(this.eventId, this.hoyFormateado);
+  }
+
+  /**
    * @method cargarTablaInvitados
    * @description Descarga la relación de pases emitidos hoy y filtra las cuentas candidatas a recibir invitación.
    */
@@ -166,12 +177,15 @@ export class EventGuestsPage implements OnInit {
     if (!this.currentUserId || !this.eventId || !this.eventoData) return;
 
     try {
-      // 🚀 DELEGADO: Obtenemos pases emitidos hoy desde PasseService en shared-core
+      // 🚀 Obtenemos pases emitidos hoy desde PasseService en shared-core
       this.misInvitadosEvento = await this.paseService.obtenerInvitadosDelSocio(this.currentUserId, this.hoyFormateado);
       this.misInvitadosEvento = this.misInvitadosEvento.filter(p => p.eventId === this.eventId);
       this.invitacionesEnviadasHoy = this.misInvitadosEvento.length;
 
-      // 🚀 DELEGADO: Obtenemos candidatos idóneos libres de pases hoy desde PasseService
+      // 🚀 Sincronizamos en caliente el contador superior de aforo
+      await this.recalcularAforoTotales();
+
+      // 🚀 Obtenemos candidatos idóneos libres de pases hoy desde PasseService
       const candidatosBrutos = await this.paseService.obtenerCandidatosInvitadosDisponibles(this.currentUserId, this.hoyFormateado);
 
       // Filtro defensivo local adicional por si ya estuviera invitado en esta sub-convocatoria específica
@@ -235,7 +249,6 @@ export class EventGuestsPage implements OnInit {
 
     try {
       await this.loading.wrap(async () => {
-        // 🚀 INVOCACIÓN DE CAPA DE SERVICIO CENTRALIZADA: Cero lógica de BD local
         await this.paseService.crearInvitacionTransaccional(
           this.currentUserData,
           usuarioFinal,
@@ -248,8 +261,8 @@ export class EventGuestsPage implements OnInit {
       this.limpiarBusqueda();
       await this.cargarTablaInvitados();
     } catch (error: any) {
-      if (error?.message?.includes('¡Aforo Completo!')) {
-        this.notification.warning(error.message);
+      if (error?.message === AppMessageCode.ADC_EVENT_ERR_0008 || error?.message?.includes('¡Aforo Completo!')) {
+        this.notification.warning(AppMessageCode.ADC_EVENT_ERR_0008);
       } else {
         this.errorHandler.handle(error);
       }
@@ -259,8 +272,7 @@ export class EventGuestsPage implements OnInit {
   /**
    * @method eliminarPase
    * @description Solicita confirmación imperativa al usuario y delega la anulación del pase digital 
-   * individual en la capa de servicios de shared-core. Centraliza el reporte de fallos en el interceptor 
-   * maestro del monorrepo.
+   * individual en la capa de servicios de shared-core.
    * @param {PasseAccess} pase Instancia del pase que se desea revocar.
    */
   public async eliminarPase(pase: PasseAccess): Promise<void> {
@@ -280,19 +292,11 @@ export class EventGuestsPage implements OnInit {
     try {
       await this.loading.wrap(async () => {
         await this.paseService.eliminarInvitacionTransaccional(pase.id!, this.eventId!);
-
-        // 🚀 ALINEACIÓN EN CALIENTE DE LA CACHÉ VISUAL:
-        if (this.eventoData) {
-          const actual = this.eventoData.attendeeCount || 0;
-          this.eventoData.attendeeCount = Math.max(0, actual - 1);
-        }
       }, 'Revocando pase y liberando aforo...');
 
       this.notification.success(AppMessageCode.ADC_PASS_INF_0002);
       await this.cargarTablaInvitados();
     } catch (error) {
-      // 🚀 DELEGACIÓN EN ERROR-HANDLER: Procesa el error traduciéndolo automáticamente 
-      // o aplicando el fallback corporativo de fallo de anulación de pase
       await this.errorHandler.handle(error, AppMessageCode.ADC_PASS_ERR_0005);
     }
   }

@@ -1,80 +1,87 @@
-import { onRequest } from 'firebase-functions/v2/https';
-import * as admin from 'firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
+import { onCall, HttpsError } from 'firebase-functions/v2/https';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getAuth } from 'firebase-admin/auth';
+import { EmailTemplates } from '../constants/email-templates';
 
 /** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
-const db = admin.firestore();
+const db = getFirestore();
+
+/** @description Instancia de acceso directo al SDK administrativo de Firebase Authentication[cite: 8]. */
+const auth = getAuth();
 
 /**
  * @function createUserByAdmin
- * @description Cloud Function v2 (HTTP Request) que permite a miembros autorizados de la directiva
- * o administradores crear cuentas de usuarios de forma directa. Registra la credencial en Firebase Auth,
- * inicializa el registro en la colecci®Æn de usuarios y asienta un batch at®Æmico en Firestore. Incluye 
- * un mecanismo autom®¢tico de rollback en Auth si la persistencia de datos falla.
- * Hereda la regi®Æn global 'europe-west1' configurada en el archivo de ®™ndice.
+ * @description Cloud Function v2 (HTTPS Callable) que permite a miembros autorizados de la directiva
+ * o administradores crear cuentas de usuarios de forma directa[cite: 8]. Registra la credencial en Firebase Auth
+ * utilizando la clave temporal provista por el cliente para el flujo de notificaci√≥n por WhatsApp[cite: 8], 
+ * inicializa el registro en la colecci√≥n de usuarios asentando la bandera 'requiereCambioClave: true'[cite: 8]
+ * y ejecuta un batch at√≥mico en Firestore[cite: 8]. 
+ * Incluye un mecanismo autom√°tico de rollback en Auth si la persistencia de datos falla[cite: 8].
+ * Hereda la regi√≥n global 'europe-west1' configurada en el archivo de √≠ndice[cite: 8].
  * 
- * @param {Request} request - Objeto de petici®Æn HTTP nativo de Express provisto por Firebase v2.
- * @param {Response} response - Objeto de respuesta HTTP nativo de Express provisto por Firebase v2.
+ * @param {CallableRequest} request - Objeto de petici√≥n estructurado nativo de Firebase Callable v2[cite: 8, 10].
  * 
- * @returns {Promise<void>} Despacha la respuesta HTTP controlada directamente al cliente.
+ * @returns {Promise<{ success: boolean; uid: string }>} Objeto JSON con el estado de la operaci√≥n y el UID generado[cite: 8].
+ * @throws {HttpsError} Reenv√≠a la excepci√≥n nativa capturada para su posterior procesamiento en el frontend[cite: 8].
  */
-export const createUserByAdmin = onRequest({
-  // ??? REPARACI®ÆN S®¶NIOR: Habilitamos CORS nativo de la v2. Eliminamos el middleware manual.
+export const createUserByAdmin = onCall({
   cors: true
-}, async (request, response): Promise<void> => {
+}, async (request) => {
   let createdUid = '';
-  
+
   try {
     // =========================================================================
-    // ?? EXTRACCI®ÆN Y VERIFICACI®ÆN DE TOKENS DE AUTORIZACI®ÆN
+    // üîê EXTRACCI√ìN Y VERIFICACI√ìN DE AUTENTICACI√ìN
     // =========================================================================
-    const authHeader = request.headers.authorization;
-    if (!authHeader) {
-      response.status(401).send({ success: false, error: 'No autorizado: Falta cabecera Authorization' });
-      return;
+    if (!request.auth) {
+      console.warn('‚ö†Ô∏è Intento de ejecuci√≥n no autenticado en createUserByAdmin.');
+      throw new HttpsError('unauthenticated', 'auth/unauthenticated');
     }
-    const token = authHeader.replace('Bearer ', '');
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    const currentUid = decodedToken.uid;
 
+    const currentUid = request.auth.uid;
     const adminDoc = await db.collection('users').doc(currentUid).get();
+
     if (!adminDoc.exists) {
-      response.status(403).send({ success: false, error: 'Usuario ejecutor no v®¢lido o nonexistent' });
-      return;
+      console.warn(`‚ö†Ô∏è Usuario ejecutor inexistente en Firestore: ${currentUid}`);
+      throw new HttpsError('permission-denied', 'permission-denied');
     }
+
     const adminData = adminDoc.data();
     if (adminData?.tipo !== 'administrador' && adminData?.tipo !== 'directiva') {
-      response.status(403).send({ success: false, error: 'Permisos insuficientes para crear usuarios' });
-      return;
+      console.warn(`‚ö†Ô∏è Intento de alta sin permisos por parte del usuario: ${currentUid}`);
+      throw new HttpsError('permission-denied', 'permission-denied');
     }
 
     // =========================================================================
-    // ?? EXTRACCI®ÆN Y VALIDACI®ÆN DE LA CARGA ®≤TIL (PAYLOAD)
+    // üì• EXTRACCI√ìN Y VALIDACI√ìN DE LA CARGA √öTIL (PAYLOAD)
     // =========================================================================
-    const userDataPayload = request.body.data?.data || {};
+    const userDataPayload = request.data?.data || request.data || {};
 
-    console.log('====== ?? RADIOGRAF®™A COMPLETA DEL REQUEST REBODIED ======');
+    console.log('====== üì• RADIOGRAF√çA COMPLETA DEL REQUEST CALLABLE ======');
     console.log('Objeto completo user:', JSON.stringify(userDataPayload, null, 2));
     console.log('===========================================================');
 
     const { nombre, email, password, telefono, dni, direccion, numeroSocio, tipo, foto } = userDataPayload;
 
-    console.log('--- ?? [DEBUG BACKEND] DATOS RECIBIDOS EN LA CLOUD FUNCTION ---');
+    console.log('--- üîç [DEBUG BACKEND] DATOS RECIBIDOS EN LA CLOUD FUNCTION ---');
     console.log('Variables desestructuradas para Firebase:', { nombre, email, password, telefono, dni, tipo });
     console.log('--------------------------------------------------------------');
 
     if (!email || !password) {
-      response.status(400).send({
-        success: false,
-        error: `Campos cr®™ticos ausentes. Email: ${email ? 'OK' : 'FALTA'}, Password: ${password ? 'OK' : 'FALTA'}`
-      });
-      return;
+      console.error('‚ùå Validaci√≥n fallida: Email o password ausentes.');
+      throw new HttpsError('invalid-argument', 'auth/invalid-email');
     }
 
-    // 1?? ALTA DE LA CREDENCIAL DE ACCESO EN FIREBASE AUTHENTICATION
-    const userRecord = await admin.auth().createUser({ email, password });
+    // =========================================================================
+    // 1Ô∏è‚É£ ALTA DE LA CREDENCIAL EN FIREBASE AUTHENTICATION
+    // =========================================================================
+    const userRecord = await auth.createUser({ email, password });
     createdUid = userRecord.uid;
+    console.log(`‚úÖ Credencial creada en Firebase Auth con UID: ${createdUid}`);
 
+    // =========================================================================
+    // 2Ô∏è‚É£ CONSTRUCCI√ìN DEL MODELO Y BATCH TRANSACCIONAL EN FIRESTORE
+    // =========================================================================
     const userData = {
       uid: createdUid,
       numeroSocio: numeroSocio || '',
@@ -88,10 +95,10 @@ export const createUserByAdmin = onRequest({
       estado: 'active',
       createdAt: FieldValue.serverTimestamp(),
       creadoPorUid: currentUid,
-      creadoPorNombre: adminData?.nombre || 'Administrador'
+      creadoPorNombre: adminData?.nombre || 'Administrador',
+      requiereCambioClave: true
     };
 
-    // 2?? BATCH TRANSACCIONAL AS®™NCRONO: PERSISTENCIA EN FIRESTORE
     const batch = db.batch();
 
     const invitedRef = db.collection('invitedUsers').doc(createdUid);
@@ -105,36 +112,59 @@ export const createUserByAdmin = onRequest({
     const userRef = db.collection('users').doc(createdUid);
     batch.set(userRef, userData);
 
-    console.debug('?? [PERF] Ejecutando Commit at®Æmico del Batch...');
+    console.debug('üöÄ [PERF] Ejecutando Commit at√≥mico del Batch...');
     await batch.commit();
-    console.debug('? [PERF] Batch asentado con ®¶xito en la base de datos.');
-    
-    // ?? IMPORTANTE: Mantenemos la envoltura en 'data' para compatibilidad con el front-end
-    response.status(200).send({
-      data: {
-        success: true,
-        uid: createdUid
+    console.debug('‚úÖ [PERF] Batch asentado con √©xito en la base de datos.');
+
+    // =========================================================================
+    // 3Ô∏è‚É£ RESPUESTA DE √âXITO RETORNANDO EL PAYLOAD TIPADO
+    // =========================================================================
+    const onboardingUrl = 'https://acdloslocos-onboarding-desa.web.app/welcome';
+
+    const correoHtml = EmailTemplates.getWelcomeCredentialsTemplate(
+      userData.nombre || 'Socio',
+      userData.email,
+      password,
+      onboardingUrl
+    );
+
+    // Encolar mensaje para el trigger de env√≠o SMTP
+    await db.collection('mail').add({
+      to: userData.email,
+      message: {
+        subject: 'üéâ Bienvenido a A.D.C. Los Locos - Tus credenciales de acceso',
+        html: correoHtml
       }
     });
 
+    return {
+      success: true,
+      uid: createdUid
+    };
+
   } catch (error: any) {
-    console.error('?? Error cr®™tico en createUserByAdmin:', error);
-    
-    // ?? MECANISMO DE LIQUIDACI®ÆN Y ROLLBACK DE SEGURIDAD
+    console.error('üö® Error cr√≠tico en createUserByAdmin:', error);
+
+    // üõ°Ô∏è MECANISMO DE LIQUIDACI√ìN Y ROLLBACK DE SEGURIDAD
     try {
       if (createdUid) {
-        await admin.auth().deleteUser(createdUid);
-        console.log(`?? Rollback ejecutado: Usuario ${createdUid} eliminado de Auth con ®¶xito.`);
+        await auth.deleteUser(createdUid);
+        console.log(`üßπ Rollback ejecutado: Usuario ${createdUid} eliminado de Auth con √©xito.`);
       }
     } catch (rollbackError) {
-      console.error('?? Error cr®™tico durante el Rollback de Auth:', rollbackError);
+      console.error('üö® Error cr√≠tico durante el Rollback de Auth:', rollbackError);
     }
-    
-    response.status(500).send({
-      data: {
-        success: false,
-        error: error.message
-      }
-    });
+
+    // Si la excepci√≥n ya es de tipo HttpsError, la relanzamos tal cual
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+
+    // Reenviamos el c√≥digo de error nativo original de Firebase Auth (ej: 'auth/email-already-exists')
+    // para que sea el FIREBASE_ERROR_MAP del frontend quien lo traduzca.
+    const rawCode = error.code || 'internal';
+    const rawMessage = error.message || 'Error en el servidor';
+
+    throw new HttpsError('internal', rawCode, rawMessage);
   }
 });

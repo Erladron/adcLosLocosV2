@@ -1,7 +1,8 @@
-import * as admin from 'firebase-admin';
+import { getMessaging, Message } from 'firebase-admin/messaging';
+import { getFirestore } from 'firebase-admin/firestore';
 
 /** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * @interface DispositivoToken
@@ -24,13 +25,13 @@ export interface DispositivoToken {
  * en Cloud Firestore para eliminar al instante todos los tokens revocados o inválidos (e.g., aplicaciones desinstaladas).
  * 
  * @param {DispositivoToken[]} dispositivos - Array estructurado con los metadatos de direccionamiento de los tokens.
- * @param {admin.messaging.Message[]} messages - Lote equivalente de payloads y plantillas formateadas de mensajes FCM.
+ * @param {Message[]} messages - Lote equivalente de payloads y plantillas formateadas de mensajes FCM.
  * 
  * @returns {Promise<{ successCount: number, failureCount: number }>} Métricas consolidadas del impacto del envío masivo.
  */
 export async function enviarConAutoLimpieza(
   dispositivos: DispositivoToken[],
-  messages: admin.messaging.Message[]
+  messages: Message[]
 ): Promise<{ successCount: number; failureCount: number }> {
   
   // =========================================================================
@@ -42,7 +43,7 @@ export async function enviarConAutoLimpieza(
   }
 
   // 1️⃣ DISPARO MASIVO MULTICAST AL SERVIDOR DE FIREBASE CLOUD MESSAGING
-  const response = await admin.messaging().sendEach(messages);
+  const response = await getMessaging().sendEach(messages);
   console.log(`📡 [FCM] Distribución finalizada. Éxito: ${response.successCount}, Fallos: ${response.failureCount}`);
 
   // 2️⃣ ANÁLISIS REACTIVO DE REBOTES Y GESTIÓN DE BASURA OBSOLETA

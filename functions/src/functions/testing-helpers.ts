@@ -1,6 +1,6 @@
+import { getAuth } from 'firebase-admin/auth';
 import { onRequest } from 'firebase-functions/v2/https';
 import { getFirestore } from 'firebase-admin/firestore';
-import * as admin from 'firebase-admin';
 
 /**
  * @typedef {Object} InvitedDataMock
@@ -79,7 +79,7 @@ export const inicializarTest = onRequest({ cors: true }, async (req, res): Promi
       // Si el emulador se ha reiniciado o el usuario no existe, lo sembramos de cero
       if (!doc.exists) {
         // A. Alta en el registro centralizado de Firebase Authentication nativo
-        await admin.auth().createUser({
+        await getAuth().createUser({
           uid: u.uid,
           email: u.email,
           password: 'PasswordSegura123!', // Contraseña maestra estándar unificada para Cypress
@@ -141,8 +141,8 @@ export const borrarUsuarioPorEmailDev = onRequest({ cors: true }, async (req, re
   try {
     // 1️⃣ LOCALIZACIÓN Y ELIMINACIÓN DE LA CREDENCIAL EN FIREBASE AUTHENTICATION
     try {
-      const userRecord = await admin.auth().getUserByEmail(email);
-      await admin.auth().deleteUser(userRecord.uid);
+      const userRecord = await getAuth().getUserByEmail(email);
+      await getAuth().deleteUser(userRecord.uid);
       console.log(`✅ Usuario ${email} eliminado de Authentication.`);
     } catch (authError: any) {
       // Si el usuario ya fue limpiado previamente de Auth, ignoramos para no interrumpir el flujo en Firestore
@@ -150,24 +150,24 @@ export const borrarUsuarioPorEmailDev = onRequest({ cors: true }, async (req, re
     }
 
     // 2️⃣ PURGA MEDIANTE COMPROMISO BATCH EN LA COLECCIÓN DE INVITACIONES (invitedUsers)
-    const invitedUserSnapshot = await admin.firestore()
+    const invitedUserSnapshot = await getFirestore()
       .collection('invitedUsers')
       .where('email', '==', email)
       .get();
 
-    const batch1 = admin.firestore().batch();
+    const batch1 = getFirestore().batch();
     invitedUserSnapshot.docs.forEach((doc) => {
       batch1.delete(doc.ref);
     });
     await batch1.commit();
 
     // 3️⃣ PURGA MEDIANTE COMPROMISO BATCH EN LA COLECCIÓN DE PERFILES ACTIVOS (users)
-    const usuariosSnapshot = await admin.firestore()
+    const usuariosSnapshot = await getFirestore()
       .collection('users')
       .where('email', '==', email)
       .get();
 
-    const batch2 = admin.firestore().batch();
+    const batch2 = getFirestore().batch();
     usuariosSnapshot.docs.forEach((doc) => {
       batch2.delete(doc.ref);
     });

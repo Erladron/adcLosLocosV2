@@ -43,7 +43,7 @@
     </div>
 
     <p class="scan-instructions" *ngIf="scanStatus === 'idle' && !isScanning">
-      Apunta con la cámara al código QR del carnet del socio o invitado para registrar el acceso a la caseta.
+      Apunta con la cámara al código QR del carnet del socio o invitado para registrar el acceso.
     </p>
 
     <div class="manual-entry-console" *ngIf="scanStatus === 'idle'" data-cy="console-manual-entry">
@@ -55,7 +55,7 @@
       <div class="input-group">
         <input 
           type="text" 
-          placeholder="Escribe el ID del pase si la cámara falla..." 
+          placeholder="Escribe ID pase si la cámara falla..." 
           [(ngModel)]="manualPaseId"
           (keyup.enter)="validarEntradaManual()"
           data-cy="input-scan-manual-id"

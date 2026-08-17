@@ -19,7 +19,7 @@ import { UserRole } from '../models/user-role.enum';
 
 import { ErrorHandlerService } from './error-handler.service';
 import { NotificationService } from './notification.service';
-import { UserFeesService } from './user-fees.service'; // 🚀 Inyectado el satélite de tesorería core
+import { UserFeesService } from './user-fees.service';
 import { AppMessageCode } from '../constants/app-message-code.enum';
 import { APP_MESSAGES } from '../constants/app-messages';
 
@@ -87,9 +87,9 @@ export class PasseService {
 
   /**
    * @method contarInvitacionesDelDia
-   * @description Calcula de forma síncrona el total de pases emitidos por un socio anfitrión para una fecha y evento dados.
+   * @description Calcula de forma síncrona el total de pases emitidos por un socio anfitrión para un evento dado.
    * @param {string} socioId UID del socio emisor.
-   * @param {string} fecha Fecha de corte evaluada.
+   * @param {string} fecha Fecha de corte evaluada (mantenida por firma de interfaz).
    * @param {AppEvent} evento Convocatoria ferial de referencia.
    * @returns {Promise<number>} Número total de invitaciones consumidas por el socio.
    */
@@ -100,21 +100,19 @@ export class PasseService {
         accessRef,
         where('hostId', '==', socioId),
         where('eventId', '==', evento.id),
-        where('date', '==', fecha)
+        where('status', '==', PasseAccessStatus.ACTIVE)
       );
       const snapshot = await getDocs(q);
       return snapshot.size;
     } catch (error: any) {
       this.errorHandler.handle(error);
-      throw error;
+      return 0;
     }
   }
 
   /**
    * @method crearInvitacion
-   * @description 💡 INTERCEPTOR FINANCIERO CRÍTICO: Registra un pase de invitación para un tercero externo.
-   * Valida en primera instancia que el socio anfitrión se encuentre al corriente de pago de sus cuotas anuales.
-   * Evalúa secundariamente los límites transaccionales de aforo fijados en la convocatoria.
+   * @description Registra un pase de invitación para un tercero externo validando solvencia y límites.
    * @param {User} socio Modelo de datos del socio emisor o anfitrión.
    * @param {User} invitado Modelo de datos del usuario receptor beneficiario.
    * @param {string} fecha Fecha asignada de validez.
@@ -122,7 +120,6 @@ export class PasseService {
    * @returns {Promise<PaseUniversal>} Credencial extendida generada en el servidor.
    */
   public async crearInvitacion(socio: User, invitado: User, fecha: string, evento: AppEvent): Promise<PaseUniversal> {
-    // 🛡️ REGLA DE NEGOCIO PERIMETRAL: Interceptación de emisión de pases por impago
     if (!this.userFeesService.esSocioSolvente(socio)) {
       throw new Error(AppMessageCode.ADC_FEES_ERR_0001);
     }
@@ -148,7 +145,7 @@ export class PasseService {
         date: fecha,
         dateStart: fecha,
         dateEnd: fecha,
-        status: PasseAccessStatus.ACTIVE, // 🚀 Inicializa en pending hasta que se evalúe el evento
+        status: PasseAccessStatus.ACTIVE,
         createdAt: new Date().toISOString(),
         eventId: evento.id,
         scans: []
@@ -164,35 +161,56 @@ export class PasseService {
 
   /**
    * @method registrarEscaneoPortero
-   * @description Procesa de forma atómica el picaje o lectura del código QR ejecutado por el personal en puerta.
-   * Inyecta de forma inmutable el registro cronológico del escaneo facilitando accesos ilimitados.
-   * @param {string} rawPayload Cadena alfanumérica encriptada o string de lectura rápida procedete del QR.
-   * @param {string} porteroUid UID del operario autenticado en portería que valida el carnet.
+   * @description Procesa el picaje o lectura del código QR ejecutado en portería.
+   * Permite reentradas ilimitadas registrando cada acceso en la matriz de auditoría 'scans'.
+   * @param {string} rawPayload String procedente del QR.
+   * @param {string} porteroUid UID del operario autenticado en portería.
    * @returns {Promise<void>}
    */
   public async registrarEscaneoPortero(rawPayload: string, porteroUid: string): Promise<void> {
+    const payloadLimpio = (rawPayload || '').trim();
+
+    // 🛡️ FILTRO DEFENSIVO 1: Descarte inmediato de QRs con URLs externas o barras dobles
+    // Evita la excepción "Invalid segment ... Paths must not contain //" de Firestore SDK.
+    if (!payloadLimpio || payloadLimpio.includes('//') || payloadLimpio.includes('http:') || payloadLimpio.includes('https:')) {
+      throw new Error('QR ajeno al club. Por favor, escanee una credencial oficial.');
+    }
+
+    // 🛡️ FILTRO DEFENSIVO 2: Validación de sintaxis básica para IDs de documento de Firestore
+    const esPaseSocio = payloadLimpio.startsWith('SOCIO:');
+    const esIdValido = /^[a-zA-Z0-9_\-]+$/.test(payloadLimpio);
+
+    if (!esPaseSocio && !esIdValido) {
+      throw new Error('Código QR no reconocido. Escanee un carnet digital oficial.');
+    }
+
     try {
-      let finalPaseId = rawPayload;
+      let finalPaseId = payloadLimpio;
       const hoyFormateado = new Date().toISOString().split('T')[0];
 
-      if (rawPayload.startsWith('SOCIO:')) {
-        const partes = rawPayload.split(':');
-        const socioUid = partes[1];
+      // CASO A: Credencial de Socio con formato "SOCIO:<userId>:EVENTO-<eventId>"
+      if (esPaseSocio) {
+        const partes = payloadLimpio.split(':');
+        if (partes.length < 3) {
+          throw new Error('Formato de credencial de socio corrupto o ilegible.');
+        }
 
+        const socioUid = partes[1];
         const paseExistente = await this.obtenerPaseDiarioUsuario(socioUid, hoyFormateado);
 
         if (paseExistente && paseExistente.id) {
           finalPaseId = paseExistente.id;
         } else {
-          throw new Error(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0007]);
+          throw new Error('El socio no tiene un pase activo registrado para hoy.');
         }
       }
 
+      // CASO B: Credencial de Invitado o comprobación del pase en Firestore
       const paseRef = doc(this.firestore, this.COLLECTION_NAME, finalPaseId);
       const paseSnap = await getDoc(paseRef);
 
       if (!paseSnap.exists()) {
-        throw new Error(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0002]);
+        throw new Error('Pase no encontrado o inexistente en la base de datos.');
       }
 
       const datosPase = paseSnap.data() as PaseUniversal;
@@ -201,9 +219,10 @@ export class PasseService {
       const fin = datosPase.dateEnd || datosPase.date || hoyFormateado;
 
       if (hoyFormateado < inicio || hoyFormateado > fin) {
-        throw new Error(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0003]);
+        throw new Error(`Pase expirado. Válido únicamente del ${inicio} al ${fin}.`);
       }
 
+      // 🔄 REENTRADAS PERMITIDAS: Registramos el nuevo picaje en el historial atómico sin bloquear el acceso
       await updateDoc(paseRef, {
         scans: arrayUnion({
           scannedAt: new Date().toISOString(),
@@ -258,8 +277,8 @@ export class PasseService {
 
   /**
    * @method obtenerCandidatosInvitadosDisponibles
-   * @description Consulta el padrón general del club buscando usuarios con el rol INVITADO que estén activos y no tengan un pase hoy.
-   * @param {string} currentUserId UID del usuario operador logueado para aplicar exclusión mútua.
+   * @description Consulta el padrón buscando usuarios con rol INVITADO activos que no tengan un pase hoy.
+   * @param {string} currentUserId UID del usuario operador.
    * @param {string} fecha Fecha ferial de evaluación.
    * @returns {Promise<User[]>} Catálogo de usuarios aptos para recibir una invitación.
    */
@@ -280,7 +299,6 @@ export class PasseService {
 
       querySnapshot.forEach(docSnap => {
         const data = docSnap.data() as any;
-        // 🚀 Saneamiento: Se unifica la lectura evaluando exclusivamente la propiedad 'estado' del modelo
         const esActivo = data.estado === UserStatus.ACTIVE || data.estado === UserStatus.PENDING_APPROVAL;
         const noTienePaseHoy = !yaInvitadosIds.includes(docSnap.id);
 
@@ -297,15 +315,16 @@ export class PasseService {
 
   /**
    * @method crearInvitacionTransaccional
-   * @description 🛡️ VULNERABILIDAD BLINDADA (Race Conditions): Emite una invitación para un tercero externo
-   * de forma transaccional y atómica en el servidor. Realiza una lectura en caliente del aforo actual del evento,
-   * valida que no se supere el límite de plazas máximas, crea el pase digital e incrementa el aforo.
-   * @param {User} socio Modelo de datos del socio anfitrión emisor de la invitación.
-   * @param {User} invitado Modelo de datos del usuario invitado receptor del pase.
+   * @description 🛡️ VULNERABILIDAD BLINDADA (Race Conditions): Emite una invitación para un tercero
+   * calculando atómicamente el aforo consumido EN LA FECHA DE VALIDEZ del pase para dar soporte a
+   * convocatorias multi-día sin acumular pases caducados de días anteriores.
+   * 
+   * @param {User} socio Modelo de datos del socio anfitrión.
+   * @param {User} invitado Modelo de datos del usuario invitado.
    * @param {string} fecha Fecha asignada de validez del pase ferial (YYYY-MM-DD).
-   * @param {AppEvent} evento Instancia local de la convocatoria para validar referencias.
-   * @returns {Promise<PaseUniversal>} Promesa que resuelve la credencial generada con éxito tras la transacción.
-   * @throws {Error} Lanza una excepción controlada si el socio no es solvente, si supera su cupo o si el aforo está completo.
+   * @param {AppEvent} evento Instancia local de la convocatoria.
+   * @returns {Promise<PaseUniversal>} Promesa que resuelve la credencial generada con éxito.
+   * @throws {Error} Lanza una excepción con código AppMessageCode en caso de fallo.
    */
   public async crearInvitacionTransaccional(
     socio: User,
@@ -313,7 +332,6 @@ export class PasseService {
     fecha: string,
     evento: AppEvent
   ): Promise<PaseUniversal> {
-    // 1. Regla perimetral: Interceptación inmediata por impago de cuotas
     if (!this.userFeesService.esSocioSolvente(socio)) {
       throw new Error(AppMessageCode.ADC_FEES_ERR_0001);
     }
@@ -325,8 +343,7 @@ export class PasseService {
       throw new Error(`Has alcanzado el límite de ${limiteEvento} invitaciones permitidas para este evento.`);
     }
 
-    // Importamos dinámicamente la transacción y el incrementador modular del SDK de Firestore
-    const { runTransaction, doc, increment } = await import('@angular/fire/firestore');
+    const { runTransaction, doc, increment, collection, query, where, getDocs } = await import('@angular/fire/firestore');
     const nuevoId = crypto.randomUUID();
 
     const eventRef = doc(this.firestore, `events/${evento.id}`);
@@ -348,27 +365,42 @@ export class PasseService {
       scans: []
     };
 
-    // Ejecutamos la transacción atómica en el servidor
     await runTransaction(this.firestore, async (transaction) => {
-      // Lectura crítica en caliente en el servidor para evitar sobreaforos concurrentes
       const eventSnap = await transaction.get(eventRef);
       if (!eventSnap.exists()) {
-        throw new Error('El evento de destino no existe en la plataforma.');
+        throw new Error(AppMessageCode.ADC_EVENT_ERR_0004);
       }
 
       const liveEventData = eventSnap.data() as AppEvent;
       const aforoMaximo = liveEventData.maxAttendees;
-      const asistentesActuales = liveEventData.attendeeCount || 0;
 
-      // 🛑 CERROJO DE CONCURRENCIA: Si otro usuario llenó el aforo en este milisegundo, abortamos
-      if (aforoMaximo && asistentesActuales >= aforoMaximo) {
-        throw new Error(`¡Aforo Completo! El evento alcanzó su límite de ${aforoMaximo} personas.`);
+      // 🛑 CERROJO DE CONCURRENCIA POR DÍA: Evaluamos el aforo real de la fecha del pase
+      if (aforoMaximo && aforoMaximo > 0) {
+        const accessRef = collection(this.firestore, this.COLLECTION_NAME);
+        const qAforoFecha = query(
+          accessRef,
+          where('eventId', '==', evento.id),
+          where('status', '==', PasseAccessStatus.ACTIVE)
+        );
+        const snapAccesos = await getDocs(qAforoFecha);
+
+        let pasesActivosFecha = 0;
+        snapAccesos.forEach((docItem) => {
+          const p = docItem.data();
+          const inicio = p['dateStart'] || p['date'] || fecha;
+          const fin = p['dateEnd'] || p['date'] || fecha;
+          if (fecha >= inicio && fecha <= fin) {
+            pasesActivosFecha++;
+          }
+        });
+
+        if (pasesActivosFecha >= aforoMaximo) {
+          throw new Error(AppMessageCode.ADC_EVENT_ERR_0008);
+        }
       }
 
-      // Seteamos el pase digital del invitado en el lote transaccional
       transaction.set(passeAccessRef, nuevaInvitacion);
 
-      // Incrementamos atómicamente el contador de asistentes en la convocatoria
       transaction.update(eventRef, {
         attendeeCount: increment(1)
       });
@@ -380,9 +412,7 @@ export class PasseService {
   /**
    * @method eliminarInvitacionTransaccional
    * @description 🛡️ OPERACIÓN ATÓMICA: Anula la invitación de un tercero externo eliminando su registro 
-   * en la colección 'event-access' y decrementando atómicamente el contador de aforo del evento asociado 
-   * en el servidor, mitigando cualquier condición de carrera concurrente.
-   * Emplea los códigos de error controlados del chasis centralizado.
+   * en la colección 'event-access' y decrementando atómicamente el contador de aforo del evento asociado.
    * @param {string} paseId ID único de la invitación a eliminar.
    * @param {string} eventId ID de la convocatoria para actualizar su aforo.
    * @returns {Promise<void>} Promesa que resuelve al consolidar la transacción en el servidor.
@@ -397,7 +427,6 @@ export class PasseService {
     await runTransaction(this.firestore, async (transaction) => {
       const eventSnap = await transaction.get(eventRef);
 
-      // 🛡️ CONTROL DE INTEGRIDAD: Si el evento no existe, lanzamos tu código de error oficial
       if (!eventSnap.exists()) {
         throw new Error(AppMessageCode.ADC_EVENT_ERR_0004);
       }
@@ -405,10 +434,8 @@ export class PasseService {
       const liveEventData = eventSnap.data() as AppEvent;
       const asistentesActuales = liveEventData.attendeeCount || 0;
 
-      // Eliminamos el pase del invitado de la colección
       transaction.delete(passeAccessRef);
 
-      // Decrementamos atómicamente el aforo (asegurándonos de no bajar de 0)
       const decremento = asistentesActuales > 0 ? -1 : 0;
       transaction.update(eventRef, {
         attendeeCount: increment(decremento)

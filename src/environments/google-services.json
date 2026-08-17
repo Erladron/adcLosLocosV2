@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206572860520",
+    "project_id": "adcloslocos-desa",
+    "storage_bucket": "adcloslocos-desa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206572860520:android:6d4e98fdb2e51cb92737dd",
+        "android_client_info": {
+          "package_name": "com.adcloslocos_desa.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCecFOHQlXMxUqphDznDkq7WKHVk90h9jU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

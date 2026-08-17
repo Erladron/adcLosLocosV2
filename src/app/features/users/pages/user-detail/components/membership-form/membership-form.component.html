@@ -7,13 +7,16 @@
     </div>
 
     <div *ngIf="isEditMode && canEditMembership" class="section-actions">
-      <ion-button *ngIf="!editing" class="section-action-btn" shape="round" (click)="toggleEdit.emit()" data-cy="btn-membership-edit">
+      <ion-button *ngIf="!editing" class="section-action-btn" shape="round" (click)="toggleEdit.emit()"
+        data-cy="btn-membership-edit">
         <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="editing" class="section-action-btn save" shape="round" (click)="toggleEdit.emit()" data-cy="btn-membership-save">
+      <ion-button *ngIf="editing" class="section-action-btn save" shape="round" (click)="toggleEdit.emit()"
+        data-cy="btn-membership-save">
         <ion-icon slot="icon-only" name="save-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="editing" class="section-action-btn cancel" shape="round" (click)="cancelEdit.emit()" data-cy="btn-membership-cancel">
+      <ion-button *ngIf="editing" class="section-action-btn cancel" shape="round" (click)="cancelEdit.emit()"
+        data-cy="btn-membership-cancel">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </div>
@@ -23,47 +26,49 @@
 
     <ion-item class="custom-item">
       <ion-label position="stacked">Tipo Usuario *</ion-label>
-      <ion-select 
-        interface="popover" 
-        [interfaceOptions]="{ cssClass: 'glass-dropdown' }"
-        [(ngModel)]="user.tipo"
-        [disabled]="isEditMode && !editing"
-        data-cy="select-membership-role">
-        
+      <ion-select interface="popover" [interfaceOptions]="{ cssClass: 'glass-dropdown' }" [(ngModel)]="user.tipo"
+        [disabled]="isEditMode && !editing" data-cy="select-membership-role">
+
         <ion-select-option value="administrador">Administrador</ion-select-option>
         <ion-select-option value="directiva">Directiva</ion-select-option>
         <ion-select-option value="socio">Socio</ion-select-option>
         <ion-select-option value="invitado">Invitado</ion-select-option>
-        <ion-select-option value="portero">Portero / Seguridad</ion-select-option> 
+        <ion-select-option value="portero">Portero / Seguridad</ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-item class="custom-item" *ngIf="user.tipo === 'socio' || user.tipo === 'directiva'">
       <ion-label position="stacked">Nº Socio</ion-label>
-      <ion-input 
-        [(ngModel)]="user.numeroSocio" 
-        [readonly]="isEditMode && !editing"
+      <ion-input [(ngModel)]="user.numeroSocio" [readonly]="isEditMode && !editing"
         data-cy="input-membership-socio-num">
       </ion-input>
     </ion-item>
 
-    <ion-item class="custom-item cuota-toggle-item" lines="none" *ngIf="user.tipo === 'socio' || user.tipo === 'directiva'">
-      <ion-icon slot="start" name="cash-outline" [style.color]="user.cuotaAlCorriente ? '#10b981' : '#ef4444'" style="margin-top: 22px; font-size: 1.4rem;"></ion-icon>
-      <ion-label>
-        <h4>Estado de la Cuota</h4>
-        <p>{{ user.cuotaAlCorriente ? 'Socio solvente con acceso completo' : 'Pago pendiente / Acceso restringido' }}</p>
-      </ion-label>
-      <ion-toggle slot="end" 
-                  [checked]="user.cuotaAlCorriente"
-                  (ionChange)="user.cuotaAlCorriente = $event.detail.checked" 
-                  [disabled]="isEditMode && !editing" 
-                  color="success"
-                  data-cy="toggle-membership-cuota">
-      </ion-toggle>
-    </ion-item>
+    <!-- 💳 ESTADO DE LA CUOTA (SOLO LECTURA) -->
+    <div class="cuota-status-read-box" *ngIf="user.tipo === 'socio' || user.tipo === 'directiva'" data-cy="cuota-status-read-box">
+      <div class="status-info">
+        <span class="status-label" data-cy="cuota-status-label">ESTADO DE CUOTA ANUAL</span>
+        <p class="status-subtext" data-cy="cuota-status-subtext">El mantenimiento de cuotas se realiza desde su panel
+          específico.</p>
+      </div>
 
-    <div class="cuota-audit-info" *ngIf="user.cuotaActualizadaPorNombre && (user.tipo === 'socio' || user.tipo === 'directiva')" style="margin-top: 8px; padding-left: 16px; font-size: 0.8rem; color: rgba(255,255,255,0.4);">
-      Última actualización por: <strong>{{ user.cuotaActualizadaPorNombre }}</strong> • {{ user.cuotaActualizadaAt?.toDate ? (user.cuotaActualizadaAt.toDate() | date:'dd/MM/yyyy · HH:mm') : (user.cuotaActualizadaAt | date:'dd/MM/yyyy · HH:mm') }}
+      <div class="status-pill" [ngClass]="{ 'active': user?.cuotaAlCorriente, 'inactive': !user?.cuotaAlCorriente }"
+        data-cy="cuota-status-pill">
+        <ion-icon [name]="user?.cuotaAlCorriente ? 'checkmark-circle-outline' : 'close-circle-outline'"
+          data-cy="cuota-status-icon">
+        </ion-icon>
+        <span data-cy="cuota-status-text">
+          {{ user?.cuotaAlCorriente ? 'Al corriente' : 'Pendiente de pago' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="cuota-audit-info"
+      *ngIf="user.cuotaActualizadaPorNombre && (user.tipo === 'socio' || user.tipo === 'directiva')"
+      style="margin-top: 8px; padding-left: 16px; font-size: 0.8rem; color: rgba(255,255,255,0.4);">
+      Última actualización por: <strong>{{ user.cuotaActualizadaPorNombre }}</strong> • {{
+      user.cuotaActualizadaAt?.toDate ? (user.cuotaActualizadaAt.toDate() | date:'dd/MM/yyyy · HH:mm') :
+      (user.cuotaActualizadaAt | date:'dd/MM/yyyy · HH:mm') }}
     </div>
 
   </div>

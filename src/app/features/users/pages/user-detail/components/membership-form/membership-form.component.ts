@@ -9,7 +9,6 @@ import {
   IonSelectOption, 
   IonButton, 
   IonIcon,
-  IonToggle, // 🚀 FIJADO: Importado el componente independiente
   Platform 
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -38,7 +37,6 @@ import { User } from 'shared-core';
     IonSelectOption,
     IonButton,
     IonIcon,
-    IonToggle // 🚀 FIJADO: Registrado para dar soporte definitivo a [(ngModel)]
   ]
 })
 export class MembershipFormComponent {

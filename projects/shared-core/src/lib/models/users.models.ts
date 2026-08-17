@@ -54,14 +54,14 @@ export interface User {
   /** @description Empresa de seguridad externa a la que pertenece el usuario (Exclusivo para el rol 'portero'). */
   empresa?: string;
 
+  /** @description Determina si el socio tiene que modificar su contraseña al entrar por primera vez tras su alta administrativa. */
+  requiereCambioClave?: boolean;
+
   // =========================================================================
   // 💰 ESTADO FINANCIERO Y CONTROL DE MEMBRESÍA
   // =========================================================================
 
-  /** * @description Determina si el socio se encuentra al corriente de pago de las cuotas del club.
-   * Campo opcional (?): Exclusivo para roles 'socio' y 'directiva'. No aplica a invitados ni porteros.
-   * Modificable exclusivamente por los roles 'administrador' y 'directiva' de forma controlada.
-   */
+  /** @description Determina si el socio se encuentra al corriente de pago de las cuotas del club. */
   cuotaAlCorriente?: boolean;
 
   // =========================================================================

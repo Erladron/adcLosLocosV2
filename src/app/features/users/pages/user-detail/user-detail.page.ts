@@ -343,7 +343,7 @@ export class UserDetailPage implements OnInit {
 
   /**
    * @method toggleMembership
-   * @description Conmuta el estado de edición y persiste el bloque jerárquico de membresía.
+   * @description Conmuta el estado de edición y persiste el bloque jerárquico de membresía (roles y número de socio).
    */
   public async toggleMembership(): Promise<void> {
     if (this.isVistaPublica) return;
@@ -358,6 +358,7 @@ export class UserDetailPage implements OnInit {
       },
       'Guardando membresía...'
     );
+
     if (success) {
       this.editingMembership = false;
       await this.loadUser();
@@ -459,14 +460,27 @@ export class UserDetailPage implements OnInit {
   }
 
   /**
+   * @method generateTemporaryPassword
+   * @private
+   * @description Genera un código de acceso temporal aleatorio y seguro para altas administrativas.
+   * @returns {string} Cadena alfanumérica en formato 'Locos-XXXX!'.
+   */
+  private generateTemporaryPassword(): string {
+    const randomPin = Math.floor(1000 + Math.random() * 9000);
+    return `Locos-${randomPin}!`;
+  }
+
+  /**
    * @method save
    * @description Valida la estructura y comanda la creación física de nuevos registros de miembros en la plataforma.
+   * Genera automáticamente la clave temporal de acceso y, tras la creación exitosa en el servidor,
+   * notifica al administrador que la Cloud Function se ha encargado de enviar el correo corporativo con las credenciales.
+   * @returns {Promise<void>}
    */
   public async save(): Promise<void> {
     if (this.isVistaPublica) return;
 
-    // 🔥 EL SALVAVIDAS SÉNIOR: Si estamos en alta, rescatamos los emails directamente del DOM
-    // para evitar que los ciclos de renderizado de Ionic los dejen en undefined.
+    // 1. Extracción de correos y generación de clave temporal en alta administrativa
     if (!this.isEditMode) {
       const inputEmail = document.querySelector('[data-cy="input-credentials-email"] input') as HTMLInputElement;
       const inputRepeatEmail = document.querySelector('[data-cy="input-credentials-repeat-email"] input') as HTMLInputElement;
@@ -477,8 +491,14 @@ export class UserDetailPage implements OnInit {
       if (inputRepeatEmail && inputRepeatEmail.value) {
         this.repeatEmail = inputRepeatEmail.value.trim();
       }
+
+      // Generación automática de credencial temporal de fondo
+      const autoPassword = this.generateTemporaryPassword();
+      this.password = autoPassword;
+      this.repeatPassword = autoPassword;
     }
 
+    // 2. Validación específica para el rol de portero
     if (this.user.tipo === UserRole.PORTERO) {
       if (!this.user.foto && !this.croppedImage) {
         this.notification.warning('La fotografía es obligatoria para identificar al personal de seguridad.');
@@ -491,9 +511,10 @@ export class UserDetailPage implements OnInit {
     }
 
     try {
-      await this.loading.wrap(
+      // 3. INTENTO DE CREACIÓN EN EL BACKEND (La Cloud Function crea el user y envía el mail)
+      const creacionExitosa = await this.loading.wrap(
         async () => {
-          await this.facade.createUser({
+          return await this.facade.createUser({
             user: this.user,
             repeatEmail: this.repeatEmail,
             password: this.password,
@@ -503,7 +524,18 @@ export class UserDetailPage implements OnInit {
         },
         'Creando usuario...'
       );
+
+      // 4. FEEDBACK Y DIRECCIONAMIENTO TRAS CREACIÓN EXITOSA
+      if (creacionExitosa && !this.isEditMode) {
+        await this.dialog.alert({
+          header: '¡Usuario Registrado!',
+          message: `La ficha de ${this.user.nombre || 'socio'} ha sido creada correctamente. Se le ha enviado un correo electrónico automático a (${this.user.email}) con su clave temporal y el enlace de bienvenida a la plataforma.`,
+          buttonText: 'Entendido'
+        });
+      }
+
     } catch (error) {
+      // Manejo centralizado de excepciones (email duplicado, errores de red, etc.)
       await this.errorHandler.handle(error);
     }
   }

@@ -15,7 +15,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AppEvent, EventAttendance } from '../models/events.models';
+import { AppEvent, EventAttendance, PasseAccess, PasseAccessStatus } from '../models/events.models';
 import { AppMessageCode } from '../constants/app-message-code.enum';
 import { UserService } from './user.service';
 import { UserFeesService } from './user-fees.service';
@@ -420,5 +420,45 @@ export class EventsService {
         if (unsubscribe) unsubscribe();
       };
     });
+  }
+
+  /**
+   * @method obtenerAforoConsumidoHoy
+   * @description Consulta de forma dinámica en la colección 'event-access' el número total 
+   * de pases y asistencias vigentes para un evento en la fecha indicada (YYYY-MM-DD).
+   * 
+   * @param {string} eventId - ID único del evento.
+   * @param {string} fechaConsulta - Fecha de evaluación en formato ISO corto (YYYY-MM-DD).
+   * 
+   * @returns {Promise<number>} Número total de pases activos para ese día concreto.
+   */
+  public async obtenerAforoConsumidoHoy(eventId: string, fechaConsulta: string): Promise<number> {
+    try {
+      const accessRef = collection(this.firestore, 'event-access');
+      const q = query(
+        accessRef,
+        where('eventId', '==', eventId),
+        where('status', '==', PasseAccessStatus.ACTIVE)
+      );
+
+      const snapshot = await getDocs(q);
+      let totalHoy = 0;
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data() as PasseAccess;
+        const inicio = (data as any).dateStart || data.date || fechaConsulta;
+        const fin = (data as any).dateEnd || data.date || fechaConsulta;
+
+        // Comprobamos si la fecha de consulta cae dentro del rango de validez del pase
+        if (fechaConsulta >= inicio && fechaConsulta <= fin) {
+          totalHoy++;
+        }
+      });
+
+      return totalHoy;
+    } catch (error) {
+      this.errorHandler.handle(error);
+      return 0;
+    }
   }
 }

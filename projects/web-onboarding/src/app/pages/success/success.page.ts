@@ -2,15 +2,14 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { checkmarkCircleOutline, homeOutline, rocketOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, homeOutline, rocketOutline, logoAndroid, logoApple } from 'ionicons/icons';
 import { environment } from '../../../environments/environment';
 
 /**
  * @class SuccessComponent
- * @description Componente standalone de la interfaz de usuario que actúa como pantalla de aterrizaje de éxito.
- * Informa al socio que su pre-registro o activación de cuenta ha concluido satisfactoriamente,
- * elimina la dependencia de tiendas de aplicaciones nativas promocionando el uso de la PWA del club
- * y gestiona el retorno seguro hacia la raíz preservando el contexto a través del token de sesión.
+ * @description Componente standalone de la interfaz de usuario que actúa como pantalla de aterrizaje de éxito en el onboarding.
+ * Identifica dinámicamente el entorno de ejecución (Android vs. iOS / Escritorio) mediante el User Agent para guiar la distribución:
+ * suministra la descarga directa de la APK de desarrollo en Android o despliega las instrucciones de instalación PWA en Safari para dispositivos iOS.
  */
 @Component({
   selector: 'app-success',
@@ -49,10 +48,27 @@ export class SuccessComponent implements OnInit {
 
   /** 
    * @description Dirección URL base de la aplicación principal recuperada dinámicamente según el entorno activo.
-   * Proporciona un mecanismo de contingencia si el parámetro no se encuentra declarado explícitamente en el environment.
    * @type {string}
    */
-  public mainAppUrl: string = environment.mainAppUrl || 'https://acdloslocos-app-desa.web.app';
+  public mainAppUrl: string = environment.mainAppUrl || 'https://adcloslocos-desa.web.app';
+
+  /** 
+   * @description Ruta relativa pública hacia el binario APK alojado en los assets del hosting de desarrollo.
+   * @type {string}
+   */
+  public apkUrl: string = 'assets/apk/adc-loslocos-desa.apk';
+
+  /** 
+   * @description Indicador reactivo que confirma si el acceso proviene de un dispositivo con SO Android.
+   * @type {boolean}
+   */
+  public isAndroid: boolean = false;
+
+  /** 
+   * @description Indicador reactivo que confirma si el acceso proviene de un dispositivo Apple (iPhone, iPad, iPod).
+   * @type {boolean}
+   */
+  public isIOS: boolean = false;
 
   /**
    * @constructor
@@ -62,18 +78,33 @@ export class SuccessComponent implements OnInit {
     addIcons({
       checkmarkCircleOutline,
       homeOutline,
-      rocketOutline
+      rocketOutline,
+      logoAndroid,
+      logoApple
     });
   }
 
   /**
    * @method ngOnInit
-   * @description Método del ciclo de vida de Angular encargado de capturar el hash del token de la query string de forma reactiva.
-   * Evita que los datos de inicialización se volatilicen ante eventuales refrescos de la interfaz de usuario.
+   * @description Ciclo de vida inicial. Recupera el token activo de la URL e inicia la evaluación defensiva de la plataforma.
    * @returns {void}
    */
   public ngOnInit(): void {
     this.token = this.route.snapshot.queryParamMap.get('token') || '';
+    this.detectarPlataforma();
+  }
+
+  /**
+   * @method detectarPlataforma
+   * @private
+   * @description Evalúa la cadena `userAgent` del navegador para bifurcar la experiencia de instalación entre Android e iOS/Escritorio.
+   * @returns {void}
+   */
+  private detectarPlataforma(): void {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    
+    this.isAndroid = /android/i.test(userAgent);
+    this.isIOS = /ipad|iphone|ipod/i.test(userAgent) && !(window as any).MSStream;
   }
 
   /**

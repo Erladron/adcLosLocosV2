@@ -1,9 +1,10 @@
+import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
-import * as admin from 'firebase-admin';
 import { EmailTemplates } from '../constants/email-templates';
 
 /** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * @function sendCustomPasswordReset
@@ -31,7 +32,7 @@ export const sendCustomPasswordReset = onCall(async (request) => {
 
   try {
     // 1️⃣ GENERACIÓN DEL ENLACE POR DEFECTO Y EXTRACCIÓN DEL TOKEN OOB
-    const defaultFirebaseLink = await admin.auth().generatePasswordResetLink(email);
+    const defaultFirebaseLink = await getAuth().generatePasswordResetLink(email);
     const urlParams = new URL(defaultFirebaseLink).searchParams;
     const oobCode = urlParams.get('oobCode');
     
@@ -40,7 +41,7 @@ export const sendCustomPasswordReset = onCall(async (request) => {
     }
 
     // 2️⃣ MAQUETACIÓN CORPORATIVA DE LA URL Y MAQUETA HTML
-    const customResetLink = `https://adcloslocos-desa.web.app/reset-password?oobCode=${oobCode}`;
+    const customResetLink = `https://acdloslocos-desa.web.app/reset-password?oobCode=${oobCode}`;
     const correoHtml = EmailTemplates.getPasswordResetTemplate(email, customResetLink);
 
     // 3️⃣ INSERCIÓN EN LA COLA DE DISTRIBUCIÓN (TRIGGER DE LA EXTENSIÓN SMTP)

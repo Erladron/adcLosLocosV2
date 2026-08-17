@@ -4,12 +4,12 @@ import { filter, firstValueFrom, timer, race, defer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Importaciones unificadas del dominio y utilidades compartidas de shared-core
-import { 
-  AuthService, 
-  NotificationService, 
-  UserStatus, 
-  UserRole, 
-  User 
+import {
+  AuthService,
+  NotificationService,
+  UserStatus,
+  UserRole,
+  User
 } from 'shared-core';
 
 /**
@@ -25,11 +25,11 @@ import {
  * o a un `UrlTree` de redirección de seguridad en caso contrario.
  */
 export const authGuard: CanActivateFn = async (route, state) => {
-  const authService = inject(AuthService); 
-  const router = inject(Router); 
-  const notificationService = inject(NotificationService); 
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const notificationService = inject(NotificationService);
 
-  const currentUrl = state.url; 
+  const currentUrl = state.url;
   console.log('🛡️ [DEBUG-GUARD] Evaluando acceso a:', currentUrl);
 
   /**
@@ -39,9 +39,9 @@ export const authGuard: CanActivateFn = async (route, state) => {
    * Se utiliza `defer` y un intervalo iterativo para evaluar de forma segura el getter sincrónico `authReady` 
    * expuesto por el AuthService, mitigando bloqueos totales del Router mediante un timeout de 2000ms.
    */
-  if (!authService.authReady) { 
+  if (!authService.authReady) {
     console.log('⏳ [DEBUG-GUARD] Servicio ocupado, esperando inicialización reactiva de Auth...');
-    
+
     // Evaluamos el getter de forma reactiva cada 50ms hasta que sea true
     const authReadyStream$ = defer(() => {
       return new Promise<boolean>((resolve) => {
@@ -63,11 +63,11 @@ export const authGuard: CanActivateFn = async (route, state) => {
   }
 
   /** @type {boolean} logged - Flag que indica si existe un token de sesión activo en Firebase Auth. */
-  const logged = authService.isLogged(); 
+  const logged = authService.isLogged();
   console.log('🔑 [DEBUG-GUARD] ¿Usuario autenticado en Firebase?:', logged);
 
   // Control de acceso para usuarios anónimos o desautenticados
-  if (!logged) { 
+  if (!logged) {
     if (currentUrl.includes('login')) {
       return true;
     }
@@ -86,42 +86,38 @@ export const authGuard: CanActivateFn = async (route, state) => {
    * @description Garantiza que el documento NoSQL correspondiente al usuario autenticado se encuentre
    * completamente descargado en la memoria local del cliente antes de segmentar las reglas de negocio.
    */
-  if ('waitForUserData' in authService && typeof (authService as any).waitForUserData === 'function') { 
+  if ('waitForUserData' in authService && typeof (authService as any).waitForUserData === 'function') {
     console.log('⏳ [DEBUG-GUARD] Esperando activamente la sincronización del perfil con Firestore...');
     await (authService as any).waitForUserData();
   }
 
   /** @type {User | null} user - Almacén del perfil tipado del usuario extraído de Firestore. */
-  let user: User | null = authService.currentUserData; 
+  let user: User | null = authService.currentUserData;
 
-  /**
-   * @section Validación de Nuevos Socios
-   * @description Si el usuario se encuentra marcado localmente como "pendiente de aprobación", se realiza una
-   * consulta transaccional directa al servidor para verificar si la Junta Directiva ya ha modificado su estado.
-   */
-  if (user && user.estado === UserStatus.PENDING_APPROVAL) {
-    console.log('🔄 [DEBUG-GUARD] Estado local "PENDING_APPROVAL" detectado. Forzando validación en tiempo real con el servidor...');
-    try {
-      const freshUser = await authService.refreshUserDataFromServer();
-      if (freshUser) {
-        user = freshUser;
-        console.log('🆕 [DEBUG-GUARD] Servidor consultado con éxito. Estado real verificado:', user.estado);
-      }
-    } catch (error) {
-      console.error('⚠️ [DEBUG-GUARD] Error al forzar refresco de datos desde el Guard, manteniendo caché local:', error);
+  // FORZAR REFRESCO DIRECTO DEL SERVIDOR
+  try {
+    const freshUser = await authService.refreshUserDataFromServer();
+    if (freshUser) {
+      user = freshUser;
     }
+  } catch (error) {
+    console.warn('⚠️ [DEBUG-GUARD-TRACE] Error en refresh:', error);
   }
 
-  // Salvaguarda crítica ante corrupciones de datos en Firestore
   if (!user) {
-    console.error('❌ [DEBUG-GUARD] Fallo crítico: Hay sesión en Auth pero Firestore está vacío.');
     return router.parseUrl('/login');
+  }
+
+  if (user.requiereCambioClave) {
+    if (!currentUrl.includes('change-password')) {
+      console.log('🔒 [DEBUG-GUARD] Clave temporal detectada. Redirigiendo a cambio de contraseña...');
+      return router.parseUrl('/change-password?forced=true');
+    }
+    return true;
   }
 
   /**
    * @section Control de Portería y Control de Accesos
-   * @description Los usuarios con rol de Portero operativo y estado activo son redirigidos de forma
-   * exclusiva y obligatoria a la suite de escaneo `event-scan`.
    */
   if (user.estado === UserStatus.ACTIVE && user.tipo === UserRole.PORTERO) {
     if (!currentUrl.includes('event-scan')) {

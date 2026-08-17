@@ -52,7 +52,7 @@ export class UserDetailFacadeService {
 
   /**
    * @method updateMembership
-   * @description Transmite hacia el DataService la orden de actualización de roles corporativos y control financiero de cuotas.
+   * @description Transmite hacia el DataService la orden de actualización de roles corporativos y atributos de membresía.
    * @param {any} data Parámetros compuestos del usuario e identificador de documento.
    * @returns {Promise<boolean>} Promesa asíncrona que resuelve a true tras el éxito del guardado jerárquico.
    */

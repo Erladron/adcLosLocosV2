@@ -1,11 +1,10 @@
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
-import * as admin from 'firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { FcmTemplates } from '../constants/fcm-templates';
 import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
 /** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * @function requestUserApproval

@@ -124,7 +124,7 @@ export const routes: Routes = [
   // 📆 SECCIÓN: CONVOCATORIAS Y AGENDA DE LA PEÑA
   // =========================================================================
   {
-    path: 'events', // 🚀 DEFINITIVO: Entrada directa al listado unificado con calendario integrado
+    path: 'events',
     canActivate: [authGuard, roleGuard],
     data: {
       roles: [
@@ -203,21 +203,25 @@ export const routes: Routes = [
   },
 
   // =========================================================================
-  // 🔄 RUTAS HEREDADAS (MANTENIDAS POR COMPATIBILIDAD DE ENLACES ANTERIORES)
+  // 🔑 CAMBIO OBLIGATORIO DE CLAVE (PROTEGIDO SOLO POR AUTENTICACIÓN)
+  // =========================================================================
+  {
+    path: 'change-password',
+    canActivate: [authGuard],
+    loadComponent: () => import('@auth/pages/change-password/change-password.page').then(m => m.ChangePasswordPage)
+  },
+
+  // =========================================================================
+  // 🔄 RUTAS HEREDADAS (MANTENIDAS POR COMPATIBILIDAD)
   // =========================================================================
   {
     path: 'passe',
     pathMatch: 'full',
     redirectTo: 'user-passes'
   },
-  {
-    path: 'event-scan',
-    pathMatch: 'full',
-    redirectTo: 'event-scan'
-  },
 
   // =========================================================================
-  // 🚨 RUTA COMPLEMENTARIA: FALLBACK GLOBLAL COMODÍN
+  // 🚨 FALLBACK GLOBAL
   // =========================================================================
   {
     path: '**',

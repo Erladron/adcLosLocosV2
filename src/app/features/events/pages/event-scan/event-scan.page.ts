@@ -11,14 +11,12 @@ import { scanOutline, checkmarkCircleOutline, closeCircleOutline, keyOutline } f
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
-// Importaciones nativas de Firebase para validación atómica en Portería General
-import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-
 // Importaciones unificadas del dominio compartido de shared-core
 import {
   PageHeaderComponent,
   AuthService,
   EventsService,
+  PasseService,
   NotificationService,
   LoadingService,
   ErrorHandlerService
@@ -27,7 +25,8 @@ import {
 /**
  * @class PasseScanPage
  * @description Pantalla controladora para el personal de portería y seguridad.
- * Controla el hardware de cámara mediante Capacitor para escanear y quemar pases digitales QR.
+ * Controla el hardware de cámara mediante Capacitor para escanear, validar y quemar pases digitales QR.
+ * Cumple con el aislamiento arquitectónico estricto: la lógica NoSQL se delega en PasseService.
  */
 @Component({
   selector: 'app-event-scan',
@@ -47,21 +46,33 @@ export class PasseScanPage implements OnInit, OnDestroy {
   // =========================================================================
   // 📥 INFRAESTRUCTURA INYECTADA (PATRÓN MODERNO INJECT)
   // =========================================================================
+  /** @description Instancia inyectada del servicio core de sesión y credenciales. @private */
   private authService = inject(AuthService);
+  /** @description Instancia inyectada del servicio de gestión de convocatorias. @private */
   private eventsService = inject(EventsService);
-  private firestore = inject(Firestore); 
+  /** @description Instancia inyectada del servicio satélite de validación y control de pases. @private */
+  private passeService = inject(PasseService);
+  /** @description Instancia inyectada del despachador de alertas Toast de la interfaz. @private */
   private notification = inject(NotificationService);
+  /** @description Instancia inyectada del servicio visual de bloqueo y spinners. @private */
   private loading = inject(LoadingService);
+  /** @description Instancia inyectada del interceptor centralizado de excepciones. @private */
   private errorHandler = inject(ErrorHandlerService);
+  /** @description Instancia inyectada para forzar la detección de cambios en el ciclo de Angular. @private */
   private cdr = inject(ChangeDetectorRef);
 
   // =========================================================================
   // 📋 VARIABLES DE CONTROL Y ESTADO DE PORTERÍA
   // =========================================================================
+  /** @description Identificador único (UID) del usuario con rol Portero autenticado. */
   public currentPorteroId: string | null = null;
+  /** @description Flag indicador del estado activo del visor transparente de la cámara. */
   public isScanning = false;
+  /** @description Estado reactivo del proceso de picaje ('idle' | 'success' | 'error') para feedback visual. */
   public scanStatus: 'idle' | 'success' | 'error' = 'idle';
+  /** @description Cadena reactiva vinculada al input de validación manual de credenciales. */
   public manualPaseId = '';
+  /** @description Fecha actual formateada en huso local (YYYY-MM-DD) para auditorías de acceso. */
   public hoyFormateado = '';
 
   /**
@@ -75,22 +86,39 @@ export class PasseScanPage implements OnInit, OnDestroy {
     this.hoyFormateado = (new Date(Date.now() - tzoffset)).toISOString().split('T')[0];
   }
 
+  /**
+   * @method ngOnInit
+   * @description Ciclo de vida inicial. Hidrata las credenciales del portero autenticado.
+   * @returns {Promise<void>}
+   */
   public async ngOnInit(): Promise<void> {
     await this.authService.waitForUserData();
     this.currentPorteroId = this.authService.getUid();
   }
 
+  /**
+   * @method ngOnDestroy
+   * @description Ciclo de vida de destrucción. Fuerza la detención de la cámara y restaura el DOM.
+   * @returns {void}
+   */
   public ngOnDestroy(): void {
     this.forzarLimpiezaEscaner();
   }
 
+  /**
+   * @method ionViewWillLeave
+   * @description Ciclo de vida de salida de vista en Ionic. Previene cámaras colgadas en segundo plano.
+   * @returns {void}
+   */
   public ionViewWillLeave(): void {
     this.forzarLimpiezaEscaner();
   }
 
   /**
    * @method activarEscaner
-   * @description Verifica permisos de cámara nativos y activa el lector en segundo plano transparentando la vista.
+   * @description Verifica permisos de cámara nativos y activa el lector transparentando el fondo de la pantalla.
+   * Garantiza mediante bloque finally la limpieza incondicional del visor.
+   * @returns {Promise<void>}
    */
   public async activarEscaner(): Promise<void> {
     try {
@@ -122,17 +150,30 @@ export class PasseScanPage implements OnInit, OnDestroy {
 
     } catch (error) {
       console.error('Error crítico en escáner nativo:', error);
-      this.forzarLimpiezaEscaner();
+      this.notification.error('Se produjo un error al iniciar el escáner de la cámara.');
+    } finally {
+      // 🚀 LIMPIEZA GARANTIZADA: Apaga el escáner y restaura la interfaz siempre
+      await this.forzarLimpiezaEscaner();
     }
   }
 
+  /**
+   * @method detenerEscaner
+   * @description Cancela la sesión de escaneo activa y restaura la opacidad visual del DOM.
+   * @returns {Promise<void>}
+   */
   public async detenerEscaner(): Promise<void> {
-    document.body.classList.remove('scanner-active');
-    await BarcodeScanner.showBackground();
-    await BarcodeScanner.stopScan();
-    this.forzarLimpiezaEscaner();
+    await this.forzarLimpiezaEscaner();
   }
 
+  /**
+   * @method forzarLimpiezaEscaner
+   * @private
+   * @async
+   * @description Método auxiliar defensivo. Apaga el sensor por hardware de la cámara y remueve 
+   * las clases transparentes del DOM para evitar que la interfaz quede inusable.
+   * @returns {Promise<void>}
+   */
   private async forzarLimpiezaEscaner(): Promise<void> {
     this.isScanning = false;
     document.body.classList.remove('scanner-active');
@@ -154,6 +195,11 @@ export class PasseScanPage implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  /**
+   * @method validarEntradaManual
+   * @description Valida la entrada de un código de pase introducido mediante teclado en la interfaz.
+   * @returns {Promise<void>}
+   */
   public async validarEntradaManual(): Promise<void> {
     if (!this.manualPaseId.trim()) {
       this.notification.warning('Por favor, introduce el ID del pase.');
@@ -165,7 +211,10 @@ export class PasseScanPage implements OnInit, OnDestroy {
 
   /**
    * @method procesarAcceso
-   * @description Motor transaccional de validación en puerta. Analiza la procedencia del QR y registra el acceso.
+   * @description Motor de validación en portería. Delega el picaje y la verificación atómica 
+   * del payload en la capa de servicios centralizada (PasseService) emitiendo feedback háptico.
+   * @param {string} rawPayload Cadena alfanumérica o formato compuesto leído desde el código QR.
+   * @returns {Promise<void>}
    */
   public async procesarAcceso(rawPayload: string): Promise<void> {
     if (!this.currentPorteroId) return;
@@ -177,67 +226,10 @@ export class PasseScanPage implements OnInit, OnDestroy {
       this.scanStatus = 'idle';
 
       await this.loading.wrap(async () => {
-        
-        // Caso A: El código QR pertenece a un abono o pase interno de un Socio
-        if (rawPayload.startsWith('SOCIO:')) {
-          const partes = rawPayload.split(':');
-          if (partes.length < 3) throw new Error('Formato de credencial corrupto o ilegible.');
-
-          const socioId = partes[1];
-          const eventId = partes[2].replace('EVENTO-', '');
-
-          const paseIdCompuesto = `${socioId}_${eventId}`;
-          const socioPaseRef = doc(this.firestore, 'event-access', paseIdCompuesto);
-          const snapPase = await getDoc(socioPaseRef);
-
-          if (!snapPase.exists()) {
-            throw new Error('Acceso Denegado: Este Socio no está registrado en la convocatoria de hoy.');
-          }
-
-          const datosPase = snapPase.data();
-          
-          if (datosPase['scannedAt']) {
-            throw new Error(`Acceso Denegado: Este pase de Socio ya entró a las ${new Date(datosPase['scannedAt']).toLocaleTimeString('es-ES')}.`);
-          }
-
-          await updateDoc(socioPaseRef, {
-            scannedAt: new Date().toISOString(),
-            porteroId: this.currentPorteroId
-          });
-
-          this.notification.success(`¡Acceso Permitido! Bienvenido Socio: ${datosPase['userName'] || 'Verificado'}`);
-        }
-        
-        // Caso B: El código QR pertenece a un pase de Invitado externo
-        else {
-          const invitadoPaseRef = doc(this.firestore, 'event-access', rawPayload);
-          const snapInvitado = await getDoc(invitadoPaseRef);
-
-          if (!snapInvitado.exists()) {
-            throw new Error('Acceso Denegado: Credencial inexistente o pase de invitado anulado.');
-          }
-
-          const datosInvitado = snapInvitado.data();
-
-          if (datosInvitado) {
-            if (datosInvitado['date'] !== this.hoyFormateado) {
-              throw new Error(`Acceso Denegado: Este pase expiró. Era válido para el día: ${datosInvitado['date']}.`);
-            }
-
-            if (datosInvitado['scannedAt']) {
-              throw new Error(`Acceso Denegado: El invitado "${datosInvitado['userName']}" ya cruzó la portería.`);
-            }
-
-            await updateDoc(invitadoPaseRef, {
-              scannedAt: new Date().toISOString(),
-              porteroId: this.currentPorteroId
-            });
-
-            this.notification.success(`¡Acceso Permitido! Invitado: ${datosInvitado['userName']} (Anfitrión: ${datosInvitado['invitedByName']})`);
-          }
-        }
-
-      }, 'Verificando credencial universal en el sistema...');
+        // 🚀 DELEGACIÓN EN SERVICIO: Transmisión limpia delegada en PasseService
+        await this.passeService.registrarEscaneoPortero(rawPayload, this.currentPorteroId!);
+        this.notification.success('¡Acceso Validado Correctamente!');
+      }, 'Verificando credencial en el sistema...');
 
       this.scanStatus = 'success';
       await Haptics.notification({ type: NotificationType.Success });

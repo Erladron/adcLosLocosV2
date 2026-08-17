@@ -1,11 +1,11 @@
+import { getAuth } from 'firebase-admin/auth';
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
-import * as admin from 'firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { FcmTemplates } from '../constants/fcm-templates';
 import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
 /** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * @function deactivateUser
@@ -53,7 +53,7 @@ export const deactivateUser = onCall(async (request) => {
 
   try {
     // 1️⃣ SUSPENSIÓN DE CREDENCIALES EN FIREBASE AUTHENTICATION
-    await admin.auth().updateUser(uid, { disabled: true });
+    await getAuth().updateUser(uid, { disabled: true });
     
     // 2️⃣ PERSISTENCIA Y TRAZABILIDAD AUDITABLE EN FIRESTORE
     await db.collection('users').doc(uid).update({

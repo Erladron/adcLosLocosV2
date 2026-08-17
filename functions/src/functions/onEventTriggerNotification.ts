@@ -1,11 +1,10 @@
 import { onDocumentWritten, FirestoreEvent, Change } from 'firebase-functions/v2/firestore';
-import { DocumentSnapshot } from 'firebase-admin/firestore';
-import * as admin from 'firebase-admin';
+import { DocumentSnapshot, getFirestore } from 'firebase-admin/firestore';
 import { FcmTemplates } from '../constants/fcm-templates';
 import { enviarConAutoLimpieza, DispositivoToken } from './notification-helper';
 
 /** @description Instancia de acceso directo al SDK administrativo de Cloud Firestore. */
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * @type {string}

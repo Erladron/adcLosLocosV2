@@ -5,8 +5,8 @@ import { PhotoService } from './photo.service';
 /**
  * @class UserDetailPhotoService
  * @description Servicio core de soporte especializado en la gestión multimedia para la ficha de usuario.
- * Interactúa con los plugins por hardware de Capacitor Camera y gestiona la conversión de streams binarios
- * delegando la inserción final en el PhotoService de infraestructura.
+ * Interactúa con los plugins por hardware de Capacitor Camera optimizando el peso de las capturas (500x500px)
+ * y gestiona la conversión de streams binarios delegando la inserción final en el PhotoService de infraestructura.
  */
 @Injectable({
   providedIn: 'root'
@@ -42,31 +42,36 @@ export class UserDetailPhotoService {
   /**
    * @method takePhoto
    * @description Despierta e inicializa los sensores de la cámara del chasis móvil. 
-   * Pre-escala la resolución física por hardware a un ratio idóneo de 800x800px para aligerar la cuota de almacenamiento de Storage.
+   * Pre-escala la resolución física por hardware a un máximo de 500x500px y calidad 70 para minimizar el consumo de red y Storage.
    * @returns {Promise<any>} Promesa asíncrona que resuelve el archivo empaquetado dentro de una simulación de estructura DataTransfer.
    */
   public async takePhoto(): Promise<any> {
-    const image = await Camera.getPhoto({
-      quality: 65,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera,
-      width: 800,
-      height: 800
-    });
+    try {
+      const image = await Camera.getPhoto({
+        quality: 70,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+        width: 500,
+        height: 500
+      });
 
-    if (!image.dataUrl) {
+      if (!image.dataUrl) {
+        return null;
+      }
+
+      const file = this.dataURLtoFile(image.dataUrl, 'camera.jpg');
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+
+      return {
+        target: {
+          files: dataTransfer.files
+        }
+      };
+    } catch (error) {
+      console.warn('Captura cancelada o no disponible:', error);
       return null;
     }
-
-    const file = this.dataURLtoFile(image.dataUrl, 'camera.jpg');
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-
-    return {
-      target: {
-        files: dataTransfer.files
-      }
-    };
   }
 
   /**

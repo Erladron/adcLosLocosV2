@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 24px;
+  padding: 24px 20px;
   color: #ffffff;
   transition: background-color 0.3s ease;
 
@@ -37,7 +37,7 @@
   font-weight: 800;
   letter-spacing: 1.5px;
   color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   .status-dot {
     width: 8px;
@@ -67,8 +67,8 @@
 
 .scanner-reticle {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: 260px;
+  height: 260px;
   border-radius: 20px;
   background: rgba(0, 0, 0, 0.4);
   display: flex;
@@ -144,18 +144,23 @@
 
 .scan-instructions {
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.4);
-  line-height: 1.5;
-  margin: 30px 20px auto 20px;
+  line-height: 1.4;
+  margin: 16px 10px auto 10px;
 }
 
+// ============================================
+// 📱 CONSOLA MANUAL REPARADA PARA MÓVILES
+// ============================================
 .manual-entry-console {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  padding: 20px;
-  margin-top: 20px;
+  padding: 16px;
+  margin-top: 16px;
+  /* 🛡️ Eleva la consola por encima de los 3 botones de navegación de Android */
+  margin-bottom: calc(12px + env(safe-area-inset-bottom, 16px));
   z-index: 40;
 
   .console-title {
@@ -165,43 +170,56 @@
     color: rgba(255, 255, 255, 0.5);
     font-size: 11px;
     font-weight: 800;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     letter-spacing: 1px;
     ion-icon { font-size: 14px; }
   }
 
   .input-group {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+
     input {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0; /* 🚀 Evita que el input empuje al botón fuera del marco */
       background: rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 10px;
-      padding: 0 16px;
+      padding: 0 12px;
+      height: 44px;
       color: white;
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
       &:focus { border-color: #38bdf8; }
     }
+
     .btn-validate {
+      flex: 0 0 auto; /* 🚀 Impide que el botón se reduzca o rompa su forma */
+      white-space: nowrap;
       background: #ffb703;
       color: #000;
       border: none;
       border-radius: 10px;
-      padding: 0 20px;
+      padding: 0 16px;
+      font-size: 13px;
       font-weight: 800;
-      height: 48px;
-      &:disabled { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.3); }
+      height: 44px;
+      
+      &:disabled { 
+        background: rgba(255, 255, 255, 0.1); 
+        color: rgba(255, 255, 255, 0.3); 
+      }
     }
   }
 }
 
 // ============================================
-// 🚀 FIX FULLSCREEN FEEDBACK (FUERA DE LA CONSOLA)
+// FULLSCREEN FEEDBACK
 // ============================================
 .feedback-fullscreen {
-  position: fixed; // Ocupa todo el terminal rompiendo herencias
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -215,11 +233,11 @@
   box-sizing: border-box;
 
   &.success-bg {
-    background-color: #16a34a !important; // Verde vibrante masivo
+    background-color: #16a34a !important;
   }
 
   &.error-bg {
-    background-color: #dc2626 !important; // Rojo chillón masivo
+    background-color: #dc2626 !important;
   }
 
   .feedback-content {

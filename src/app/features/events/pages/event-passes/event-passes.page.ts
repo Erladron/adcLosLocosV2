@@ -48,6 +48,7 @@ import {
   PasseAccess,
   AppEvent,
   UserRole,
+  PasseService,
   PasseAccessStatus,
   DateEsUtils
 } from 'shared-core';
@@ -68,6 +69,7 @@ interface PaseUniversal extends PasseAccess {
   validezTexto: string;
   validezInicio?: string;
   validezFin?: string;
+  invitadosUsados?: number | null;
 }
 
 /**
@@ -104,6 +106,8 @@ export class PassePage implements OnInit, OnDestroy {
   private errorHandler = inject(ErrorHandlerService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
+  private passeService = inject(PasseService);
+
 
   // =========================================================================
   // 📋 VARIABLES DE CONTROL Y ESTADO DE LA INTERFAZ
@@ -242,11 +246,31 @@ export class PassePage implements OnInit, OnDestroy {
   }
 
   /**
+   * @method ionViewWillEnter
+   * @description Ciclo de vida nativo de Ionic. Forzamos la reconexión y recalculo
+   * en caliente cada vez que la vista entra en pantalla tras volver de la gestión de invitados.
+   */
+  public async ionViewWillEnter(): Promise<void> {
+    await this.authService.waitForUserData();
+    this.currentUserId = this.authService.getUid();
+    this.isInvitado = this.authService.isInvitado();
+    this.currentUserData = this.authService.currentUserData;
+
+    if (this.currentUserId) {
+      if (this.cacheEventos.length === 0) {
+        this.escucharEventosYFiltros();
+      } else {
+        await this.cargarPasesUniversales();
+      }
+    }
+  }
+
+  /**
    * @method cargarPasesUniversales
    * @public
    * @async
-   * @description Se conecta mediante onSnapshot vivo a la colección de la peña, calculando vigencias
-   * de forma limpia y elástica utilizando el motor unificado DateEsUtils.
+   * @description Se conecta mediante onSnapshot vivo a la colección 'event-access', calculando vigencias
+   * de forma elástica y ejecutando consultas NoSQL de invitaciones exclusivamente si el evento autoriza cupos.
    */
   public async cargarPasesUniversales(): Promise<void> {
     if (!this.currentUserId) return;
@@ -259,71 +283,80 @@ export class PassePage implements OnInit, OnDestroy {
       const passeAccessRef = collection(this.firestore, 'event-access');
       const q = query(passeAccessRef, where('userId', '==', this.currentUserId));
 
-      this.pasesUnsubscribeFn = onSnapshot(q, {
-        next: (snapshot) => {
-          const pasesTmp: PaseUniversal[] = [];
+      this.pasesUnsubscribeFn = onSnapshot(q, async (snapshot) => {
+        const promesasPases = snapshot.docs.map(async (docSnap) => {
+          const pass = { id: docSnap.id, ...docSnap.data() } as PasseAccess;
 
-          snapshot.forEach((docSnap) => {
-            const pass = { id: docSnap.id, ...docSnap.data() } as PasseAccess;
+          if (pass.status === PasseAccessStatus.ACTIVE || (pass as any).status === 'active') {
+            const ev = this.cacheEventos.find(e => e.id === pass.eventId);
 
-            if (pass.status === PasseAccessStatus.ACTIVE || (pass as any).status === 'active') {
-              const ev = this.cacheEventos.find(e => e.id === pass.eventId);
+            // 🎯 REGLA DE INVITADOS: Si es pase de invitado, restringimos la fecha al día asignado en el pase (pass.date)
+            const esPaseInvitado = this.isInvitado || pass.userType === UserRole.INVITADO || (pass as any).userType === 'invitado';
 
-              const inicioStr = (pass as any).dateStart || pass.date || '';
-              const finStr = (pass as any).dateEnd || inicioStr;
+            const inicioStr = esPaseInvitado
+              ? (pass.date || (pass as any).dateStart || '')
+              : ((pass as any).dateStart || pass.date || '');
 
-              if (DateEsUtils.estaEnRangoDiarioEs(inicioStr, finStr)) {
-                // 🎯 Calculamos la imagen de portada exacta (la subida o la correspondiente a su tipo)
-                const eventImg = this.obtenerImagenPortadaEvento(ev);
-                const gradienteUnico = this.generarColorUnicoPorId(pass.eventId);
-                const esAllDay = ev ? (ev.allDay || (ev as any).isAllDay || false) : false;
-                const textoValidez = this.calcularTextoValidez(inicioStr, finStr, esAllDay);
+            const finStr = esPaseInvitado
+              ? inicioStr
+              : ((pass as any).dateEnd || inicioStr);
 
-                // ✂️ PARSEO DE VALIDEZ EN 2 LÍNEAS (DEL ... / AL ...)
-                let validezInicio = '';
-                let validezFin = '';
+            if (DateEsUtils.estaEnRangoDiarioEs(inicioStr, finStr)) {
+              const eventImg = this.obtenerImagenPortadaEvento(ev);
+              const gradienteUnico = this.generarColorUnicoPorId(pass.eventId);
+              const esAllDay = ev ? (ev.allDay || (ev as any).isAllDay || false) : false;
 
-                if (textoValidez) {
-                  const partes = textoValidez.split(/\s+AL\s+/i);
-                  if (partes.length === 2) {
-                    validezInicio = partes[0].trim();
-                    validezFin = 'AL ' + partes[1].trim();
-                  } else {
-                    validezInicio = textoValidez;
-                  }
+              // Si es un pase de invitado, calculamos el texto de validez basándonos únicamente en su fecha diaria única
+              const textoValidez = esPaseInvitado
+                ? `EL ${this.formatearFechaEs(inicioStr, false)}`
+                : this.calcularTextoValidez(inicioStr, finStr, esAllDay);
+
+              let validezInicio = '';
+              let validezFin = '';
+
+              if (textoValidez) {
+                const partes = textoValidez.split(/\s+AL\s+/i);
+                if (partes.length === 2) {
+                  validezInicio = partes[0].trim();
+                  validezFin = 'AL ' + partes[1].trim();
+                } else {
+                  validezInicio = textoValidez;
                 }
-
-                pasesTmp.push({
-                  ...pass,
-                  eventTitle: ev ? ev.title : 'Convocatoria Oficial de la Peña',
-                  eventDescription: ev ? ev.description : 'Pase Digital de Acceso.',
-                  eventImg: eventImg,
-                  dateStart: inicioStr,
-                  dateEnd: finStr,
-                  requiresAccessControl: ev ? ev.requiresAccessControl : false,
-                  limiteInvitadosPorSocio: ev ? (ev.limiteInvitadosPorSocio ?? null) : null,
-                  backgroundStyle: gradienteUnico,
-                  validezTexto: textoValidez,
-                  validezInicio: validezInicio,
-                  validezFin: validezFin
-                });
               }
-            }
-          });
 
-          this.misPasesHoy = pasesTmp;
-          console.log(`🍏 [EventPassesPage] Pases renderizados con éxito bajo huso horario de España: ${this.misPasesHoy.length}`);
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => {
-          if (!this.authService.getUid() || (err && err.code === 'permission-denied') || (err && err.message && err.message.includes('false for'))) {
-            console.log('🔕 [EventPassesPage] Interceptado error de permisos post-logout. Desconectando snapshot de forma segura.');
-            this.desconectarEscuchaPases();
-            return;
+              const limiteInvitados = ev ? (ev.limiteInvitadosPorSocio ?? null) : null;
+
+              // 🚀 OPTIMIZACIÓN CRÍTICA DE LECTURAS FIRESTORE:
+              let usados = 0;
+              if (ev && this.currentUserId && !this.isInvitado && limiteInvitados && limiteInvitados > 0) {
+                usados = await this.passeService.contarInvitacionesDelDia(this.currentUserId, pass.date, ev);
+              }
+
+              return {
+                ...pass,
+                eventTitle: ev ? ev.title : 'Convocatoria Oficial de la Peña',
+                eventDescription: ev ? ev.description : 'Pase Digital de Acceso.',
+                eventImg: eventImg,
+                dateStart: inicioStr,
+                dateEnd: finStr,
+                requiresAccessControl: ev ? ev.requiresAccessControl : false,
+                limiteInvitadosPorSocio: limiteInvitados,
+                backgroundStyle: gradienteUnico,
+                validezTexto: textoValidez,
+                validezInicio: validezInicio,
+                validezFin: validezFin,
+                invitadosUsados: usados
+              } as PaseUniversal;
+            }
           }
-          this.errorHandler.handle(err);
-        }
-      });
+          return null;
+        });
+
+        const resultados = await Promise.all(promesasPases);
+        this.misPasesHoy = resultados.filter((p): p is PaseUniversal => p !== null);
+        this.cdr.detectChanges();
+      },
+        error => this.errorHandler.handle(error));
 
     } catch (error) {
       this.errorHandler.handle(error);

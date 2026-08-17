@@ -1,9 +1,3 @@
-<!-- 
-  @file success.page.html
-  @description Estructura de marcado semántico para la pantalla de éxito en la activación del socio.
-  Sustituye de forma nativa los enlaces a tiendas de distribución móvil por un redireccionamiento unificado 
-  hacia el ecosistema PWA del club.
--->
 <main class="welcome-wrapper">
   <div class="welcome-card">
     
@@ -30,28 +24,59 @@
 
         <div class="divider-line"></div>
 
-        <!-- Sección de Acceso Inmediato a la Web App / PWA -->
+        <!-- Sección Adaptativa según Sistema Operativo -->
         <div class="download-section">
-          <h4>Accede a la Aplicación</h4>
-          <p class="download-instruction">
-            Para entrar a tu área privada, ver eventos, comunicados y gestionar tu ficha de socio, pulsa el botón inferior:
-          </p>
-          
-          <!-- Contenedor del Botón de Acción Principal Adaptado al Ancho Completo -->
-          <div class="store-buttons-container">
-            <a [href]="mainAppUrl" target="_blank" class="btn-store google-play" style="width: 100%; justify-content: center;">
-              <span class="icon">🚀</span>
-              <div class="btn-text" style="text-align: left;">
-                <small>ENTRAR A LA APP</small>
-                <strong>Ecosistema Digital Los Locos</strong>
-              </div>
-            </a>
+          <h4>Acceso a la Aplicación</h4>
+
+          <!-- 🟢 OPCIÓN A: ANDROID O NAVEGADOR WEB (Descargar APK) -->
+          <div *ngIf="isAndroid || !isIOS">
+            <p class="download-instruction">
+              Para disfrutar de notificaciones push y el máximo rendimiento en tu móvil Android, descarga la app oficial:
+            </p>
+            
+            <div class="store-buttons-container">
+              <a [href]="apkUrl" download="adc-loslocos-desa.apk" class="btn-store btn-android">
+                <span class="icon">🤖</span>
+                <div class="btn-text">
+                  <small>DESCARGAR PARA ANDROID</small>
+                  <strong>Instalar App Oficial (.APK)</strong>
+                </div>
+              </a>
+            </div>
+
+            <!-- Botón secundario para ver PWA en navegador si no desea instalar la APK -->
+            <p class="pwa-fallback-text">
+              ¿Prefieres no instalar nada? <a [href]="mainAppUrl" target="_blank">Entrar vía Web PWA</a>
+            </p>
           </div>
 
-          <!-- Recomendación Metodológica para la Instalación de la Aplicación -->
-          <p class="download-instruction" style="font-size: 0.85rem; margin-top: 14px; opacity: 0.82; line-height: 1.3;">
-            💡 <strong>Tip:</strong> Si accedes desde el móvil, despliega el menú de opciones de tu navegador y selecciona <strong>"Añadir a la pantalla de inicio"</strong> o <strong>"Instalar aplicación"</strong> para disfrutar de la experiencia nativa de escritorio completa.
-          </p>
+          <!-- 🍎 OPCIÓN B: iOS / IPHONE (Instrucciones Safari PWA) -->
+          <div *ngIf="isIOS">
+            <p class="download-instruction">
+              Para acceder desde tu iPhone o iPad, abre la aplicación Web e instálala en tu pantalla de inicio:
+            </p>
+
+            <div class="store-buttons-container">
+              <a [href]="mainAppUrl" target="_blank" class="btn-store btn-apple">
+                <span class="icon">🚀</span>
+                <div class="btn-text">
+                  <small>ACCESO WEB APP</small>
+                  <strong>Entrar a Los Locos PWA</strong>
+                </div>
+              </a>
+            </div>
+
+            <!-- Pasos específicos para iOS -->
+            <div class="ios-instructions-box">
+              <p>📌 <strong>Para añadirla a tu pantalla de inicio:</strong></p>
+              <ol>
+                <li>Abre el enlace superior en <strong>Safari</strong>.</li>
+                <li>Pulsa el botón <strong>Compartir</strong> (cuadrado con flecha hacia arriba).</li>
+                <li>Selecciona <strong>"Añadir a la pantalla de inicio"</strong>.</li>
+              </ol>
+            </div>
+          </div>
+
         </div>
 
         <!-- Enlace Secundario de Retorno Seguro -->
