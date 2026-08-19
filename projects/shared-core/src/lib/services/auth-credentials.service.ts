@@ -38,7 +38,7 @@ export class AuthCredentialsService {
    */
   public async reauthenticate(currentEmail: string, currentPassword: string): Promise<void> {
     if (!this.auth.currentUser) {
-      throw new Error(AppMessageCode.ADC_AUTH_ERR_0001);
+      throw new Error(AppMessageCode.ACD_AUTH_ERR_0001);
     }
 
     const credential = EmailAuthProvider.credential(currentEmail, currentPassword);
@@ -62,7 +62,7 @@ export class AuthCredentialsService {
     bypassReauth = false
   ): Promise<void> {
     if (!newEmail || !newEmail.trim()) return;
-    if (!this.auth.currentUser) throw new Error(AppMessageCode.ADC_AUTH_ERR_0001);
+    if (!this.auth.currentUser) throw new Error(AppMessageCode.ACD_AUTH_ERR_0001);
 
     if (newEmail.trim().toLowerCase() === currentEmail.trim().toLowerCase()) return;
 
@@ -92,7 +92,7 @@ export class AuthCredentialsService {
     bypassReauth = false
   ): Promise<void> {
     if (!newPassword || !newPassword.trim()) return;
-    if (!this.auth.currentUser) throw new Error(AppMessageCode.ADC_AUTH_ERR_0001);
+    if (!this.auth.currentUser) throw new Error(AppMessageCode.ACD_AUTH_ERR_0001);
 
     if (!bypassReauth) {
       await this.reauthenticate(currentEmail, currentPassword);

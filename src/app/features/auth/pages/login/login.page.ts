@@ -86,7 +86,7 @@ export class LoginPage {
 
   async ingresar() {
   if (!this.email || !this.password) {
-    await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
+    await this.notification.error(AppMessageCode.ACD_AUTH_ERR_0008);
     return;
   }
 
@@ -132,7 +132,7 @@ export class LoginPage {
         return;
       }
 
-      await this.errorHandler.handle(error, AppMessageCode.ADC_AUTH_ERR_0002);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_AUTH_ERR_0002);
     } finally {
       this.cargando = false;
     }

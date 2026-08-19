@@ -393,7 +393,7 @@ export class UserService {
 
     // 2. 🔒 EL CERROJO DE TESORERÍA: Si no está al corriente de pago, bloqueamos la baja ipso-facto
     if (!this.userFeesService.esSocioSolvente(userActualData)) {
-      throw new Error('ADC_USER_ERR_0007'); 
+      throw new Error('ACD_USER_ERR_0007'); 
     }
 
     const userRef = doc(this.firestore, 'users', uid);

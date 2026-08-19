@@ -117,7 +117,7 @@ export class UserDetailDataService {
       return true;
     } catch (error) {
       console.error(error);
-      await this.errorHandler.handle(error, AppMessageCode.ADC_USER_ERR_0002);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_USER_ERR_0002);
       return false;
     }
   }
@@ -211,7 +211,7 @@ export class UserDetailDataService {
       return true;
     } catch (error: any) {
       console.error(error);
-      await this.errorHandler.handle(error, AppMessageCode.ADC_AUTH_ERR_0010);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_AUTH_ERR_0010);
       return false;
     }
   }
@@ -269,7 +269,7 @@ export class UserDetailDataService {
       console.log('NUEVO USUARIO A REGISTRAR: ', user);
       await this.authService.createUserAsAdmin(user);
 
-      await this.notification.success(AppMessageCode.ADC_AUTH_INF_0001);
+      await this.notification.success(AppMessageCode.ACD_AUTH_INF_0001);
       await this.router.navigate(['/gest-user']);
       return true;
 
@@ -277,7 +277,7 @@ export class UserDetailDataService {
       console.error('🚨 Error durante la creación de usuario:', error);
       
       // 🚀 Canalización al interceptor maestro de excepciones
-      await this.errorHandler.handle(error, AppMessageCode.ADC_USER_ERR_0001);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_USER_ERR_0001);
       return false;
     }
   }

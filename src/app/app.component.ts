@@ -31,7 +31,8 @@ import {
   cashOutline,
   chevronDownOutline,
   chevronDown,
-  chevronForward
+  chevronForward,
+  helpCircleOutline
 } from 'ionicons/icons';
 
 import { Firestore, collection, query, where, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
@@ -48,9 +49,12 @@ import {
 } from 'shared-core';
 import { environment } from '@env/environment';
 
+import { Browser } from '@capacitor/browser';
+
+
 /**
  * @class AppComponent
- * @description Componente raíz de la aplicación de la Peña A.D.C. Los Locos.
+ * @description Componente raíz de la aplicación de la Peña A.C.D. Los Locos.
  * Se encarga de la orquestación del menú lateral dinámico, la gestión de sesiones en tiempo real,
  * el cálculo reactivo del estado de los pases digitales y la inicialización de notificaciones nativas mediante Capacitor.
  */
@@ -68,7 +72,7 @@ import { environment } from '@env/environment';
     IonList,
     IonItem,
     IonIcon,
-    IonLabel
+    IonLabel,
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -205,7 +209,8 @@ export class AppComponent implements OnInit, OnDestroy {
       cashOutline,
       chevronDownOutline,
       chevronDown,
-      chevronForward
+      chevronForward,
+      helpCircleOutline
     });
   }
 
@@ -488,5 +493,26 @@ export class AppComponent implements OnInit, OnDestroy {
     } catch (error) {
       await this.errorHandler.handle(error);
     }
+  }
+
+  /**
+   * @method abrirManualOnline
+   * @description Espera la hidratación del perfil de usuario y abre el manual 
+   * transmitiendo la constante exacta del enumerado UserRole.
+   * @returns {Promise<void>}
+   */
+  public async abrirManualOnline(): Promise<void> {
+    // 🚀 CLAVE: Esperamos a que los datos de usuario estén cargados en memoria
+    await this.authService.waitForUserData();
+
+    // Ahora getRole() devolverá 'administrador' (UserRole.ADMINISTRADOR)
+    const rol: UserRole = (this.authService.getRole() as UserRole) || UserRole.SOCIO;
+
+    const url = `https://acdloslocos-onboarding-desa.web.app/manual-uso?rol=${rol}`;
+
+    await Browser.open({ 
+      url,
+      toolbarColor: '#18366b'
+    });
   }
 }

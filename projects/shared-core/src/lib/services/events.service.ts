@@ -93,7 +93,7 @@ export class EventsService {
             observer.next(events);
           },
           async (error) => {
-            await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0005);
+            await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0005);
             observer.error(error);
           }
         );
@@ -127,7 +127,7 @@ export class EventsService {
             observer.next(passes);
           },
           async (error) => {
-            await this.errorHandler.handle(error, AppMessageCode.ADC_PASS_ERR_0004);
+            await this.errorHandler.handle(error, AppMessageCode.ACD_PASS_ERR_0004);
             observer.error(error);
           }
         );
@@ -160,7 +160,7 @@ export class EventsService {
           });
         })
         .catch(async err => {
-          await this.errorHandler.handle(err, AppMessageCode.ADC_EVENT_ERR_0005);
+          await this.errorHandler.handle(err, AppMessageCode.ACD_EVENT_ERR_0005);
           throw err;
         });
 
@@ -189,7 +189,7 @@ export class EventsService {
           } as AppEvent;
         })
         .catch(async err => {
-          await this.errorHandler.handle(err, AppMessageCode.ADC_EVENT_ERR_0005);
+          await this.errorHandler.handle(err, AppMessageCode.ACD_EVENT_ERR_0005);
           throw err;
         });
 
@@ -211,7 +211,7 @@ export class EventsService {
           return undefined;
         })
         .catch(async err => {
-          await this.errorHandler.handle(err, AppMessageCode.ADC_EVENT_ERR_0002);
+          await this.errorHandler.handle(err, AppMessageCode.ACD_EVENT_ERR_0002);
           throw err;
         });
 
@@ -234,7 +234,7 @@ export class EventsService {
         await runTransaction(this.firestore, async (transaction) => {
           const eventSnap = await transaction.get(eventRef);
           if (!eventSnap.exists()) {
-            throw new Error(AppMessageCode.ADC_EVENT_ERR_0010);
+            throw new Error(AppMessageCode.ACD_EVENT_ERR_0010);
           }
 
           const eventData = eventSnap.data();
@@ -246,7 +246,7 @@ export class EventsService {
 
           if (confirmarAsistencia) {
             if (capacidadMaxima > 0 && aforoActual >= capacidadMaxima) {
-              throw new Error(AppMessageCode.ADC_EVENT_ERR_0008);
+              throw new Error(AppMessageCode.ACD_EVENT_ERR_0008);
             }
 
             transaction.set(attendanceRef, {
@@ -301,7 +301,7 @@ export class EventsService {
           }
         });
       } catch (error: any) {
-        await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0002);
+        await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0002);
         throw error;
       }
     });
@@ -330,7 +330,7 @@ export class EventsService {
       await setDoc(newEventRef, cleanPayload);
       return eventId;
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0001);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0001);
       throw error;
     }
   }
@@ -350,7 +350,7 @@ export class EventsService {
 
       await updateDoc(eventRef, finalPayload);
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0001);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0001);
       throw error;
     }
   }
@@ -362,7 +362,7 @@ export class EventsService {
   public async deleteEvent(event: AppEvent): Promise<void> {
     try {
       if (!event.id) {
-        throw new Error(AppMessageCode.ADC_EVENT_ERR_0011);
+        throw new Error(AppMessageCode.ACD_EVENT_ERR_0011);
       }
       const eventId = event.id;
 
@@ -380,7 +380,7 @@ export class EventsService {
       const eventRef = doc(this.firestore, `events/${eventId}`);
       await deleteDoc(eventRef);
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0003);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0003);
       throw error;
     }
   }
@@ -410,7 +410,7 @@ export class EventsService {
             }
           },
           async (error) => {
-            await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0005);
+            await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0005);
             observer.error(error);
           }
         );

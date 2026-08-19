@@ -138,7 +138,7 @@ export class MantenimientoCuotasPage implements OnInit {
       this.notification.success(`La cuota de ${user.nombre} se ha actualizado correctamente.`);
     } catch (error) {
       event.target.checked = !nuevoEstado;
-      await this.errorHandler.handle(error, AppMessageCode.ADC_FEES_ERR_0003);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_FEES_ERR_0003);
     }
   }
 

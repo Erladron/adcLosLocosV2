@@ -11,7 +11,7 @@ import {
 
 /**
  * @class PageHeaderComponent
- * @description Cabecera de página unificada y reutilizable (Dumb Component) para el ecosistema ADC Los Locos V2.
+ * @description Cabecera de página unificada y reutilizable (Dumb Component) para el ecosistema ACD Los Locos V2.
  * Encapsula la barra de herramientas superior expuesta en las vistas, abstrayendo las condicionales visuales
  * del botón de retroceso nativo de Ionic y las compuertas de activación del menú lateral izquierdo.
  */

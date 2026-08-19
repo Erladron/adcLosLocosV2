@@ -35,12 +35,12 @@ export class ErrorHandlerService {
    * errores envueltos en instancias genéricas inspeccionando la matriz `FIREBASE_ERROR_MAP`.
    * 
    * @param {any} error Objeto de excepción capturado por los bloques try/catch de los servicios o componentes.
-   * @param {AppMessageCode} [fallbackMessage=AppMessageCode.ADC_SYS_ERR_0001] Código de contingencia por defecto si el fallo no está catalogado.
+   * @param {AppMessageCode} [fallbackMessage=AppMessageCode.ACD_SYS_ERR_0001] Código de contingencia por defecto si el fallo no está catalogado.
    * @returns {Promise<void>}
    */
   public async handle(
     error: any,
-    fallbackMessage: AppMessageCode = AppMessageCode.ADC_SYS_ERR_0001
+    fallbackMessage: AppMessageCode = AppMessageCode.ACD_SYS_ERR_0001
   ): Promise<void> {
     
     // 1. Extracción primaria del código directo de Firebase
@@ -69,7 +69,7 @@ export class ErrorHandlerService {
     if (firebaseCode && FIREBASE_ERROR_MAP[firebaseCode]) {
       resolvedCode = FIREBASE_ERROR_MAP[firebaseCode];
     } else {
-      // 3. Jerarquía B: Validación de mensajes de negocio pre-configurados o claves ADC_
+      // 3. Jerarquía B: Validación de mensajes de negocio pre-configurados o claves ACD_
       const rawMessage = 
         error?.data?.error || 
         error?.error?.message || 
@@ -78,7 +78,7 @@ export class ErrorHandlerService {
 
       if (rawMessage) {
         const errorStr = String(rawMessage);
-        if (errorStr.startsWith('ADC_')) {
+        if (errorStr.startsWith('ACD_')) {
           resolvedCode = errorStr as AppMessageCode;
         }
       }

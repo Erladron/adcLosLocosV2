@@ -256,7 +256,7 @@ export class PersonalDataFormComponent implements OnChanges, OnInit {
           this.mostrarCropper = true;
           this.cdr.detectChanges();
         }).catch(err => {
-          this.errorHandler.handle(err, AppMessageCode.ADC_SYS_ERR_0005);
+          this.errorHandler.handle(err, AppMessageCode.ACD_SYS_ERR_0005);
           this.internalImageEvent = event;
           this.internalImageBase64 = '';
           this.mostrarCropper = true;

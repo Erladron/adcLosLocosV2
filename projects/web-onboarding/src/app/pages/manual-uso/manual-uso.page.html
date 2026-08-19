@@ -1,0 +1,133 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="header-toolbar-brand">
+    
+    <!-- Botón Hamburguesa que SOLO existe visualmente en móviles (<= 840px) -->
+    <ion-buttons slot="start" class="mobile-only-btn" *ngIf="seccionActiva !== 'indice'">
+      <button class="btn-hamburger" (click)="toggleMenuMobile()" aria-label="Abrir menú de guías">
+        <ion-icon [name]="menuColapsado ? 'menu-outline' : 'close-outline'"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <!-- Título Central -->
+    <ion-title class="brand-title">Manual de Uso</ion-title>
+
+    <!-- Escudo Corporativo a la Derecha -->
+    <ion-buttons slot="end">
+      <div class="header-slot-right">
+        <img src="assets/img/escudo.png" alt="Escudo A.C.D. Los Locos" class="header-club-badge">
+      </div>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding app-background">
+
+  <!-- Fondo traslúcido para móviles -->
+  <div 
+    class="mobile-backdrop" 
+    [class.active]="!menuColapsado && seccionActiva !== 'indice'" 
+    (click)="toggleMenuMobile()">
+  </div>
+
+  <!-- ================= VISTA 1: ÍNDICE PRINCIPAL ================= -->
+  <div *ngIf="seccionActiva === 'indice'" class="fade-in main-container">
+    
+    <div class="header-section glass-panel">
+      <div class="hero-titles">
+        <h1 class="page-title">Centro de Ayuda y Documentación</h1>
+        <p class="page-subtitle">Guías oficiales y manuales operativos de A.C.D. Los Locos</p>
+      </div>
+
+      <div class="pildoras-container">
+        <span class="pildoras-label">FILTRAR POR ROL:</span>
+        <div class="pildoras-wrapper">
+          <button 
+            *ngFor="let item of rolesDisponibles" 
+            [class.active]="rolSeleccionado === item.key"
+            (click)="cambiarRol(item.key)"
+            class="btn-pildora">
+            <ion-icon [name]="item.icon"></ion-icon>
+            <span>{{ item.label }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rejilla A-Z -->
+    <ion-grid class="ion-no-padding grid-cards-container">
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let guia of guiasFiltradas" class="ion-padding-bottom">
+          <div class="menu-card glass-card" (click)="abrirGuia(guia)">
+            <div class="card-icon-box">
+              <ion-icon [name]="guia.icon"></ion-icon>
+            </div>
+            <div class="card-content-box">
+              <h3>{{ guia.title }}</h3>
+              <p>{{ guia.description }}</p>
+            </div>
+            <div class="card-arrow">
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <footer class="app-footer">
+      <p>© 2026 A.C.D. Los Locos. Todos los derechos reservados.</p>
+    </footer>
+
+  </div>
+
+  <!-- ================= VISTA 2: DETALLE Y SIDEBAR ================= -->
+  <div *ngIf="seccionActiva !== 'indice'" class="fade-in layout-doc main-container">
+    
+    <!-- Sidebar de Navegación -->
+    <aside class="sidebar-menu glass-card" [class.open-mobile]="!menuColapsado">
+      <div class="sidebar-header">
+        <button class="btn-back-custom" (click)="volverAlIndice()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+          <span>Volver al Índice</span>
+        </button>
+        
+        <div class="role-pill-container">
+          <span class="role-pill-label">VISTA DE ROL</span>
+          <div class="role-pill-badge">
+            <ion-icon [name]="obtenerIconoRolActivo()"></ion-icon>
+            <span>{{ rolSeleccionado | uppercase }}</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div 
+          *ngFor="let guia of guiasFiltradas" 
+          class="sidebar-item"
+          [class.active]="seccionActiva === guia.id"
+          (click)="abrirGuia(guia)">
+          <ion-icon [name]="guia.icon"></ion-icon>
+          <span>{{ guia.title }}</span>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Área de la Guía -->
+    <main class="doc-content-area">
+      <div *ngIf="cargando" class="loading-box glass-card">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <p>Cargando guía oficial...</p>
+      </div>
+
+      <div *ngIf="!cargando" class="doc-card glass-card">
+        <div class="markdown-content" [innerHTML]="contenidoHtml"></div>
+
+        <footer class="doc-footer">
+          <p>© 2026 A.C.D. Los Locos. Documentación Oficial de Soporte.</p>
+        </footer>
+      </div>
+    </main>
+
+  </div>
+
+</ion-content>

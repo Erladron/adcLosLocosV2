@@ -1,0 +1,707 @@
+// ============================================================================
+// 1. CABECERA SUPERIOR (ION-TOOLBAR) & ESTILOS BASE
+// ============================================================================
+.header-toolbar-brand {
+  --background: #18366b;
+  --color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(24, 54, 107, 0.2);
+
+  .toolbar-brand-container {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+
+    // Botón Hamburguesa (solo visible en móvil dentro de las guías)
+    .btn-hamburger-mobile {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      cursor: pointer;
+
+      ion-icon {
+        font-size: 1.6rem;
+      }
+    }
+
+    .brand-title {
+      --padding-start: 0;
+      padding-start: 0;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      font-size: 1.15rem;
+      flex: 1;
+    }
+
+    // Escudo alineado a la derecha de "Manual de Uso"
+    .header-club-badge {
+      width: 32px !important;
+      height: 32px !important;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+  }
+}
+
+.app-background {
+  --background: #f1f5f9;
+}
+
+.main-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-bottom: 32px;
+}
+
+.fade-in {
+  animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Backdrop oscuro traslúcido para móvil al abrir el menú
+.mobile-backdrop {
+  display: none;
+}
+
+// ============================================================================
+// 2. HERO BANNER PRINCIPAL (SELECCIÓN DE ROL)
+// ============================================================================
+.header-section.glass-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.05);
+
+  .hero-titles {
+    margin-bottom: 20px;
+
+    .page-title {
+      color: #18366b;
+      font-weight: 800;
+      font-size: 1.65rem;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+  }
+
+  .pildoras-container {
+    .pildoras-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+// Píldoras de Rol
+.pildoras-wrapper {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  .btn-pildora {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    ion-icon {
+      font-size: 1.15rem;
+      color: #64748b;
+    }
+
+    &:hover {
+      background: #ffffff;
+      border-color: #18366b;
+      color: #18366b;
+
+      ion-icon {
+        color: #18366b;
+      }
+    }
+
+    &.active {
+      background: linear-gradient(135deg, #18366b 0%, #224d96 100%);
+      color: #ffffff;
+      border-color: #18366b;
+      box-shadow: 0 6px 18px rgba(24, 54, 107, 0.28);
+
+      ion-icon {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// 3. TARJETAS DEL ÍNDICE GENERAL (GRID)
+// ============================================================================
+.grid-cards-container {
+  margin-bottom: 32px;
+}
+
+.glass-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.menu-card {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  height: 100%;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-color: #18366b !important;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px -4px rgba(24, 54, 107, 0.12);
+
+    .card-icon-box {
+      background: linear-gradient(135deg, #18366b 0%, #224d96 100%);
+      color: #ffffff;
+    }
+
+    .card-arrow ion-icon {
+      color: #18366b;
+      transform: translateX(4px);
+    }
+  }
+
+  .card-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #18366b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .card-content-box {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 4px 0;
+      color: #0f172a;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+  }
+
+  .card-arrow ion-icon {
+    font-size: 1.25rem;
+    color: #cbd5e1;
+    transition: all 0.2s ease;
+  }
+}
+
+// ============================================================================
+// 4. LAYOUT DE DETALLE Y NAVEGACIÓN LATERAL (DESKTOP)
+// ============================================================================
+.layout-doc {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.sidebar-menu {
+  padding: 20px;
+  position: sticky;
+  top: 16px;
+
+  .sidebar-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .btn-back-custom {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      color: #18366b;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      padding: 0;
+      transition: opacity 0.2s ease;
+
+      ion-icon {
+        font-size: 1.15rem;
+      }
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+
+    // Píldora de Rol con Icono Dinámico
+    .role-pill-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .role-pill-label {
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: #94a3b8;
+        letter-spacing: 0.8px;
+      }
+
+      .role-pill-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        align-self: flex-start;
+        padding: 5px 12px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        color: #18366b;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 6px rgba(24, 54, 107, 0.05);
+
+        ion-icon {
+          font-size: 0.95rem;
+          color: #18366b;
+        }
+      }
+    }
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      color: #475569;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      ion-icon {
+        font-size: 1.2rem;
+        color: #64748b;
+      }
+
+      &:hover {
+        background: #f1f5f9;
+        color: #18366b;
+
+        ion-icon {
+          color: #18366b;
+        }
+      }
+
+      &.active {
+        background: linear-gradient(135deg, #18366b 0%, #224d96 100%);
+        color: #ffffff;
+
+        ion-icon {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.doc-content-area {
+  width: 100%;
+}
+
+.doc-card {
+  padding: 32px;
+}
+
+.loading-box {
+  text-align: center;
+  padding: 60px;
+  color: #64748b;
+}
+
+// ============================================================================
+// 5. ESTILOS MARKDOWN DENTRO DE LAS GUÍAS
+// ============================================================================
+.markdown-content {
+  color: #1e293b;
+  line-height: 1.75;
+
+  h1 {
+    font-size: 1.55rem;
+    color: #18366b;
+    font-weight: 800;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 12px;
+    margin-bottom: 1em;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    color: #18366b;
+    font-weight: 700;
+    margin-top: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    color: #18366b;
+    font-weight: 700;
+    margin-top: 1.3em;
+  }
+
+  p {
+    margin-bottom: 1.15em;
+    font-size: 0.98rem;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.4rem;
+    margin-bottom: 1.2em;
+  }
+
+  li {
+    margin-bottom: 0.45em;
+  }
+
+  code {
+    background: #f1f5f9;
+    color: #18366b;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  blockquote {
+    border-left: 4px solid #18366b;
+    background: #f8fafc;
+    margin: 1.4em 0;
+    padding: 14px 20px;
+    border-radius: 0 12px 12px 0;
+    color: #334155;
+  }
+}
+
+// ============================================================================
+// 6. PIE DE PÁGINA Y COPYRIGHT CON SAFE-AREA MÓVIL
+// ============================================================================
+.app-footer,
+.doc-footer {
+  text-align: center;
+  padding-top: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  width: 100%;
+
+  p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+}
+
+.doc-footer {
+  margin-top: 40px;
+  border-top: 1px solid #f1f5f9;
+}
+
+// ============================================================================
+// 7. RESPONSIVE DESIGN (EXCLUSIVO MÓVILES Y TABLETS <= 840PX)
+// ============================================================================
+@media (max-width: 840px) {
+  .main-container {
+    padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  }
+
+  .layout-doc {
+    display: block;
+  }
+
+  // Backdrop emergente
+  .mobile-backdrop.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 99;
+  }
+
+  // Menú lateral convertido en Panel Flotante Desplazable (Drawer)
+  .sidebar-menu {
+    position: fixed !important;
+    top: 60px;
+    left: -320px;
+    width: 290px;
+    height: calc(100vh - 80px);
+    z-index: 100;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.15) !important;
+    overflow-y: auto;
+
+    &.open-mobile {
+      transform: translateX(320px);
+    }
+  }
+
+  .doc-card {
+    padding: 20px;
+  }
+}
+
+.header-toolbar-brand {
+  --background: #18366b;
+  --color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(24, 54, 107, 0.2);
+
+  .header-slot-left {
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+
+    .btn-hamburger-mobile {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      cursor: pointer;
+      border-radius: 8px;
+
+      ion-icon {
+        font-size: 1.7rem;
+      }
+
+      &:active {
+        background: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+
+  ion-title.brand-title {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-size: 1.15rem;
+  }
+
+  .header-slot-right {
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+
+    .header-club-badge {
+      width: 32px !important;
+      height: 32px !important;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+  }
+}
+
+// Fondo oscuro traslúcido para móvil al abrir el menú
+.mobile-backdrop {
+  display: none;
+}
+
+@media (max-width: 840px) {
+  .mobile-backdrop.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    z-index: 99;
+  }
+
+  .layout-doc {
+    display: block;
+  }
+
+  // Sidebar en modo panel lateral emergente
+  .sidebar-menu {
+    position: fixed !important;
+    top: 56px;
+    left: -320px;
+    width: 280px;
+    height: calc(100vh - 56px);
+    z-index: 100;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.2) !important;
+    overflow-y: auto;
+    border-radius: 0 16px 16px 0 !important;
+
+    &.open-mobile {
+      transform: translateX(320px);
+    }
+  }
+}
+
+// Ocultar completamente el contenedor de la hamburguesa en PC
+.mobile-only-btn {
+  display: none !important;
+}
+
+.header-toolbar-brand {
+  --background: #18366b;
+  --color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(24, 54, 107, 0.2);
+
+  ion-title.brand-title {
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-size: 1.15rem;
+  }
+
+  .header-slot-right {
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+
+    .header-club-badge {
+      width: 32px !important;
+      height: 32px !important;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+  }
+}
+
+// Media Query para pantallas móviles (<= 840px)
+@media (max-width: 840px) {
+  // Mostrar la hamburguesa SOLO en pantallas móviles
+  .mobile-only-btn {
+    display: flex !important;
+    padding-left: 8px;
+
+    .btn-hamburger {
+      background: transparent;
+      border: none;
+      color: #ffffff !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      cursor: pointer;
+
+      ion-icon {
+        font-size: 1.8rem !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  .mobile-backdrop.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    z-index: 99;
+  }
+
+  .layout-doc {
+    display: block;
+  }
+
+  // Sidebar en modo Panel Flotante en Móvil
+  .sidebar-menu {
+    position: fixed !important;
+    top: 56px;
+    left: -320px;
+    width: 285px;
+    height: calc(100vh - 56px);
+    z-index: 100;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25) !important;
+    overflow-y: auto;
+    border-radius: 0 16px 16px 0 !important;
+
+    &.open-mobile {
+      transform: translateX(320px);
+    }
+  }
+}

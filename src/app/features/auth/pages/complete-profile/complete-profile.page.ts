@@ -146,7 +146,7 @@ export class CompleteProfilePage implements OnInit {
         }
         catch (error) {
             await this.errorHandler.handle(error);
-            await this.notification.error(AppMessageCode.ADC_SYS_ERR_0001);
+            await this.notification.error(AppMessageCode.ACD_SYS_ERR_0001);
         }
     }
 

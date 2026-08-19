@@ -106,7 +106,7 @@ export class AuthSessionService {
     this._authReady.set(false);
 
     if (!email || !password) {
-      throw new Error(AppMessageCode.ADC_AUTH_ERR_0007);
+      throw new Error(AppMessageCode.ACD_AUTH_ERR_0007);
     }
 
     return await signInWithEmailAndPassword(this.auth, email, password);
@@ -182,7 +182,7 @@ export class AuthSessionService {
       this._currentUserData.set(userData);
 
       if (userData.estado === UserStatus.REJECTED) {
-        await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0008);
+        await this.notification.error(AppMessageCode.ACD_AUTH_ERR_0008);
         await this.logout();
         return null;
       }

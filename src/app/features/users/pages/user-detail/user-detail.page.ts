@@ -633,7 +633,7 @@ export class UserDetailPage implements OnInit {
       });
 
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_USER_ERR_0006);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_USER_ERR_0006);
     }
   }
 }

@@ -30,9 +30,9 @@ export const EmailTemplates = {
           
           <tr>
             <td align="center" style="background-color: #1c3f7c; background-image: linear-gradient(135deg, #18366b 0%, #224d96 100%); padding: 45px 20px;">
-              <img src="${urlEscudo}" alt="ADC Los Locos" style="width: 100px; height: auto; display: block; margin-bottom: 15px;">
+              <img src="${urlEscudo}" alt="ACD Los Locos" style="width: 100px; height: auto; display: block; margin-bottom: 15px;">
               <h1 style="color: #ffffff; font-size: 22px; font-weight: 700; margin: 0; letter-spacing: 1px; text-transform: uppercase;">
-                A.D.C. Los Locos
+                A.C.D. Los Locos
               </h1>
               <p style="color: #93c5fd; font-size: 14px; margin-top: 8px; margin-bottom: 0; font-style: italic; font-weight: 500; letter-spacing: 0.5px;">
                 "Yo no estoy loco, vivo la locura"
@@ -82,7 +82,7 @@ export const EmailTemplates = {
           <tr>
             <td align="center" style="background-color: #f8fafc; padding: 25px 20px; border-top: 1px solid #f1f5f9;">
               <p style="color: #64748b; font-size: 11px; margin: 0; letter-spacing: 0.5px; font-weight: 500;">
-                © 2026 ADC Los Locos. Todos los derechos reservados.
+                © 2026 ACD Los Locos. Todos los derechos reservados.
               </p>
               <p style="color: #94a3b8; font-size: 10px; margin-top: 6px; margin-bottom: 0;">
                 Este es un mensaje automático del club, ¡nos vemos muy pronto!

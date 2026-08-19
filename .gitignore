@@ -80,3 +80,7 @@ repomix-output.xml
 Thumbs.db
 *.pdf
 /firebase-key.json
+
+.firebase/
+docs/.vitepress/dist/
+repomix-output.xml

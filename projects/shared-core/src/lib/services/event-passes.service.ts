@@ -121,7 +121,7 @@ export class PasseService {
    */
   public async crearInvitacion(socio: User, invitado: User, fecha: string, evento: AppEvent): Promise<PaseUniversal> {
     if (!this.userFeesService.esSocioSolvente(socio)) {
-      throw new Error(AppMessageCode.ADC_FEES_ERR_0001);
+      throw new Error(AppMessageCode.ACD_FEES_ERR_0001);
     }
 
     const totalInvitacionesHoy = await this.contarInvitacionesDelDia(socio.id!, fecha, evento);
@@ -232,10 +232,10 @@ export class PasseService {
 
     } catch (error: any) {
       if (!(error instanceof Error) ||
-        (!error.message.includes(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0001]) &&
-          !error.message.includes(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0002]) &&
-          !error.message.includes(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0003]) &&
-          !error.message.includes(APP_MESSAGES[AppMessageCode.ADC_PASS_ERR_0007]))) {
+        (!error.message.includes(APP_MESSAGES[AppMessageCode.ACD_PASS_ERR_0001]) &&
+          !error.message.includes(APP_MESSAGES[AppMessageCode.ACD_PASS_ERR_0002]) &&
+          !error.message.includes(APP_MESSAGES[AppMessageCode.ACD_PASS_ERR_0003]) &&
+          !error.message.includes(APP_MESSAGES[AppMessageCode.ACD_PASS_ERR_0007]))) {
         this.errorHandler.handle(error);
       }
       throw error;
@@ -333,7 +333,7 @@ export class PasseService {
     evento: AppEvent
   ): Promise<PaseUniversal> {
     if (!this.userFeesService.esSocioSolvente(socio)) {
-      throw new Error(AppMessageCode.ADC_FEES_ERR_0001);
+      throw new Error(AppMessageCode.ACD_FEES_ERR_0001);
     }
 
     const totalInvitacionesHoy = await this.contarInvitacionesDelDia(socio.id!, fecha, evento);
@@ -368,7 +368,7 @@ export class PasseService {
     await runTransaction(this.firestore, async (transaction) => {
       const eventSnap = await transaction.get(eventRef);
       if (!eventSnap.exists()) {
-        throw new Error(AppMessageCode.ADC_EVENT_ERR_0004);
+        throw new Error(AppMessageCode.ACD_EVENT_ERR_0004);
       }
 
       const liveEventData = eventSnap.data() as AppEvent;
@@ -395,7 +395,7 @@ export class PasseService {
         });
 
         if (pasesActivosFecha >= aforoMaximo) {
-          throw new Error(AppMessageCode.ADC_EVENT_ERR_0008);
+          throw new Error(AppMessageCode.ACD_EVENT_ERR_0008);
         }
       }
 
@@ -428,7 +428,7 @@ export class PasseService {
       const eventSnap = await transaction.get(eventRef);
 
       if (!eventSnap.exists()) {
-        throw new Error(AppMessageCode.ADC_EVENT_ERR_0004);
+        throw new Error(AppMessageCode.ACD_EVENT_ERR_0004);
       }
 
       const liveEventData = eventSnap.data() as AppEvent;

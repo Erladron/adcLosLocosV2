@@ -75,7 +75,7 @@ export class AuthRegisterService {
    */
   public async register(user: Partial<User> & { password?: string }, checkInvitation: boolean = true): Promise<User | null> {
     if (!user.email) {
-      throw new Error(AppMessageCode.ADC_AUTH_ERR_0006);
+      throw new Error(AppMessageCode.ACD_AUTH_ERR_0006);
     }
 
     const email = user.email.trim().toLowerCase();
@@ -85,7 +85,7 @@ export class AuthRegisterService {
     if (checkInvitation) {
       invitation = await this.validateInvitation(email);
       if (!invitation) {
-        throw new Error(AppMessageCode.ADC_AUTH_ERR_0011); // Error: Invitación no encontrada o usada
+        throw new Error(AppMessageCode.ACD_AUTH_ERR_0011); // Error: Invitación no encontrada o usada
       }
     }
 
@@ -95,10 +95,10 @@ export class AuthRegisterService {
     try {
       // 2. Creación de la identidad en Firebase Authentication
       if (!checkInvitation) {
-        if (!user.password) throw new Error(AppMessageCode.ADC_AUTH_ERR_0005);
+        if (!user.password) throw new Error(AppMessageCode.ACD_AUTH_ERR_0005);
         uid = await this.createAdminUser(email, user.password);
       } else {
-        if (!user.password) throw new Error(AppMessageCode.ADC_AUTH_ERR_0005);
+        if (!user.password) throw new Error(AppMessageCode.ACD_AUTH_ERR_0005);
         createdCredential = await this.createNormalUser(email, user.password);
         uid = createdCredential.user.uid;
       }
@@ -269,6 +269,6 @@ export class AuthRegisterService {
       throw new Error(FIREBASE_ERROR_MAP[nativeCode]);
     }
 
-    throw new Error(AppMessageCode.ADC_AUTH_ERR_0007); // Fallback: Error general de registro
+    throw new Error(AppMessageCode.ACD_AUTH_ERR_0007); // Fallback: Error general de registro
   }
 }

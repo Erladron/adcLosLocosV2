@@ -78,7 +78,7 @@ export class InvitePage {
    */
   public async invitar(): Promise<void> {
     if (!this.email) {
-      await this.notification.error(AppMessageCode.ADC_INV_ERR_0001);
+      await this.notification.error(AppMessageCode.ACD_INV_ERR_0001);
       return;
     }
 
@@ -86,7 +86,7 @@ export class InvitePage {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(emailClean)) {
-      await this.notification.error(AppMessageCode.ADC_INV_ERR_0002);
+      await this.notification.error(AppMessageCode.ACD_INV_ERR_0002);
       return;
     }
 
@@ -100,7 +100,7 @@ export class InvitePage {
           // Check de invitación pendiente duplicada
           const existingInvitation = await this.invitedUserService.getInvitationByEmail(emailClean);
           if (existingInvitation && !existingInvitation.usado) {
-            await this.notification.warning(AppMessageCode.ADC_INV_ERR_0005);
+            await this.notification.warning(AppMessageCode.ACD_INV_ERR_0005);
             return;
           }
 
@@ -126,18 +126,18 @@ export class InvitePage {
           await addDoc(mailCollection, {
             to: emailClean,
             message: {
-              subject: '¡Bienvenido! Completa tu inscripción - ADC Los Locos',
+              subject: '¡Bienvenido! Completa tu inscripción - ACD Los Locos',
               html: htmlTemplate
             }
           });
 
-          await this.notification.success(AppMessageCode.ADC_INV_INF_0001);
+          await this.notification.success(AppMessageCode.ACD_INV_INF_0001);
           this.email = '';
         },
         'Enviando invitación...'
       );
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_INV_ERR_0003);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_INV_ERR_0003);
     }
   }
 
@@ -148,7 +148,7 @@ export class InvitePage {
   public async validateExisting(email: string): Promise<boolean> {
     const existing = await this.userService.existsByEmail(email);
     if (existing.exists) {
-      await this.notification.warning(AppMessageCode.ADC_INV_ERR_0004);
+      await this.notification.warning(AppMessageCode.ACD_INV_ERR_0004);
       return false;
     }
     return true;

@@ -164,7 +164,7 @@ export class RegisterComponent implements OnInit {
       this.authService.waitForUserData();
 
       this.cargando = false;
-      this.notification.success(AppMessageCode.ADC_AUTH_INF_0001);
+      this.notification.success(AppMessageCode.ACD_AUTH_INF_0001);
 
       this.router.navigate(['/success'], {
         queryParams: { token: this.token }
@@ -177,7 +177,7 @@ export class RegisterComponent implements OnInit {
       if (error instanceof Error && error.message) {
         await this.notification.error(error.message);
       } else {
-        await this.notification.error(AppMessageCode.ADC_AUTH_ERR_0006);
+        await this.notification.error(AppMessageCode.ACD_AUTH_ERR_0006);
       }
     }
   }

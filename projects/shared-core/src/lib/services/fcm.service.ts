@@ -116,8 +116,8 @@ export class FcmService {
     if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !navigator.serviceWorker) {
       console.warn('⚠️ [FcmService] El entorno no soporta Service Worker.');
       await this.errorHandler.handle(
-        new Error(AppMessageCode.ADC_FCM_ERR_0005),
-        AppMessageCode.ADC_FCM_ERR_0005
+        new Error(AppMessageCode.ACD_FCM_ERR_0005),
+        AppMessageCode.ACD_FCM_ERR_0005
       );
       return;
     }
@@ -127,8 +127,8 @@ export class FcmService {
       if (permiso !== 'granted') {
         console.warn('❌ [FcmService] El usuario ha bloqueado las notificaciones push en el navegador.');
         await this.errorHandler.handle(
-          new Error(AppMessageCode.ADC_FCM_ERR_0001),
-          AppMessageCode.ADC_FCM_ERR_0001
+          new Error(AppMessageCode.ACD_FCM_ERR_0001),
+          AppMessageCode.ACD_FCM_ERR_0001
         );
         return;
       }
@@ -144,7 +144,7 @@ export class FcmService {
 
       const activeRegistration = await navigator.serviceWorker.register(swUrl).catch(async (regError) => {
         console.error('🚨 [FcmService] Fallo crítico al registrar el Service Worker:', regError);
-        throw new Error(AppMessageCode.ADC_FCM_ERR_0002);
+        throw new Error(AppMessageCode.ACD_FCM_ERR_0002);
       });
 
       console.log('✅ [FcmService] Service Worker plano enlazado con éxito:', activeRegistration.scope);
@@ -164,7 +164,7 @@ export class FcmService {
         serviceWorkerRegistration: activeRegistration
       }).catch(async (tokenErr) => {
         console.warn('⚠️ [FcmService] Firebase no pudo recuperar el token Web:', tokenErr);
-        throw new Error(AppMessageCode.ADC_FCM_ERR_0003);
+        throw new Error(AppMessageCode.ACD_FCM_ERR_0003);
       });
 
       if (tokenWeb) {
@@ -186,7 +186,7 @@ export class FcmService {
 
     } catch (error) {
       this.solicitandoTokenWeb = false;
-      await this.errorHandler.handle(error, AppMessageCode.ADC_FCM_ERR_0002);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_FCM_ERR_0002);
     }
   }
 
@@ -288,7 +288,7 @@ export class FcmService {
 
     } catch (error) {
       console.error('🚨 [DEBUG FCM] Error al configurar escuchadores:', error);
-      await this.errorHandler.handle(error, AppMessageCode.ADC_SYS_ERR_0001);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_SYS_ERR_0001);
     }
   }
 
@@ -357,7 +357,7 @@ export class FcmService {
 
       console.log('✅ [FcmService] Token guardado en Firestore de manera idempotente.');
     } catch (error: any) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_FCM_ERR_0004);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_FCM_ERR_0004);
     }
   }
 }

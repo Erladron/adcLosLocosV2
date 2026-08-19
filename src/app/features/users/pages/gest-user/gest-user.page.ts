@@ -385,11 +385,11 @@ export class GestUserPage implements OnInit {
     try {
       await this.loading.wrap(async () => {
         await this.userService.approveUser(user.id);
-        await this.notification.success(AppMessageCode.ADC_USER_INF_0001);
+        await this.notification.success(AppMessageCode.ACD_USER_INF_0001);
         await this.loadUsers();
       }, 'Aprobando usuario...');
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_ADMIN_ERR_0001);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_ADMIN_ERR_0001);
     }
   }
 
@@ -412,11 +412,11 @@ export class GestUserPage implements OnInit {
     try {
       await this.loading.wrap(async () => {
         await this.userService.rejectUser(user.id);
-        await this.notification.success(AppMessageCode.ADC_USER_INF_0002);
+        await this.notification.success(AppMessageCode.ACD_USER_INF_0002);
         await this.loadUsers();
       }, 'Rechazando usuario...');
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_ADMIN_ERR_0002);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_ADMIN_ERR_0002);
     }
   }
 

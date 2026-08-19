@@ -6,7 +6,7 @@ import { roleGuard } from '@auth/guards/role.guard';
 import { UserRole } from 'shared-core';
 
 /**
- * @description Matriz de enrutamiento maestro del chasis de la aplicación (A.D.C. Los Locos).
+ * @description Matriz de enrutamiento maestro del chasis de la aplicación (A.C.D. Los Locos).
  * Organiza de forma centralizada las directrices de lazy loading, modularización de componentes Standalone
  * y la restricción perimetral de accesos basada en roles mediante Guards de Angular.
  */

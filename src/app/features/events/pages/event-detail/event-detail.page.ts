@@ -284,7 +284,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         }
       },
-      error: (err) => this.errorHandler.handle(err, AppMessageCode.ADC_EVENT_ERR_0005)
+      error: (err) => this.errorHandler.handle(err, AppMessageCode.ACD_EVENT_ERR_0005)
     });
   }
 
@@ -308,7 +308,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
     if (!this.event?.id) return;
     const authUid = this.authService.getUid();
     if (!authUid) {
-      this.notification.error(AppMessageCode.ADC_AUTH_ERR_0001);
+      this.notification.error(AppMessageCode.ACD_AUTH_ERR_0001);
       return;
     }
 
@@ -324,7 +324,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
         }
 
         const msgExito = confirmarAsistencia
-          ? AppMessageCode.ADC_EVENT_INF_0003
+          ? AppMessageCode.ACD_EVENT_INF_0003
           : 'Asistencia cancelada. Tu plaza e invitaciones feriales han sido liberadas.';
 
         this.notification.success(msgExito);
@@ -332,7 +332,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
       }, confirmarAsistencia ? 'Asegurando tu plaza...' : 'Cancelando tu reserva...');
 
     } catch (error: any) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0002);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0002);
     }
   }
 
@@ -422,7 +422,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
         const compareNow = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
         if (compareStart < compareNow) {
-          this.notification.warning(AppMessageCode.ADC_EVENT_ERR_0006);
+          this.notification.warning(AppMessageCode.ACD_EVENT_ERR_0006);
           startDateControl?.setValue(now.toISOString());
           this.closePopoverRef(controlName);
           return;
@@ -431,7 +431,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
         const nowWithGracePeriod = new Date(now.getTime() - 10 * 60 * 1000);
 
         if (selectedStart < nowWithGracePeriod) {
-          this.notification.warning(AppMessageCode.ADC_EVENT_ERR_0006);
+          this.notification.warning(AppMessageCode.ACD_EVENT_ERR_0006);
           startDateControl?.setValue(now.toISOString());
           this.closePopoverRef(controlName);
           return;
@@ -453,7 +453,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
 
       if (currentStart && selectedEnd <= currentStart) {
         endDateControl?.setErrors({ 'invalidDates': true });
-        this.notification.warning(AppMessageCode.ADC_EVENT_ERR_0007);
+        this.notification.warning(AppMessageCode.ACD_EVENT_ERR_0007);
 
         const safetyEnd = new Date(currentStart);
         safetyEnd.setHours(safetyEnd.getHours() + 1);
@@ -511,7 +511,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }, 'Preparando cartel en el dispositivo...');
     } catch (error) {
-      this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0002);
+      this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0002);
     }
   }
 
@@ -612,7 +612,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
 
     const alert = await this.alertCtrl.create({
       header: '🛑 ¿Eliminar Convocatoria?',
-      subHeader: 'A.D.C. Los Locos',
+      subHeader: 'A.C.D. Los Locos',
       message: `¿Estás seguro de cancelar "${this.event.title}"? Se enviará una alerta push inmediata a los móviles de los socios y la convocatoria se eliminará del sistema por completo.`,
       backdropDismiss: false,
       buttons: [
@@ -628,7 +628,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
               }, 'Cancelando evento y disparando alertas masivas...');
 
               this.router.navigate(['/events'], { replaceUrl: true });
-            } catch (error) { this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0001); }
+            } catch (error) { this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0001); }
           }
         }
       ]
@@ -683,17 +683,17 @@ export class EventDetailPage implements OnInit, OnDestroy {
 
         if (this.isNewEvent) {
           await this.eventsService.createEvent(payload);
-          await this.notification.success(AppMessageCode.ADC_EVENT_INF_0001);
+          await this.notification.success(AppMessageCode.ACD_EVENT_INF_0001);
         } else {
           await this.eventsService.updateEvent(finalId, payload);
-          await this.notification.success(AppMessageCode.ADC_EVENT_INF_0002);
+          await this.notification.success(AppMessageCode.ACD_EVENT_INF_0002);
         }
       }, this.isNewEvent ? 'Convocando evento...' : 'Guardando modificaciones...');
 
       this.temporaryPreviewBase64 = '';
       this.router.navigate(['/events']);
 
-    } catch (error) { this.errorHandler.handle(error, AppMessageCode.ADC_EVENT_ERR_0001); }
+    } catch (error) { this.errorHandler.handle(error, AppMessageCode.ACD_EVENT_ERR_0001); }
   }
 
   // 1. Añade el diccionario apuntando a la carpeta de assets/img de tu proyecto
@@ -799,7 +799,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       }
     } catch (error) {
-      this.errorHandler.handle(error, AppMessageCode.ADC_DP_ERR_0004);
+      this.errorHandler.handle(error, AppMessageCode.ACD_DP_ERR_0004);
     }
   }
 }

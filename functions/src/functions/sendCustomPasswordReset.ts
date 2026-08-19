@@ -48,7 +48,7 @@ export const sendCustomPasswordReset = onCall(async (request) => {
     await db.collection('mail').add({
       to: email,
       message: {
-        subject: '🔑 Cambio de contraseña - A.D.C. Los Locos',
+        subject: '🔑 Cambio de contraseña - A.C.D. Los Locos',
         html: correoHtml
       }
     });

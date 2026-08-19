@@ -261,8 +261,8 @@ export class EventGuestsPage implements OnInit {
       this.limpiarBusqueda();
       await this.cargarTablaInvitados();
     } catch (error: any) {
-      if (error?.message === AppMessageCode.ADC_EVENT_ERR_0008 || error?.message?.includes('¡Aforo Completo!')) {
-        this.notification.warning(AppMessageCode.ADC_EVENT_ERR_0008);
+      if (error?.message === AppMessageCode.ACD_EVENT_ERR_0008 || error?.message?.includes('¡Aforo Completo!')) {
+        this.notification.warning(AppMessageCode.ACD_EVENT_ERR_0008);
       } else {
         this.errorHandler.handle(error);
       }
@@ -294,10 +294,10 @@ export class EventGuestsPage implements OnInit {
         await this.paseService.eliminarInvitacionTransaccional(pase.id!, this.eventId!);
       }, 'Revocando pase y liberando aforo...');
 
-      this.notification.success(AppMessageCode.ADC_PASS_INF_0002);
+      this.notification.success(AppMessageCode.ACD_PASS_INF_0002);
       await this.cargarTablaInvitados();
     } catch (error) {
-      await this.errorHandler.handle(error, AppMessageCode.ADC_PASS_ERR_0005);
+      await this.errorHandler.handle(error, AppMessageCode.ACD_PASS_ERR_0005);
     }
   }
 }

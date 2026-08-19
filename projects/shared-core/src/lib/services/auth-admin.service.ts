@@ -39,7 +39,7 @@ export class AuthAdminService {
    */
   public async createUserAsAdmin(user: any): Promise<any> {
     if (!this.auth.currentUser) {
-      throw new Error(AppMessageCode.ADC_AUTH_ERR_0001);
+      throw new Error(AppMessageCode.ACD_AUTH_ERR_0001);
     }
 
     try {
@@ -49,7 +49,7 @@ export class AuthAdminService {
       return response.data;
     } catch (error: any) {
       console.error('🚨 [AuthAdminService] Error en la ejecución de createUserByAdmin:', error);
-      throw new Error(error.message || AppMessageCode.ADC_AUTH_ERR_0006);
+      throw new Error(error.message || AppMessageCode.ACD_AUTH_ERR_0006);
     }
   }
 
@@ -81,7 +81,7 @@ export class AuthAdminService {
    */
   public async getToken(): Promise<string> {
     if (!this.auth.currentUser) {
-      throw new Error(AppMessageCode.ADC_AUTH_ERR_0001);
+      throw new Error(AppMessageCode.ACD_AUTH_ERR_0001);
     }
     return await this.auth.currentUser.getIdToken();
   }

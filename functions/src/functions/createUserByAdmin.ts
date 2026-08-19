@@ -132,7 +132,7 @@ export const createUserByAdmin = onCall({
     await db.collection('mail').add({
       to: userData.email,
       message: {
-        subject: '🎉 Bienvenido a A.D.C. Los Locos - Tus credenciales de acceso',
+        subject: '🎉 Bienvenido a A.C.D. Los Locos - Tus credenciales de acceso',
         html: correoHtml
       }
     });

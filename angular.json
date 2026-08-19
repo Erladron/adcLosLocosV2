@@ -267,7 +267,7 @@
           "defaultConfiguration": "desa"
         },
         "serve": {
-          "builder": "@angular.build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",  
           "configurations": {
             "production": {
               "buildTarget": "web-onboarding:build:production"

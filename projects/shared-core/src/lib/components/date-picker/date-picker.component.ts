@@ -97,7 +97,7 @@ export class DatePickerComponent implements OnInit {
             // Dibujar la rejilla de días
             this.renderCalendar();
         } catch (error) {
-            this.errorHandler.handle(error, AppMessageCode.ADC_DP_ERR_0001);
+            this.errorHandler.handle(error, AppMessageCode.ACD_DP_ERR_0001);
         }
     }
 
@@ -171,7 +171,7 @@ export class DatePickerComponent implements OnInit {
 
             this.daysGrid = grid;
         } catch (error) {
-            this.errorHandler.handle(error, AppMessageCode.ADC_DP_ERR_0002);
+            this.errorHandler.handle(error, AppMessageCode.ACD_DP_ERR_0002);
         }
     }
 
@@ -217,7 +217,7 @@ export class DatePickerComponent implements OnInit {
 
             return await this.modalCtrl.dismiss({ date: finalDate.toISOString() }, 'confirm');
         } catch (error) {
-            this.errorHandler.handle(error, AppMessageCode.ADC_DP_ERR_0003);
+            this.errorHandler.handle(error, AppMessageCode.ACD_DP_ERR_0003);
             return false;
         }
     }

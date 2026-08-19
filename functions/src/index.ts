@@ -1,15 +1,13 @@
-import * as admin from 'firebase-admin';
-
-// 🚀 1. Importamos el gestor de opciones globales de la v2
+import { initializeApp } from 'firebase-admin/app';
 import { setGlobalOptions } from 'firebase-functions/v2';
 
-// 🚀 2. Fijamos la región europea como prioritaria para TODO el backend
+// 🚀 1. Fijamos la región europea como prioritaria para TODO el backend
 setGlobalOptions({ 
   region: 'europe-west1' 
 });
 
-// Inicializamos el SDK de administración global una única vez aquí para todo el ecosistema
-admin.initializeApp();
+// 🚀 2. Inicialización ligera única al cargar la entrada
+initializeApp();
 
 // ============================================================================
 // 🧪 ENTORNO DE TESTING (Módulos exclusivos para Cypress / Emuladores)

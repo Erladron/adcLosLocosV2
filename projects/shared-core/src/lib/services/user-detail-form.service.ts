@@ -33,7 +33,7 @@ export class UserDetailFormService {
 
     return {
       valid,
-      error: valid ? null : AppMessageCode.ADC_USER_ERR_0003
+      error: valid ? null : AppMessageCode.ACD_USER_ERR_0003
     };
   }
 
@@ -52,7 +52,7 @@ export class UserDetailFormService {
 
     return {
       valid,
-      error: valid ? null : AppMessageCode.ADC_USER_ERR_0004
+      error: valid ? null : AppMessageCode.ACD_USER_ERR_0004
     };
   }
 
