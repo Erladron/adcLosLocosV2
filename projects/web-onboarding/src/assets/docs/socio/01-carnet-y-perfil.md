@@ -21,7 +21,19 @@ Esta guía explica de forma sencilla cómo consultar tu credencial en la aplicac
 
 ---
 
-### 📸 2. Cómo cambiar tu Foto de Perfil (Paso a Paso)
+### 🔐 2. Visibilidad y Privacidad de Datos entre Usuarios
+
+La plataforma aplica un control estricto de privacidad y visibilidad según el tipo de perfil:
+
+* **Invitados y Usuarios en Pre-alta**: No tienen acceso al registro global de la peña ni pueden ver datos de ningún miembro de la asociación.
+* **Socios**: Pueden ver su propio perfil completo y carnet digital. Para el resto de socios, la visibilidad de los datos de contacto (teléfono y correo) dependerá de lo que cada uno configure:
+  * Cada socio dispone en su perfil de **indicadores (switches) para mostrar u ocultar sus datos de contacto** frente a otros miembros.
+* **Directiva y Administración**: Tienen acceso a la gestión y consulta de las fichas de usuarios para labores operativas (altas, cobro de cuotas y mantenimiento).
+* **Portería (Control de Accesos)**: Únicamente visualiza la información básica imprescindible al validar los códigos QR en los accesos a eventos.
+
+---
+
+### 📸 3. Cómo cambiar tu Foto de Perfil (Paso a Paso)
 
 El camino para cambiar tu foto es exactamente el mismo para todos los usuarios con perfil:
 
@@ -36,7 +48,7 @@ El camino para cambiar tu foto es exactamente el mismo para todos los usuarios c
 
 ---
 
-### ✏️ 3. Cómo modificar tu Teléfono, Dirección o Correo
+### ✏️ 4. Cómo modificar tu Teléfono, Dirección o Correo
 
 1. Siguiendo el mismo camino (**Tocar en el Carnet/Ficha** -> **"Editar Datos Personales"**), podrás modificar los campos de contacto que necesites:
    * **Teléfono móvil**.
